@@ -10,7 +10,7 @@
                     <div class="icon iconfont icon-Search" style="font-size: 20px;" />
                 </div>
                 <div class="top-operating ml-4">
-                    <div class="icon iconfont icon-menu" style="font-size: 20px;" />
+                    <div class="icon iconfont icon-menu-hamburger" style="font-size: 22px;" />
                 </div>
             </div>
         </div>

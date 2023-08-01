@@ -1,11 +1,8 @@
 <template>
     <div>
-        <div>
-            <top-bar />
-        </div>
         <div class="pt-20">
             <div class="market w-full pt-10 relative">
-                <van-swipe class="my-swipe" :autoplay="3000" :show-indicators="false" ref="productSwipe">
+                <van-swipe class="my-swipe" :autoplay="0" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index">
                         <div class="px-4">
                             <div
@@ -56,10 +53,9 @@
 </template>
 
 <script>
-import TopBar from '@/components/TopBar'
 import { Swipe, SwipeItem } from 'vant';
 export default {
-    components: { TopBar, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
+    components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
         return {
             productList: [

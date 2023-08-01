@@ -1,10 +1,10 @@
 @font-face {
     font-family: "iconfont";
     /* Project id 4089165 */
-    src: url('//at.alicdn.com/t/c/font_4089165_ckvkobt1kwo.woff2?t=1690864942923') format('woff2'),
-        url('//at.alicdn.com/t/c/font_4089165_ckvkobt1kwo.woff?t=1690864942923') format('woff'),
-        url('//at.alicdn.com/t/c/font_4089165_ckvkobt1kwo.ttf?t=1690864942923') format('truetype'),
-        url('//at.alicdn.com/t/c/font_4089165_ckvkobt1kwo.svg?t=1690864942923#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/c/font_4089165_idpdva0day.woff2?t=1690885458873') format('woff2'),
+        url('//at.alicdn.com/t/c/font_4089165_idpdva0day.woff?t=1690885458873') format('woff'),
+        url('//at.alicdn.com/t/c/font_4089165_idpdva0day.ttf?t=1690885458873') format('truetype'),
+        url('//at.alicdn.com/t/c/font_4089165_idpdva0day.svg?t=1690885458873#iconfont') format('svg');
 }
 
 .iconfont {
@@ -13,6 +13,14 @@
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-hamburgermenu:before {
+    content: "\e654";
+}
+
+.icon-menu-hamburger:before {
+    content: "\e8f2";
 }
 
 .icon-close:before {
