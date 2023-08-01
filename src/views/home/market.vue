@@ -1,11 +1,15 @@
 <template>
-  <router-view />
+  <div>
+    this is market page
+  </div>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
+
 }
 </script>
 
+<style>
+
+</style>
