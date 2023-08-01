@@ -2,7 +2,7 @@
     <div>
         <div class="pt-20">
             <div class="market w-full pt-10 relative">
-                <van-swipe class="my-swipe" :autoplay="0" :show-indicators="false" ref="productSwipe">
+                <van-swipe class="my-swipe" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index">
                         <div class="px-4">
                             <div
