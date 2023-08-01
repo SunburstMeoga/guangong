@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="transition ease-in-out delay-150 duration-300">
         <div
             class="flex justify-between items-center py-4 px-4 backdrop-blur bg-black/70 w-full fixed top-0 left-0 right-0 z-50">
             <div class="w-16 bg-theme-primary rounded-full">
@@ -19,7 +19,20 @@
 
 <script>
 export default {
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll)
+    },
+    methods: {
+        handleScroll() {
+            let scrollY = document.documentElement.scrollTop
+            if (scrollY > 150) {
 
+            } else {
+
+            }
+            console.log(scrollY)
+        }
+    }
 }
 </script>
 

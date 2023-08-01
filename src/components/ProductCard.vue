@@ -1,0 +1,64 @@
+<template>
+    <div>
+        <div class="px-4">
+            <div class="rounded-xl inline-block px-2 py-px bg-success-undertone text-sm text-success-word mb-6">
+                可合成
+            </div>
+            <div class="title text-4xl font-bold text-white leading-12 mb-6">
+                {{ name }}，是一位英雄人物。
+            </div>
+            <div class="flex justify-center items-center mb-10">
+                <div class="w-11/12 h-64">
+                    <img :src="imageUrl" alt="">
+                </div>
+            </div>
+            <div class="px-4 py-4 rounded-lg backdrop-blur bg-module-card" style="background-color: rgb(0 0 0 / 0.4);">
+                <div class="flex justify-center items-center mb-6">
+                    <div class="flex justify-start items-center w-11/12">
+                        <div class="pr-10">
+                            <div class="text-card-title text-sm font-light mb-2">数量</div>
+                            <div class="text-card-content text-2xl font-semibold">12,000</div>
+                        </div>
+                        <div>
+                            <div class="text-card-title text-sm font-light mb-2">价格</div>
+                            <div class="text-card-content text-2xl font-semibold">US$ 20.00</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center items-center">
+                    <div
+                        class="buy-button w-11/12 rounded py-3 flex justify-center items-center text-primary-word font-medium text-lg">
+                        购买
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        imageUrl: {
+            type: String,
+            default: ''
+        },
+        name: {
+            type: String,
+            default: ''
+        }
+    }
+}
+</script>
+
+<style scoped>
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.buy-button {
+    background: linear-gradient(90deg, rgba(250, 52, 168, 1) 9%, rgba(255, 150, 62, 1) 100%);
+}
+</style>

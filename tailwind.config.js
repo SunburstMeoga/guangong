@@ -18,7 +18,9 @@ module.exports = {
                 'primary-word': '#171414',
                 'module-card': '#402C30',
                 'card-title': '#8D8C94',
-                'card-content': '#FBFBFB'
+                'card-content': '#FBFBFB',
+                'card-introduce': '#1F2937',
+                'tips-word': '#71717a'
             },
             backgroundImage: {
                 'market-product': "url('@/assets/market-product-bg.png')",
