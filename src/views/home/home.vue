@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="pt-20">
-            <div class="market w-full pt-10 relative mb-20">
+        <div>
+            <div class="market w-full relative mb-20">
                 <van-swipe class="my-swipe mt-10" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index">
                         <product-card :imageUrl="item.imageUrl" :name="item.name" />
@@ -16,7 +16,7 @@
                 <module-title titleWord="NFT市場" />
             </div>
             <div class="w-full px-4">
-                <div class="mb-6" v-for="(item, index) in marketList" :key="index">
+                <div class="mb-4" v-for="(item, index) in marketList" :key="index">
                     <market-card :imageUrl="item.imageUrl" :name="item.name" />
                 </div>
             </div>
