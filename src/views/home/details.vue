@@ -9,7 +9,7 @@
                             @change="swipeChange">
                             <van-swipe-item v-for="(item, index) in 3" :key="index">
                                 <div class="w-80 h-80">
-                                    <img src="@/assets/guangong1.png" alt="">
+                                    <img src="@/assets/guangong2.png" alt="">
                                 </div>
                             </van-swipe-item>
                         </van-swipe>

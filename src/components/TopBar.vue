@@ -9,19 +9,30 @@
                 <div class="top-operating">
                     <div class="icon iconfont icon-Search" style="font-size: 20px;" />
                 </div>
-                <div class="top-operating ml-4">
+                <div class="top-operating ml-4" @click="showRight = true">
                     <div class="icon iconfont icon-menu-hamburger" style="font-size: 22px;" />
                 </div>
             </div>
         </div>
+        <van-popup v-model:show="showRight" closeable close-icon-position="top-left" :close-on-popstate="true"
+            position="right" :style="{ width: '100%', height: '100%' }">
+            <div class="bg-cover-content w-full h-full">
+                <div class="pt-14 text-white w-11/12 ml-auto mr-auto">
+
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 
 <script>
+import { Popup } from 'vant'
 export default {
+    components: { [Popup.name]: Popup },
     data() {
         return {
-            showTop: true
+            showTop: true,
+            showRight: true
         }
     },
     mounted() {

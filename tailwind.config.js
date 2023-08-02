@@ -23,7 +23,8 @@ module.exports = {
                 'tips-word': '#71717a',
                 'swipe-bull': '#3f3f46',
                 'card-border': '#1F2A38',
-                'bottom-content': '#27272A'
+                'bottom-content': '#27272A',
+                'cover-content': '#18181B'
             },
             backgroundImage: {
                 'market-product': "url('@/assets/market-product-bg.png')",
