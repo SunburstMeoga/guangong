@@ -12,7 +12,7 @@
                     <img :src="imageUrl" alt="">
                 </div>
             </div>
-            <div class="px-4 py-4 rounded-lg backdrop-blur bg-module-card" style="background-color: rgb(0 0 0 / 0.4);">
+            <div class="px-4 py-4 rounded-lg backdrop-blur bg-module-card" style="background-color: rgb(47 47 50 / 0.6);">
                 <div class="flex justify-center items-center mb-6">
                     <div class="flex justify-start items-center w-11/12">
                         <div class="pr-10">

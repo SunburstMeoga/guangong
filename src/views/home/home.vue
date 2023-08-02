@@ -16,7 +16,7 @@
                 <module-title titleWord="NFT市場" />
             </div>
             <div class="w-full px-4">
-                <div class="mb-4" v-for="(item, index) in marketList" :key="index">
+                <div class="mb-4" v-for="(item, index) in marketList" :key="index" @click="toDetails()">
                     <market-card :imageUrl="item.imageUrl" :name="item.name" />
                 </div>
             </div>
@@ -80,6 +80,11 @@ export default {
         }
     },
     methods: {
+        toDetails() {
+            this.$router.push({
+                path: '/market/12345567'
+            })
+        },
         prevProduct() {
             console.log(this.$refs)
             this.$refs.productSwipe.prev()

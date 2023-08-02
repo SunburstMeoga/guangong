@@ -20,7 +20,10 @@ module.exports = {
                 'card-title': '#8D8C94',
                 'card-content': '#FBFBFB',
                 'card-introduce': '#1F2937',
-                'tips-word': '#71717a'
+                'tips-word': '#71717a',
+                'swipe-bull': '#3f3f46',
+                'card-border': '#1F2A38',
+                'bottom-content': '#27272A'
             },
             backgroundImage: {
                 'market-product': "url('@/assets/market-product-bg.png')",

@@ -1,10 +1,10 @@
 @font-face {
     font-family: "iconfont";
     /* Project id 4089165 */
-    src: url('//at.alicdn.com/t/c/font_4089165_espl9mwbhoi.woff2?t=1690902898149') format('woff2'),
-        url('//at.alicdn.com/t/c/font_4089165_espl9mwbhoi.woff?t=1690902898149') format('woff'),
-        url('//at.alicdn.com/t/c/font_4089165_espl9mwbhoi.ttf?t=1690902898149') format('truetype'),
-        url('//at.alicdn.com/t/c/font_4089165_espl9mwbhoi.svg?t=1690902898149#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/c/font_4089165_gp8xbmvqzye.woff2?t=1690967670831') format('woff2'),
+        url('//at.alicdn.com/t/c/font_4089165_gp8xbmvqzye.woff?t=1690967670831') format('woff'),
+        url('//at.alicdn.com/t/c/font_4089165_gp8xbmvqzye.ttf?t=1690967670831') format('truetype'),
+        url('//at.alicdn.com/t/c/font_4089165_gp8xbmvqzye.svg?t=1690967670831#iconfont') format('svg');
 }
 
 .iconfont {
@@ -13,6 +13,14 @@
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-view:before {
+    content: "\e69e";
+}
+
+.icon-share:before {
+    content: "\e619";
 }
 
 .icon-heart:before {

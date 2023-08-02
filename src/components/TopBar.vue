@@ -1,5 +1,5 @@
 <template>
-    <div class="transition ease-in-out delay-150 duration-300" :class="showTop ? 'block h-24' : 'hidden h-0'">
+    <div class="transition ease-in-out delay-150 duration-300 h-24">
         <div
             class="flex justify-between items-center py-4 px-4 backdrop-blur bg-black/70 w-full fixed top-0 left-0 right-0 z-50">
             <div class="w-16 bg-theme-primary rounded-full">
@@ -29,12 +29,7 @@ export default {
     },
     methods: {
         handleScroll() {
-            let scrollY = document.documentElement.scrollTop
-            if (scrollY > 150) {
-                this.showTop = false
-            } else {
-                this.showTop = true
-            }
+
             console.log(scrollY)
         }
     }

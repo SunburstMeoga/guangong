@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
     {
@@ -9,11 +9,11 @@ const routes = [
     {
         path: '/market/:id',
         name: 'market',
-        component: () => import('@/views/home/market')
+        component: () => import('@/views/home/details')
     }
 ]
 
 export default createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes
 })
