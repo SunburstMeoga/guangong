@@ -17,8 +17,20 @@
         <van-popup v-model:show="showRight" closeable close-icon-position="top-left" :close-on-popstate="true"
             position="right" :style="{ width: '100%', height: '100%' }">
             <div class="bg-cover-content w-full h-full">
-                <div class="pt-14 text-white w-11/12 ml-auto mr-auto">
+                <div class="pt-10 text-white w-11/12 ml-auto mr-auto">
+                    <div class="border-module">
+                        <div class="mb-6">平台NFT</div>
+                        <div class="mb-6">二級市場</div>
+                        <div>推薦藏品</div>
 
+                    </div>
+                    <div>
+                        <div class="mb-6">FAQ</div>
+                        <div class="mb-6">Help</div>
+                        <div class="mb-6">關於我們</div>
+                        <!-- div -->
+
+                    </div>
                 </div>
             </div>
         </van-popup>
@@ -55,5 +67,9 @@ img {
 
 .top-operating {
     @apply rounded-full w-10 h-10 flex justify-center items-center bg-icon-undertone text-white;
+}
+
+.border-module {
+    @apply border-b border-card-introduce py-10 mb-10;
 }
 </style>
