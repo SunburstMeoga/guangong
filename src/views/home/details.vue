@@ -56,7 +56,7 @@
                             擁有者
                         </div>
                         <div class="flex justify-start items-center">
-                            <div class="rounded-xl overflow-hidden w-6 h-6 mr-2">
+                            <div class="rounded overflow-hidden w-6 h-6 mr-2">
                                 <img src="https://upload.ucollex.io/cdn-cgi/image/width=512/uploads/dash/ShyePRsApntO.jpg"
                                     alt="">
                             </div>
