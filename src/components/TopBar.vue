@@ -29,9 +29,9 @@
                         <div class="mb-6">Help</div>
                         <div class="mb-6">關於我們</div>
                         <div class="flex justify-start items-center mb-6">
-                            <div class="icon iconfont icon-whatsapp mr-4" style="font-size: 22px;"></div>
-                            <div class="icon iconfont icon-facebook-fill mr-4" style="font-size: 22px;"></div>
                             <div class="icon iconfont icon-twitter-fill mr-4" style="font-size: 22px;"></div>
+                            <div class="icon iconfont icon-facebook-fill mr-4" style="font-size: 22px;"></div>
+                            <div class="icon iconfont icon-whatsapp mr-4" style="font-size: 22px;"></div>
                             <div class="icon iconfont icon-tumblr2 mr-4" style="font-size: 22px;"></div>
                             <div class="icon iconfont icon-Instagram" style="font-size: 22px;"></div>
                         </div>

@@ -2,7 +2,7 @@
     <div>
         <div class="px-4">
             <div class="rounded-xl inline-block px-2 py-px bg-success-undertone text-sm text-success-word mb-6">
-                可合成
+                武聖出山
             </div>
             <div class="title text-4xl font-bold text-white leading-12 mb-6">
                 {{ name }}，是一位英雄人物。

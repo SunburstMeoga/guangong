@@ -65,14 +65,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="border-module w-11/12 text-card-content" @click="showIntroduce = !showIntroduce">
+                    <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
                         <div class="flex justify-between items-center">
-                            <div class="text-2xl font-semibold">簡介</div>
-                            <div class="icon iconfont icon-right  show-icon" :class="showIntroduce ? '-rotate-90' : ''">
+                            <div class="text-2xl font-semibold">階段</div>
+                            <div class="icon iconfont icon-right  show-icon" :class="showStage ? '-rotate-90' : ''">
                             </div>
                         </div>
-                        <div class="mt-8" v-show="showIntroduce">
-                            關公，字雲長，是中國歷史上一位備受推崇的英雄人物，他在鼎立三分大業中發揮了重要作用，展現了“忠”、“義”、“仁”、“勇”的道德楷模，成為中國傳統文化中令人景仰的偶像之一。全球範圍內，關帝廟的數量和規模遠遠超過孔子的文廟，展示了關公文化在華人社區中的深遠影響力。
+                        <div class="mt-8" v-show="showStage">
+                            武聖出山（每個道具+100U）
+                        </div>
+                    </div>
+                    <div class="border-module w-11/12 text-card-content" @click="showRequest = !showRequest">
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl font-semibold">合成要求</div>
+                            <div class="icon iconfont icon-right  show-icon" :class="showRequest ? '-rotate-90' : ''">
+                            </div>
+                        </div>
+                        <div class="mt-8" v-show="showRequest">
+                            美髯公+赤兔馬+青龍偃月刀
                         </div>
                     </div>
                     <div class="border-module w-11/12 text-card-content" @click="showDetails = !showDetails">
@@ -82,7 +92,43 @@
                             </div>
                         </div>
                         <div class="mt-8" v-show="showDetails">
-                            WGT（世界關公寶）專案是一個基於去中心化公鏈的關公文化交流通證。該專案旨在通過創新的技術手段和經濟模型，推廣和傳承關公文化，激勵全球範圍內的關公愛好者和信奉者的參與，並促進中華優秀傳統文化的傳播和發展。
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">階段</div>
+                                <div class="text-base text-card-content">武聖出山</div>
+
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">發行量</div>
+                                <div class="text-base text-card-content">100</div>
+
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">出征令牌</div>
+                                <div class="text-base text-card-content">關公令</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">令牌價（等值WGT）</div>
+                                <div class="text-base text-card-content">150U</div>
+
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">週期</div>
+                                <div class="text-base text-card-content">1周</div>
+
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">出征獎勵（等值WGT）</div>
+                                <div class="text-base text-card-content">159U</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">月化利率</div>
+                                <div class="text-base text-card-content">24%</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">損耗週期</div>
+                                <div class="text-base text-card-content">135次</div>
+
+                            </div>
                         </div>
                     </div>
                     <div class="border-module w-11/12 text-card-content" @click="showIssue = !showIssue">
@@ -121,7 +167,8 @@ export default {
     data() {
         return {
             currentSwipe: 0,
-            showIntroduce: true,
+            showStage: true,
+            showRequest: true,
             showDetails: true,
             showIssue: true
         }
