@@ -69,7 +69,7 @@ export default {
     data() {
         return {
             showTop: true,
-            showRight: true,
+            showRight: false,
             showPopover: false,
             showLanguage: false,
             actions: [

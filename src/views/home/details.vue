@@ -27,15 +27,15 @@
                     <div class="w-11/12 flex justify-between items-center text-card-content">
                         <div class="flex justify-center item-center w-4/12 border-r border-card-introduce py-1.5">
                             <div class="icon iconfont icon-heart mr-2" style="font-size: 20px;"></div>
-                            <div>5</div>
+                            <div class="mt-px">5</div>
                         </div>
                         <div class="flex justify-center item-center w-4/12 border-r border-card-introduce py-1.5">
                             <div class="icon iconfont icon-view mr-2" style="font-size: 20px;"></div>
-                            <div>1245</div>
+                            <div class="mt-px">1245</div>
                         </div>
                         <div class="flex justify-center item-center w-4/12 py-1.5">
                             <div class="icon iconfont icon-share mr-2" style="font-size: 20px;"></div>
-                            <div>分享</div>
+                            <div class="mt-px">分享</div>
                         </div>
 
                     </div>
@@ -68,20 +68,39 @@
                     <div class="border-module w-11/12 text-card-content" @click="showIntroduce = !showIntroduce">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl font-semibold">簡介</div>
-                            <div class="icon iconfont icon-right font-extrabold transition ease-in-out duration-300"
-                                :class="showIntroduce ? '-rotate-90' : ''"></div>
+                            <div class="icon iconfont icon-right  show-icon" :class="showIntroduce ? '-rotate-90' : ''">
+                            </div>
                         </div>
                         <div class="mt-8" v-show="showIntroduce">
-                            这里是NFT详情简介
+                            關公，字雲長，是中國歷史上一位備受推崇的英雄人物，他在鼎立三分大業中發揮了重要作用，展現了“忠”、“義”、“仁”、“勇”的道德楷模，成為中國傳統文化中令人景仰的偶像之一。全球範圍內，關帝廟的數量和規模遠遠超過孔子的文廟，展示了關公文化在華人社區中的深遠影響力。
                         </div>
                     </div>
-                    <div class="border-module w-11/12 text-card-content flex justify-between items-center">
-                        <div class="text-2xl font-semibold">詳細資料</div>
-                        <div class="icon iconfont icon-right font-extrabold"></div>
+                    <div class="border-module w-11/12 text-card-content" @click="showDetails = !showDetails">
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl font-semibold">詳細資料</div>
+                            <div class="icon iconfont icon-right  show-icon" :class="showDetails ? '-rotate-90' : ''">
+                            </div>
+                        </div>
+                        <div class="mt-8" v-show="showDetails">
+                            WGT（世界關公寶）專案是一個基於去中心化公鏈的關公文化交流通證。該專案旨在通過創新的技術手段和經濟模型，推廣和傳承關公文化，激勵全球範圍內的關公愛好者和信奉者的參與，並促進中華優秀傳統文化的傳播和發展。
+                        </div>
                     </div>
-                    <div class="border-module w-11/12 text-card-content flex justify-between items-center">
-                        <div class="text-2xl font-semibold">發行方</div>
-                        <div class="icon iconfont icon-right font-extrabold"></div>
+                    <div class="border-module w-11/12 text-card-content" @click="showIssue = !showIssue">
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl font-semibold">發行方</div>
+                            <div class="icon iconfont icon-right  show-icon" :class="showIssue ? '-rotate-90' : ''">
+                            </div>
+                        </div>
+                        <div class="mt-8 flex justify-start items-center h-14" v-show="showIssue">
+                            <div class="rounded-full overflow-hidden w-10 h-10">
+                                <img src="https://res.ucollex.io/cdn-cgi/image/width=100/images/20220725/5tKs6wbE7CxCMbpkn5DQ.jpg"
+                                    alt="">
+                            </div>
+                            <div class="ml-2 flex flex-col justify-between">
+                                <div class="text-white font-medium">由 世界關公寶WGT 发行</div>
+                                <div class="text-icon-gray">Oct 28, 2022 at 12:34am</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
@@ -102,7 +121,9 @@ export default {
     data() {
         return {
             currentSwipe: 0,
-            showIntroduce: false
+            showIntroduce: true,
+            showDetails: true,
+            showIssue: true
         }
     },
     mounted() {
@@ -126,6 +147,10 @@ img {
 
 .border-module {
     @apply w-11/12 border-b border-card-introduce py-10;
+}
+
+.show-icon {
+    @apply font-extrabold transition ease-in-out duration-200;
 }
 
 .buy-button {
