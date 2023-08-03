@@ -2,7 +2,7 @@
     <div class="transition ease-in-out delay-150 duration-300 h-24">
         <div
             class="flex justify-between items-center py-4 px-4 backdrop-blur bg-black/70 w-full fixed top-0 left-0 right-0 z-50">
-            <div class="w-16 bg-theme-primary rounded-full">
+            <div class="w-14 bg-theme-primary rounded-full">
                 <img src="../assets/logo.png" alt="">
             </div>
             <div class="flex justify-end items-center">
@@ -16,7 +16,7 @@
         </div>
         <van-popup v-model:show="showRight" closeable close-icon-position="top-left" :close-on-popstate="true"
             position="right" :style="{ width: '100%', height: '100%' }">
-            <div class="bg-cover-content w-full h-full">
+            <div class="bg-cover-content w-full h-full relative">
                 <div class="pt-10 text-white w-11/12 ml-auto mr-auto">
                     <div class="border-module">
                         <div class="mb-6">平台NFT</div>
@@ -28,8 +28,33 @@
                         <div class="mb-6">FAQ</div>
                         <div class="mb-6">Help</div>
                         <div class="mb-6">關於我們</div>
-                        <!-- div -->
+                        <div class="flex justify-start items-center mb-6">
+                            <div class="icon iconfont icon-whatsapp mr-4" style="font-size: 22px;"></div>
+                            <div class="icon iconfont icon-facebook-fill mr-4" style="font-size: 22px;"></div>
+                            <div class="icon iconfont icon-twitter-fill mr-4" style="font-size: 22px;"></div>
+                            <div class="icon iconfont icon-tumblr2 mr-4" style="font-size: 22px;"></div>
+                            <div class="icon iconfont icon-Instagram" style="font-size: 22px;"></div>
+                        </div>
+                        <van-popover v-model:show="showPopover" theme="dark" :actions="actions" placement="top-start"
+                            @open="showLanguage = !showLanguage" @close="showLanguage = !showLanguage">
+                            <template #reference>
+                                <!-- <van-button type="primary">深色风格</van-button> -->
+                                <div class="flex justify-center items-center py-2 px-2 rounded bg-language-content">
+                                    <div class="icon iconfont icon-language mr-2"></div>
+                                    <div class="mr-2 text-sm">繁體中文</div>
+                                    <div class="icon iconfont icon-top transition ease-in-out duration-300"
+                                        :class="showLanguage ? 'rotate-180' : ''"></div>
+                                </div>
+                            </template>
+                        </van-popover>
 
+                    </div>
+                </div>
+
+                <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
+                    <div
+                        class="buy-button text-primary-word font-medium text-lg py-4 rounded flex justify-center items-center">
+                        連接錢包
                     </div>
                 </div>
             </div>
@@ -44,7 +69,14 @@ export default {
     data() {
         return {
             showTop: true,
-            showRight: true
+            showRight: true,
+            showPopover: false,
+            showLanguage: false,
+            actions: [
+                { text: '简体中文' },
+                { text: '繁體中文' },
+                { text: 'English' },
+            ]
         }
     },
     mounted() {
@@ -63,6 +95,10 @@ export default {
 img {
     width: 100%;
     object-fit: contain;
+}
+
+.buy-button {
+    background: linear-gradient(90deg, rgba(250, 52, 168, 1) 9%, rgba(255, 150, 62, 1) 100%);
 }
 
 .top-operating {

@@ -43,7 +43,7 @@
                         <div class="text-icon-gray text-xs mb-1">
                             發行方
                         </div>
-                        <div class="flex justify-start items-center mb-4">
+                        <div class="flex justify-start items-center mb-8">
                             <div class="rounded-full overflow-hidden w-6 h-6 mr-2">
                                 <img src="https://res.ucollex.io/cdn-cgi/image/width=100/images/20220725/5tKs6wbE7CxCMbpkn5DQ.jpg"
                                     alt="">
@@ -65,20 +65,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="border-module w-11/12 text-card-content flex justify-between items-center">
+                    <div class="border-module w-11/12 text-card-content flex justify-between items-center"
+                        @click="showIntroduce = !showIntroduce">
                         <div class="text-2xl font-semibold">簡介</div>
-                        <div class="icon iconfont icon-right"></div>
+                        <div class="icon iconfont icon-right font-extrabold transition ease-in-out duration-300"
+                            :class="showIntroduce ? '-rotate-90' : ''"></div>
                     </div>
                     <div class="border-module w-11/12 text-card-content flex justify-between items-center">
                         <div class="text-2xl font-semibold">詳細資料</div>
-                        <div class="icon iconfont icon-right"></div>
+                        <div class="icon iconfont icon-right font-extrabold"></div>
                     </div>
                     <div class="border-module w-11/12 text-card-content flex justify-between items-center">
                         <div class="text-2xl font-semibold">發行方</div>
-                        <div class="icon iconfont icon-right"></div>
+                        <div class="icon iconfont icon-right font-extrabold"></div>
                     </div>
                 </div>
-                <div class="fixed left-0 bottom-0 w-full py-6 px-2 bg-bottom-content">
+                <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
                     <div
                         class="buy-button text-primary-word font-medium text-lg py-4 rounded flex justify-center items-center">
                         購買 US$ 19.98
@@ -95,7 +97,8 @@ export default {
     components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
         return {
-            currentSwipe: 0
+            currentSwipe: 0,
+            showIntroduce: false
         }
     },
     mounted() {

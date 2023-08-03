@@ -24,7 +24,8 @@ module.exports = {
                 'swipe-bull': '#3f3f46',
                 'card-border': '#1F2A38',
                 'bottom-content': '#27272A',
-                'cover-content': '#18181B'
+                'cover-content': '#18181B',
+                'language-content': '#414145'
             },
             backgroundImage: {
                 'market-product': "url('@/assets/market-product-bg.png')",
