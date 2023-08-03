@@ -65,11 +65,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="border-module w-11/12 text-card-content flex justify-between items-center"
-                        @click="showIntroduce = !showIntroduce">
-                        <div class="text-2xl font-semibold">簡介</div>
-                        <div class="icon iconfont icon-right font-extrabold transition ease-in-out duration-300"
-                            :class="showIntroduce ? '-rotate-90' : ''"></div>
+                    <div class="border-module w-11/12 text-card-content" @click="showIntroduce = !showIntroduce">
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl font-semibold">簡介</div>
+                            <div class="icon iconfont icon-right font-extrabold transition ease-in-out duration-300"
+                                :class="showIntroduce ? '-rotate-90' : ''"></div>
+                        </div>
+                        <div class="mt-8" v-show="showIntroduce">
+                            这里是NFT详情简介
+                        </div>
                     </div>
                     <div class="border-module w-11/12 text-card-content flex justify-between items-center">
                         <div class="text-2xl font-semibold">詳細資料</div>
