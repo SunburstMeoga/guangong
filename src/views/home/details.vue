@@ -22,7 +22,7 @@
                 </div>
                 <div class="flex flex-col justify-start items-center pb-40">
                     <div class="w-11/12 text-card-content font-medium text-3xl mb-10">
-                        關羽，是一位英雄人物。
+                        關羽
                     </div>
                     <div class="w-11/12 flex justify-between items-center text-card-content">
                         <div class="flex justify-center item-center w-4/12 border-r border-card-introduce py-1.5">
@@ -67,7 +67,7 @@
                     </div>
                     <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
                         <div class="flex justify-between items-center">
-                            <div class="text-2xl font-semibold">階段</div>
+                            <div class="text-2xl ">階段</div>
                             <div class="icon iconfont icon-right  show-icon" :class="showStage ? '-rotate-90' : ''">
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="border-module w-11/12 text-card-content" @click="showRequest = !showRequest">
                         <div class="flex justify-between items-center">
-                            <div class="text-2xl font-semibold">合成要求</div>
+                            <div class="text-2xl">合成要求</div>
                             <div class="icon iconfont icon-right  show-icon" :class="showRequest ? '-rotate-90' : ''">
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                     </div>
                     <div class="border-module w-11/12 text-card-content" @click="showDetails = !showDetails">
                         <div class="flex justify-between items-center">
-                            <div class="text-2xl font-semibold">詳細資料</div>
+                            <div class="text-2xl ">詳細資料</div>
                             <div class="icon iconfont icon-right  show-icon" :class="showDetails ? '-rotate-90' : ''">
                             </div>
                         </div>
@@ -133,7 +133,7 @@
                     </div>
                     <div class="border-module w-11/12 text-card-content" @click="showIssue = !showIssue">
                         <div class="flex justify-between items-center">
-                            <div class="text-2xl font-semibold">發行方</div>
+                            <div class="text-2xl ">發行方</div>
                             <div class="icon iconfont icon-right  show-icon" :class="showIssue ? '-rotate-90' : ''">
                             </div>
                         </div>
@@ -193,7 +193,7 @@ img {
 }
 
 .border-module {
-    @apply w-11/12 border-b border-card-introduce py-10;
+    @apply w-11/12 border-b border-card-introduce py-10 font-light;
 }
 
 .show-icon {

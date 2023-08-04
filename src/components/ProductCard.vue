@@ -5,7 +5,7 @@
                 武聖出山
             </div>
             <div class="title text-4xl font-bold text-white leading-12 mb-6">
-                {{ name }}，是一位英雄人物。
+                {{ name }}
             </div>
             <div class="flex justify-center items-center mb-10">
                 <div class="w-11/12 h-64">
