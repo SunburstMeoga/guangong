@@ -35,13 +35,14 @@
                             <div class="icon iconfont icon-tumblr2 mr-4" style="font-size: 22px;"></div>
                             <div class="icon iconfont icon-Instagram" style="font-size: 22px;"></div>
                         </div>
-                        <van-popover v-model:show="showPopover" theme="dark" :actions="actions" placement="top-start"
-                            @open="showLanguage = !showLanguage" @close="showLanguage = !showLanguage">
+                        <van-popover @select="setLanguage" v-model:show="showPopover" theme="dark" :actions="actions"
+                            placement="top-start" @open="showLanguage = !showLanguage"
+                            @close="showLanguage = !showLanguage">
                             <template #reference>
                                 <!-- <van-button type="primary">深色风格</van-button> -->
                                 <div class="flex justify-center items-center py-2 px-2 rounded bg-language-content">
                                     <div class="icon iconfont icon-language mr-2"></div>
-                                    <div class="mr-2 text-sm">繁體中文</div>
+                                    <div class="mr-2 text-sm">{{ currentLanguage }}</div>
                                     <div class="icon iconfont icon-top transition ease-in-out duration-300"
                                         :class="showLanguage ? 'rotate-180' : ''"></div>
                                 </div>
@@ -73,9 +74,9 @@ export default {
             showPopover: false,
             showLanguage: false,
             actions: [
-                { text: '简体中文' },
-                { text: '繁體中文' },
-                { text: 'English' },
+                { text: '简体中文', value: 'zh-cn' },
+                { text: '繁體中文', value: 'zh-hk' },
+                { text: 'English', value: 'en-us' },
             ]
         }
     },
@@ -83,8 +84,13 @@ export default {
         window.addEventListener('scroll', this.handleScroll)
     },
     methods: {
+        setLanguage(actions) {
+            // console.log(actions, this.$i18n.locale)
+            this.$i18n.locale = actions.value
+            this.$store.commit('setLanguage', actions.value)
+            console.log(this.$store.state)
+        },
         handleScroll() {
-
             console.log(scrollY)
         }
     }

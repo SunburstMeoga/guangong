@@ -28,7 +28,7 @@
                 <div class="flex justify-center items-center">
                     <div
                         class="buy-button w-11/12 rounded py-3 flex justify-center items-center text-primary-word font-medium text-lg">
-                        购买
+                        {{ $t('product.buy') }}
                     </div>
                 </div>
             </div>

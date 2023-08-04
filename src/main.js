@@ -5,4 +5,6 @@ import '@/assets/scss/iconfont.css'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 import router from './router'
-createApp(App).use(router).use(Vant).mount('#app')
+import i18n from './language'
+import store from './store'
+createApp(App).use(router).use(Vant).use(i18n).use(store).mount('#app')
