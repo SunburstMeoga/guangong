@@ -25,7 +25,8 @@ module.exports = {
                 'card-border': '#1F2A38',
                 'bottom-content': '#27272A',
                 'cover-content': '#18181B',
-                'language-content': '#414145'
+                'language-content': '#414145',
+                'more-content': '#3C3C3D'
             },
             backgroundImage: {
                 'market-product': "url('@/assets/market-product-bg.png')",

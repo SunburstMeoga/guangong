@@ -1,7 +1,7 @@
 <template>
-    <div class="transition ease-in-out delay-150 duration-300 h-24">
-        <div
-            class="flex justify-between items-center py-4 px-4 backdrop-blur bg-black/70 w-full fixed top-0 left-0 right-0 z-50">
+    <div class="transition ease-in-out duration-300 fixed top-0 left-0 right-0 z-50"
+        :class="!showTop ? '-translate-y-20' : ''">
+        <div class="flex justify-between items-center h-20 px-4 backdrop-blur bg-black/70 w-full">
             <div class="w-14 bg-theme-primary rounded-full">
                 <img src="../assets/logo.png" alt="">
             </div>
@@ -77,7 +77,8 @@ export default {
                 { text: '简体中文', value: 'zh-cn' },
                 { text: '繁體中文', value: 'zh-hk' },
                 { text: 'English', value: 'en-us' },
-            ]
+            ],
+            currentScrollY: 0
         }
     },
     mounted() {
@@ -85,13 +86,17 @@ export default {
     },
     methods: {
         setLanguage(actions) {
-            // console.log(actions, this.$i18n.locale)
             this.$i18n.locale = actions.value
             this.$store.commit('setLanguage', actions.value)
+            localStorage.setItem('language', actions.value)
             console.log(this.$store.state)
         },
         handleScroll() {
-            console.log(scrollY)
+            if (scrollY >= 100) {
+                this.showTop = false
+            } else {
+                this.showTop = true
+            }
         }
     }
 }

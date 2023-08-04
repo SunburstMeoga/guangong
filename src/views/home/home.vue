@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>
+        <div class="pt-16">
             <div class="market w-full relative mb-20">
                 <van-swipe class="my-swipe mt-10" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index">
@@ -13,6 +13,16 @@
                 </div>
             </div>
             <div class="w-full px-4 mb-10">
+                <module-title titleWord="精選商鋪" />
+            </div>
+            <div>
+                <van-swipe class="my-swipe mt-10" :show-indicators="false" ref="productSwipe">
+                    <van-swipe-item v-for="(item, index) in productList" :key="index">
+
+                    </van-swipe-item>
+                </van-swipe>
+            </div>
+            <div class="w-full px-4 mb-10">
                 <module-title titleWord="NFT市場" />
             </div>
             <div class="w-full px-4">
@@ -20,6 +30,7 @@
                     <market-card :imageUrl="item.imageUrl" :name="item.name" />
                 </div>
             </div>
+
         </div>
     </div>
 </template>

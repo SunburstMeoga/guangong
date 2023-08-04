@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <div class="pt-2">
+            <div class="pt-24">
                 <div
                     class="ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-2">
                     <div class="w-80 h-80">
@@ -20,7 +20,7 @@
                         :class="[index === 0 ? 'ml-0' : '', currentSwipe === index ? 'bg-theme-primary' : 'bg-swipe-bull']"
                         :key="index" class="w-2 h-2 rounded-full ml-2" />
                 </div>
-                <div class="flex flex-col justify-start items-center pb-40">
+                <div class="flex flex-col justify-start items-center mb-10">
                     <div class="w-11/12 text-card-content font-medium text-3xl mb-10">
                         關羽
                     </div>
@@ -149,9 +149,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="flex justify-center items-center pb-32">
+                    <div class="w-11/12 bg-more-content text-icon-gray button-word">
+                        查看更多該階段下更多NFT
+                    </div>
+                </div>
                 <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
-                    <div
-                        class="buy-button text-primary-word font-medium text-lg py-4 rounded flex justify-center items-center">
+                    <div class="buy-button text-primary-word text-lg button-word">
                         購買 US$ 19.98
                     </div>
                 </div>
@@ -202,5 +206,9 @@ img {
 
 .buy-button {
     background: linear-gradient(90deg, rgba(250, 52, 168, 1) 9%, rgba(255, 150, 62, 1) 100%);
+}
+
+.button-word {
+    @apply font-medium py-4 rounded flex justify-center items-center
 }
 </style>
