@@ -16,9 +16,9 @@
                 <module-title titleWord="精選商鋪" />
             </div>
             <div>
-                <van-swipe class="my-swipe mt-10" :show-indicators="false" ref="productSwipe">
+                <van-swipe class="my-swipe mt-10" :width="300" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index">
-
+                        <shops-card :imageUrl="item.imageUrl" />
                     </van-swipe-item>
                 </van-swipe>
             </div>
@@ -40,8 +40,9 @@ import { Swipe, SwipeItem } from 'vant';
 import ProductCard from '@/components/ProductCard'
 import ModuleTitle from '@/components/ModuleTitle.vue'
 import MarketCard from '@/components/MarketCard'
+import ShopsCard from '@/components/ShopsCard.vue'
 export default {
-    components: { ProductCard, ModuleTitle, MarketCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
+    components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
         return {
             productList: [
