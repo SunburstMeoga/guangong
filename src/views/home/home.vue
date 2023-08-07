@@ -43,44 +43,44 @@ export default {
         return {
             shopsList: [
                 {
-                    imageUrl: 'https://gd-hbimg.huaban.com/d25106083317f2965bcf0d2a09ad7fa6ec5f5975c81a4d-0qEojt_fw240g',
+                    imageUrl: require('../../assets/shops1.gif'),
                     name: 'monstercat貓廠'
                 },
                 {
-                    imageUrl: 'https://gd-hbimg.huaban.com/d1e7d2a73f9483c9cd5aa05b7efb973d95155bcb7d889-0Fy4wB_fw240webp',
+                    imageUrl: 'https://img1.baidu.com/it/u=772282021,1853132764&fm=253&fmt=auto&app=138&f=JPEG?w=554&h=375',
                     name: 'monstercat貓廠'
                 },
                 {
-                    imageUrl: 'https://gd-hbimg.huaban.com/873d7f5a793ce87a54159bb7fc7ddeb8c021d67dfc47-1zbnWH_fw240webp',
+                    imageUrl: 'https://img1.baidu.com/it/u=1949172529,1424394842&fm=253&fmt=auto&app=138&f=PNG?w=641&h=384',
                     name: 'monstercat貓廠'
                 },
 
                 {
-                    imageUrl: 'https://gd-hbimg.huaban.com/0517803d88a5abd8e493de8df94804e0a6243c3dc2a0a-VqKjE0_fw240webp',
+                    imageUrl: 'https://img2.baidu.com/it/u=1141776985,3616095252&fm=253&fmt=auto&app=138&f=JPEG?w=627&h=358',
                     name: 'monstercat貓廠'
                 },
                 {
-                    imageUrl: 'https://gd-hbimg.huaban.com/fe904adf4979fbc8da0d929aa6d2d02cab68183174de91-G6aKwG_fw240g',
+                    imageUrl: 'https://img2.baidu.com/it/u=893528947,4138052345&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
                     name: 'monstercat貓廠'
                 },
                 {
-                    imageUrl: 'https://gd-hbimg.huaban.com/c050a1d8e37632ba1c282f4b9b8a6911ceccbaa41986fc-Dj1zWL_fw240g',
+                    imageUrl: 'https://img0.baidu.com/it/u=1609920616,2349602344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
                     name: 'monstercat貓廠'
                 },
                 {
-                    imageUrl: 'https://gd-hbimg.huaban.com/81cb657ea3ac34f8537b301d7d89ca469d698552161e3-7RgIuG_fw240webp',
+                    imageUrl: 'https://img1.baidu.com/it/u=1079021637,1070525350&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500',
                     name: 'monstercat貓廠'
                 },
                 {
-                    imageUrl: 'https://gd-hbimg.huaban.com/0efc57d91532a82a8741115b393989617a36291743ef7-UR1xPR_fw240webp',
+                    imageUrl: 'https://img2.baidu.com/it/u=2251013280,3339003956&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
                     name: 'monstercat貓廠'
                 },
                 {
-                    imageUrl: 'https://gd-hbimg.huaban.com/2a0119bfd2a9196820397435983781dc96bc68a728d33-Hqj9KX_fw240webp',
+                    imageUrl: 'https://img1.baidu.com/it/u=3550768872,398163585&fm=253&fmt=auto&app=138&f=JPEG?w=666&h=500',
                     name: 'monstercat貓廠'
                 },
                 {
-                    imageUrl: 'https://gd-hbimg.huaban.com/bc9564388f2061a5b9a572472166fa7a9206f7321b9b1-GYTTdO_fw240webp',
+                    imageUrl: 'https://img1.baidu.com/it/u=263307488,3874355510&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
                     name: 'monstercat貓廠'
                 }
             ],

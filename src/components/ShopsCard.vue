@@ -63,7 +63,7 @@ img {
 
 .swiper {
     width: 320px;
-    height: 400px;
+    height: 420px;
     border: none;
 }
 
