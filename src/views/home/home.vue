@@ -3,7 +3,7 @@
         <div class="pt-16">
             <div class="market w-full relative mb-20">
                 <van-swipe class="my-swipe mt-10" :show-indicators="false" ref="productSwipe">
-                    <van-swipe-item v-for="(item, index) in productList" :key="index">
+                    <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails">
                         <product-card :imageUrl="item.imageUrl" :name="item.name" />
                     </van-swipe-item>
                 </van-swipe>
@@ -22,7 +22,7 @@
                 <module-title titleWord="NFT市場" />
             </div>
             <div class="w-full px-4">
-                <div class="mb-4" v-for="(item, index) in marketList" :key="index" @click="toDetails()">
+                <div class="mb-4" v-for="(item, index) in marketList" :key="index" @click="toMarketDetails()">
                     <market-card :imageUrl="item.imageUrl" :name="item.name" />
                 </div>
             </div>
@@ -131,9 +131,14 @@ export default {
         }
     },
     methods: {
-        toDetails() {
+        toMarketDetails() {
             this.$router.push({
                 path: '/market/12345567'
+            })
+        },
+        toGoodDetails() {
+            this.$router.push({
+                path: '/good/12345567'
             })
         },
         prevProduct() {
