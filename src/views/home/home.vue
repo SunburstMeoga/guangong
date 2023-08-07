@@ -15,7 +15,7 @@
             <div class="w-full px-4 mb-10">
                 <module-title titleWord="精選商鋪" />
             </div>
-            <div class="mb-10">
+            <div class="mb-10 w-full overflow-hidden">
                 <shops-card :shopsList="shopsList" />
             </div>
             <div class="w-full px-4 mb-10">

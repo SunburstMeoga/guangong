@@ -6,7 +6,7 @@
                     <div>
                         <img class="w-full h-full absolute left-0 top-0" :src="item.imageUrl" alt="">
                     </div>
-                    <div class="absolute left-4 bottom-4 w-full">
+                    <div class="absolute left-4 bottom-4">
                         <div class="w-8 h-8 rounded-full overflow-hidden bg-theme-primary">
                             <img src="../assets/logo.png" alt="">
                         </div>
@@ -62,7 +62,7 @@ img {
 }
 
 .swiper {
-    width: 300px;
+    width: 320px;
     height: 400px;
     border: none;
 }
