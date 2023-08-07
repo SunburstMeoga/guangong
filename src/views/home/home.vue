@@ -15,12 +15,8 @@
             <div class="w-full px-4 mb-10">
                 <module-title titleWord="精選商鋪" />
             </div>
-            <div>
-                <van-swipe class="my-swipe mt-10" :width="300" :show-indicators="false" ref="productSwipe">
-                    <van-swipe-item v-for="(item, index) in productList" :key="index">
-                        <shops-card :imageUrl="item.imageUrl" />
-                    </van-swipe-item>
-                </van-swipe>
+            <div class="mb-10">
+                <shops-card :shopsList="shopsList" />
             </div>
             <div class="w-full px-4 mb-10">
                 <module-title titleWord="NFT市場" />
@@ -45,6 +41,49 @@ export default {
     components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
         return {
+            shopsList: [
+                {
+                    imageUrl: 'https://gd-hbimg.huaban.com/d25106083317f2965bcf0d2a09ad7fa6ec5f5975c81a4d-0qEojt_fw240g',
+                    name: 'monstercat貓廠'
+                },
+                {
+                    imageUrl: 'https://gd-hbimg.huaban.com/d1e7d2a73f9483c9cd5aa05b7efb973d95155bcb7d889-0Fy4wB_fw240webp',
+                    name: 'monstercat貓廠'
+                },
+                {
+                    imageUrl: 'https://gd-hbimg.huaban.com/873d7f5a793ce87a54159bb7fc7ddeb8c021d67dfc47-1zbnWH_fw240webp',
+                    name: 'monstercat貓廠'
+                },
+
+                {
+                    imageUrl: 'https://gd-hbimg.huaban.com/0517803d88a5abd8e493de8df94804e0a6243c3dc2a0a-VqKjE0_fw240webp',
+                    name: 'monstercat貓廠'
+                },
+                {
+                    imageUrl: 'https://gd-hbimg.huaban.com/fe904adf4979fbc8da0d929aa6d2d02cab68183174de91-G6aKwG_fw240g',
+                    name: 'monstercat貓廠'
+                },
+                {
+                    imageUrl: 'https://gd-hbimg.huaban.com/c050a1d8e37632ba1c282f4b9b8a6911ceccbaa41986fc-Dj1zWL_fw240g',
+                    name: 'monstercat貓廠'
+                },
+                {
+                    imageUrl: 'https://gd-hbimg.huaban.com/81cb657ea3ac34f8537b301d7d89ca469d698552161e3-7RgIuG_fw240webp',
+                    name: 'monstercat貓廠'
+                },
+                {
+                    imageUrl: 'https://gd-hbimg.huaban.com/0efc57d91532a82a8741115b393989617a36291743ef7-UR1xPR_fw240webp',
+                    name: 'monstercat貓廠'
+                },
+                {
+                    imageUrl: 'https://gd-hbimg.huaban.com/2a0119bfd2a9196820397435983781dc96bc68a728d33-Hqj9KX_fw240webp',
+                    name: 'monstercat貓廠'
+                },
+                {
+                    imageUrl: 'https://gd-hbimg.huaban.com/bc9564388f2061a5b9a572472166fa7a9206f7321b9b1-GYTTdO_fw240webp',
+                    name: 'monstercat貓廠'
+                }
+            ],
             productList: [
                 {
                     imageUrl: require('../../assets/guangong1.png'),
