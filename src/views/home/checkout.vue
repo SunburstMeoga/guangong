@@ -13,12 +13,12 @@
                 </div>
             </div>
             <div class="flex justify-start items-start">
-                <div class="w-20 h-20">
+                <div class="w-32 flex justify-center items-center bg-black">
                     <img src="https://gd-hbimg.huaban.com/846fca69e5c8defee000b95c3e24327d0742acd7f57f-ThxGq0_fw240webp"
                         alt="">
                 </div>
                 <div class="ml-6 text-card-content">
-                    <div class="title text-xl font-bold leading-12 mb-6">
+                    <div class="title text-2xl font-bold leading-12 mb-6">
                         桃園結義
                     </div>
                     <div class="rounded-xl inline-block px-2 py-px bg-success-undertone text-sm text-success-word mb-6">
