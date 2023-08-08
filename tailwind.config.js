@@ -27,7 +27,8 @@ module.exports = {
                 'cover-content': '#18181B',
                 'language-content': '#414145',
                 'more-content': '#3C3C3D',
-                'shops-content': '#E5E7EB'
+                'shops-content': '#E5E7EB',
+                'more-word': '#CBCFD5'
             },
             backgroundImage: {
                 'market-product': "url('@/assets/market-product-bg.png')",

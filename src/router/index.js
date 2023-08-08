@@ -15,6 +15,11 @@ const routes = [
         path: '/good/:id',
         name: 'good',
         component: () => import('@/views/home/details')
+    },
+    {
+        path: '/checkout/:id',
+        name: 'checkout',
+        component: () => import('@/views/home/checkout')
     }
 ]
 

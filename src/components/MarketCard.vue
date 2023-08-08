@@ -9,7 +9,7 @@
             <div class="text-card-content text-sm mb-2"> Jack Zhang </div>
             <div class="text-theme-primary text-xl font-bold mb-6">{{ name }}武將卡</div>
             <div class="text-tips-word text-xs">當前價格</div>
-            <div class="text-card-content text-xl mb-6"> US$ 360.00</div>
+            <div class="text-card-content text-xl mb-6 font-semibold"> US$ 360.00</div>
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center">
                     <div class="w-6 h-6 rounded-full overflow-hidden mr-1.5">

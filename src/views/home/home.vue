@@ -13,13 +13,13 @@
                 </div>
             </div>
             <div class="w-full px-4 mb-10">
-                <module-title titleWord="精選商鋪" />
+                <module-title titleWord="热门商鋪" />
             </div>
             <div class="mb-10 w-full overflow-hidden">
                 <shops-card :shopsList="shopsList" />
             </div>
             <div class="w-full px-4 mb-10">
-                <module-title titleWord="NFT市場" />
+                <module-title titleWord="NFT市場" hasMore />
             </div>
             <div class="w-full px-4">
                 <div class="mb-4" v-for="(item, index) in marketList" :key="index" @click="toMarketDetails()">
@@ -43,13 +43,14 @@ export default {
         return {
             shopsList: [
                 {
-                    imageUrl: require('../../assets/shops1.gif'),
-                    name: 'monstercat貓廠'
-                },
-                {
                     imageUrl: 'https://img1.baidu.com/it/u=772282021,1853132764&fm=253&fmt=auto&app=138&f=JPEG?w=554&h=375',
                     name: 'monstercat貓廠'
                 },
+                {
+                    imageUrl: require('../../assets/shops1.gif'),
+                    name: 'monstercat貓廠'
+                },
+
                 {
                     imageUrl: 'https://img1.baidu.com/it/u=1949172529,1424394842&fm=253&fmt=auto&app=138&f=PNG?w=641&h=384',
                     name: 'monstercat貓廠'

@@ -7,8 +7,17 @@
             <div class="title text-4xl font-bold text-white leading-12 mb-6">
                 {{ name }}
             </div>
-            <div class="flex justify-center items-center mb-10">
-                <div class="w-11/12 h-64">
+            <div class="flex justify-start items-center mb-10">
+                <div class="w-8 h-8 rounded-full overflow-hidden mr-1.5">
+                    <img src="@/assets/owner.png" alt="">
+                </div>
+                <div class="text-sm text-card-content">
+                    <div class="text-icon-gray text-xs">拥有者</div>
+                    <div class="font-bold">Jack Zhang</div>
+                </div>
+            </div>
+            <div class="flex justify-center items-center my-20">
+                <div class="w-11/12 h-72">
                     <img :src="imageUrl" alt="">
                 </div>
             </div>
@@ -26,9 +35,9 @@
                     </div>
                 </div>
                 <div class="flex justify-center items-center">
-                    <div
-                        class="buy-button w-11/12 rounded py-3 flex justify-center items-center text-primary-word font-medium text-lg">
-                        {{ $t('product.buy') }}
+                    <div class="buy-button w-11/12 rounded py-3 flex justify-center items-center text-primary-word text-lg">
+                        <!-- {{ $t('product.buy') }} -->
+                        查看详情
                     </div>
                 </div>
             </div>
