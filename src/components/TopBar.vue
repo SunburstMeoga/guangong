@@ -2,7 +2,7 @@
     <div class="transition ease-in-out duration-300 fixed top-0 left-0 right-0 z-50"
         :class="!showTop ? '-translate-y-20' : ''">
         <div class="flex justify-between items-center h-20 px-4 backdrop-blur bg-black/70 w-full">
-            <div class="w-14 bg-theme-primary rounded-full">
+            <div class="w-14 bg-theme-primary rounded-full" @click="$router.push({ path: '/' })">
                 <img src="../assets/logo.png" alt="">
             </div>
             <div class="flex justify-end items-center">

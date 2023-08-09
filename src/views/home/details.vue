@@ -155,7 +155,7 @@
                     </div>
                 </div>
                 <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
-                    <div class="buy-button text-primary-word text-lg button-word">
+                    <div class="buy-button text-primary-word text-lg button-word" @click="toPay">
                         購買 US$ 19.98
                     </div>
                 </div>
@@ -184,7 +184,12 @@ export default {
         swipeChange(index) {
             console.log('change', index)
             this.currentSwipe = index
-        }
+        },
+        toPay() {
+            this.$router.push({
+                path: '/checkout/12345567'
+            })
+        },
     }
 }
 </script>

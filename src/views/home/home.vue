@@ -1,6 +1,35 @@
 <template>
     <div>
-        <div class="pt-16">
+        <div class="pt-16" v-if="showSkeleton">
+            <div class="mt-10 px-4">
+                <div class="animate-pulse flex space-x-4 mb-20">
+                    <div class="rounded-full bg-icon-undertone h-10 w-10"></div>
+                    <div class="flex-1 space-y-6 py-1">
+                        <div class="h-10 bg-icon-undertone rounded"></div>
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="h-10 bg-icon-undertone rounded col-span-2"></div>
+                                <div class="h-10 bg-icon-undertone rounded col-span-1"></div>
+                            </div>
+                            <div class="h-10 bg-icon-undertone rounded"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="animate-pulse flex space-x-4">
+                    <div class="flex-1 space-y-6 py-1">
+                        <div class="h-10 bg-icon-undertone rounded"></div>
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="h-10 bg-icon-undertone rounded col-span-2"></div>
+                                <div class="h-10 bg-icon-undertone rounded col-span-1"></div>
+                            </div>
+                            <div class="h-10 bg-icon-undertone rounded"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pt-16" v-else>
             <div class="market w-full relative mb-20">
                 <van-swipe class="my-swipe mt-10" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails">
@@ -41,6 +70,7 @@ export default {
     components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
         return {
+            showSkeleton: true,
             shopsList: [
                 {
                     imageUrl: 'https://img1.baidu.com/it/u=772282021,1853132764&fm=253&fmt=auto&app=138&f=JPEG?w=554&h=375',
@@ -130,6 +160,11 @@ export default {
                 },
             ]
         }
+    },
+    mounted() {
+        setTimeout(() => {
+            this.showSkeleton = false
+        }, 2000)
     },
     methods: {
         toMarketDetails() {
