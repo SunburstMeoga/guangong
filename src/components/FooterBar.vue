@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full flex justify-center items-center fixed bottom-0 left-0 right-0 -z-50">
+    <div class="w-full flex justify-center items-center">
         <div class="w-11/12 py-6">
             <div class="flex justify-start items-center text-white mb-6">
                 <div class="mr-4">T&C</div>

@@ -21,8 +21,8 @@
                     <div class="border-module">
                         <div class="mb-6">平台NFT</div>
                         <div class="mb-6">二級市場</div>
-                        <div>推薦藏品</div>
-
+                        <div class="mb-6">推薦藏品</div>
+                        <div class="" @click="viewAssets()">我的资产</div>
                     </div>
                     <div>
                         <div class="mb-6">FAQ</div>
@@ -42,7 +42,7 @@
                                 <!-- <van-button type="primary">深色风格</van-button> -->
                                 <div class="flex justify-center items-center py-2 px-2 rounded bg-language-content">
                                     <div class="icon iconfont icon-language mr-2"></div>
-                                    <div class="mr-2 text-sm">{{ currentLanguage }}</div>
+                                    <div class="mr-2 text-sm">繁體中文</div>
                                     <div class="icon iconfont icon-top transition ease-in-out duration-300"
                                         :class="showLanguage ? 'rotate-180' : ''"></div>
                                 </div>
@@ -85,6 +85,12 @@ export default {
         window.addEventListener('scroll', this.handleScroll)
     },
     methods: {
+        viewAssets() {
+            this.$router.push({
+                path: '/personal'
+            })
+            this.showRight = false
+        },
         setLanguage(actions) {
             this.$i18n.locale = actions.value
             this.$store.commit('setLanguage', actions.value)

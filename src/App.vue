@@ -1,7 +1,7 @@
 <template>
   <div>
     <top-bar v-if="this.$route.meta.showBar" />
-    <router-view />
+    <router-view class="min-h-screen" />
     <footer-bar v-if="this.$route.meta.showBar" />
   </div>
 </template>
