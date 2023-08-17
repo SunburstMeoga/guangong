@@ -178,9 +178,7 @@ export default {
         }
     },
     mounted() {
-        // console.log(this.$route.params)
-        console.log('proxy', this.$loading.show())
-        // $proxy.$loading.visible = true
+        console.log(this.$route.params)
     },
     methods: {
         swipeChange(index) {

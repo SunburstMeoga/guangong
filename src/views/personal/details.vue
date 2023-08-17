@@ -151,9 +151,12 @@
                         查看更多該階段下更多NFT
                     </div>
                 </div> -->
-                <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
-                    <div class="buy-button text-primary-word text-lg button-word" @click="showSynthesis = true">
+                <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
+                    <div class="buy-button w-8/12 text-primary-word text-lg button-word" @click="showSynthesis = true">
                         合成为汉寿亭侯
+                    </div>
+                    <div class="bg-more-content campaign flex-1 ml-2 text-primary-word text-lg button-word">
+                        出征
                     </div>
                 </div>
             </div>
@@ -210,15 +213,7 @@ export default {
         console.log(this.$route.params)
     },
     methods: {
-        swipeChange(index) {
-            console.log('change', index)
-            this.currentSwipe = index
-        },
-        toPay() {
-            this.$router.push({
-                path: '/checkout/12345567'
-            })
-        },
+
     }
 }
 </script>
@@ -245,5 +240,10 @@ img {
 
 .button-word {
     @apply font-medium py-4 rounded flex justify-center items-center
+}
+
+.campaign {
+    background: rgb(89, 32, 116);
+    background: linear-gradient(90deg, rgba(89, 32, 116, 1) 5%, rgba(115, 29, 120, 1) 37%, rgba(185, 20, 131, 1) 76%, rgba(226, 15, 138, 1) 100%);
 }
 </style>

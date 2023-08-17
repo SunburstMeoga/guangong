@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div id="loader-wrapper" v-show="visible">
+        <div id="loader-wrapper" class="backdrop-blur-3xl  bg-black/80" v-show="visible">
             <div id="loader"></div>
-            <div class="load_title">正在加载</div>
+            <div class="load_title">请稍等...</div>
         </div>
     </div>
 </template>
@@ -43,7 +43,7 @@ export default defineComponent({
 
 <style scoped>
 .load_title {
-    color: #4ea3fb;
+    color: #E20F2A;
     font-size: 18px;
     width: 100%;
     text-align: center;
@@ -62,9 +62,8 @@ export default defineComponent({
     width: 100vw;
     height: 100vh;
     z-index: 999999;
-    background: #000;
     opacity: 0.8;
-
+    overflow: hidden;
 }
 
 #loader {
@@ -77,8 +76,8 @@ export default defineComponent({
     height: 90px;
     margin: -45px 0 0 -45px;
     border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #4ea3fb;
+    border: 6px solid transparent;
+    border-top-color: #E20F2A;
     -webkit-animation: spin 2s linear infinite;
     -ms-animation: spin 2s linear infinite;
     -moz-animation: spin 2s linear infinite;
@@ -94,8 +93,8 @@ export default defineComponent({
     right: 5px;
     bottom: 5px;
     border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #4ea3fb;
+    border: 4px solid transparent;
+    border-top-color: #E20F2A;
     -webkit-animation: spin 3s linear infinite;
     -ms-animation: spin 3s linear infinite;
     -moz-animation: spin 3s linear infinite;
@@ -111,8 +110,8 @@ export default defineComponent({
     right: 15px;
     bottom: 15px;
     border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #4ea3fb;
+    border: 2px solid transparent;
+    border-top-color: #E20F2A;
     -webkit-animation: spin 1.5s linear infinite;
     -ms-animation: spin 1.5s linear infinite;
     -moz-animation: spin 1.5s linear infinite;
