@@ -7,4 +7,5 @@ import 'vant/lib/index.css'
 import router from './router'
 import i18n from './language'
 import store from './store'
-createApp(App).use(router).use(Vant).use(i18n).use(store).mount('#app')
+import loading from '@/components/loading'
+createApp(App).use(router).use(Vant).use(i18n).use(store).use(loading).mount('#app')
