@@ -8,7 +8,7 @@
         </div>
         <div class="flex flex-col text-icon-gray justify-center items-center">
             <div class="w-11/12 text-left mb-2">当前地址</div>
-            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-2">
+            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-6">
                 <div class="text-sm">0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB</div>
             </div>
             <div class="w-11/12 text-icon-gray bg-card-introduce py-4 rounded-md px-2 mb-6">
