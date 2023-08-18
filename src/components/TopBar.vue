@@ -19,7 +19,7 @@
             <div class="bg-cover-content w-full h-full relative">
                 <div class="pt-10 text-white w-11/12 ml-auto mr-auto">
                     <div class="border-module">
-                        <div class="mb-6">推荐关系</div>
+                        <div class="mb-6" @click="toRecommend">推荐关系</div>
                         <div class="mb-6">平台NFT</div>
                         <div class="mb-6">二級市場</div>
                         <div class="" @click="viewAssets()">個人中心</div>
@@ -85,6 +85,12 @@ export default {
         window.addEventListener('scroll', this.handleScroll)
     },
     methods: {
+        toRecommend() {
+            this.$router.push({
+                path: '/recommend'
+            })
+            this.showRight = false
+        },
         viewAssets() {
             this.$router.push({
                 path: '/personal'
