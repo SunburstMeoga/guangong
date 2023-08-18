@@ -18,9 +18,7 @@
                         <div>
                             美髯公
                         </div>
-                        <div class="buy-button text-lg py-1 px-5 rounded text-primary-word">
-                            出售
-                        </div>
+
                     </div>
                     <div
                         class="w-11/12 flex flex-col justify-between items-center bg-more-content text-icon-gray button-word">
@@ -31,7 +29,13 @@
                             合成路线：美髯公 + 赤兔马 + 青龙偃月刀
                         </div>
                     </div>
-                    <div class="border-module">
+                    <div class="w-11/12 flex justify-between items-center border-module">
+                        <div class="buy-button button-word w-full text-lg">
+                            出售
+                        </div>
+                    </div>
+
+                    <!-- <div class="border-module">
                         <div class="text-icon-gray text-xs mb-1">
                             發行方
                         </div>
@@ -56,7 +60,7 @@
                                 LeBlanc James
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">当前阶段</div>
@@ -160,7 +164,7 @@
                     <div class="buy-button w-8/12 text-primary-word text-lg button-word" @click="showSynthesis = true">
                         合成为汉寿亭侯
                     </div>
-                    <div class="bg-more-content campaign flex-1 ml-2 text-primary-word text-lg button-word">
+                    <div class="bg-more-content campaign animate-pulse flex-1 ml-2 text-primary-word text-lg button-word">
                         出征
                     </div>
                 </div>
