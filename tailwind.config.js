@@ -28,12 +28,13 @@ module.exports = {
                 'language-content': '#414145',
                 'more-content': '#3C3C3D',
                 'shops-content': '#E5E7EB',
-                'more-word': '#CBCFD5'
+                'more-word': '#CBCFD5',
+                'assets-word': '#D1D5DB'
             },
             backgroundImage: {
                 'market-product': "url('@/assets/market-product-bg.png')",
-                'home-product': "url('@/assets/home-product-bg.png')"
-
+                'home-product': "url('@/assets/home-product-bg.png')",
+                'personal-bg': "url('@/assets/personal-bg1.png')",
             }
         },
     },

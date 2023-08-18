@@ -19,10 +19,10 @@
             <div class="bg-cover-content w-full h-full relative">
                 <div class="pt-10 text-white w-11/12 ml-auto mr-auto">
                     <div class="border-module">
+                        <div class="mb-6">推荐关系</div>
                         <div class="mb-6">平台NFT</div>
                         <div class="mb-6">二級市場</div>
-                        <div class="mb-6">推薦藏品</div>
-                        <div class="" @click="viewAssets()">我的资产</div>
+                        <div class="" @click="viewAssets()">個人中心</div>
                     </div>
                     <div>
                         <div class="mb-6">FAQ</div>
