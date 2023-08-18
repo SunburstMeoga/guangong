@@ -5,7 +5,7 @@
                 <img :src="imageUrl" alt="">
             </div>
             <div
-                class="absolute top-0 right-0 rounded-bl-xl py-1 px-4 backdrop-blur-sm text-xs text-assets-word bg-black/50">
+                class="absolute top-0 right-0 rounded-bl-lg py-1 px-4 backdrop-blur-sm text-xs text-assets-word bg-black/50">
                 出征中
             </div>
         </div>

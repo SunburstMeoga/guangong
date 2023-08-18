@@ -14,8 +14,13 @@
                 </div>
 
                 <div class="flex flex-col justify-start items-center mb-10">
-                    <div class="w-11/12 text-card-content font-medium text-3xl mb-4">
-                        美髯公
+                    <div class="w-11/12 text-card-content font-medium text-3xl mb-4 flex justify-between items-center">
+                        <div>
+                            美髯公
+                        </div>
+                        <div class="buy-button text-lg py-1 px-5 rounded text-primary-word">
+                            出售
+                        </div>
                     </div>
                     <div
                         class="w-11/12 flex flex-col justify-between items-center bg-more-content text-icon-gray button-word">

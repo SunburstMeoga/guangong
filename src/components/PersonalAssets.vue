@@ -41,7 +41,7 @@
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5">
                     <div>WGT余额</div>
-                    <div>US$ 22.33</div>
+                    <div class="">US$ 22.33</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5">
                     <div>USDT余额</div>

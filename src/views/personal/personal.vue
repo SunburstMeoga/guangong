@@ -7,11 +7,10 @@
             <div class="w-11/12">
                 <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
                     color="#E20F2A">
-                    <van-tab v-for="(item, index) in  nftTypeList " :title="item.title + item.number" class="pt-10">
-                        <!-- <module-title :titleWord="item.title" class="mb-4"></module-title> -->
-                        <div class="columns-2">
+                    <van-tab v-for="(item, index) in  nftTypeList " :title="item.title + item.number" class="pt-4">
+                        <div class="columns-2 gap-x-3">
                             <div v-for="( _item, _index ) in  item.list " :key="index" @click="toAassetsDetails"
-                                class="rounded-xl mb-4 overflow-hidden break-inside-avoid shadow-md">
+                                class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                 <assets-card :imageUrl="_item" />
                             </div>
                         </div>
