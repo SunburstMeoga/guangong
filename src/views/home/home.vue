@@ -40,14 +40,20 @@
                     <div class="icon iconfont icon-left" style="font-size: 30px;" @click="prevProduct()"></div>
                     <div class="icon iconfont icon-right" style="font-size: 30px;" @click="nextProduct()"></div>
                 </div>
+                <div class="flex justify-center items-center mt-6 text-sm text-more-word">
+                    <div class="mr-1" @click="viewGoods">查看所有一级市场NFT</div>
+                    <div class="flex justify-center items-center">
+                        <div class="icon iconfont icon-right" style="font-size: 14px;"></div>
+                    </div>
+                </div>
             </div>
-            <div class="w-full px-4 mb-10">
+            <!-- <div class="w-full px-4 mb-10">
                 <module-title titleWord="热门商鋪" />
             </div>
             <div class="mb-10 w-full overflow-hidden">
                 <shops-card :shopsList="shopsList" />
-            </div>
-            <div class="w-full px-4 mb-10">
+            </div> -->
+            <div class="w-full px-4 mb-10" @click="viewMarket">
                 <module-title titleWord="NFT市場" hasMore />
             </div>
             <div class="w-full px-4">
@@ -70,7 +76,7 @@ export default {
     components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
         return {
-            showSkeleton: true,
+            showSkeleton: false,
             shopsList: [
                 {
                     imageUrl: 'https://img1.baidu.com/it/u=772282021,1853132764&fm=253&fmt=auto&app=138&f=JPEG?w=554&h=375',
@@ -167,6 +173,16 @@ export default {
         }, 2000)
     },
     methods: {
+        viewGoods() {
+            this.$router.push({
+                path: '/nfts/mall'
+            })
+        },
+        viewMarket() {
+            this.$router.push({
+                path: '/nfts/market'
+            })
+        },
         toMarketDetails() {
             this.$router.push({
                 path: '/market/12345567'

@@ -24,6 +24,22 @@ const home = [
         }
     },
     {
+        path: '/nfts/mall',
+        name: 'mall/list',
+        component: () => import('@/views/home/nfts'),
+        meta: {
+            showBar: true
+        }
+    },
+    {
+        path: '/nfts/market',
+        name: 'market/list',
+        component: () => import('@/views/home/nfts'),
+        meta: {
+            showBar: true
+        }
+    },
+    {
         path: '/checkout/:id',
         name: 'checkout',
         component: () => import('@/views/home/checkout'),
