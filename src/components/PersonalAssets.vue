@@ -11,9 +11,9 @@
             <div class="buy-button py-1 px-2 text-sm text-primary-word rounded">复制地址</div>
         </div>
         <div class="mb-6">
-            <div class="">个人收益</div>
+            <div class="">资产总值</div>
             <div class="text-theme-primary font-medium text-4xl">
-                US$ 88.232
+                88.232 WGT
                 <!-- <div class="flex justify-start items-center">
                     <div class="mr-1">US$ </div>
                     <van-rolling-text :text-list="textList" :duration="1" class="my-rolling-text" />
@@ -25,31 +25,31 @@
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-start">
                     <span>团队收益：</span>
-                    <span class="font-bold">US$ 3.77</span>
+                    <span class="font-bold">3.77 WGT</span>
                 </div>
-                <div class="flex justify-start items-start">
+                <!-- <div class="flex justify-start items-start">
                     <span>NFT总数：</span>
                     <span class="font-bold ">90</span>
-                </div>
+                </div> -->
             </div>
         </div>
         <div>
             <div class="flex justify-between items-center font-normal text-xs">
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5">
-                    <div>资产总值</div>
-                    <div>US$ 22.33</div>
+                    <div>WGT</div>
+                    <div>22.33</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5">
-                    <div>WGT余额</div>
-                    <div class="">US$ 22.33</div>
+                    <div>USDT</div>
+                    <div class="">22.33</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5">
-                    <div>USDT余额</div>
-                    <div>US$ 22.33</div>
+                    <div>个人收益</div>
+                    <div>22.33</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 py-1.5">
-                    <div>PGT余额</div>
-                    <div>334.3 PGT</div>
+                    <div>团队收益</div>
+                    <div>334.3</div>
                 </div>
             </div>
         </div>

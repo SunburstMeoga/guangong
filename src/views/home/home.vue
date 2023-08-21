@@ -1,7 +1,12 @@
 <template>
     <div>
-        <div class="pt-16" v-if="showSkeleton">
-            <div class="mt-10 px-4">
+        <div class="w-full pt-24 mb-4" @click="viewGoods">
+            <div class="w-11/12 ml-auto mr-auto">
+                <module-title titleWord="官方发售" />
+            </div>
+        </div>
+        <div class="" v-if="showSkeleton">
+            <div class="mt-2 px-4">
                 <div class="animate-pulse flex space-x-4 mb-20">
                     <div class="rounded-full bg-icon-undertone h-10 w-10"></div>
                     <div class="flex-1 space-y-6 py-1">
@@ -29,9 +34,9 @@
                 </div>
             </div>
         </div>
-        <div class="pt-16" v-else>
+        <div class="" v-else>
             <div class="market w-full relative mb-20">
-                <van-swipe class="my-swipe mt-10" :show-indicators="false" ref="productSwipe">
+                <van-swipe class="my-swipe mt-4" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails">
                         <product-card :imageUrl="item.imageUrl" :name="item.name" />
                     </van-swipe-item>
@@ -41,7 +46,7 @@
                     <div class="icon iconfont icon-right" style="font-size: 30px;" @click="nextProduct()"></div>
                 </div>
                 <div class="flex justify-center items-center mt-6 text-sm text-more-word">
-                    <div class="mr-1" @click="viewGoods">查看所有一级市场NFT</div>
+                    <div class="mr-1" @click="viewGoods">查看官方发售NFT</div>
                     <div class="flex justify-center items-center">
                         <div class="icon iconfont icon-right" style="font-size: 14px;"></div>
                     </div>
@@ -175,12 +180,14 @@ export default {
     methods: {
         viewGoods() {
             this.$router.push({
-                path: '/nfts/mall'
+                path: '/nfts/mall',
+                query: { type: 'mall' }
             })
         },
         viewMarket() {
             this.$router.push({
-                path: '/nfts/market'
+                path: '/nfts/market',
+                query: { type: 'market' }
             })
         },
         toMarketDetails() {

@@ -19,10 +19,10 @@
             <div class="bg-cover-content w-full h-full relative">
                 <div class="pt-10 text-white w-11/12 ml-auto mr-auto">
                     <div class="border-module">
+                        <div class="mb-6" @click="viewAssets()">個人中心</div>
                         <div class="mb-6" @click="toRecommend">推荐关系</div>
-                        <div class="mb-6">平台NFT</div>
-                        <div class="mb-6">二級市場</div>
-                        <div class="" @click="viewAssets()">個人中心</div>
+                        <div class="mb-6" @click="viewGoods">官方发售</div>
+                        <div class="" @click="viewMarket">NFT市场</div>
                     </div>
                     <div>
                         <div class="mb-6">FAQ</div>
@@ -85,6 +85,20 @@ export default {
         window.addEventListener('scroll', this.handleScroll)
     },
     methods: {
+        viewGoods() {
+            this.$router.push({
+                path: '/nfts/mall',
+                query: { type: 'mall' }
+            })
+            this.showRight = false
+        },
+        viewMarket() {
+            this.$router.push({
+                path: '/nfts/market',
+                query: { type: 'market' }
+            })
+            this.showRight = false
+        },
         toRecommend() {
             this.$router.push({
                 path: '/recommend'

@@ -1,7 +1,7 @@
 <template>
     <div class="rounded-lg overflow-hidden">
-        <div class="bg-black flex justify-center items-center w-full h-72">
-            <div class="w-64 h-64">
+        <div class="bg-black flex justify-center items-center w-full">
+            <div class="w-full">
                 <img :src="imageUrl" alt="">
             </div>
         </div>

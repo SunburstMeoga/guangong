@@ -1,6 +1,6 @@
 <template>
     <div class="text-card-content">
-        <div class="text-2xl font-medium">
+        <div class="text-4xl font-medium">
             {{ titleWord }}
         </div>
         <div class="flex justify-center items-center pt-4 text-sm text-more-word" v-if="hasMore">

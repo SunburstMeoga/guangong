@@ -61,14 +61,14 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
+                    <!-- <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">当前阶段</div>
                             <div class="icon iconfont icon-right  show-icon" :class="showStage ? '-rotate-90' : ''">
                             </div>
                         </div>
                         <div class="mt-8" v-show="showStage">
-                            武聖出山（每個道具+100U）
+                            武聖出山（yue）
                         </div>
                     </div>
                     <div class="border-module w-11/12 text-card-content" @click="showNextStage = !showNextStage">
@@ -80,22 +80,13 @@
                         <div class="mt-8" v-show="showNextStage">
                             百战封神（每個道具卡价值300U）
                         </div>
-                    </div>
-                    <div class="border-module w-11/12 text-card-content" @click="showRequest = !showRequest">
-                        <div class="flex justify-between items-center">
-                            <div class="text-2xl">合成要求</div>
-                            <div class="icon iconfont icon-right  show-icon" :class="showRequest ? '-rotate-90' : ''">
-                            </div>
-                        </div>
-                        <div class="mt-8" v-show="showRequest">
-                            美髯公+赤兔馬+青龍偃月刀
-                        </div>
-                    </div>
-                    <div class="border-module w-11/12 text-card-content" @click="showDetails = !showDetails">
+                    </div> -->
+
+                    <div class="border-module w-11/12 text-card-content">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">詳細資料</div>
-                            <div class="icon iconfont icon-right  show-icon" :class="showDetails ? '-rotate-90' : ''">
-                            </div>
+                            <!-- <div class="icon iconfont icon-right  show-icon" :class="showDetails ? '-rotate-90' : ''">
+                            </div> -->
                         </div>
                         <div class="mt-8" v-show="showDetails">
                             <div class="mb-6">
@@ -137,6 +128,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="border-module w-11/12 text-card-content" @click="showRequest = !showRequest">
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl">合成要求</div>
+                            <div class="icon iconfont icon-right  show-icon" :class="showRequest ? '-rotate-90' : ''">
+                            </div>
+                        </div>
+                        <div class="mt-8" v-show="showRequest">
+                            美髯公+赤兔馬+青龍偃月刀
+                        </div>
+                    </div>
                     <div class="border-module w-11/12 text-card-content" @click="showIssue = !showIssue">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">發行方</div>
@@ -161,10 +162,10 @@
                     </div>
                 </div> -->
                 <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
-                    <div class="buy-button w-8/12 text-primary-word text-lg button-word" @click="showSynthesis = true">
-                        合成为汉寿亭侯
+                    <div class="buy-button w-6/12 text-primary-word text-lg button-word" @click="showSynthesis = true">
+                        升级
                     </div>
-                    <div class="bg-more-content campaign animate-pulse flex-1 ml-2 text-primary-word text-lg button-word">
+                    <div class="bg-more-content campaign  flex-1 ml-2 text-primary-word text-lg button-word">
                         出征
                     </div>
                 </div>

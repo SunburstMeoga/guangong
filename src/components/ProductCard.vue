@@ -4,10 +4,10 @@
             <div class="rounded-xl inline-block px-2 py-px bg-success-undertone text-sm text-success-word mb-6">
                 武聖出山
             </div>
-            <div class="title text-4xl font-bold text-white leading-12 mb-6">
+            <div class="title text-3xl font-bold text-theme-primary leading-12 mb-6">
                 {{ name }}
             </div>
-            <div class="flex justify-start items-center mb-10">
+            <!-- <div class="flex justify-start items-center mb-10">
                 <div class="w-8 h-8 rounded-full overflow-hidden mr-1.5">
                     <img src="@/assets/owner.png" alt="">
                 </div>
@@ -15,7 +15,7 @@
                     <div class="text-icon-gray text-xs">拥有者</div>
                     <div class="font-bold">Jack Zhang</div>
                 </div>
-            </div>
+            </div> -->
             <div class="flex justify-center items-center my-20">
                 <div class="w-11/12 h-72">
                     <img :src="imageUrl" alt="">

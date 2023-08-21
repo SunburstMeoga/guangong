@@ -12,7 +12,7 @@
                 <div class="text-sm">{{ address }}</div>
             </div>
             <div class="w-11/12 text-icon-gray bg-card-introduce py-4 rounded-md px-2 mb-6">
-                <div class="flex justify-between items-center mb-2">
+                <div class="flex justify-between items-center">
                     <div>已邀请</div>
                     <div class="text-theme-primary">{{ childs1.length }}人</div>
                 </div>
@@ -21,32 +21,34 @@
             <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4">
                 <div class="text-sm">{{ p_address }}</div>
             </div>
-            
+
             <div class="w-11/12 text-left mb-2">邀请链接</div>
             <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4">
                 {{ share }}
             </div>
 
-            <template v-for="obj, key in childs0" :key="key">
-                <van-cell-group inset>
-                    <van-cell title="朋友地址:" :value="obj.c_addr">
-                    </van-cell>
-                    <van-cell title="签名时间:" :value="timeFormat(obj.sign_utc)" />
-                    <van-cell>
-                        <a @click="bind(key)">绑定</a>
-                    </van-cell>
-                </van-cell-group>
-                <br />
-            </template>
-            <template v-for="obj, key in childs1" :key="key">
-                <van-cell-group inset>
-                    <van-cell title="朋友地址:" :value="obj.c_addr">
-                    </van-cell>
-                    <van-cell title="签名时间:" :value="timeFormat(obj.sign_utc)" />
-                    <van-cell title="绑定时间:" :value="timeFormat(obj.utc)" />
-                </van-cell-group>
-                <br />
-            </template>
+            <div class="w-11/12 mr-auto ml-auto">
+                <template v-for="obj, key in childs0" :key="key">
+                    <van-cell-group inset>
+                        <van-cell title="朋友地址:" :value="obj.c_addr">
+                        </van-cell>
+                        <van-cell title="签名时间:" :value="timeFormat(obj.sign_utc)" />
+                        <van-cell>
+                            <a @click="bind(key)">绑定</a>
+                        </van-cell>
+                    </van-cell-group>
+                    <br />
+                </template>
+                <template v-for="obj, key in childs1" :key="key">
+                    <van-cell-group inset>
+                        <van-cell title="朋友地址:" :value="obj.c_addr">
+                        </van-cell>
+                        <van-cell title="签名时间:" :value="timeFormat(obj.sign_utc)" />
+                        <van-cell title="绑定时间:" :value="timeFormat(obj.utc)" />
+                    </van-cell-group>
+                    <br />
+                </template>
+            </div>
         </div>
     </div>
 </template>
