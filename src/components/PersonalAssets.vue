@@ -12,7 +12,7 @@
         </div>
         <div class="mb-6">
             <div class="">资产总值</div>
-            <div class="text-theme-primary font-medium text-4xl">
+            <div class="text-theme-primary font-bold text-4xl">
                 88.232 WGT
                 <!-- <div class="flex justify-start items-center">
                     <div class="mr-1">US$ </div>
