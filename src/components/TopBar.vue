@@ -6,9 +6,9 @@
                 <img src="../assets/logo.png" alt="">
             </div>
             <div class="flex justify-end items-center">
-                <div class="top-operating">
+                <!-- <div class="top-operating">
                     <div class="icon iconfont icon-Search" style="font-size: 20px;" />
-                </div>
+                </div> -->
                 <div class="top-operating ml-4" @click="showRight = true">
                     <div class="icon iconfont icon-menu-hamburger" style="font-size: 22px;" />
                 </div>

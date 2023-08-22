@@ -15,6 +15,14 @@ const personal = [
             showBar: true
         }
     },
+    {
+        path: '/earnings/:type',
+        name: 'earnings',
+        component: () => import ('@/views/personal/earnings'),
+        meta: {
+            showBar: false
+        }
+    },
     
 ]
 

@@ -24,7 +24,7 @@
         <div class="mb-6">
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-start">
-                    <span>团队收益：</span>
+                    <span>当日收益：</span>
                     <span class="font-bold">3.77 WGT</span>
                 </div>
                 <!-- <div class="flex justify-start items-start">
@@ -43,11 +43,12 @@
                     <div>USDT</div>
                     <div class="">22.33</div>
                 </div>
-                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5">
+                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5"
+                    @click="viewEarnings('individual')">
                     <div>个人收益</div>
                     <div>22.33</div>
                 </div>
-                <div class="flex flex-col justify-center items-center w-3/12 py-1.5">
+                <div class="flex flex-col justify-center items-center w-3/12 py-1.5" @click="viewEarnings('team')">
                     <div>团队收益</div>
                     <div>334.3</div>
                 </div>
@@ -72,6 +73,13 @@ export default {
                 '74.5233',
                 '94.1233',
             ]
+        }
+    },
+    methods: {
+        viewEarnings(type) {
+            this.$router.push({
+                path: '/earnings/' + type
+            })
         }
     }
 }
