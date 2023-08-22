@@ -3,7 +3,7 @@
         <div>
             <div class="py-8">
                 <div class="w-11/12 ml-auto mr-auto relative flex justify-center items-center text-card-content mb-4">
-                    <div class="icon iconfont icon-close absolute left-1" style="font-size: 24px;"></div>
+                    <div class="icon iconfont icon-close absolute left-1" style="font-size: 24px;" @click="goBack"></div>
                     <div class="">{{ earningsType === 'team' ? '团队收益' : '个人收益' }}</div>
                 </div>
             </div>
@@ -37,6 +37,11 @@ export default {
             maxDate: new Date(2025, 5, 1),
             currentDate: ['2023', '01', '01'],
             showBottom: false
+        }
+    },
+    methods: {
+        goBack() {
+            window.history.back();
         }
     },
     mounted() {
