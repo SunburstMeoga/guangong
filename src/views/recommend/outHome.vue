@@ -1,22 +1,16 @@
 <template>
     <div>
-        <div class="py-8">
-            <div class="w-11/12 ml-auto mr-auto relative flex justify-center items-center text-card-content mb-4">
-                <div class="icon iconfont icon-close absolute left-1" style="font-size: 24px;" @click="cancelPay()"></div>
-                <div class="">推荐关系 out</div>
-            </div>
-        </div>
         <div class="flex flex-col text-icon-gray justify-center items-center">
             <div class="w-11/12 text-left mb-2">当前地址</div>
             <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-6">
                 <div class="text-sm">{{ address }}</div>
             </div>
             <div class="w-11/12 text-left mb-2">上级地址</div>
-            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4">
+            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-20">
                 <div class="text-sm">{{ p_address }}</div>
             </div>
 
-            <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
+            <div class="w-full py-4 px-4 ">
                 <div class="buy-button text-primary-word text-lg button-word" @click="sign">
                     签名
                 </div>

@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="py-8">
+        <!-- <div class="py-8">
             <div class="w-11/12 ml-auto mr-auto relative flex justify-center items-center text-card-content mb-4">
                 <div class="icon iconfont icon-close absolute left-1" style="font-size: 24px;" @click="cancelPay()"></div>
                 <div class="">推荐关系 in</div>
             </div>
-        </div>
+        </div> -->
         <div class="flex flex-col text-icon-gray justify-center items-center">
             <div class="w-11/12 text-left mb-2">当前地址</div>
             <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-6">
@@ -23,12 +23,12 @@
             </div>
 
             <div class="w-11/12 text-left mb-2">邀请链接</div>
-            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4">
+            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4 break-all ">
                 {{ share }}
             </div>
 
-            <div class="w-11/12 mr-auto ml-auto">
-                <template v-for="obj, key in childs0" :key="key">
+            <template v-for="obj, key in childs0" :key="key">
+                <div class="w-11/12">
                     <van-cell-group inset>
                         <van-cell title="朋友地址:" :value="obj.c_addr">
                         </van-cell>
@@ -37,8 +37,9 @@
                             <a @click="bind(key)">绑定</a>
                         </van-cell>
                     </van-cell-group>
-                    <br />
-                </template>
+                </div>
+            </template>
+            <div class="w-11/12">
                 <template v-for="obj, key in childs1" :key="key">
                     <van-cell-group inset>
                         <van-cell title="朋友地址:" :value="obj.c_addr">
@@ -125,5 +126,11 @@ export default {
 
 .button-word {
     @apply font-medium py-4 rounded flex justify-center items-center
+}
+
+.van-cell {
+    background: #1F2937;
+    color: #A1A1AA;
+    width: 100%;
 }
 </style>

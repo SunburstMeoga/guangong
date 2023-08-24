@@ -84,7 +84,7 @@ export default {
     components: { ModuleTitle, MarketCard, MallCard, [Tab.name]: Tab, [Tabs.name]: Tabs, [Popover.name]: Popover },
     data() {
         return {
-            typeList: ['NFT角色卡', '合成道具卡', '战法道具卡'],
+            typeList: ['NFT角色卡', '合成道具卡', '战法道具卡', '出征令牌'],
             goodsType: 'mall',
             toggleStage: false,
             toggleTime: false,
