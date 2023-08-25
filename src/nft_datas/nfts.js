@@ -5,6 +5,7 @@ const nfts = {
             stage: '武聖出山',
             roles: [
                 {
+                    id: 1,
                     name: '美髯公',
                     imageUrl: require('../assets/guangong1.png'),
                     upgrade_requirements: '',
@@ -16,6 +17,7 @@ const nfts = {
                     loss_period: '135 次',
                 },
                 {
+                    id: 2,
                     name: '漢壽侯',
                     imageUrl: require('../assets/guangong1.png'),
                     upgrade_requirements: '美髯公 + 赤兔馬 + 青龍偃月刀',
@@ -27,6 +29,7 @@ const nfts = {
                     loss_period: '150 次',
                 },
                 {
+                    id: 3,
                     name: '武聖',
                     imageUrl: require('../assets/guangong1.png'),
                     upgrade_requirements: '漢壽侯 + 周倉 + 關平 + 廖化',

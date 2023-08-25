@@ -7,22 +7,22 @@
                     <div class="w-80 h-80">
                         <van-swipe class="my-swipe" :autoplay="0" indicator-color="#E20F2A" :show-indicators="false"
                             @change="swipeChange">
-                            <van-swipe-item v-for="(item, index) in 3" :key="index">
+                            <van-swipe-item>
                                 <div class="w-80 h-80">
-                                    <img src="@/assets/guangong2.png" alt="">
+                                    <img :src="nftInfor.imageUrl" alt="">
                                 </div>
                             </van-swipe-item>
                         </van-swipe>
                     </div>
                 </div>
-                <div class="flex justify-center items-center mb-10">
+                <!-- <div class="flex justify-center items-center mb-10">
                     <div v-for="(item, index) in 3"
                         :class="[index === 0 ? 'ml-0' : '', currentSwipe === index ? 'bg-theme-primary' : 'bg-swipe-bull']"
                         :key="index" class="w-2 h-2 rounded-full ml-2" />
-                </div>
+                </div> -->
                 <div class="flex flex-col justify-start items-center mb-10">
                     <div class="w-11/12 text-card-content font-medium text-3xl mb-10">
-                        關羽
+                        {{ nftInfor.name }}
                     </div>
                     <div class="w-11/12 flex justify-between items-center text-card-content">
                         <div class="flex justify-center item-center w-4/12 border-r border-card-introduce py-1.5">
@@ -52,7 +52,7 @@
                                 monstercat貓廠
                             </div>
                         </div>
-                        <div class="text-icon-gray text-xs mb-1">
+                        <!-- <div class="text-icon-gray text-xs mb-1">
                             擁有者
                         </div>
                         <div class="flex justify-start items-center">
@@ -63,7 +63,7 @@
                             <div class="text-card-content font-medium text-lg">
                                 LeBlanc James
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
                         <div class="flex justify-between items-center">
@@ -72,10 +72,11 @@
                             </div>
                         </div>
                         <div class="mt-8" v-show="showStage">
-                            武聖出山（每個道具+100U）
+                            {{ nftInfor.currentStage }}
                         </div>
                     </div>
-                    <div class="border-module w-11/12 text-card-content" @click="showRequest = !showRequest">
+                    <div class="border-module w-11/12 text-card-content" v-if="nftInfor.upgrade_requirements"
+                        @click="showRequest = !showRequest">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl">合成要求</div>
                             <div class="icon iconfont icon-right  show-icon" :class="showRequest ? '-rotate-90' : ''">
@@ -166,6 +167,8 @@
 
 <script>
 import { Swipe, SwipeItem } from 'vant';
+import nfts from '@/nft_datas/nfts'
+
 export default {
     components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
@@ -174,11 +177,14 @@ export default {
             showStage: true,
             showRequest: true,
             showDetails: true,
-            showIssue: true
+            showIssue: true,
+            nftInfor: {}
         }
     },
     mounted() {
         console.log(this.$route.params)
+        this.nftInfor = nfts.nfts_roles[0].roles[0]
+        this.nftInfor.currentStage = nfts.nfts_roles[0].stage
     },
     methods: {
         swipeChange(index) {
