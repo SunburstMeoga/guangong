@@ -1,11 +1,12 @@
 const nfts = {
     //nft角色卡
-    nfts_role: [
+    nfts_roles: [
         {
             stage: '武聖出山',
-            role: [
+            roles: [
                 {
                     name: '美髯公',
+                    imageUrl: require('../assets/guangong1.png'),
                     upgrade_requirements: '',
                     price: '400U',
                     outbound_tokens: '關公令',
@@ -16,6 +17,7 @@ const nfts = {
                 },
                 {
                     name: '漢壽侯',
+                    imageUrl: require('../assets/guangong1.png'),
                     upgrade_requirements: '美髯公 + 赤兔馬 + 青龍偃月刀',
                     price: '600U',
                     outbound_tokens: '關公令',
@@ -26,6 +28,7 @@ const nfts = {
                 },
                 {
                     name: '武聖',
+                    imageUrl: require('../assets/guangong1.png'),
                     upgrade_requirements: '漢壽侯 + 周倉 + 關平 + 廖化',
                     price: '900U',
                     outbound_tokens: '關公令',

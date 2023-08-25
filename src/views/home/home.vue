@@ -42,10 +42,10 @@
                         <product-card :imageUrl="item.imageUrl" :name="item.name" />
                     </van-swipe-item>
                 </van-swipe>
-                <div class="w-full px-4 absolute flex justify-between items-center top-80 left-0 text-icon-gray">
+                <!-- <div class="w-full px-4 absolute flex justify-between items-center top-80 left-0 text-icon-gray">
                     <div class="icon iconfont icon-left" style="font-size: 30px;" @click="prevProduct()"></div>
                     <div class="icon iconfont icon-right" style="font-size: 30px;" @click="nextProduct()"></div>
-                </div>
+                </div> -->
                 <div class="flex justify-center items-center mt-6 text-sm text-more-word">
                     <div class="mr-1" @click="viewGoods">查看官方发售NFT</div>
                     <div class="flex justify-center items-center">
@@ -74,8 +74,6 @@
 
 <script>
 import { Swipe, SwipeItem } from 'vant';
-import { ethers } from "ethers"
-import { config } from '@/const/config'
 import nfts from '@/nft_datas/nfts'
 import { nftsList } from '@/request/ether_request'
 import ProductCard from '@/components/ProductCard'
@@ -88,72 +86,7 @@ export default {
         return {
             showSkeleton: true,
             ret: [],
-            shopsList: [
-                {
-                    imageUrl: 'https://img1.baidu.com/it/u=772282021,1853132764&fm=253&fmt=auto&app=138&f=JPEG?w=554&h=375',
-                    name: 'monstercat貓廠'
-                },
-                {
-                    imageUrl: require('../../assets/shops1.gif'),
-                    name: 'monstercat貓廠'
-                },
-
-                {
-                    imageUrl: 'https://img1.baidu.com/it/u=1949172529,1424394842&fm=253&fmt=auto&app=138&f=PNG?w=641&h=384',
-                    name: 'monstercat貓廠'
-                },
-
-                {
-                    imageUrl: 'https://img2.baidu.com/it/u=1141776985,3616095252&fm=253&fmt=auto&app=138&f=JPEG?w=627&h=358',
-                    name: 'monstercat貓廠'
-                },
-                {
-                    imageUrl: 'https://img2.baidu.com/it/u=893528947,4138052345&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-                    name: 'monstercat貓廠'
-                },
-                {
-                    imageUrl: 'https://img0.baidu.com/it/u=1609920616,2349602344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-                    name: 'monstercat貓廠'
-                },
-                {
-                    imageUrl: 'https://img1.baidu.com/it/u=1079021637,1070525350&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500',
-                    name: 'monstercat貓廠'
-                },
-                {
-                    imageUrl: 'https://img2.baidu.com/it/u=2251013280,3339003956&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-                    name: 'monstercat貓廠'
-                },
-                {
-                    imageUrl: 'https://img1.baidu.com/it/u=3550768872,398163585&fm=253&fmt=auto&app=138&f=JPEG?w=666&h=500',
-                    name: 'monstercat貓廠'
-                },
-                {
-                    imageUrl: 'https://img1.baidu.com/it/u=263307488,3874355510&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-                    name: 'monstercat貓廠'
-                }
-            ],
-            productList: [
-                {
-                    imageUrl: require('../../assets/guangong1.png'),
-                    name: '關羽，字雲長',
-                },
-                {
-                    imageUrl: require('../../assets/zhangfei.png'),
-                    name: '張飛，字翼德',
-                },
-                {
-                    imageUrl: require('../../assets/zhaoyun.png'),
-                    name: '趙雲，字子龍',
-                },
-                {
-                    imageUrl: require('../../assets/machao.png'),
-                    name: '馬超，字孟起',
-                },
-                {
-                    imageUrl: require('../../assets/huangzhong.png'),
-                    name: '黃忠，字漢升',
-                },
-            ],
+            productList: [],
             marketList: [
                 {
                     imageUrl: require('../../assets/guanyu1.png'),
@@ -180,6 +113,7 @@ export default {
     },
     mounted() {
         console.log('nfts', nfts)
+        this.productList = nfts.nfts_roles[0].roles
         setTimeout(() => {
             this.showSkeleton = false
         }, 2000)
