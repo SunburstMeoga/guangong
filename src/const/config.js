@@ -11,7 +11,7 @@ const config = {
     usdt_addr: '0x1728Dae76dDCa4739Fe69e4B9633967f2e18B086',
     wgt_addr: '0x1c088A864fae8C82B1B2684274c906aBd89eeE83',
     nft_addr: '0x895aD9A2DEb2d493635130b481A8e4E246945FEA',
-    game_addr: '0x52fF30c5286CFd2705AD3eED4C8AF6aECEE4de02',
+    game_addr: '0xcA3431db0C443b8b1c2A07968F0f6ECdf19fb0e4',
     market_addr: '0x41b613D29E81c64cA5e21787E75938dB734eFB5F',
 
     /*
