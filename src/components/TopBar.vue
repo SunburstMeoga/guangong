@@ -20,6 +20,7 @@
                 <div class="pt-10 text-white w-11/12 ml-auto mr-auto">
                     <div class="border-module">
                         <div class="mb-6" @click="viewAssets">個人中心</div>
+                        <div class="mb-6" @click="toMap">关公地图</div>
                         <div class="mb-6" @click="toRecommend">推荐关系</div>
                         <div class="mb-6" @click="viewGoods">官方发售</div>
                         <div class="" @click="viewMarket">NFT市场</div>
@@ -89,6 +90,12 @@ export default {
             this.$router.push({
                 path: '/nfts/mall',
                 query: { type: 'mall' }
+            })
+            this.showRight = false
+        },
+        toMap() {
+            this.$router.push({
+                path: '/map',
             })
             this.showRight = false
         },
