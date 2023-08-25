@@ -2,9 +2,10 @@
     <div>
         <div class="w-full pt-24 mb-4" @click="viewGoods">
             <div class="w-11/12 ml-auto mr-auto">
-                <module-title titleWord="官方发售" />
+                <module-title :titleWord="'官方发售'" />
             </div>
         </div>
+
         <div class="" v-if="showSkeleton">
             <div class="mt-2 px-4">
                 <div class="animate-pulse flex space-x-4 mb-20">
@@ -73,6 +74,10 @@
 
 <script>
 import { Swipe, SwipeItem } from 'vant';
+import { ethers } from "ethers"
+import { config } from '@/const/config'
+import nfts from '@/nft_datas/nfts'
+import { nftsList } from '@/request/ether_request'
 import ProductCard from '@/components/ProductCard'
 import ModuleTitle from '@/components/ModuleTitle.vue'
 import MarketCard from '@/components/MarketCard'
@@ -81,7 +86,8 @@ export default {
     components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
         return {
-            showSkeleton: false,
+            showSkeleton: true,
+            ret: [],
             shopsList: [
                 {
                     imageUrl: 'https://img1.baidu.com/it/u=772282021,1853132764&fm=253&fmt=auto&app=138&f=JPEG?w=554&h=375',
@@ -173,11 +179,14 @@ export default {
         }
     },
     mounted() {
+        console.log('nfts', nfts)
         setTimeout(() => {
             this.showSkeleton = false
         }, 2000)
+        nftsList([1, 2, 3, 4, 5, 6, 7, 8, 9])
     },
     methods: {
+
         viewGoods() {
             this.$router.push({
                 path: '/nfts/mall',
@@ -188,6 +197,7 @@ export default {
             this.$router.push({
                 path: '/nfts/market',
                 query: { type: 'market' }
+
             })
         },
         toMarketDetails() {
