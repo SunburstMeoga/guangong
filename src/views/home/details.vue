@@ -43,13 +43,12 @@
                         <div class="text-icon-gray text-xs mb-1">
                             發行方
                         </div>
-                        <div class="flex justify-start items-center mb-8">
-                            <div class="rounded-full overflow-hidden w-6 h-6 mr-2">
-                                <img src="https://res.ucollex.io/cdn-cgi/image/width=100/images/20220725/5tKs6wbE7CxCMbpkn5DQ.jpg"
-                                    alt="">
+                        <div class="flex justify-start items-center">
+                            <div class="rounded-full overflow-hidden w-6 h-6 mr-2 bg-theme-primary">
+                                <img src="../../assets/logo.png" alt="">
                             </div>
                             <div class="text-card-content font-medium text-lg">
-                                monstercat貓廠
+                                世界關公寶WGT
                             </div>
                         </div>
                         <!-- <div class="text-icon-gray text-xs mb-1">
@@ -83,7 +82,7 @@
                             </div>
                         </div>
                         <div class="mt-8" v-show="showRequest">
-                            美髯公+赤兔馬+青龍偃月刀
+                            {{ nftInfor.upgrade_requirements }}
                         </div>
                     </div>
                     <div class="border-module w-11/12 text-card-content" @click="showDetails = !showDetails">
@@ -95,39 +94,39 @@
                         <div class="mt-8" v-show="showDetails">
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">階段</div>
-                                <div class="text-base text-card-content">武聖出山</div>
+                                <div class="text-base text-card-content">{{ nftInfor.currentStage }}</div>
 
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">發行量</div>
-                                <div class="text-base text-card-content">100</div>
+                                <div class="text-base text-card-content">不限量</div>
 
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">出征令牌</div>
-                                <div class="text-base text-card-content">關公令</div>
+                                <div class="text-base text-card-content">{{ nftInfor.outbound_tokens }}</div>
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">令牌價（等值WGT）</div>
-                                <div class="text-base text-card-content">150U</div>
+                                <div class="text-base text-card-content">{{ nftInfor.token_value }}</div>
 
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">週期</div>
-                                <div class="text-base text-card-content">1周</div>
+                                <div class="text-base text-card-content">{{ nftInfor.cycle }}</div>
 
                             </div>
-                            <div class="mb-6">
+                            <!-- <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">出征獎勵（等值WGT）</div>
                                 <div class="text-base text-card-content">159U</div>
-                            </div>
+                            </div> -->
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">月化利率</div>
-                                <div class="text-base text-card-content">24%</div>
+                                <div class="text-base text-card-content">{{ nftInfor.monthly_interest_rate }}</div>
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">損耗週期</div>
-                                <div class="text-base text-card-content">135次</div>
+                                <div class="text-base text-card-content">{{ nftInfor.loss_period }}</div>
 
                             </div>
                         </div>
@@ -150,13 +149,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-center items-center pb-32">
+                <!-- <div class="flex justify-center items-center pb-32">
                     <div class="w-11/12 bg-more-content text-icon-gray button-word">
                         查看更多該階段下更多NFT
                     </div>
-                </div>
+                </div> -->
                 <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
-                    <div class="buy-button text-primary-word text-lg button-word" @click="toPay">
+                    <div class="buy-button text-primary-word text-lg button-word" @click="handlePay">
                         購買 US$ 19.98
                     </div>
                 </div>
@@ -168,6 +167,7 @@
 <script>
 import { Swipe, SwipeItem } from 'vant';
 import nfts from '@/nft_datas/nfts'
+import { isAllowance, accountBalance, buy } from '@/request/ether_request'
 
 export default {
     components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
@@ -185,16 +185,23 @@ export default {
         console.log(this.$route.params)
         this.nftInfor = nfts.nfts_roles[0].roles[0]
         this.nftInfor.currentStage = nfts.nfts_roles[0].stage
+        // console.log(isAllowance('fasdfsdf'))
+        accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
+        isAllowance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
     },
     methods: {
         swipeChange(index) {
             console.log('change', index)
             this.currentSwipe = index
         },
+        handlePay() {
+            this.$loading.show()
+            buy(1)
+        },
         toPay() {
-            this.$router.push({
-                path: '/checkout/12345567'
-            })
+            // this.$router.push({
+            //     path: '/checkout/12345567'
+            // })
         },
     }
 }
