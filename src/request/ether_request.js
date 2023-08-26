@@ -3,8 +3,13 @@ import { config } from '@/const/config'
 import Web3 from 'web3'
 
 const provider = new ethers.BrowserProvider(window.ethereum)
+const signer = await provider.getSigner()
 const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider)
 const WGT = new ethers.Contract(config.wgt_addr, config.erc20_abi, provider)
+const GAMETRADE = new ethers.Contract(config.game_addr, config.game_abi, signer)
+const WGTTRADE = new ethers.Contract(config.wgt_addr, config.erc20_abi, signer)
+
+
 const WEB3 = new Web3(window.ethereum)
 
 
@@ -23,55 +28,23 @@ export async function isAllowance(walletAddress) {
 }
 
 //获取账户余额
-export function accountBalance(walletAddress) {
-  WEB3.eth.getBalance(walletAddress).then(res => {
-    console.log('余额', res)
-    return res
-  })
+export  async function accountBalance(walletAddress) {
+  const res = await WEB3.eth.getBalance(walletAddress)
+  return res
 }
 
 //授权
-export async function approve(authorizationAmount) {
-  const request = await WGT.approve(config.game_addr, authorizationAmount)
-  console.log('是否已授权', request)
-  return request
+export async function approve() {
+  const tx = await WGTTRADE.approve(config.game_addr,ethers.MaxUint256)
+  const result = await tx.wait()
+  console.log(result)
+  return result
 }
 
 //购买nft
 export async function buy(nftType) {
-  // console.log('购买操作')
-  // let game = new WEB3.eth.Contract(config.game_addr, config.game_abi)
-  // game.methods.buy(nftType).send()
-  // .then(res => {
-  //     console.log('购买',res)
-  // })
-  // .catch(err=> {
-  //     console.log('购买',err)
-  // })
-  /*
-  let wallet = new ethers.Wallet('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
-  let walletSigner = wallet.connect(provider)
-  const tx = {
-    from: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB',
-    to: config.game_addr,
-    value: ethers.utils.parseEther('23423234'),
-    nonce: window.ethersProvider.getTransactionCount(
-      send_account,
-      "latest"
-    ),
-    gasLimit: ethers.utils.hexlify(gas_limit), // 100000
-    // gasPrice: gas_price,
-  }
-
-  walletSigner.sendTransaction(tx).then((transaction) => {
-
-    console.dir(transaction)
-    alert("Send finished!")
-  })
-  */
-  const signer = await provider.getSigner()
-  const GAME = new ethers.Contract(config.game_addr, config.game_abi, signer)
-  const tx = await GAME.buy(nftType)
+  const tx = await GAMETRADE.buy(nftType)
   const result = await tx.wait()
   console.log(result)
+  return result
 }

@@ -165,12 +165,12 @@
 </template>
 
 <script>
-import { Swipe, SwipeItem } from 'vant';
+import { Swipe, SwipeItem, showSuccessToast } from 'vant';
 import nfts from '@/nft_datas/nfts'
-import { isAllowance, accountBalance, buy } from '@/request/ether_request'
+import { isAllowance, accountBalance, buy, approve } from '@/request/ether_request'
 
 export default {
-    components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
+    components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem, [showSuccessToast.name]: showSuccessToast },
     data() {
         return {
             currentSwipe: 0,
@@ -185,18 +185,37 @@ export default {
         console.log(this.$route.params)
         this.nftInfor = nfts.nfts_roles[0].roles[0]
         this.nftInfor.currentStage = nfts.nfts_roles[0].stage
-        // console.log(isAllowance('fasdfsdf'))
-        accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
-        isAllowance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
+        // accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
+        console.log(accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB'))
+        accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB').then(res => {
+            console.log('res', res)
+            this.nftInfor.balance = res
+        })
     },
     methods: {
+        accountBalance,
         swipeChange(index) {
             console.log('change', index)
             this.currentSwipe = index
         },
-        handlePay() {
+        async handlePay() {
             this.$loading.show()
-            buy(1)
+            const hasAllowance = await isAllowance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
+            console.log('hasAllowance', hasAllowance)
+            if (hasAllowance === 0) {
+                approve()
+                    .then(res => {
+                        console.log(res)
+                        this.$loading.hide()
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        this.$loading.hide()
+                    })
+            } else {
+                buy(1).then(() => { this.$loading.hide(); showSuccessToast('购买成功') }).catch(() => { this.$loading.hide() })
+            }
+
         },
         toPay() {
             // this.$router.push({
