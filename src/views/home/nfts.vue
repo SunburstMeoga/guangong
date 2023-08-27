@@ -11,14 +11,14 @@
 
                 <div class="mt-20 py-10">
                     <van-tabs v-model:active="active" shrink swipeable sticky title-active-color="#E20F2A"
-                        background="#121212" color="#E20F2A">
+                        background="#121212" color="#E20F2A" @click-tab="onClickTab">
                         <van-tab v-for="( item, index ) in typeList " :title="item" class="pt-4">
                             <div class="w-full mb-6">
                                 <div class="w-11/12 mr-auto ml-auto flex justify-start items-center">
                                     <div class="mr-6">
                                         <van-popover v-model:show="toggleStage" :actions="actionsStage"
-                                            :close-on-click-outside="closeOnClickAction" theme="dark"
-                                            placement="bottom-start">
+                                            v-if="goodsType === 'market'" :close-on-click-outside="closeOnClickAction"
+                                            theme="dark" placement="bottom-start">
                                             <div class="py-2 px-2">
                                                 <div v-for="(item, index) in actionsStage" class="mb-2" :key="index">
                                                     <div class="mb-1 text-base text-card-content">{{ item.text }}</div>
@@ -76,7 +76,7 @@
 import ModuleTitle from '@/components/ModuleTitle'
 import MarketCard from '@/components/MarketCard'
 import MallCard from '@/components/MallCard.vue'
-
+import nfts from '@/nft_datas/nfts'
 
 import { Tab, Tabs, Popover } from 'vant';
 
@@ -126,14 +126,24 @@ export default {
                     imageUrl: require('../../assets/wuhushangjiang.png'),
                     name: '黃忠',
                 },
-            ]
+            ],
+            nfts: []
         }
     },
     mounted() {
         this.goodsType = this.$route.query.type
-        console.log('goodsType', this.goodsType)
+        this.nfts = nfts
     },
     methods: {
+        onClickTab(item) {
+            console.log(item.name)
+            switch (itme.name) {
+                case 0: this.marketList
+            }
+        },
+        toMarketDetails() {
+
+        },
         onSelectStage(action) {
             console.log(action)
 

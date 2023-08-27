@@ -5,18 +5,18 @@
         </div>
         <div
             class="absolute top-0 left-0 rounded-br-xl inline-block px-4 py-2 bg-success-undertone text-sm text-success-word">
-            武聖出山
+            {{ stage }}
         </div>
         <div class="absolute left-4 bottom-4">
             <!-- <div class="w-8 h-8 rounded-full overflow-hidden bg-theme-primary">
                 <img src="../assets/logo.png" alt="">
             </div> -->
             <div class="mt-2 mb-4 text-2xl text-white truncate">
-                美髯公
+                {{ name }}
             </div>
             <span
                 class="inline-block py-2 bg-shops-content !leading-3rem px-2 bg-opacity-20 backdrop-filter !backdrop-blur-sm rounded normal-case text-essentials-white border-none">
-                售价：US$ 8.88
+                售价：US$ {{ price }}
             </span>
         </div>
     </div>
@@ -46,6 +46,14 @@ export default {
         imageUrl: {
             type: String,
             default: ''
+        },
+        name: {
+            type: String,
+            default: 'text'
+        },
+        price: {
+            type: String,
+            default: '8.88'
         }
     }
 }

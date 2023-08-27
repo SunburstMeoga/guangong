@@ -21,10 +21,10 @@
                         :key="index" class="w-2 h-2 rounded-full ml-2" />
                 </div> -->
                 <div class="flex flex-col justify-start items-center mb-10">
-                    <div class="w-11/12 text-card-content font-medium text-3xl mb-10">
+                    <div class="w-11/12 font-medium border-module text-card-content  text-3xl mb-10">
                         {{ nftInfor.name }}
                     </div>
-                    <div class="w-11/12 flex justify-between items-center text-card-content">
+                    <!-- <div class="w-11/12 flex justify-between items-center text-card-content">
                         <div class="flex justify-center item-center w-4/12 border-r border-card-introduce py-1.5">
                             <div class="icon iconfont icon-heart mr-2" style="font-size: 20px;"></div>
                             <div class="mt-px">5</div>
@@ -38,8 +38,8 @@
                             <div class="mt-px">分享</div>
                         </div>
 
-                    </div>
-                    <div class="border-module">
+                    </div> -->
+                    <!-- <div class="border-module">
                         <div class="text-icon-gray text-xs mb-1">
                             發行方
                         </div>
@@ -51,7 +51,7 @@
                                 世界關公寶WGT
                             </div>
                         </div>
-                        <!-- <div class="text-icon-gray text-xs mb-1">
+                        <div class="text-icon-gray text-xs mb-1">
                             擁有者
                         </div>
                         <div class="flex justify-start items-center">
@@ -62,8 +62,8 @@
                             <div class="text-card-content font-medium text-lg">
                                 LeBlanc James
                             </div>
-                        </div> -->
-                    </div>
+                        </div>
+                    </div> -->
                     <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">階段</div>

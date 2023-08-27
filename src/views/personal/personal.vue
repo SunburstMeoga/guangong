@@ -25,6 +25,9 @@
 import ModuleTitle from '@/components/ModuleTitle'
 import PersonalAssets from '@/components/PersonalAssets'
 import AssetsCard from '@/components/AssetsCard'
+import axios from 'axios'
+import { config } from '@/const/config'
+
 import { Tab, Tabs } from 'vant';
 export default {
     components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, PersonalAssets, AssetsCard },
@@ -35,7 +38,15 @@ export default {
             { title: '战法道具卡', number: 9, list: [require('@/assets/zhangfei.png'), require('@/assets/zhaoyun.png'), require('@/assets/huangzhong.png'), require('@/assets/zhangfei.png'), require('@/assets/zhaoyun.png'), require('@/assets/huangzhong.png'), require('@/assets/zhangfei.png'), require('@/assets/zhaoyun.png'), require('@/assets/huangzhong.png')] }],
         }
     },
+    mounted() {
+        this.getPersonNfts()
+    },
     methods: {
+        async getPersonNfts() {
+            const result = await axios.get(`${config.api}nft/owner/0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB`)
+            // http://47.115.211.205/api/nft/owner/0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB
+            console.log('result', result)
+        },
         toAassetsDetails() {
             this.$router.push({
                 path: '/assets/2343224'
