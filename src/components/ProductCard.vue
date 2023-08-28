@@ -2,7 +2,7 @@
     <div>
         <div class="px-4">
             <div class="rounded-xl inline-block px-2 py-px bg-success-undertone text-sm text-success-word mb-6">
-                武聖出山
+                {{ cardTag }}
             </div>
             <div class="title text-3xl font-bold text-theme-primary leading-12 mb-6">
                 {{ name }}
@@ -16,7 +16,7 @@
                     <div class="font-bold">Jack Zhang</div>
                 </div>
             </div> -->
-            <div class="flex justify-center items-center my-20">
+            <div class="flex justify-center items-center mb-20">
                 <div class="w-11/12 h-72">
                     <img :src="imageUrl" alt="">
                 </div>
@@ -26,11 +26,11 @@
                     <div class="flex justify-start items-center w-11/12">
                         <div class="pr-10">
                             <div class="text-card-title text-sm font-light mb-2">数量</div>
-                            <div class="text-card-content text-2xl font-semibold">12,000</div>
+                            <div class="text-card-content text-2xl font-semibold">不限量</div>
                         </div>
                         <div>
                             <div class="text-card-title text-sm font-light mb-2">价格</div>
-                            <div class="text-card-content text-2xl font-semibold">US$ 20.00</div>
+                            <div class="text-card-content text-2xl font-semibold">US$ {{ price }}</div>
                         </div>
                     </div>
                 </div>
@@ -53,6 +53,14 @@ export default {
             default: ''
         },
         name: {
+            type: String,
+            default: ''
+        },
+        price: {
+            type: String,
+            default: ''
+        },
+        cardTag: {
             type: String,
             default: ''
         }

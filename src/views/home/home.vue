@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="w-full pt-24 mb-4" @click="viewGoods">
+        <div class="w-full pt-24 mb-10" @click="viewGoods">
             <div class="w-11/12 ml-auto mr-auto">
                 <module-title :titleWord="'官方发售'" />
             </div>
@@ -37,15 +37,16 @@
         </div>
         <div class="" v-else>
             <div class="market w-full relative mb-20">
-                <van-swipe class="my-swipe mt-4" :show-indicators="false" ref="productSwipe">
-                    <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails">
-                        <product-card :imageUrl="item.imageUrl" :name="item.name" />
+                <van-swipe class="my-swipe mt-4" :autoplay="3000" :show-indicators="false" ref="productSwipe">
+                    <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails(item)">
+                        <product-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
+                            :cardTag="item.card_type === 'nft_role' ? item.stage : item.tag" />
                     </van-swipe-item>
                 </van-swipe>
-                <!-- <div class="w-full px-4 absolute flex justify-between items-center top-80 left-0 text-icon-gray">
+                <div class="w-full px-4 absolute flex justify-between items-center top-60 left-0 text-icon-gray">
                     <div class="icon iconfont icon-left" style="font-size: 30px;" @click="prevProduct()"></div>
                     <div class="icon iconfont icon-right" style="font-size: 30px;" @click="nextProduct()"></div>
-                </div> -->
+                </div>
                 <div class="flex justify-center items-center mt-6 text-sm text-more-word">
                     <div class="mr-1" @click="viewGoods">查看官方发售NFT</div>
                     <div class="flex justify-center items-center">
@@ -74,12 +75,13 @@
 
 <script>
 import { Swipe, SwipeItem } from 'vant';
-import nfts from '@/nft_datas/nfts'
-import { nftsList } from '@/request/ether_request'
+import nfts_list from '@/nft_datas/nfts_list'
+
 import ProductCard from '@/components/ProductCard'
 import ModuleTitle from '@/components/ModuleTitle.vue'
 import MarketCard from '@/components/MarketCard'
 import ShopsCard from '@/components/ShopsCard.vue'
+import { hotList } from '@/request/api_request'
 export default {
     components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
@@ -112,15 +114,28 @@ export default {
         }
     },
     mounted() {
-        console.log('nfts', nfts)
-        this.productList = nfts.nfts_roles[0].roles
+        console.log(nfts_list)
+        nfts_list.map(item => {
+            if (item.card_type === 'tactics_props' || item.card_type === 'expedition_order' || item.card_type === 'synthesis_props') {
+                this.productList.push(item)
+            }
+        })
+        this.productList.push(nfts_list[0])
         setTimeout(() => {
             this.showSkeleton = false
         }, 2000)
-        nftsList([1, 2, 3, 4, 5, 6, 7, 8, 9])
+        this.getHotList()
     },
     methods: {
-
+        getHotList() {
+            hotList()
+                .then(res => {
+                    console.log('热卖', res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
         viewGoods() {
             this.$router.push({
                 path: '/nfts/mall',
@@ -139,9 +154,9 @@ export default {
                 path: '/market/12345567'
             })
         },
-        toGoodDetails() {
+        toGoodDetails(item) {
             this.$router.push({
-                path: '/good/12345567'
+                path: '/good/' + item.id
             })
         },
         prevProduct() {

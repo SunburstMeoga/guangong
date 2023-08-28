@@ -167,6 +167,8 @@
 <script>
 import { Swipe, SwipeItem, showSuccessToast } from 'vant';
 import nfts from '@/nft_datas/nfts'
+import nfts_list from '@/nft_datas/nfts_list'
+
 import { isAllowance, accountBalance, buy, approve } from '@/request/ether_request'
 
 export default {
@@ -185,6 +187,12 @@ export default {
         console.log(this.$route.params)
         this.nftInfor = nfts.nfts_roles[0].roles[0]
         this.nftInfor.currentStage = nfts.nfts_roles[0].stage
+        const nftItem = nfts_list.filter(item => {
+            return item.id === parseInt(this.$route.params.id)
+        })
+        this.nftInfor = nftItem[0]
+        console.log('nftItem', nftItem)
+
         // accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
         console.log(accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB'))
         accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB').then(res => {
