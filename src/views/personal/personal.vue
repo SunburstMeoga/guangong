@@ -48,27 +48,23 @@ export default {
     },
     methods: {
         async getPersonNfts() {
-            let modIdList = []
-            let newArr = []
+
             ownerList(ethereum.selectedAddress || '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
                 .then(res => {
                     console.log('资产列表', res)
+                    let modIdList = []
                     res.data.map(item => {
-                        // return ((n % m) + m) % m;
                         let obj = {}
                         console.log('tokenid', item.tokenId)
-                        let targetId = item.tokenId % 100
-                        obj.targetId = targetId
+                        obj.targetId = item.tokenId % 100
                         obj.tokenId = item.tokenId
                         modIdList.push(obj)
                     })
-                    // newArr = [...new Set(modIdList)]
-                    newArr = modIdList
-                    console.log('modIdList', newArr)
                     let assetsList = []
-                    newArr.map(item => {
+                    modIdList.map(item => {
                         nfts_list.map(_item => {
                             if (_item.id === item.targetId) {
+                                _item.tokenId = item.tokenId
                                 assetsList.push(_item)
                             }
                         })
@@ -93,7 +89,7 @@ export default {
         },
         toAassetsDetails(_item) {
             this.$router.push({
-                path: '/assets/' + _item.id
+                path: '/assets/' + _item.tokenId
             })
         }
     }
