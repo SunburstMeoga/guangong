@@ -53,14 +53,19 @@ export default {
                 .then(res => {
                     console.log('资产列表', res)
                     let modIdList = []
+                    let tokenIds = []
                     res.data.map(item => {
                         let obj = {}
-                        console.log('tokenid', item.tokenId)
+                        // console.log('tokenid', item.tokenId)
                         obj.targetId = item.tokenId % 100
                         obj.tokenId = item.tokenId
+                        tokenIds.push(obj.targetId)
                         modIdList.push(obj)
                     })
                     let assetsList = []
+                    // tokenIds = [...new Set(tokenIds)] //去重
+
+                    console.log('tokenIds', tokenIds)
                     modIdList.map(item => {
                         nfts_list.map(_item => {
                             if (_item.id === item.targetId) {
