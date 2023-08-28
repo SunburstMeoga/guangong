@@ -54,10 +54,10 @@
                                 </div>
                             </div>
                             <div class="w-11/12 ml-auto mr-auto">
-                                <div class="mb-6" v-for="( item, index ) in  marketList " :key="index"
-                                    @click="toMarketDetails()">
+                                <div class="mb-6" v-for="(item, index ) in cardList " :key="index"
+                                    @click="toMarketDetails(item)">
                                     <div v-if="goodsType === 'mall'">
-                                        <mall-card :imageUrl="item.imageUrl" />
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
                                     </div>
                                     <div v-if="goodsType === 'market'">
                                         <market-card :imageUrl="item.imageUrl" :name="item.name" />
@@ -77,6 +77,8 @@ import ModuleTitle from '@/components/ModuleTitle'
 import MarketCard from '@/components/MarketCard'
 import MallCard from '@/components/MallCard.vue'
 import nfts from '@/nft_datas/nfts'
+import nfts_list from '@/nft_datas/nfts_list'
+
 
 import { Tab, Tabs, Popover } from 'vant';
 
@@ -127,22 +129,46 @@ export default {
                     name: '黃忠',
                 },
             ],
-            nfts: []
+            nfts: [],
+            cardList: []
         }
     },
     mounted() {
         this.goodsType = this.$route.query.type
         this.nfts = nfts
+        this.cardList = nfts_list
+        this.cardList = nfts_list.filter(item => {
+            return item.card_type === 'nft_role'
+        })
     },
     methods: {
         onClickTab(item) {
             console.log(item.name)
-            switch (itme.name) {
-                case 0: this.marketList
+            switch (item.name) {
+                case 0: this.cardList = nfts_list.filter(item => {
+                    return item.card_type === 'nft_role'
+                });
+                    break;
+                //合成道具卡
+                case 1: this.cardList = nfts_list.filter(item => {
+                    return item.card_type === 'synthesis_props'
+                });
+                    break;
+                // 战法道具卡
+                case 2: this.cardList = nfts_list.filter(item => {
+                    return item.card_type === 'tactics_props'
+                });
+                    break;
+                // 出征令牌
+                case 3: this.cardList = nfts_list.filter(item => {
+                    return item.card_type === 'expedition_order'
+                });
             }
         },
-        toMarketDetails() {
-
+        toMarketDetails(item) {
+            this.$router.push({
+                path: '/good/' + item.id
+            })
         },
         onSelectStage(action) {
             console.log(action)

@@ -21,7 +21,7 @@
                         :key="index" class="w-2 h-2 rounded-full ml-2" />
                 </div> -->
                 <div class="flex flex-col justify-start items-center mb-10">
-                    <div class="w-11/12 font-medium border-module text-card-content  text-3xl mb-10">
+                    <div class="w-11/12 text-3xl border-module text-card-content font-medium">
                         {{ nftInfor.name }}
                     </div>
                     <!-- <div class="w-11/12 flex justify-between items-center text-card-content">
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
+                    <!-- <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">階段</div>
                             <div class="icon iconfont icon-right  show-icon" :class="showStage ? '-rotate-90' : ''">
@@ -73,8 +73,8 @@
                         <div class="mt-8" v-show="showStage">
                             {{ nftInfor.currentStage }}
                         </div>
-                    </div>
-                    <div class="border-module w-11/12 text-card-content" v-if="nftInfor.upgrade_requirements"
+                    </div> -->
+                    <!-- <div class="border-module w-11/12 text-card-content" v-if="nftInfor.upgrade_requirements"
                         @click="showRequest = !showRequest">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl">合成要求</div>
@@ -84,17 +84,18 @@
                         <div class="mt-8" v-show="showRequest">
                             {{ nftInfor.upgrade_requirements }}
                         </div>
-                    </div>
-                    <div class="border-module w-11/12 text-card-content" @click="showDetails = !showDetails">
+                    </div> -->
+                    <div class="border-module w-11/12 text-card-content font-light"
+                        v-if="nftInfor.card_type === 'nft_role'">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">詳細資料</div>
-                            <div class="icon iconfont icon-right  show-icon" :class="showDetails ? '-rotate-90' : ''">
-                            </div>
+                            <!-- <div class="icon iconfont icon-right  show-icon" :class="showDetails ? '-rotate-90' : ''">
+                            </div> -->
                         </div>
                         <div class="mt-8" v-show="showDetails">
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">階段</div>
-                                <div class="text-base text-card-content">{{ nftInfor.currentStage }}</div>
+                                <div class="text-base text-card-content">{{ nftInfor.stage }}</div>
 
                             </div>
                             <div class="mb-6">
@@ -138,9 +139,8 @@
                             </div>
                         </div>
                         <div class="mt-8 flex justify-start items-center h-14" v-show="showIssue">
-                            <div class="rounded-full overflow-hidden w-10 h-10">
-                                <img src="https://res.ucollex.io/cdn-cgi/image/width=100/images/20220725/5tKs6wbE7CxCMbpkn5DQ.jpg"
-                                    alt="">
+                            <div class="rounded-full overflow-hidden w-10 h-10 bg-theme-primary">
+                                <img src="../../assets/logo.png" alt="">
                             </div>
                             <div class="ml-2 flex flex-col justify-between">
                                 <div class="text-white font-medium">由 世界關公寶WGT 发行</div>
@@ -185,20 +185,11 @@ export default {
     },
     mounted() {
         console.log(this.$route.params)
-        this.nftInfor = nfts.nfts_roles[0].roles[0]
-        this.nftInfor.currentStage = nfts.nfts_roles[0].stage
         const nftItem = nfts_list.filter(item => {
             return item.id === parseInt(this.$route.params.id)
         })
         this.nftInfor = nftItem[0]
         console.log('nftItem', nftItem)
-
-        // accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
-        console.log(accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB'))
-        accountBalance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB').then(res => {
-            console.log('res', res)
-            this.nftInfor.balance = res
-        })
     },
     methods: {
         accountBalance,
@@ -208,7 +199,7 @@ export default {
         },
         async handlePay() {
             this.$loading.show()
-            const hasAllowance = await isAllowance('0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB')
+            const hasAllowance = await isAllowance(ethereum.selectedAddress)
             console.log('hasAllowance', hasAllowance)
             if (hasAllowance === 0) {
                 approve()
@@ -221,14 +212,22 @@ export default {
                         this.$loading.hide()
                     })
             } else {
-                buy(1).then(() => { this.$loading.hide(); showSuccessToast('购买成功') }).catch(() => { this.$loading.hide() })
+                this.toPay()
             }
-
         },
         toPay() {
-            // this.$router.push({
-            //     path: '/checkout/12345567'
-            // })
+            console.log(this.nftInfor.id)
+            // return
+            buy(this.nftInfor.id)
+                .then((res) => {
+                    this.$loading.hide()
+                    showSuccessToast('购买成功')
+                    console.log(res)
+                })
+                .catch((err) => {
+                    this.$loading.hide()
+                    console.log(err)
+                })
         },
     }
 }
@@ -242,7 +241,7 @@ img {
 }
 
 .border-module {
-    @apply w-11/12 border-b border-card-introduce py-10 font-light;
+    @apply w-11/12 border-b border-card-introduce py-10;
 }
 
 .show-icon {

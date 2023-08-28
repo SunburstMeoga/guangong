@@ -121,9 +121,8 @@ export default {
             }
         })
         this.productList.push(nfts_list[0])
-        setTimeout(() => {
-            this.showSkeleton = false
-        }, 2000)
+        console.log(this.productList)
+        this.showSkeleton = false
         this.getHotList()
     },
     methods: {

@@ -5,22 +5,22 @@
                 <div
                     class="relative ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-4">
                     <div class="w-80 h-80">
-                        <img src="@/assets/guangong2.png" alt="">
+                        <img :src="nftInfor.imageUrl" alt="">
                     </div>
                     <div
                         class="absolute top-0 left-0 rounded-br-xl inline-block px-4 py-2 bg-success-undertone text-sm text-success-word">
-                        武聖出山
+                        {{ nftInfor.stage }}
                     </div>
                 </div>
 
                 <div class="flex flex-col justify-start items-center mb-10">
                     <div class="w-11/12 text-card-content font-medium text-3xl mb-4 flex justify-between items-center">
                         <div>
-                            美髯公
+                            {{ nftInfor.name }}
                         </div>
 
                     </div>
-                    <div
+                    <!-- <div
                         class="w-11/12 flex flex-col justify-between items-center bg-more-content text-icon-gray button-word">
                         <div>
                             当前NFT可合成为汉寿侯
@@ -28,7 +28,7 @@
                         <div>
                             合成路线：美髯公 + 赤兔马 + 青龙偃月刀
                         </div>
-                    </div>
+                    </div> -->
                     <div class="w-11/12 flex justify-between items-center border-module">
                         <div class="buy-button button-word w-full text-lg">
                             出售
@@ -91,44 +91,45 @@
                         <div class="mt-8" v-show="showDetails">
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">階段</div>
-                                <div class="text-base text-card-content">武聖出山</div>
+                                <div class="text-base text-card-content">{{ nftInfor.stage }}</div>
 
                             </div>
-                            <div class="mb-6">
+                            <!-- <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">發行量</div>
                                 <div class="text-base text-card-content">100</div>
 
-                            </div>
+                            </div> -->
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">出征令牌</div>
-                                <div class="text-base text-card-content">關公令</div>
+                                <div class="text-base text-card-content">{{ nftInfor.outbound_tokens }}</div>
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">令牌價（等值WGT）</div>
-                                <div class="text-base text-card-content">150U</div>
+                                <div class="text-base text-card-content">{{ nftInfor.token_value }}</div>
 
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">週期</div>
-                                <div class="text-base text-card-content">1周</div>
+                                <div class="text-base text-card-content">{{ nftInfor.cycle }}</div>
 
                             </div>
-                            <div class="mb-6">
+                            <!-- <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">出征獎勵（等值WGT）</div>
                                 <div class="text-base text-card-content">159U</div>
-                            </div>
+                            </div> -->
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">月化利率</div>
-                                <div class="text-base text-card-content">24%</div>
+                                <div class="text-base text-card-content">{{ nftInfor.monthly_interest_rate }}</div>
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">損耗週期</div>
-                                <div class="text-base text-card-content">135次</div>
+                                <div class="text-base text-card-content">{{ nftInfor.loss_period }}</div>
 
                             </div>
                         </div>
                     </div>
-                    <div class="border-module w-11/12 text-card-content" @click="showRequest = !showRequest">
+                    <div class="border-module w-11/12 text-card-content" @click="showRequest = !showRequest"
+                        v-if="nftInfor.upgrade_requirements">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl">合成要求</div>
                             <div class="icon iconfont icon-right  show-icon" :class="showRequest ? '-rotate-90' : ''">
@@ -162,10 +163,12 @@
                     </div>
                 </div> -->
                 <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
-                    <div class="buy-button w-6/12 text-primary-word text-lg button-word" @click="showSynthesis = true">
+                    <div class="buy-button w-6/12 text-primary-word text-lg button-word" @click="updataNFT"
+                        v-if="nftInfor.outbound_tokens_id !== 87">
                         升级
                     </div>
-                    <div class="bg-more-content campaign  flex-1 ml-2 text-primary-word text-lg button-word">
+                    <div class="bg-more-content campaign  flex-1 ml-2 text-primary-word text-lg button-word"
+                        @click="roleSetOff">
                         出征
                     </div>
                 </div>
@@ -207,6 +210,9 @@
 
 <script>
 import { Popup } from 'vant';
+import nfts_list from '@/nft_datas/nfts_list'
+import { synthesisNFT, setOff } from '@/request/ether_request'
+
 export default {
     components: { [Popup.name]: Popup },
     data() {
@@ -216,14 +222,50 @@ export default {
             showStage: true,
             showRequest: true,
             showDetails: true,
-            showIssue: true
+            showIssue: true,
+            nftInfor: {}
+
         }
     },
     mounted() {
         console.log(this.$route.params)
+        const nftItem = nfts_list.filter(item => {
+            return item.id === parseInt(this.$route.params.id)
+        })
+        this.nftInfor = nftItem[0]
+        console.log('nftItem', this.nftInfor)
     },
     methods: {
+        updataNFT() {
+            this.$loading.show()
+            console.log(this.nftInfor)
+            synthesisNFT(this.nftInfor.next_need_nfts, this.nftInfor.next_nft_id)
+                .then((res) => {
+                    console.log('合成成功', res)
+                    this.$loading.hide()
+                    window.history.back();
+                })
+                .catch(err => {
+                    console.log('合成失败', err)
+                    this.$loading.hide()
+                })
+        },
+        roleSetOff() {
+            this.$loading.show()
+            console.log(this.nftInfor)
+            setOff(this.nftInfor.id, this.nftInfor.outbound_tokens_id)
+                .then((res) => {
+                    console.log('出征成功', res)
+                    this.$loading.hide()
+                    window.history.back();
+                })
+                .catch(err => {
+                    console.log('出征失败', err)
 
+                    this.$loading.hide()
+
+                })
+        }
     }
 }
 </script>

@@ -1,43 +1,32 @@
 <template>
-    <div class="h-64 relative rounded overflow-hidden">
-        <div class="absolute left-0 top-0 w-full">
-            <img :src="imageUrl" alt="">
-        </div>
-        <div
-            class="absolute top-0 left-0 rounded-br-xl inline-block px-4 py-2 bg-success-undertone text-sm text-success-word">
-            {{ stage }}
-        </div>
-        <div class="absolute left-4 bottom-4">
-            <!-- <div class="w-8 h-8 rounded-full overflow-hidden bg-theme-primary">
-                <img src="../assets/logo.png" alt="">
-            </div> -->
-            <div class="mt-2 mb-4 text-2xl text-white truncate">
-                {{ name }}
+    <div class="rounded-lg overflow-hidden">
+        <div class="bg-black flex justify-center items-center w-full">
+            <div class="w-full">
+                <img :src="imageUrl" alt="">
             </div>
-            <span
-                class="inline-block py-2 bg-shops-content !leading-3rem px-2 bg-opacity-20 backdrop-filter !backdrop-blur-sm rounded normal-case text-essentials-white border-none">
-                售价：US$ {{ price }}
-            </span>
+        </div>
+        <div class="w-full bg-card-introduce px-4 py-4">
+            <!-- <div class="text-card-content text-sm mb-2"> Jack Zhang </div> -->
+            <div class="text-theme-primary text-xl font-bold mb-6">{{ name }}</div>
+            <div class="text-tips-word text-xs">價格</div>
+            <div class="text-card-content text-xl mb-6 font-semibold"> US$ {{ price }}</div>
+            <!-- <div class="flex justify-between items-center">
+                <div class="flex justify-start items-center">
+                    <div class="w-6 h-6 rounded-full overflow-hidden mr-1.5">
+                        <img src="https://upload.ucollex.io/cdn-cgi/image/width=100/uploads/dash/ucollex2-CreatorAvatar-02.jpg"
+                            alt="">
+                    </div>
+                    <div class="text-sm text-card-content">Jack Zhang</div>
+                </div>
+                <div class="flex justify-end items-center text-gray-400">
+                    <div class="w-4 h-6 rounded-full overflow-hidden">
+                        <div class="icon iconfont icon-heart"></div>
+                    </div>
+                    <div class="text-sm  ml-1.5">28</div>
+                </div>
+            </div> -->
         </div>
     </div>
-
-    <!-- <div class="w-full h-full relative">
-        <div>
-            <img class="w-full h-full absolute left-0 top-0" :src="item.imageUrl" alt="">
-        </div>
-        <div class="absolute left-4 bottom-4">
-            <div class="w-8 h-8 rounded-full overflow-hidden bg-theme-primary">
-                <img src="../assets/logo.png" alt="">
-            </div>
-            <div class="mt-2 mb-4 text-2xl text-white truncate">
-                這裡是商鋪名稱
-            </div>
-            <span
-                class="inline-block py-4 bg-shops-content !leading-3rem px-6 bg-opacity-20 backdrop-filter !backdrop-blur-sm rounded normal-case text-essentials-white text-xs border-none">
-                共 {{ index + 12 }} 件商品
-            </span>
-        </div>
-    </div> -->
 </template>
 
 <script>
@@ -49,11 +38,11 @@ export default {
         },
         name: {
             type: String,
-            default: 'text'
+            default: ''
         },
         price: {
             type: String,
-            default: '8.88'
+            default: ''
         }
     }
 }
@@ -63,6 +52,7 @@ export default {
 img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+
 }
 </style>
