@@ -6,9 +6,9 @@
         </div> -->
         <div class="flex justify-between items-center mb-4">
             <div>
-                <span>{{ address }}</span>
+                <span>{{ addressFilter(address) }}</span>
             </div>
-            <div class="buy-button py-1 px-2 text-sm text-primary-word rounded">复制地址</div>
+            <div class="buy-button py-1 px-2 text-sm text-primary-word rounded" @click="copyAddress">复制地址</div>
         </div>
         <div class="mb-6">
             <div class="">资产总值</div>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { RollingText } from 'vant';
+import { RollingText, showSuccessToast } from 'vant';
 
 export default {
     components: { [RollingText.name]: RollingText },
@@ -80,9 +80,32 @@ export default {
         if (ethereum.selectedAddress) {
 
         }
-        this.address = ethereum.selectedAddress || '链接钱包'
+        this.address = ethereum.selectedAddress
     },
     methods: {
+        copyAddress() {
+            navigator.clipboard.writeText(this.address).then(() => {
+                showSuccessToast('复制成功')
+            }, () => {
+                // Toast.fail(this.$t('toast.copyFail'))
+
+            });
+        },
+        addressFilter(value) {
+            console.log('value', value)
+            if (value === undefined || value === null) return
+            let arr = value.split('')
+            let targetStr
+            let targetArr = []
+            arr.map((item, index) => {
+                if (index <= 6 || index >= arr.length - 7) {
+                    targetArr.push(item)
+                }
+            })
+            targetArr.splice(7, 0, '...')
+            targetStr = targetArr.join('')
+            return targetStr
+        },
         viewEarnings(type) {
             this.$router.push({
                 path: '/earnings/' + type

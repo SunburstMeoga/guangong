@@ -13,7 +13,7 @@
             <div class="text-theme-primary">{{ name }}</div>
             <!-- <div class="text-icon-gray">可合成</div> -->
             <div class="text-icon-gray">US$ {{ price }}</div>
-            <div class="text-icon-gray">token #{{ token }}</div>
+            <!-- <div class="text-icon-gray">token #{{ token }}</div> -->
         </div>
     </div>
 </template>

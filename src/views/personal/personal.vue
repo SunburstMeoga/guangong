@@ -8,11 +8,19 @@
                 <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
                     color="#E20F2A">
                     <van-tab v-for="(item, index) in  nftTypeList " :title="item.title" class="pt-4">
-                        <div class="columns-2 gap-x-3">
-                            <div v-for="( _item, _index ) in  item.list " :key="index" @click="toAassetsDetails(_item)"
-                                class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
-                                <assets-card :imageUrl="_item.imageUrl" :price="_item.price" :name="_item.name"
-                                    :token="_item.tokenId" />
+                        <div class="" :class="item.list.length !== 0 ? 'columns-2 gap-x-3' : ''">
+                            <div v-if="item.list.length === 0">
+                                <div class="text-icon-gray text-xl text-center">
+                                    暂无数据
+                                </div>
+                            </div>
+                            <div v-else>
+                                <div v-for="( _item, _index ) in  item.list " :key="index" @click="toAassetsDetails(_item)"
+                                    class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
+
+                                    <assets-card :imageUrl="_item.imageUrl" :price="_item.price" :name="_item.name"
+                                        :token="_item.tokenId" />
+                                </div>
                             </div>
                         </div>
                     </van-tab>
@@ -30,7 +38,7 @@ import { ownerList } from '@/request/api_request'
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
 
-import { Tab, Tabs } from 'vant';
+import { Tab, Tabs, Empty } from 'vant';
 export default {
     components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, PersonalAssets, AssetsCard },
     data() {
@@ -64,7 +72,6 @@ export default {
                     })
                     let assetsList = []
                     tokenIds = [...new Set(tokenIds)] //去重
-
                     console.log('modIdList', modIdList)
                     modIdList.map(item => {
                         nfts_list.map(_item => {
@@ -73,13 +80,13 @@ export default {
                                 obj = _item
                                 obj.tokenId = item.tokenId
                                 // _item.tokenId = item.tokenId
-                                // assetsList.push(obj)
+                                assetsList.push(obj)
                                 console.log(obj)
                             }
                         })
                     })
-                    console.log('assetsList', assetsList)
-                    return
+                    // console.log('assetsList', assetsList)
+                    // return
                     assetsList.map(item => {
                         if (item.card_type === 'nft_role') {
                             this.nftTypeList[0].list.push(item)
@@ -99,8 +106,13 @@ export default {
                 })
         },
         toAassetsDetails(_item) {
+            console.log('item', _item)
+            // return
             this.$router.push({
-                path: '/assets/' + _item.tokenId
+                path: '/assets/' + _item.id,
+                query: {
+                    tokenId: _item.tokenId
+                }
             })
         }
     }

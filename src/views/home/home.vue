@@ -89,28 +89,28 @@ export default {
             showSkeleton: true,
             ret: [],
             productList: [],
-            marketList: [
-                {
-                    imageUrl: require('../../assets/guanyu1.png'),
-                    name: '關羽',
-                },
-                {
-                    imageUrl: require('../../assets/guanyu2.png'),
-                    name: '關羽',
-                },
-                {
-                    imageUrl: require('../../assets/guanyu3.png'),
-                    name: '關羽',
-                },
-                {
-                    imageUrl: require('../../assets/huangzhong.png'),
-                    name: '黃忠',
-                },
-                {
-                    imageUrl: require('../../assets/huangzhong1.png'),
-                    name: '黃忠',
-                },
-            ]
+            // marketList: [
+            //     {
+            //         imageUrl: require('../../assets/guanyu1.png'),
+            //         name: '關羽',
+            //     },
+            //     {
+            //         imageUrl: require('../../assets/guanyu2.png'),
+            //         name: '關羽',
+            //     },
+            //     {
+            //         imageUrl: require('../../assets/guanyu3.png'),
+            //         name: '關羽',
+            //     },
+            //     {
+            //         imageUrl: require('../../assets/huangzhong.png'),
+            //         name: '黃忠',
+            //     },
+            //     {
+            //         imageUrl: require('../../assets/huangzhong1.png'),
+            //         name: '黃忠',
+            //     },
+            // ]
         }
     },
     mounted() {

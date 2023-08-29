@@ -37,8 +37,7 @@
                         </van-cell>
                         <van-cell title="签名时间:" :value="timeFormat(obj.sign_utc)" />
                         <van-cell>
-                            <div class="buy-button rounded w-full py-3 px-2 text-center text-black text-xl"
-                                @click="bind(key)">绑定
+                            <div class="buy-button rounded py-3 px-2 text-center text-black text-sm" @click="bind(key)">绑定
                             </div>
                         </van-cell>
                     </van-cell-group>

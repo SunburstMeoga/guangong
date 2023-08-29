@@ -107,28 +107,28 @@ export default {
                 { text: '升序' },
                 { text: '降序' },
             ],
-            marketList: [
-                {
-                    imageUrl: require('../../assets/wuhushangjiang.png'),
-                    name: '關羽',
-                },
-                {
-                    imageUrl: require('../../assets/taoyuanjieyi.png'),
-                    name: '關羽',
-                },
-                {
-                    imageUrl: require('../../assets/shuiyanqijun.png'),
-                    name: '關羽',
-                },
-                {
-                    imageUrl: require('../../assets/shuiyanqijun.png'),
-                    name: '黃忠',
-                },
-                {
-                    imageUrl: require('../../assets/wuhushangjiang.png'),
-                    name: '黃忠',
-                },
-            ],
+            // marketList: [
+            //     {
+            //         imageUrl: require('../../assets/wuhushangjiang.png'),
+            //         name: '關羽',
+            //     },
+            //     {
+            //         imageUrl: require('../../assets/taoyuanjieyi.png'),
+            //         name: '關羽',
+            //     },
+            //     {
+            //         imageUrl: require('../../assets/shuiyanqijun.png'),
+            //         name: '關羽',
+            //     },
+            //     {
+            //         imageUrl: require('../../assets/shuiyanqijun.png'),
+            //         name: '黃忠',
+            //     },
+            //     {
+            //         imageUrl: require('../../assets/wuhushangjiang.png'),
+            //         name: '黃忠',
+            //     },
+            // ],
             nfts: [],
             cardList: []
         }

@@ -10,7 +10,7 @@
             <div class="bg-bottom-content py-5 px-4 rounded-lg mb-10">
                 <div class="flex justify-start items-center">
                     <div class="w-8 h-8 rounded-full overflow-hidden mr-1.5">
-                        <img src="@/assets/owner.png" alt="">
+                        <!-- <img src="@/assets/owner.png" alt=""> -->
                     </div>
                     <div class="text-sm text-card-content">
                         <div class="text-icon-gray text-xs">拥有者</div>

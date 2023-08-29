@@ -179,7 +179,7 @@
                 <div class=" leading-6 font-helvetica-neue-bold text-base py-6">合成</div>
                 <div class="w-40 h-40 flex justify-center rounded-xl overflow-hidden items-center bg-black mb-3">
                     <div class="w-32 h-32">
-                        <img src="@/assets/guangong2.png" alt="">
+                        <img src="" alt="">
                     </div>
                 </div>
                 <div class="text-xl mb-2">所需合成材料</div>
@@ -223,17 +223,20 @@ export default {
             showRequest: true,
             showDetails: true,
             showIssue: true,
-            nftInfor: {}
-
+            nftInfor: {},
+            tokenId: ''
         }
     },
     mounted() {
-        console.log(this.$route.params)
+        if (this.$route.query.tokenId) {
+            this.tokenId = this.$route.query.tokenId
+        }
         const nftItem = nfts_list.filter(item => {
             return item.id === parseInt(this.$route.params.id)
         })
         this.nftInfor = nftItem[0]
         console.log('nftItem', this.nftInfor)
+        console.log(this.tokenId)
     },
     methods: {
         updataNFT() {
@@ -253,7 +256,7 @@ export default {
         roleSetOff() {
             this.$loading.show()
             console.log(this.nftInfor)
-            setOff(this.nftInfor.id, this.nftInfor.outbound_tokens_id)
+            setOff(this.tokenId, this.nftInfor.outbound_tokens_id)
                 .then((res) => {
                     console.log('出征成功', res)
                     this.$loading.hide()
