@@ -10,11 +10,11 @@
                 <div class="text-sm">{{ p_address }}</div>
             </div>
 
-            <div class="w-full py-4 px-4 ">
+            <!-- <div class="w-full py-4 px-4 ">
                 <div class="buy-button text-primary-word text-lg button-word" @click="sign">
                     签名
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
