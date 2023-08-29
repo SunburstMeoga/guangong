@@ -82,6 +82,7 @@ export default {
         }
     },
     mounted() {
+        this.address = ethereum.selectedAddress
         preAddress(ethereum.selectedAddress)
             .then(res => {
                 this.p_address = res[0]
