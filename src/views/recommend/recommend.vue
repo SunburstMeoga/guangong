@@ -21,10 +21,10 @@
         <div v-if="!isSign">
             <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
                 color="#E20F2A">
-                <van-tab title="上级" class="pt-4">
+                <van-tab title="建立关系" class="pt-4">
                     <HomeIn />
                 </van-tab>
-                <van-tab title="我的推荐" class="pt-4">
+                <van-tab title="我的下级" class="pt-4">
                     <HomeOut />
                 </van-tab>
             </van-tabs>
