@@ -1,9 +1,9 @@
 const recommend = [
-    {
-        path: '/recommend',
-        name: 'recommend',
-        component: () => import('@/views/recommend/recommend')
-    }
-]
+  {
+    path: "/recommend",
+    name: "recommend",
+    component: () => require("@/views/recommend/recommend"),
+  },
+];
 
-export default recommend
+export default recommend;

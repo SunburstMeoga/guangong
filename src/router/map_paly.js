@@ -1,12 +1,12 @@
 const mapPlay = [
-    {
-        path: '/map',
-        name: 'map',
-        component: () => import('@/views/map/index'),
-        meta: {
-            showBar: true
-        }
+  {
+    path: "/map",
+    name: "map",
+    component: () => require("@/views/map/index"),
+    meta: {
+      showBar: true,
     },
-]
+  },
+];
 
- export default mapPlay
+export default mapPlay;
