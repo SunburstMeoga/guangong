@@ -2,7 +2,7 @@ const personal = [
   {
     path: "/personal",
     name: "personal",
-    component: () => require("@/views/personal/personal"),
+    component: () => import("@/views/personal/personal"),
     meta: {
       showBar: true,
     },
@@ -10,7 +10,7 @@ const personal = [
   {
     path: "/assets/:id",
     name: "assets",
-    component: () => require("@/views/personal/details"),
+    component: () => import("@/views/personal/details"),
     meta: {
       showBar: true,
     },
@@ -18,7 +18,7 @@ const personal = [
   {
     path: "/earnings/:type",
     name: "earnings",
-    component: () => require("@/views/personal/earnings"),
+    component: () => import("@/views/personal/earnings"),
     meta: {
       showBar: false,
     },

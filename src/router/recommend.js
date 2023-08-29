@@ -2,7 +2,7 @@ const recommend = [
   {
     path: "/recommend",
     name: "recommend",
-    component: () => require("@/views/recommend/recommend"),
+    component: () => import("@/views/recommend/recommend"),
   },
 ];
 

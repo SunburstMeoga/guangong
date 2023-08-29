@@ -2,7 +2,7 @@ const home = [
   {
     path: "/",
     name: "home",
-    component: () => require("@/views/home/home"),
+    component: () => import("@/views/home/home"),
     meta: {
       showBar: true,
     },
@@ -10,7 +10,7 @@ const home = [
   {
     path: "/market/:id",
     name: "market",
-    component: () => require("@/views/home/details"),
+    component: () => import("@/views/home/details"),
     meta: {
       showBar: true,
     },
@@ -18,7 +18,7 @@ const home = [
   {
     path: "/good/:id",
     name: "good",
-    component: () => require("@/views/home/details"),
+    component: () => import("@/views/home/details"),
     meta: {
       showBar: true,
     },
@@ -26,7 +26,7 @@ const home = [
   {
     path: "/nfts/mall",
     name: "mall/list",
-    component: () => require("@/views/home/nfts"),
+    component: () => import("@/views/home/nfts"),
     meta: {
       showBar: true,
     },
@@ -34,7 +34,7 @@ const home = [
   {
     path: "/nfts/market",
     name: "market/list",
-    component: () => require("@/views/home/nfts"),
+    component: () => import("@/views/home/nfts"),
     meta: {
       showBar: true,
     },
@@ -42,7 +42,7 @@ const home = [
   {
     path: "/checkout/:id",
     name: "checkout",
-    component: () => require("@/views/home/checkout"),
+    component: () => import("@/views/home/checkout"),
     meta: {
       showBar: false,
     },
