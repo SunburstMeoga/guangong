@@ -37,12 +37,14 @@
                         </van-cell>
                         <van-cell title="签名时间:" :value="timeFormat(obj.sign_utc)" />
                         <van-cell>
-                            <a @click="bind(key)">绑定</a>
+                            <div class="buy-button rounded w-full py-3 px-2 text-center text-black text-xl"
+                                @click="bind(key)">绑定
+                            </div>
                         </van-cell>
                     </van-cell-group>
                 </div>
             </template>
-            <div class="w-11/12 mb-4">
+            <!-- <div class="w-11/12 mb-4">
                 <template v-for="obj, key in childs1" :key="key">
                     <van-cell-group inset>
                         <van-cell title="朋友地址:" :value="obj.c_addr">
@@ -52,7 +54,7 @@
                     </van-cell-group>
                     <br />
                 </template>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
