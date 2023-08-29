@@ -87,6 +87,7 @@ export default {
 
     methods: {
         async sign() {
+            this.$loading.show()
             if (!isAddress(this.p_address)) {
                 showFailToast('上级地址错误')
                 return
@@ -125,6 +126,7 @@ export default {
             }
             const ret = await axios.post(`${config.api}friends/${ethereum.selectedAddress}`, obj)
             console.log(ret.data)
+            this.$loading.hide()
             showSuccessToast('签名成功')
         },
         copyAddress() {
