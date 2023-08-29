@@ -75,7 +75,7 @@ export default {
         return {
             address: '',
             p_address: '',
-            share: `${window.location.origin}/recommend?p=${ethereum.selectedAddress}`,
+            share: `${window.location.origin}/#/recommend?p=${ethereum.selectedAddress}`,
             childs0: [],
             childs1: [],
         }
