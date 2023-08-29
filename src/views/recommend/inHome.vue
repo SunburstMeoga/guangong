@@ -68,10 +68,7 @@ import { preAddress } from '@/request/ether_request'
 export default {
     components: { [Cell.name]: Cell, [CellGroup.name]: CellGroup, },
 
-    async mounted() {
-        this.load()
-        console.log(this.share)
-    },
+
     data() {
         return {
             address: '',
@@ -83,6 +80,7 @@ export default {
     },
     mounted() {
         this.address = ethereum.selectedAddress
+        this.load()
         preAddress(ethereum.selectedAddress)
             .then(res => {
                 this.p_address = res[0]
@@ -114,7 +112,9 @@ export default {
             this.childs0 = ret0.data
             const ret1 = await axios.get(`${config.api}friends/childs/${this.address}/1`)
             this.childs1 = ret1.data
+            console.log(ret0, ret1)
         },
+
 
         async bind(key) {
             const sign = this.childs0[key].sign

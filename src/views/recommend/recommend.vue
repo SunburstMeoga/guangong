@@ -68,7 +68,7 @@ export default {
         }
     },
     async created() {
-        if (this.$route.query.p) {
+        if (this.$route.query.p && this.$route.query.p !== ZeroAddress) {
             this.title = '签名'
             this.isSign = true
             this.p_address = this.$route.query.p
