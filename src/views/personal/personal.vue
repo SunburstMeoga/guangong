@@ -63,17 +63,23 @@ export default {
                         modIdList.push(obj)
                     })
                     let assetsList = []
-                    // tokenIds = [...new Set(tokenIds)] //去重
+                    tokenIds = [...new Set(tokenIds)] //去重
 
-                    console.log('tokenIds', tokenIds)
+                    console.log('modIdList', modIdList)
                     modIdList.map(item => {
                         nfts_list.map(_item => {
-                            if (_item.id === item.targetId) {
-                                _item.tokenId = item.tokenId
-                                assetsList.push(_item)
+                            if (item.targetId === _item.id) {
+                                let obj = {}
+                                obj = _item
+                                obj.tokenId = item.tokenId
+                                // _item.tokenId = item.tokenId
+                                // assetsList.push(obj)
+                                console.log(obj)
                             }
                         })
                     })
+                    console.log('assetsList', assetsList)
+                    return
                     assetsList.map(item => {
                         if (item.card_type === 'nft_role') {
                             this.nftTypeList[0].list.push(item)

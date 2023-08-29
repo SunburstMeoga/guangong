@@ -6,7 +6,7 @@
         </div> -->
         <div class="flex justify-between items-center mb-4">
             <div>
-                <span>0x1E7e6F6E85...1a716Eaf5cB</span>
+                <span>{{ address }}</span>
             </div>
             <div class="buy-button py-1 px-2 text-sm text-primary-word rounded">复制地址</div>
         </div>
@@ -72,8 +72,15 @@ export default {
                 '64.4233',
                 '74.5233',
                 '94.1233',
-            ]
+            ],
+            address: ethereum.selectedAddress,
         }
+    },
+    mounted() {
+        if (ethereum.selectedAddress) {
+
+        }
+        this.address = ethereum.selectedAddress || '链接钱包'
     },
     methods: {
         viewEarnings(type) {

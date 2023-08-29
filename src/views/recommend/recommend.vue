@@ -60,6 +60,15 @@ export default {
     },
 
     methods: {
+        copyAddress() {
+            navigator.clipboard.writeText('sfasdfasdf').then(() => {
+                showSuccessToast('复制成功')
+
+            }, () => {
+                Toast.fail(this.$t('toast.copyFail'))
+
+            });
+        },
         cancelPay() {
             window.history.back();
         },

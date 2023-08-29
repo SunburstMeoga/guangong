@@ -26,9 +26,12 @@
             <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4 break-all ">
                 {{ share }}
             </div>
+            <div class="w-11/12 buy-button text-primary-word text-lg py-2 button-word mb-10" @click="copyAddress">
+                复制邀请链接
+            </div>
 
             <template v-for="obj, key in childs0" :key="key">
-                <div class="w-11/12">
+                <div class="w-11/12 mb-4">
                     <van-cell-group inset>
                         <van-cell title="朋友地址:" :value="obj.c_addr">
                         </van-cell>
@@ -39,7 +42,7 @@
                     </van-cell-group>
                 </div>
             </template>
-            <div class="w-11/12">
+            <div class="w-11/12 mb-4">
                 <template v-for="obj, key in childs1" :key="key">
                     <van-cell-group inset>
                         <van-cell title="朋友地址:" :value="obj.c_addr">
@@ -60,6 +63,7 @@ import { config } from '@/const/config'
 import axios from 'axios'
 import { Cell, CellGroup, showSuccessToast } from 'vant'
 import moment from 'moment'
+import { preAddress } from '@/request/ether_request'
 
 export default {
     components: { [Cell.name]: Cell, [CellGroup.name]: CellGroup, },
@@ -77,7 +81,24 @@ export default {
             childs1: [],
         }
     },
+    mounted() {
+        preAddress(ethereum.selectedAddress)
+            .then(res => {
+                this.p_address = res
+            })
+            .catch(err => {
+                console.log('err', err)
+            })
+    },
     methods: {
+        copyAddress() {
+            navigator.clipboard.writeText(this.share).then(() => {
+                showSuccessToast('复制成功')
+            }, () => {
+                // Toast.fail(this.$t('toast.copyFail'))
+
+            });
+        },
         timeFormat(obj) {
             if (obj == null) {
                 return null

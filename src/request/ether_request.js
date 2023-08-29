@@ -71,3 +71,9 @@ export async function setOff(nftId, tokenId) {
   console.log(result);
   return result;
 }
+
+//上级地址
+export async function preAddress(address) {
+  const result = await GAME.spreads(address);
+  return result;
+}
