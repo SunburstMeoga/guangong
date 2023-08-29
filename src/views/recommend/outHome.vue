@@ -24,6 +24,7 @@ import { isAddress } from "ethers"
 import { config } from '@/const/config'
 import axios from 'axios'
 import { showSuccessToast, showFailToast } from 'vant'
+import { preAddress } from '@/request/ether_request'
 
 export default {
     data() {
@@ -38,6 +39,13 @@ export default {
     async mounted() {
         const newUrl = new URL(window.location.href)
         this.p_address = newUrl.searchParams.get('p')
+        preAddress(ethereum.selectedAddress)
+            .then(res => {
+                this.p_address = res[0]
+            })
+            .catch(err => {
+                console.log('err', err)
+            })
         //console.log(this.p_address)
     },
 
