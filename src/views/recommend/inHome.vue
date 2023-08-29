@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="w-11/12 text-left mb-2">上级地址</div>
-            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4">
+            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4 break-all ">
                 <div class="text-sm">{{ p_address }}</div>
             </div>
 
@@ -84,7 +84,7 @@ export default {
     mounted() {
         preAddress(ethereum.selectedAddress)
             .then(res => {
-                this.p_address = res
+                this.p_address = res[0]
             })
             .catch(err => {
                 console.log('err', err)
