@@ -1,62 +1,5 @@
 [
 	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "addr",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "index",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			}
-		],
-		"name": "AddMap",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "previousOwner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "OwnershipTransferred",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "WGT",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -106,36 +49,35 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "delegateAddr",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
+		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": true,
 				"internalType": "address",
-				"name": "",
+				"name": "addr",
 				"type": "address"
-			}
-		],
-		"name": "infos",
-		"outputs": [
+			},
 			{
+				"indexed": false,
 				"internalType": "uint256",
-				"name": "count",
+				"name": "index",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "state",
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"name": "MapUpdate",
+		"type": "event"
 	},
 	{
 		"inputs": [
@@ -151,17 +93,23 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
+		"anonymous": false,
+		"inputs": [
 			{
+				"indexed": true,
 				"internalType": "address",
-				"name": "",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
 				"type": "address"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"name": "OwnershipTransferred",
+		"type": "event"
 	},
 	{
 		"inputs": [],
@@ -230,6 +178,91 @@
 		"name": "worship",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "delegateAddr",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
+			}
+		],
+		"name": "Infos",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address[]",
+						"name": "confirm",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "worship",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint8",
+						"name": "state",
+						"type": "uint8"
+					}
+				],
+				"internalType": "struct Map.map[]",
+				"name": "maps",
+				"type": "tuple[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "count",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "WGT",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

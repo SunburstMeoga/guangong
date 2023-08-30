@@ -66,7 +66,7 @@
 
 <script>
 import { RollingText, showSuccessToast } from 'vant';
-
+import { userLevel } from '@/request/ether_request'
 export default {
     components: { [RollingText.name]: RollingText },
     data() {
@@ -88,8 +88,18 @@ export default {
 
         }
         this.address = ethereum.selectedAddress
+        this.getUserLevel()
     },
     methods: {
+        getUserLevel() {
+            userLevel(ethereum.selectedAddress)
+                .then(res => {
+                    console.log('用户当前等级', res)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
         copyAddress() {
             navigator.clipboard.writeText(this.address).then(() => {
                 showSuccessToast('复制成功')

@@ -108,7 +108,7 @@ export default {
                 showToast('请完善地图信息')
                 return
             }
-
+            this.showUpdataLocation = false
             this.$loading.show()
             getLocationID(ethereum.selectedAddress, {
                 name: this.name,
@@ -126,7 +126,6 @@ export default {
             updataMap(locationID)
                 .then(res => {
                     console.log('标注地址成功', res)
-                    this.$loading.hide()
                     this.showUpdataLocation = false
                     this.getMapLink()
                 })
@@ -137,11 +136,13 @@ export default {
                 })
         },
         getMapLink() {
+            let that = this
             mapLink(ethereum.selectedAddress)
                 .then(res => {
                     console.log('邀请链接', res)
                     navigator.clipboard.writeText(res.data.index).then(() => {
                         showSuccessToast('邀请链接已复制成功')
+                        that.$loading.hide()
                     }, () => {
                         // Toast.fail(this.$t('toast.copyFail'))
 

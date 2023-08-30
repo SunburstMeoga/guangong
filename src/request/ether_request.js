@@ -92,7 +92,7 @@ export async function updataMap(locationID) {
 
 //查看用户标注的地图
 export async function userMarkedMap(address) {
-  const result = await MAP.infos(address);
+  const result = await MAP.Infos(address);
   return result;
 }
 
@@ -101,5 +101,11 @@ export async function buyFortuneCard(id) {
   const tx = await GAMETRADE.buy2(id);
   const result = await tx.wait();
   console.log(result);
+  return result;
+}
+
+//用户贡献值等级
+export async function userLevel(address) {
+  const result = await GAME.getStar(address);
   return result;
 }
