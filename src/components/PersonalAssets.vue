@@ -10,14 +10,21 @@
             </div>
             <div class="buy-button py-1 px-2 text-sm text-primary-word rounded" @click="copyAddress">复制地址</div>
         </div>
-        <div class="mb-6">
-            <div class="">资产总值</div>
+        <div class="mb-6 flex justify-start items-baseline">
+            <div class="">资产总值： </div>
             <div class="text-theme-primary font-bold text-4xl">
                 88.232 WGT
                 <!-- <div class="flex justify-start items-center">
                     <div class="mr-1">US$ </div>
                     <van-rolling-text :text-list="textList" :duration="1" class="my-rolling-text" />
                 </div> -->
+            </div>
+
+        </div>
+        <div class="mb-6">
+            <div class="flex justify-start items-center">
+                <span>个人贡献值级别：</span>
+                <span class="font-bold">忠字传播大使</span>
             </div>
 
         </div>

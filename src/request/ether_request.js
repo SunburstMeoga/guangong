@@ -95,3 +95,11 @@ export async function userMarkedMap(address) {
   const result = await MAP.infos(address);
   return result;
 }
+
+//用户购买财神卡
+export async function buyFortuneCard(id) {
+  const tx = await GAMETRADE.buy2(id);
+  const result = await tx.wait();
+  console.log(result);
+  return result;
+}
