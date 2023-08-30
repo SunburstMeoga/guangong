@@ -3,38 +3,25 @@
         <div class="text-white">
             <div class="w-11/12 ml-auto mr-auto"><module-title titleWord="关公地图" /></div>
             <div class="w-11/12 ml-auto mr-auto py-4 bg-black rounded">
-                <div>
-
+                <div v-for="(item, index) in 5" :key="index">
+                    <festival-card />
                 </div>
             </div>
         </div>
+
+        
+
         <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
             <div class="buy-button text-primary-word text-lg button-word" @click="handleMarking">
                 标注地图
             </div>
         </div>
 
-        <van-popup v-model:show="showMarking">
+
+        <van-popup v-model:show="showUpdataLocation">
             <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
                 <div class=" leading-6 font-helvetica-neue-bold text-base py-6">标注地址</div>
-                <!-- <div class="w-40 h-40 flex justify-center rounded-xl overflow-hidden items-center bg-black mb-3">
-                    <div class="w-32 h-32">
-                        <img src="@/assets/guangong2.png" alt="">
-                    </div>
-                </div>
-                <div class="text-xl mb-2">所需合成材料</div>
-                <div class="text-icon-gray text-base flex justify-between items-end mb-2">
-                    <span class="leading-none mr-6">美髯公 *1</span>
-                    <span class="text-xs">(拥有数量 *12)</span>
-                </div>
-                <div class="text-icon-gray text-base flex justify-between items-end mb-2">
-                    <span class="leading-none mr-6">赤兔马 *1</span>
-                    <span class="text-xs">(拥有数量 *12)</span>
-                </div>
-                <div class="text-icon-gray text-base flex justify-between items-end mb-2">
-                    <span class="leading-none mr-6">青龙偃月刀 *1</span>
-                    <span class="text-xs">(拥有数量 *12)</span>
-                </div> -->
+                
                 <div class="w-11/12 text-sm mb-1">
                     地图名称
                 </div>
@@ -58,7 +45,7 @@
                 </div>
                 <div
                     class="w-11/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded md:hidden">
-                    复制邀请地址
+                   上传标注信息并复制邀请地址
                 </div>
             </div>
         </van-popup>
@@ -67,19 +54,19 @@
 
 <script>
 import { Popup } from 'vant';
-
+import FestivalCard from '@/components/festivalCard'
 import ModuleTitle from '@/components/ModuleTitle'
 export default {
-    components: { ModuleTitle, [Popup.name]: Popup },
+    components: { ModuleTitle, [Popup.name]: Popup, FestivalCard },
     data() {
         return {
             active: 0,
-            showMarking: true,
+            showUpdataLocation: true,
         }
     },
     methods: {
         handleMarking() {
-            this.showMarking = true
+            this.showUpdataLocation = true
         }
     }
 }
