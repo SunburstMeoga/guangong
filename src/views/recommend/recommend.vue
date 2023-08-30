@@ -18,25 +18,30 @@
             </div>
 
         </div>
-        <div v-if="!isSign">
-            <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
-                color="#E20F2A">
-                <van-tab title="建立关系" class="pt-4">
-                    <HomeIn />
-                </van-tab>
-                <van-tab title="我的下级" class="pt-4">
-                    <HomeOut />
-                </van-tab>
-            </van-tabs>
+        <div v-if="isNewUser">
+            新用户
         </div>
-        <div class="flex flex-col text-icon-gray justify-center items-center" v-else>
-            <div class="w-11/12 text-left mb-2">上级地址</div>
-            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-10">
-                <div class="text-sm">{{ p_address }}</div>
+        <div v-else>
+            <div v-if="!isSign">
+                <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
+                    color="#E20F2A">
+                    <van-tab title="建立关系" class="pt-4">
+                        <HomeIn />
+                    </van-tab>
+                    <van-tab title="我的下级" class="pt-4">
+                        <HomeOut />
+                    </van-tab>
+                </van-tabs>
             </div>
-            <div class="w-full py-4 px-4 ">
-                <div class="buy-button text-primary-word text-lg button-word" @click="sign">
-                    签名
+            <div class="flex flex-col text-icon-gray justify-center items-center" v-else>
+                <div class="w-11/12 text-left mb-2">上级地址</div>
+                <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-10">
+                    <div class="text-sm">{{ p_address }}</div>
+                </div>
+                <div class="w-full py-4 px-4 ">
+                    <div class="buy-button text-primary-word text-lg button-word" @click="sign">
+                        签名
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,13 +52,13 @@
 </template>
 
 <script>
-import { Tab, Tabs } from 'vant';
+import { Tab, Tabs, showSuccessToast, showFailToast, showDialog } from 'vant';
 import { ethers, ZeroAddress, isAddress } from "ethers"
 import { config } from '@/const/config'
 import axios from 'axios'
-import { showSuccessToast, showFailToast } from 'vant'
 import HomeIn from './inHome.vue'
 import HomeOut from './outHome.vue'
+import { preAddress } from '@/request/ether_request'
 
 export default {
     components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs },
@@ -64,10 +69,12 @@ export default {
             typeList: [{ text: '建立关系' }, { text: '我的下级' }],
             title: '推荐关系',
             isSign: false,
-            p_address: ''
+            p_address: '',
+            isNewUser: true
         }
     },
     async created() {
+        this.getPreAddress()
         if (this.$route.query.p && this.$route.query.p !== ZeroAddress) {
             this.title = '签名'
             this.isSign = true
@@ -86,6 +93,31 @@ export default {
     },
 
     methods: {
+        getPreAddress() {
+            this.$loading.show()
+            preAddress(ethereum.selectedAddress)
+                .then(res => {
+                    console.log('当前用户上级地址', res)
+                    this.$loading.hide()
+                    if (res[0] === ZeroAddress) {
+                        this.isNewUser = true
+                        showDialog({
+                            message: '当前地址暂无上级，请前往社区寻找上级推荐人',
+                            theme: 'round-button',
+                        }).then(() => {
+                            // on close
+                            window.history.back();
+                        });
+                    } else {
+                        this.isNewUser = false
+                    }
+                })
+                .catch(err => {
+                    this.$loading.hide()
+
+                    console.log('err', err)
+                })
+        },
         async sign() {
             this.$loading.show()
             if (!isAddress(this.p_address)) {
