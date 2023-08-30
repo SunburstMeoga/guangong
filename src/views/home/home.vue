@@ -115,14 +115,14 @@ export default {
     },
     mounted() {
         console.log(nfts_list)
-        nfts_list.map(item => {
-            if (item.card_type === 'tactics_props' || item.card_type === 'expedition_order' || item.card_type === 'synthesis_props') {
-                this.productList.push(item)
-            }
-        })
-        this.productList.push(nfts_list[0])
-        console.log(this.productList)
-        this.showSkeleton = false
+        // nfts_list.map(item => {
+        //     if (item.card_type === 'tactics_props' || item.card_type === 'expedition_order' || item.card_type === 'synthesis_props') {
+        //         this.productList.push(item)
+        //     }
+        // })
+        // this.productList.push(nfts_list[0])
+        // console.log(this.productList)
+
         this.getHotList()
     },
     methods: {
@@ -130,9 +130,19 @@ export default {
             hotList()
                 .then(res => {
                     console.log('热卖', res)
+                    res.data.map(item => {
+                        nfts_list.map(_item => {
+                            if (_item.id === item.t) {
+                                this.productList.push(_item)
+                            }
+                        })
+                    })
+                    // console.log(this.productList)
+                    this.showSkeleton = false
                 })
                 .catch(err => {
                     console.log(err)
+                    this.showSkeleton = false
                 })
         },
         viewGoods() {
