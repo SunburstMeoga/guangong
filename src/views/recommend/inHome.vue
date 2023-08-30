@@ -8,11 +8,11 @@
         </div> -->
         <div class="flex flex-col text-icon-gray justify-center items-center">
             <div class="w-11/12 text-left mb-2">当前地址</div>
-            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-6">
+            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-3">
                 <div class="text-sm">{{ address }}</div>
             </div>
             <div class="w-11/12 text-icon-gray bg-card-introduce py-4 rounded-md px-2 mb-6">
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center text-sm">
                     <div>已邀请</div>
                     <div class="text-theme-primary">{{ childs1.length }}人</div>
                 </div>
@@ -23,12 +23,17 @@
             </div>
 
             <div class="w-11/12 text-left mb-2">邀请链接</div>
-            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4 break-all ">
-                {{ share }}
+            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-6 ">
+                <div class="break-all mb-4 rounded bg-primary-black p-2 text-sm">
+                    {{ share }}
+                </div>
+                <div class="buy-button text-primary-word py-2 rounded text-sm button-word" @click="copyAddress">
+                    复制邀请链接
+                </div>
             </div>
-            <div class="w-11/12 buy-button text-primary-word text-lg py-2 button-word mb-10" @click="copyAddress">
+            <!-- <div class="w-11/12 buy-button text-primary-word text-lg py-2 button-word mb-10" @click="copyAddress">
                 复制邀请链接
-            </div>
+            </div> -->
 
             <template v-for="obj, key in childs0" :key="key">
                 <div class="w-11/12 mb-4">
@@ -37,7 +42,10 @@
                         </van-cell>
                         <van-cell title="签名时间:" :value="timeFormat(obj.sign_utc)" />
                         <van-cell>
-                            <div class="buy-button rounded py-3 px-2 text-center text-black text-sm" @click="bind(key)">绑定
+                            <div class="flex justify-end">
+                                <div class="campaign rounded px-2 py-1 text-center text-black text-sm" @click="bind(key)">
+                                    绑定
+                                </div>
                             </div>
                         </van-cell>
                     </van-cell-group>
@@ -148,12 +156,17 @@ export default {
 }
 
 .button-word {
-    @apply font-medium py-4 rounded flex justify-center items-center
+    @apply rounded flex justify-center items-center
 }
 
 .van-cell {
     background: #1F2937;
     color: #A1A1AA;
     width: 100%;
+}
+
+.campaign {
+    background: rgb(89, 32, 116);
+    background: linear-gradient(90deg, rgba(89, 32, 116, 1) 5%, rgba(115, 29, 120, 1) 37%, rgba(185, 20, 131, 1) 76%, rgba(226, 15, 138, 1) 100%);
 }
 </style>
