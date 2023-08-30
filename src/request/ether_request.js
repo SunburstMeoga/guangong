@@ -6,8 +6,8 @@ const provider = new ethers.BrowserProvider(window.ethereum);
 const signer = await provider.getSigner();
 const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider);
 const WGT = new ethers.Contract(config.wgt_addr, config.erc20_abi, provider);
-const MAPTRADE = new ethers.Contract(config.mao, config.erc20_abi, signer);
-
+const MAP = new ethers.Contract(config.map_addr, config.map_abi, provider);
+const MAPTRADE = new ethers.Contract(config.map_addr, config.map_abi, signer);
 const GAMETRADE = new ethers.Contract(
   config.game_addr,
   config.game_abi,
@@ -80,4 +80,18 @@ export async function preAddress(address) {
 }
 
 //上传标注地址
-export async function updataMap(locationID) {}
+export async function updataMap(locationID) {
+  const tx = await MAPTRADE.update(locationID, {
+    gasLimit: 9999999,
+  });
+  const result = await tx.wait();
+  console.log(result);
+
+  return result;
+}
+
+//查看用户标注的地图
+export async function userMarkedMap(address) {
+  const result = await MAP.infos(address);
+  return result;
+}
