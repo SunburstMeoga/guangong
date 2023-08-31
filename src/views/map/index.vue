@@ -1,6 +1,6 @@
 <template>
     <div class="pt-24">
-        <div v-if="isConfirm">
+        <div v-if="!isConfirm">
             <div class="text-white">
                 <div class="w-11/12 ml-auto mr-auto"><module-title titleWord="关公地图" /></div>
                 <div class="w-11/12 ml-auto mr-auto py-4">
@@ -10,13 +10,11 @@
                 </div>
             </div>
 
-
-
             <div class="fixed left-0 bottom-0 flex justify-between items-center w-full py-4 px-4 bg-bottom-content">
                 <div class="buy-button w-5/12 text-primary-word text-lg button-word" @click="handleMarking">
                     标注地图
                 </div>
-                <div class="campaign w-5/12 text-primary-word text-lg button-word" @click="handleMarking">
+                <div class="campaign w-5/12 text-primary-word text-lg button-word" @click="viewMyMarked">
                     我的标注
                 </div>
             </div>
@@ -30,14 +28,14 @@
                         地图名称
                     </div>
                     <div
-                        class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded md:hidden">
+                        class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
                         <input class="w-full h-full bg-bottom-content" type="text" v-model="name" placeholder="请输入地图名称">
                     </div>
                     <div class="w-11/12 text-sm mb-1">
                         地图地址
                     </div>
                     <div
-                        class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded md:hidden">
+                        class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
                         <input class="w-full h-full bg-bottom-content" type="text" v-model="map_address"
                             placeholder="请输入地图地址">
                     </div>
@@ -45,17 +43,17 @@
                         地图ID(任意整数)
                     </div>
                     <div
-                        class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded md:hidden">
+                        class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
                         <input class="w-full h-full bg-bottom-content" type="text" v-model="locationID" placeholder="请输入地图ID">
                     </div> -->
                     <!-- <div class="w-11/12 text-sm mb-1">
                         邀请链接
                     </div>
                     <div
-                        class="w-11/12 break-all mb-4 text-tips-word bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded md:hidden">
+                        class="w-11/12 break-all mb-4 text-tips-word bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
                         http://localhost:8081/recommend?p=0x1e7e6f6e85668dd1783f3f94a45f71a716eaf5cb
                     </div> -->
-                    <div class="w-11/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded md:hidden"
+                    <div class="w-11/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
                         @click="handleUpdataLocation">
                         上传标注信息
                     </div>
@@ -63,7 +61,37 @@
             </van-popup>
         </div>
         <div v-else class="text-white">
-            确认
+            <van-popup v-model:show="showConfirm">
+                <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
+                    <div class=" leading-6 font-helvetica-neue-bold text-base py-6">邀请确认</div>
+                    <div class="w-11/12 text-sm mb-1">
+                        地图ID
+                    </div>
+                    <div
+                        class="mb-4 w-11/12 break-all   bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                        # {{ tobeConfirmMap.id }}
+                    </div>
+                    <div class="w-11/12 text-sm mb-1">
+                        地图名称
+                    </div>
+                    <div
+                        class="mb-4 w-11/12 break-all   bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                        {{ tobeConfirmMap.name }}
+                    </div>
+                    <div class="w-11/12 text-sm mb-1">
+                        地图地址
+                    </div>
+                    <div
+                        class="mb-8 w-11/12 break-all   bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                        {{ tobeConfirmMap.map_address }}
+                    </div>
+
+                    <div class="w-11/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="otherConfirmMapInfo">
+                        确认
+                    </div>
+                </div>
+            </van-popup>
         </div>
     </div>
 </template>
@@ -72,8 +100,8 @@
 import { Popup, showToast, showSuccessToast } from 'vant';
 import FestivalCard from '@/components/festivalCard'
 import ModuleTitle from '@/components/ModuleTitle'
-import { updataMap, userMarkedMap } from '@/request/ether_request'
-import { getLocationID, mapLink } from '@/request/api_request'
+import { markMap, confirmMapInfo } from '@/request/ether_request'
+import { getLocationID, userMarkedMapList, userMarkedDetials } from '@/request/api_request'
 export default {
     components: { ModuleTitle, [Popup.name]: Popup, FestivalCard },
     data() {
@@ -83,22 +111,63 @@ export default {
             locationID: null,
             map_address: null,
             name: null,
-            isConfirm: true
+            isConfirm: false,
+            uploadAddress: '',
+            mapIndex: 0,
+            showConfirm: true,
+            mapID: 0,
+            tobeConfirmMap: {}
         }
     },
     mounted() {
-        this.getUserMarkedMap()
+        console.log(this.$route.query)
+        if (this.$route.query.uploadAddress) {
+            this.$loading.show()
+            this.uploadAddress = this.$route.query.uploadAddress
+            this.mapIndex = this.$route.query.index
+            this.mapID = this.$route.query.mapID
+            this.getUserMarkedDetials()
+            this.isConfirm = true
+        }
     },
     methods: {
-        //查看用户标注过的地图
-        getUserMarkedMap() {
-            userMarkedMap(ethereum.selectedAddress)
+        //被邀请玩家进行确认操作
+        otherConfirmMapInfo() {
+            this.$loading.show()
+            console.log(this.uploadAddress, this.mapIndex)
+            confirmMapInfo(this.uploadAddress, this.mapIndex)
                 .then(res => {
-                    console.log('当前用户标注过地图', res)
+                    console.log('已确认', res)
+                    showSuccessToast('已确认该地址')
+                    this.$loading.hide()
+
+                    this.$router.push({
+                        path: '/'
+                    })
                 })
                 .catch(err => {
                     console.log('err', err)
+                    this.$loading.hide()
+
                 })
+        },
+        //查看用户标注过的地图
+        getUserMarkedDetials() {
+            userMarkedDetials(this.mapID)
+                .then(res => {
+                    console.log('地图详情', res)
+                    this.tobeConfirmMap = res.data
+                    this.$loading.hide()
+                })
+                .catch(err => {
+                    console.log('err', err)
+                    this.$loading.hide()
+                })
+        },
+        viewMyMarked() {
+            this.$router.push({
+                path: '/map/my-marked'
+            })
         },
         handleMarking() {
             this.showUpdataLocation = true
@@ -116,14 +185,14 @@ export default {
             })
                 .then(res => {
                     console.log('上传成功的地址信息', res)
-                    this.updataMapLocation(res.data.id)
+                    this.markMapLocation(res.data.id)
                 })
                 .catch(err => {
                     this.$loading.hide()
                 })
         },
-        updataMapLocation(locationID) {
-            updataMap(locationID)
+        markMapLocation(locationID) {
+            markMap(locationID)
                 .then(res => {
                     console.log('标注地址成功', res)
                     this.showUpdataLocation = false
@@ -137,7 +206,7 @@ export default {
         },
         getMapLink() {
             let that = this
-            mapLink(ethereum.selectedAddress)
+            userMarkedMapList(ethereum.selectedAddress)
                 .then(res => {
                     console.log('邀请链接', res)
                     navigator.clipboard.writeText(res.data.index).then(() => {

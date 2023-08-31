@@ -13,7 +13,7 @@
                 <div class="attribute-lable mb-2">请选择香火价位进行祭拜</div>
                 <div class="flex justify-between items-center">
                     <div v-for="(item, index) in priceList" :key="index"
-                        class="px-2 bg-more-content text-icon-gray rounded-md"
+                        class="px-2 bg-more-content text-icon-gray text-sm rounded-md"
                         :class="currentPrice === index ? 'buy-button' : ''" @click="handlePrice(index)">
                         {{ item.price }}
                     </div>
@@ -55,7 +55,7 @@ export default {
 }
 
 .attribute-lable {
-    @apply text-card-content text-sm;
+    @apply text-tips-word text-sm;
 }
 
 .buy-button {

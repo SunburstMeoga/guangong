@@ -19,8 +19,14 @@ export async function getLocationID(address, obj) {
   return result;
 }
 
-//查看用户标注的地图邀请链接
-export async function mapLink(address) {
+//查看用户标注的地图
+export async function userMarkedMapList(address) {
   const result = await axios.get(`${config.api}map/${address}`);
+  return result;
+}
+
+//查看用户的标注地图详情
+export async function userMarkedDetials(mapID) {
+  const result = await axios.get(`${config.api}map/id/${mapID}`);
   return result;
 }

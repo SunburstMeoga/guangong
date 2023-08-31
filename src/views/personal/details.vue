@@ -195,11 +195,11 @@
                     <span class="leading-none mr-6">青龙偃月刀 *1</span>
                     <span class="text-xs">(拥有数量 *12)</span>
                 </div>
-                <div class="w-11/12 mt-4 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded md:hidden"
+                <div class="w-11/12 mt-4 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
                     @click="showSynthesis = false">
                     确认合成
                 </div>
-                <div class="w-11/12 mt-4 text-tips-word bg-bottom-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded md:hidden"
+                <div class="w-11/12 mt-4 text-tips-word bg-bottom-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
                     @click="showSynthesis = false">
                     取消
                 </div>

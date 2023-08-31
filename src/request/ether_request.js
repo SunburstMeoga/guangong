@@ -79,7 +79,7 @@ export async function preAddress(address) {
   return result;
 }
 
-//上传标注地址
+//标注关公地图
 export async function updataMap(locationID) {
   const tx = await MAPTRADE.update(locationID, {
     gasLimit: 9999999,
@@ -90,9 +90,29 @@ export async function updataMap(locationID) {
   return result;
 }
 
-//查看用户标注的地图
+//查看用户已标注的关公地图列表
 export async function userMarkedMap(address) {
   const result = await MAP.Infos(address);
+  return result;
+}
+
+//上传标注的关公地图
+export async function markMap(mapIndex) {
+  const tx = await MAPTRADE.mark(mapIndex, {
+    gasLimit: 9999999,
+  });
+  const result = await tx.wait();
+  console.log(result);
+
+  return result;
+}
+
+//被邀请玩家确认关公地图数据
+export async function confirmMapInfo(uploaderAddress, mapIndex) {
+  const tx = await MAPTRADE.confirm(uploaderAddress, mapIndex);
+  const result = await tx.wait();
+  console.log(result);
+
   return result;
 }
 
