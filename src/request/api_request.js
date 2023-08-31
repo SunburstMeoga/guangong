@@ -25,8 +25,14 @@ export async function userMarkedMapList(address) {
   return result;
 }
 
-//查看用户的标注地图详情
+//查看用户上传的地图详情
 export async function userMarkedDetials(mapID) {
   const result = await axios.get(`${config.api}map/id/${mapID}`);
+  return result;
+}
+
+//关公祭地图列表
+export async function worshipList() {
+  const result = await axios.get(`${config.api}map/worship`);
   return result;
 }

@@ -1,30 +1,38 @@
-import erc20_abi from "./erc20.json";
-import erc721_abi from "./erc721.json";
-import game_abi from "./game.json";
-import market_abi from "./market.json";
-import map_abi from "./map.json";
+import erc20_abi from './erc20.json'
+import erc721_abi from './erc721.json'
+import game_abi from './game.json'
+import market_abi from './market.json'
+import map_abi from './map.json'
+import popularized_abi from './popularized.json'
 
 const config = {
-  erc20_abi: erc20_abi,
-  erc721_abi: erc721_abi,
-  game_abi: game_abi,
-  market_abi: market_abi,
-  map_abi: map_abi,
-  usdt_addr: "0x1728Dae76dDCa4739Fe69e4B9633967f2e18B086",
-  wgt_addr: "0x1c088A864fae8C82B1B2684274c906aBd89eeE83",
-  nft_addr: "0x895aD9A2DEb2d493635130b481A8e4E246945FEA",
-  game_addr: "0xcA3431db0C443b8b1c2A07968F0f6ECdf19fb0e4",
-  market_addr: "0x41b613D29E81c64cA5e21787E75938dB734eFB5F",
-  map_addr: "0x85901424CeE58A6579193B95DD029832b622162F",
-  /*
+    erc20_abi: erc20_abi,
+    erc721_abi: erc721_abi,
+    game_abi: game_abi,
+    market_abi: market_abi,
+    map_abi: map_abi,
+    popularized_abi: popularized_abi,
     usdt_addr: '0xc0cf857BdC00c6eF5544aD5E920edd9848CCb9C8',
     wgt_addr: '0x5E822d2c5b16F1a4Be09839a397E636DF1136Fc8',
-    nft_addr: '0x2f0D258388b9d2945b66b111BF9159bFf39f7847',
-    game_addr: '0xEFDBe94717E7361ac8A6c46564afd789E481b1e3',
-    market_addr: '0xEFDBe94717E7361ac8A6c46564afd789E481b1e3',
-    */
-  api: "http://47.115.211.205/api/",
-  chainId: "0xb63f",
-};
+    popularized_addr: '0xd3E1F69D5660a121CB0d2e67B9d19E752337cd26',
+    map_addr: '0xeDd2Df0361407F8A450FEd578761cB590B7cd448',
 
-export { config };
+    nft_addr: '0xf09E5b3dA649f8b4f102BC689527650360da9Cdb',
+    game_addr: '0xa30Fdf5D8498e5F5BfcCA0FaF0b3fC58d057D97a',
+    market_addr: '0xE825e3dA37Eb0D8B7eb7b278b2236258903e591d',
+    
+    api: 'http://47.115.211.205/api/',
+    chainId: '0xb63f',
+    // 1 设置NFTbaseURL
+    // 2
+    /*
+    usdt_addr: '0x8a6dbe0328Dd98FCfA70a6d182A05B3cBBaB3b07',
+    wgt_addr: '0xce6D840Cf15a89a231ef00aE1418E37ce43d5e1f',
+    nft_addr: '0xEFDBe94717E7361ac8A6c46564afd789E481b1e3',
+    game_addr: '0x6DAE86606ef4Fa20eC317261bf8c7A2252840595',
+    market_addr: '0x3C1014b8C5710780341111bfA0b5691B2daf38D1',
+    chainId: '0x11623',
+    */
+}
+
+export { config }

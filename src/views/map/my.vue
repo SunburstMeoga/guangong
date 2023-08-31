@@ -3,7 +3,7 @@
         <div class="py-8">
             <div class="w-11/12 ml-auto mr-auto relative flex justify-center items-center text-card-content mb-4">
                 <div class="icon iconfont icon-left absolute left-1" style="font-size: 24px;" @click="cancelPay()"></div>
-                <div class="">我标注的地址</div>
+                <div class="">我上传的地图</div>
             </div>
         </div>
         <div class="text-white">
@@ -35,8 +35,9 @@ export default {
     },
     methods: {
         viewMyMarkedDetails(item) {
+            console.log(item)
             this.$router.push({
-                path: '/map/marked-details/' + item.id
+                path: '/map/my-details/' + item.id
             })
         },
         cancelPay() {

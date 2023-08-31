@@ -8,17 +8,17 @@ const mapPlay = [
     },
   },
   {
-    path: "/map/my-marked",
-    name: "my-marked",
+    path: "/map/my-maps",
+    name: "my-maps",
     component: () => import("@/views/map/my"),
     meta: {
       showBar: false,
     },
   },
   {
-    path: "/map/marked-details/:id",
-    name: "marked-details",
-    component: () => import("@/views/map/markedDetails"),
+    path: "/map/my-details/:id",
+    name: "my-details",
+    component: () => import("@/views/map/myMapDetails"),
     meta: {
       showBar: false,
     },

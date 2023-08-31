@@ -199,6 +199,52 @@
 				"internalType": "address",
 				"name": "addr",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "GetMap",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address[]",
+						"name": "confirm",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "worship",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint8",
+						"name": "state",
+						"type": "uint8"
+					}
+				],
+				"internalType": "struct Map.map",
+				"name": "m",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
 			}
 		],
 		"name": "Infos",

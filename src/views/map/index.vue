@@ -4,7 +4,7 @@
             <div class="text-white">
                 <div class="w-11/12 ml-auto mr-auto"><module-title titleWord="关公地图" /></div>
                 <div class="w-11/12 ml-auto mr-auto py-4">
-                    <div v-for="(item, index) in 5" :key="index" class="bg-black rounded mb-4">
+                    <div v-for="(item, index) in worshipsList" :key="index" class="bg-black rounded mb-4">
                         <festival-card />
                     </div>
                 </div>
@@ -12,17 +12,17 @@
 
             <div class="fixed left-0 bottom-0 flex justify-between items-center w-full py-4 px-4 bg-bottom-content">
                 <div class="buy-button w-5/12 text-primary-word text-lg button-word" @click="handleMarking">
-                    标注地图
+                    上传地图
                 </div>
                 <div class="campaign w-5/12 text-primary-word text-lg button-word" @click="viewMyMarked">
-                    我的标注
+                    我的地图
                 </div>
             </div>
 
 
             <van-popup v-model:show="showUpdataLocation">
                 <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
-                    <div class=" leading-6 font-helvetica-neue-bold text-base py-6">标注地址</div>
+                    <div class=" leading-6 font-helvetica-neue-bold text-base py-6">上传地图</div>
 
                     <div class="w-11/12 text-sm mb-1">
                         地图名称
@@ -35,7 +35,7 @@
                         地图地址
                     </div>
                     <div
-                        class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                        class="mb-8 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
                         <input class="w-full h-full bg-bottom-content" type="text" v-model="map_address"
                             placeholder="请输入地图地址">
                     </div>
@@ -55,7 +55,7 @@
                     </div> -->
                     <div class="w-11/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
                         @click="handleUpdataLocation">
-                        上传标注信息
+                        上传地图信息
                     </div>
                 </div>
             </van-popup>
@@ -97,13 +97,13 @@
 </template>
 
 <script>
-import { Popup, showToast, showSuccessToast } from 'vant';
+import { Popup, showToast, showSuccessToast, showDialog } from 'vant';
 import FestivalCard from '@/components/festivalCard'
 import ModuleTitle from '@/components/ModuleTitle'
-import { markMap, confirmMapInfo } from '@/request/ether_request'
-import { getLocationID, userMarkedMapList, userMarkedDetials } from '@/request/api_request'
+import { markMap, confirmMapInfo, updataMap } from '@/request/ether_request'
+import { getLocationID, userMarkedMapList, userMarkedDetials, worshipList } from '@/request/api_request'
 export default {
-    components: { ModuleTitle, [Popup.name]: Popup, FestivalCard },
+    components: { ModuleTitle, [Popup.name]: Popup, FestivalCard, },
     data() {
         return {
             active: 0,
@@ -116,11 +116,14 @@ export default {
             mapIndex: 0,
             showConfirm: true,
             mapID: 0,
-            tobeConfirmMap: {}
+            tobeConfirmMap: {},
+            worshipsList: [],
+            shareUrl: ''
         }
     },
     mounted() {
         console.log(this.$route.query)
+        this.getWorshipList()
         if (this.$route.query.uploadAddress) {
             this.$loading.show()
             this.uploadAddress = this.$route.query.uploadAddress
@@ -131,19 +134,60 @@ export default {
         }
     },
     methods: {
+        userUpdataMap(locationID) {
+            updataMap(locationID)
+                .then(res => {
+                    this.$loading.hide()
+                    console.log('上传地图id到智能合约', res)
+                    navigator.clipboard.writeText(this.shareUrl).then(() => {
+                        showDialog({
+                            title: '上传地图成功',
+                            message: '地图已上传成功，并已复制邀请链接',
+                        }).then(() => {
+
+                        });
+                    }, () => {
+                        showDialog({
+                            title: '上传地图成功',
+                            message: '地图已上传成功!',
+                        }).then(() => {
+
+                        });
+                    });
+
+                })
+                .catch(err => {
+                    this.$loading.hide
+                    console.log('err', err)
+                })
+        },
+        //关公祭列表
+        getWorshipList() {
+            worshipList()
+                .then(res => {
+                    console.log("关公祭列表", res)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
         //被邀请玩家进行确认操作
         otherConfirmMapInfo() {
+            let that = this
             this.$loading.show()
             console.log(this.uploadAddress, this.mapIndex)
             confirmMapInfo(this.uploadAddress, this.mapIndex)
                 .then(res => {
                     console.log('已确认', res)
-                    showSuccessToast('已确认该地址')
                     this.$loading.hide()
-
-                    this.$router.push({
-                        path: '/'
-                    })
+                    showDialog({
+                        message: '已确认该地址',
+                        theme: 'round-button',
+                    }).then(() => {
+                        that.$router.push({
+                            path: '/'
+                        })
+                    });
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -151,7 +195,7 @@ export default {
 
                 })
         },
-        //查看用户标注过的地图
+        //待确认的地图信息
         getUserMarkedDetials() {
             userMarkedDetials(this.mapID)
                 .then(res => {
@@ -166,33 +210,39 @@ export default {
         },
         viewMyMarked() {
             this.$router.push({
-                path: '/map/my-marked'
+                path: '/map/my-maps'
             })
         },
         handleMarking() {
             this.showUpdataLocation = true
         },
         handleUpdataLocation() {
-            if (!this.name || !this.map_address) {
+            let that = this
+            console.log(window.location)
+            // return
+            if (!that.name || !that.map_address) {
                 showToast('请完善地图信息')
                 return
             }
             this.showUpdataLocation = false
             this.$loading.show()
-            getLocationID(ethereum.selectedAddress, {
+            console.log(ethereum.selectedAddress)
+            getLocationID(window.ethereum.selectedAddress, {
                 name: this.name,
                 map_address: this.map_address
             })
                 .then(res => {
                     console.log('上传成功的地址信息', res)
-                    this.markMapLocation(res.data.id)
+                    this.shareUrl = `${window.location.href}?uploadAddress=${window.ethereum.selectedAddress}&index=${res.data.index}&mapID=${res.data.id}`
+                    this.userUpdataMap(res.data.id)
                 })
                 .catch(err => {
+                    console.log('err', err)
                     this.$loading.hide()
                 })
         },
-        markMapLocation(locationID) {
-            markMap(locationID)
+        markMapLocation(mapIndex) {
+            markMap(mapIndex)
                 .then(res => {
                     console.log('标注地址成功', res)
                     this.showUpdataLocation = false
@@ -209,7 +259,9 @@ export default {
             userMarkedMapList(ethereum.selectedAddress)
                 .then(res => {
                     console.log('邀请链接', res)
-                    navigator.clipboard.writeText(res.data.index).then(() => {
+                    let url = `${window.loacation.href}?uploadAddress=${window.ethereum.selectedAddress}&index=${res.data.index}&mapID=${$res.data.id}`
+                    console.log(url)
+                    navigator.clipboard.writeText(url).then(() => {
                         showSuccessToast('邀请链接已复制成功')
                         that.$loading.hide()
                     }, () => {
@@ -231,7 +283,7 @@ export default {
 }
 
 .button-word {
-    @apply font-medium py-4 rounded flex justify-center items-center
+    @apply font-medium py-3 rounded flex justify-center items-center
 }
 
 .campaign {

@@ -8,7 +8,7 @@
                 </div>
                 <div class="attribute-item">
                     <div class="attribute-lable">地图ID：</div>
-                    <div class="text-card-content text-sm"># {{ mapID }}</div>
+                    <div class="text-card-content text-sm">#{{ mapID }}</div>
                 </div>
                 <div class="attribute-item">
                     <div class="attribute-lable">地图位置：</div>
