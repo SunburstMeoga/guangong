@@ -102,9 +102,20 @@ export async function userMarkedDetials(address, mapIndex) {
   return result;
 }
 
-//上传标注的关公地图
+//申请认证关公地图
 export async function markMap(mapIndex) {
   const tx = await MAPTRADE.mark(mapIndex, {
+    gasLimit: 9999999,
+  });
+  const result = await tx.wait();
+  console.log(result);
+
+  return result;
+}
+
+//撤销已认证的关公地图
+export async function cancelMarkMap(address, mapIndex) {
+  const tx = await MAPTRADE.checkMark(address, mapIndex, {
     gasLimit: 9999999,
   });
   const result = await tx.wait();

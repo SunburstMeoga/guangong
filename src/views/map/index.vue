@@ -61,7 +61,7 @@
             </van-popup>
         </div>
         <div v-else class="text-white">
-            <van-popup v-model:show="showConfirm">
+            <van-popup v-model:show="showConfirm" :close-on-click-overlay="false">
                 <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
                     <div class=" leading-6 font-helvetica-neue-bold text-base py-6">邀请确认</div>
                     <div class="w-11/12 text-sm mb-1">
@@ -192,7 +192,7 @@ export default {
                 .catch(err => {
                     console.log('err', err)
                     this.$loading.hide()
-
+                    showToast('确认失败，请重新确认')
                 })
         },
         //待确认的地图信息
