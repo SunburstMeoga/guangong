@@ -220,7 +220,7 @@ export default {
             buy(this.nftInfor.id)
                 .then((res) => {
                     this.$loading.hide()
-                    showSuccessToast('购买成功')
+                    // showSuccessToast('购买成功')
                     console.log(res)
                 })
                 .catch((err) => {

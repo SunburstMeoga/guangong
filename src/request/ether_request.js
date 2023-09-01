@@ -46,7 +46,6 @@ export async function approve(contractAddress) {
 
 //购买nft
 export async function buy(nftId) {
-  console.log("购买的nftid", nftId);
   const tx = await GAMETRADE.buy(nftId);
   const result = await tx.wait();
   console.log(result);
@@ -157,5 +156,11 @@ export async function worship(uploadAddress, mapIndex, amount) {
     ethers.parseEther(amount)
   );
   const result = await tx.wait();
+  return result;
+}
+
+//用户收益查询
+export async function userInfo(address) {
+  const result = GAME.UserInfo(address);
   return result;
 }
