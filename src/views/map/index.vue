@@ -174,6 +174,7 @@ export default {
         //被邀请玩家进行确认操作
         otherConfirmMapInfo() {
             let that = this
+            console.log(this.uploadAddress, this.mapIndex, window.ethereum.selectedAddress)
             this.$loading.show()
             console.log(this.uploadAddress, this.mapIndex)
             confirmMapInfo(this.uploadAddress, this.mapIndex)

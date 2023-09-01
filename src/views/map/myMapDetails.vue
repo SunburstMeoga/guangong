@@ -76,11 +76,14 @@
             </div>
         </div>
 
-        <div class="fixed left-0 bottom-0 flex justify-between items-center w-full py-4 px-4 bg-bottom-content">
-            <div class="buy-button w-5/12 text-primary-word text-lg button-word" @click="markMapLocation">
+        <div class="fixed left-0 bottom-0 flex justify-between items-center w-full py-4 px-4 bg-bottom-content"
+            v-if="mapInfo.state === 1 || mapInfo.state === 3">
+            <div class="buy-button w-11/12 text-primary-word text-lg button-word" @click="markMapLocation"
+                v-if="mapInfo.state === 1">
                 申请认证
             </div>
-            <div class="campaign w-5/12 text-primary-word text-lg button-word" @click="cancelMapLocation">
+            <div class="campaign w-11/12 text-primary-word text-lg button-word" @click="cancelMapLocation"
+                v-if="mapInfo.state === 3">
                 撤销认证
             </div>
         </div>
