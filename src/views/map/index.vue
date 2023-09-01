@@ -5,7 +5,7 @@
                 <div class="w-11/12 ml-auto mr-auto"><module-title titleWord="关公地图" /></div>
                 <div class="w-11/12 ml-auto mr-auto py-4">
                     <div v-for="(item, index) in worshipsList" :key="index" class="bg-black rounded mb-4">
-                        <festival-card />
+                        <festival-card :cardInfo="item" @handlewWrship="toWrship" />
                     </div>
                 </div>
             </div>
@@ -93,6 +93,12 @@
                 </div>
             </van-popup>
         </div>
+
+        <van-popup v-model:show="showWorship" :close-on-click-overlay="false">
+            <div class="text-card-content bg-cover-content flex w-80 flex-col justify-start items-center">
+                <img src="@/assets/worship.gif" alt="">
+            </div>
+        </van-popup>
     </div>
 </template>
 
@@ -100,7 +106,7 @@
 import { Popup, showToast, showSuccessToast, showDialog } from 'vant';
 import FestivalCard from '@/components/festivalCard'
 import ModuleTitle from '@/components/ModuleTitle'
-import { markMap, confirmMapInfo, updataMap } from '@/request/ether_request'
+import { markMap, confirmMapInfo, updataMap, worship } from '@/request/ether_request'
 import { getLocationID, userMarkedMapList, userMarkedDetials, worshipList } from '@/request/api_request'
 export default {
     components: { ModuleTitle, [Popup.name]: Popup, FestivalCard, },
@@ -118,7 +124,8 @@ export default {
             mapID: 0,
             tobeConfirmMap: {},
             worshipsList: [],
-            shareUrl: ''
+            shareUrl: '',
+            showWorship: false
         }
     },
     mounted() {
@@ -134,6 +141,21 @@ export default {
         }
     },
     methods: {
+        //祭拜
+        toWrship(price, cardInfo) {
+            this.$loading.show()
+            console.log(price, cardInfo)
+            worship(cardInfo.address, cardInfo.index, price)
+                .then(res => {
+                    this.$loading.hide()
+                    showToast('祭拜成功', res)
+                    // this.showWorship = true
+                })
+                .catch(err => {
+                    this.$loading.hide()
+                    showToast('祭拜失败，请重试')
+                })
+        },
         userUpdataMap(locationID) {
             updataMap(locationID)
                 .then(res => {
@@ -166,6 +188,7 @@ export default {
             worshipList()
                 .then(res => {
                     console.log("关公祭列表", res)
+                    this.worshipsList = res.data
                 })
                 .catch(err => {
                     console.log('err', err)

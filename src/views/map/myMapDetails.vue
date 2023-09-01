@@ -10,13 +10,17 @@
             <div
                 class="w-11/12 px-2 py-4 ml-auto mr-auto bg-cover-content flex justify-start items-center rounded text-white mb-4">
                 <div class="mr-3">
-                    <span class="relative flex h-4 w-4">
-                        <!-- <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-4 w-4 bg-green-500"></span> -->
+                    <span class="relative flex h-4 w-4" v-if="mapInfo.state === 0 || mapInfo.state === 2">
+
                         <span
                             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-4 w-4 bg-orange-500"></span>
+                    </span>
+                    <span class="relative flex h-4 w-4" v-if="mapInfo.state === 1 || mapInfo.state === 3">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-4 w-4 bg-green-500"></span>
+
                     </span>
                 </div>
                 <div>
@@ -30,19 +34,19 @@
             <div class="w-11/12 ml-auto p-2 mr-auto bg-cover-content rounded text-white mb-8">
                 <div class="attribute-item">
                     <div class="attribute-lable">地图名称：</div>
-                    <div class="text-card-content text-sm">{{ mapInfo.name }}</div>
+                    <div class="text-card-content text-sm text-right">{{ mapInfo.name }}</div>
                 </div>
                 <div class="attribute-item">
                     <div class="attribute-lable">地图ID：</div>
-                    <div class="text-card-content text-sm">#{{ mapInfo.id }}</div>
+                    <div class="text-card-content text-sm text-right">#{{ mapInfo.id }}</div>
                 </div>
                 <div class="attribute-item">
                     <div class="attribute-lable">关公祭金额：</div>
-                    <div class="text-card-content text-sm">{{ mapInfo.worship }} WGT</div>
+                    <div class="text-card-content text-sm text-right">{{ mapInfo.worship }} WGT</div>
                 </div>
                 <div class="attribute-item">
                     <div class="attribute-lable">地图数据位置：</div>
-                    <div class="text-card-content text-sm">{{ mapInfo.index }}</div>
+                    <div class="text-card-content text-sm text-right">{{ mapInfo.index }}</div>
                 </div>
                 <!-- <div class="attribute-item">
                     <div class="attribute-lable w-3/12">邀请链接：</div>
@@ -67,7 +71,7 @@
             </div>
             <div v-if="confirmsList.length !== 0">
                 <div class="w-11/12 ml-auto p-2 mr-auto bg-cover-content rounded text-white text-sm mb-2"
-                    v-for="(item, index) in confirmsList.length" :key="index">
+                    v-for="(item, index) in confirmsList" :key="index">
                     {{ item }}
                 </div>
             </div>
@@ -78,11 +82,11 @@
 
         <div class="fixed left-0 bottom-0 flex justify-between items-center w-full py-4 px-4 bg-bottom-content"
             v-if="mapInfo.state === 1 || mapInfo.state === 3">
-            <div class="buy-button w-11/12 text-primary-word text-lg button-word" @click="markMapLocation"
+            <div class="buy-button w-full text-primary-word text-lg button-word" @click="handleMarkMap"
                 v-if="mapInfo.state === 1">
                 申请认证
             </div>
-            <div class="campaign w-11/12 text-primary-word text-lg button-word" @click="cancelMapLocation"
+            <div class="campaign w-full text-primary-word text-lg button-word" @click="handleCancelMarkMap"
                 v-if="mapInfo.state === 3">
                 撤销认证
             </div>
@@ -94,8 +98,9 @@
 
 <script>
 import { userMarkedDetials } from '@/request/api_request'
-import { markMap, cancelMarkMap } from '@/request/ether_request'
+import { markMap, cancelMarkMap, approve, isAllowance } from '@/request/ether_request'
 import { showToast } from 'vant'
+import { config } from '@/const/config'
 
 export default {
     data() {
@@ -121,27 +126,59 @@ export default {
             });
         },
         //撤销认证
-        cancelMapLocation() {
-            cancelMarkMap()
+        handleCancelMarkMap() {
+            this.$loading.show()
+            cancelMarkMap(this.mapInfo.index)
                 .then(res => {
                     console.log('取消认证', res)
+                    this.getUserMarkedDetials()
+                    showToast('撤销成功')
+
                 })
                 .catch(err => {
                     console.log('err', err)
+                    this.$loading.hide()
+
                 })
         },
+        //对当前合约地址进行授权
+        async contractApprove() {
+            const result = await approve(config.map_addr)
+            return result
+        },
+        async handleMarkMap() {
+            this.$loading.show()
+            const hasAllowance = await this.checkAllowanceState()
+            console.log('hasAllowance', hasAllowance)
+            if (hasAllowance == 0) {
+                const approveResult = await this.contractApprove()
+                if (approveResult.status === 1) {
+                    this.markMapLocation()
+                }
+            } else if (hasAllowance < 1000) {
+                console.log('hasAllowance < 1000', hasAllowance)
+                showToast('余额不足。')
+            } else if (hasAllowance >= 1000) {
+                this.markMapLocation()
+            }
+        },
+        //检查授权状态
+        async checkAllowanceState() {
+            return await isAllowance(ethereum.selectedAddress, config.map_addr)
+        },
+
         //认证关公地图
         markMapLocation() {
             markMap(this.mapInfo.index)
                 .then(res => {
-                    console.log('认证地址', res)
-                    this.showUpdataLocation = false
-                    this.getMapLink()
+                    console.log('认证地址成功', res)
+                    this.getUserMarkedDetials()
+                    showToast('认证成功')
+
                 })
                 .catch(err => {
                     console.log(err)
                     this.$loading.hide()
-                    this.showUpdataLocation = false
                 })
         },
         getStateWord(state) {
@@ -161,7 +198,7 @@ export default {
                     this.mapInfo = res.data
                     this.confirmsList = res.data.confirm
                     this.shareUrl = `${window.location.host}/#/map?uploadAddress=${window.ethereum.selectedAddress}&index=${res.data.index}&mapID=${res.data.id}`
-                    console.log(this.mapInfo)
+                    // console.log(this.mapInfo)
                     this.$loading.hide()
                 })
                 .catch(err => {

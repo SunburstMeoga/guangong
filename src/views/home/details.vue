@@ -166,9 +166,8 @@
 
 <script>
 import { Swipe, SwipeItem, showSuccessToast } from 'vant';
-import nfts from '@/nft_datas/nfts'
 import nfts_list from '@/nft_datas/nfts_list'
-
+import { config } from '@/const/config'
 import { isAllowance, accountBalance, buy, approve } from '@/request/ether_request'
 
 export default {
@@ -199,10 +198,10 @@ export default {
         },
         async handlePay() {
             this.$loading.show()
-            const hasAllowance = await isAllowance(ethereum.selectedAddress)
+            const hasAllowance = await isAllowance(ethereum.selectedAddress, config.game_addr)
             console.log('hasAllowance', hasAllowance)
-            if (hasAllowance === 0) {
-                approve()
+            if (hasAllowance == 0) {
+                approve(config.game_addr)
                     .then(res => {
                         console.log(res)
                         this.$loading.hide()

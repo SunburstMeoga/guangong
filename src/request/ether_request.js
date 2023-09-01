@@ -24,8 +24,8 @@ export async function nftsList(nftTypes) {
 }
 
 //是否有授权
-export async function isAllowance(walletAddress) {
-  const request = await WGT.allowance(walletAddress, config.game_addr);
+export async function isAllowance(walletAddress, contractAddress) {
+  const request = await WGT.allowance(walletAddress, contractAddress);
   console.log("是否已授权", request);
   return request;
 }
@@ -37,8 +37,8 @@ export async function accountBalance(walletAddress) {
 }
 
 //授权
-export async function approve() {
-  const tx = await WGTTRADE.approve(config.game_addr, ethers.MaxUint256);
+export async function approve(contractAddress) {
+  const tx = await WGTTRADE.approve(contractAddress, ethers.MaxUint256);
   const result = await tx.wait();
   console.log(result);
   return result;
@@ -114,8 +114,8 @@ export async function markMap(mapIndex) {
 }
 
 //撤销已认证的关公地图
-export async function cancelMarkMap(address, mapIndex) {
-  const tx = await MAPTRADE.checkMark(address, mapIndex, {
+export async function cancelMarkMap(mapIndex) {
+  const tx = await MAPTRADE.cancelMark(mapIndex, {
     gasLimit: 9999999,
   });
   const result = await tx.wait();
@@ -146,5 +146,16 @@ export async function buyFortuneCard(id) {
 //用户贡献值等级
 export async function userLevel(address) {
   const result = await GAME.getStar(address);
+  return result;
+}
+
+//用户祭拜关公地图
+export async function worship(uploadAddress, mapIndex, amount) {
+  const tx = await MAPTRADE.worship(
+    uploadAddress,
+    mapIndex,
+    ethers.parseEther(amount)
+  );
+  const result = await tx.wait();
   return result;
 }
