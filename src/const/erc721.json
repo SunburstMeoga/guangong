@@ -99,6 +99,19 @@
 		"type": "event"
 	},
 	{
+		"inputs": [],
+		"name": "_baseTokenURI",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -157,6 +170,25 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256[]",
+				"name": "ts",
+				"type": "uint256[]"
+			}
+		],
+		"name": "getNFTs",
+		"outputs": [
+			{
+				"internalType": "int256[]",
+				"name": "ret",
+				"type": "int256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "owner",
 				"type": "address"
@@ -182,17 +214,23 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_to",
+				"name": "addr",
 				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "_tokenId",
+				"name": "nft",
 				"type": "uint256"
 			}
 		],
 		"name": "mint",
-		"outputs": [],
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -217,6 +255,44 @@
 				"internalType": "string",
 				"name": "",
 				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "nft_count",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "nft_total",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -352,6 +428,24 @@
 			}
 		],
 		"name": "setMintAddr",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "nft",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "c",
+				"type": "uint256"
+			}
+		],
+		"name": "setNftTotal",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
