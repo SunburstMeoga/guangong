@@ -5,7 +5,8 @@ import home from "./home";
 import personal from "./personal";
 import recommend from "./recommend";
 import mapPlay from "./map_paly";
-const routes = [...home, ...personal, ...recommend, ...mapPlay];
+import exchange from "./exchange";
+const routes = [...home, ...personal, ...recommend, ...mapPlay, ...exchange];
 
 export default createRouter({
   //   history: createWebHistory(),

@@ -36,3 +36,15 @@ export async function worshipList() {
   const result = await axios.get(`${config.api}map/worship`);
   return result;
 }
+
+//用户正在挂单售卖的nft列表
+export async function pendingOrderList(address) {
+  const result = await axios.get(`${config.api}market/owner/${address}`);
+  return result;
+}
+
+//二手市场列表
+export async function marketList() {
+  const result = await axios.get(`${config.api}market/group`);
+  return result;
+}

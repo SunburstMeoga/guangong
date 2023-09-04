@@ -23,6 +23,7 @@
                         <div class="mb-6" @click="toMap">关公地图</div>
                         <div class="mb-6" @click="toRecommend">推荐关系</div>
                         <div class="mb-6" @click="viewGoods">官方发售</div>
+                        <div class="mb-6" @click="toWGTExchangeWGA">WGT兑换</div>
                         <div class="" @click="viewMarket">NFT市场</div>
                     </div>
                     <div>
@@ -115,6 +116,12 @@ export default {
         viewAssets() {
             this.$router.push({
                 path: '/personal'
+            })
+            this.showRight = false
+        },
+        toWGTExchangeWGA() {
+            this.$router.push({
+                path: '/exchange'
             })
             this.showRight = false
         },

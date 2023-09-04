@@ -10,9 +10,9 @@
             </div> -->
         </div>
         <div class="backdrop-blur-3xl text-sm text-assets-word bg-module-card pl-2 py-1">
-            <div class="text-theme-primary">{{ name }}</div>
-            <!-- <div class="text-icon-gray">可合成</div> -->
-            <div class="text-icon-gray">US$ {{ price }}</div>
+            <div class="text-theme-primary text-xl">{{ name }}</div>
+            <div class="text-icon-gray">{{ cardType }}</div>
+            <div class="text-icon-gray text-right pr-2 font-bold">{{ price }}</div>
             <!-- <div class="text-icon-gray">token #{{ token }}</div> -->
         </div>
     </div>
@@ -36,6 +36,10 @@ export default {
         token: {
             type: Number,
             default: 0
+        },
+        cardType: {
+            type: String,
+            default: ''
         }
     }
 }

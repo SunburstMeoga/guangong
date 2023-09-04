@@ -30,8 +30,8 @@
                         </div>
                     </div> -->
                     <div class="w-11/12 flex justify-between items-center border-module">
-                        <div class="buy-button button-word w-full text-lg">
-                            出售
+                        <div class="buy-button button-word w-full text-lg" @click="handlePendingOrder">
+                            挂单
                         </div>
                     </div>
 
@@ -205,13 +205,35 @@
                 </div>
             </div>
         </van-popup>
+        <van-popup v-model:show="showPendingOrder">
+            <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">NFT挂单</div>
+                <div class="w-11/12 text-sm mb-1">
+                    挂单金额
+                </div>
+                <div
+                    class="mb-8 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                    <input class="w-full h-full bg-bottom-content" type="text" v-model="pendingOrderAmount"
+                        placeholder="请输入挂单金额">
+                </div>
+                <div class="w-11/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                    @click="handleConfirmPendingOrder">
+                    确认挂单
+                </div>
+                <div class="w-11/12 mt-4 text-tips-word bg-bottom-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                    @click="showPendingOrder = false">
+                    取消
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 
 <script>
-import { Popup } from 'vant';
+import { Popup, showToast } from 'vant';
+import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
-import { synthesisNFT, setOff } from '@/request/ether_request'
+import { synthesisNFT, setOff, approve, isAllowance, pendingOrder } from '@/request/ether_request'
 
 export default {
     components: { [Popup.name]: Popup },
@@ -224,7 +246,9 @@ export default {
             showDetails: true,
             showIssue: true,
             nftInfor: {},
-            tokenId: ''
+            tokenId: '',
+            showPendingOrder: false,
+            pendingOrderAmount: null
         }
     },
     mounted() {
@@ -239,6 +263,50 @@ export default {
         console.log(this.tokenId)
     },
     methods: {
+        //挂单
+        userPendingOrder() {
+            pendingOrder(this.tokenId, this.pendingOrderAmount)
+                .then(res => {
+                    console.log('挂单成功', res)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
+        //挂单弹窗 确认挂单按钮
+        async handleConfirmPendingOrder() {
+            console.log(this.tokenId, this.pendingOrderAmount)
+            if (!this.pendingOrderAmount) {
+                showToast('请输入挂单金额')
+                return
+            }
+            const hasAllowance = await this.checkAllowanceState()
+            if (hasAllowance == 0) {
+                const approveResult = await this.contractApprove()
+                if (approveResult.status === 1) {
+                    this.userPendingOrder()
+                } else {
+                    showToast('授权失败，请重新授权')
+                }
+            } else {
+                this.userPendingOrder()
+            }
+        },
+        //点击挂单按钮,弹起挂单弹窗
+        handlePendingOrder() {
+            this.showPendingOrder = true
+        },
+        //合约授权
+        async contractApprove() {
+            const result = await approve(config.market_addr)
+            return result
+        },
+        //检查合约授权状态
+        async checkAllowanceState() {
+            return await isAllowance(ethereum.selectedAddress, config.market_addr)
+        },
+        // const hasAllowance = await this.checkAllowanceState()
+        //     console.log('hasAllowance', hasAllowance)
         updataNFT() {
             this.$loading.show()
             console.log(this.nftInfor)

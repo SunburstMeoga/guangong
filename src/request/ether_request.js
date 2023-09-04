@@ -7,7 +7,17 @@ const signer = await provider.getSigner();
 const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider);
 const WGT = new ethers.Contract(config.wgt_addr, config.erc20_abi, provider);
 const MAP = new ethers.Contract(config.map_addr, config.map_abi, provider);
+const MARKET = new ethers.Contract(
+  config.market_addr,
+  config.market_abi,
+  provider
+);
 const MAPTRADE = new ethers.Contract(config.map_addr, config.map_abi, signer);
+const MARKETTRADE = new ethers.Contract(
+  config.market_addr,
+  config.market_abi,
+  signer
+);
 const GAMETRADE = new ethers.Contract(
   config.game_addr,
   config.game_abi,
@@ -162,5 +172,19 @@ export async function worship(uploadAddress, mapIndex, amount) {
 //用户收益查询
 export async function userInfo(address) {
   const result = GAME.UserInfo(address);
+  return result;
+}
+
+//用户挂单自己的nft资产
+export async function pendingOrder(nftId, amount) {
+  const tx = await MARKETTRADE.registration(nftId, ethers.parseEther(amount));
+  const result = await tx.wait();
+  return result;
+}
+
+//wga兑换wgt
+export async function exchange() {
+  const tx = await MARKETTRADE.exchange(ethers.parseEther(wga));
+  const result = await tx.wait();
   return result;
 }

@@ -148,13 +148,11 @@ export default {
         viewGoods() {
             this.$router.push({
                 path: '/nfts/mall',
-                query: { type: 'mall' }
             })
         },
         viewMarket() {
             this.$router.push({
-                path: '/nfts/market',
-                query: { type: 'market' }
+                path: '/nfts/market'
 
             })
         },

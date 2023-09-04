@@ -34,7 +34,7 @@ const home = [
   {
     path: "/nfts/market",
     name: "market/list",
-    component: () => import("@/views/home/nfts"),
+    component: () => import("@/views/home/market"),
     meta: {
       showBar: true,
     },
