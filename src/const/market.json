@@ -1,36 +1,5 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "nft_id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "deal",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "wga_",
-				"type": "uint256"
-			}
-		],
-		"name": "exchange",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -55,78 +24,14 @@
 				"internalType": "uint256",
 				"name": "nft_id",
 				"type": "uint256"
-			}
-		],
-		"name": "redemption",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "nft_id",
-				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "usdt",
 				"type": "uint256"
 			}
 		],
-		"name": "registration",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "addr",
-				"type": "address"
-			}
-		],
-		"name": "setDelegateAddr",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "wgt_",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "wga_",
-				"type": "uint256"
-			}
-		],
-		"name": "setPrice",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
+		"name": "deal",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -147,6 +52,19 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "wga_",
+				"type": "uint256"
+			}
+		],
+		"name": "exchange",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256[]",
 				"name": "ts",
 				"type": "uint256[]"
@@ -158,38 +76,6 @@
 				"internalType": "int256[]",
 				"name": "ret",
 				"type": "int256[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "wga_",
-				"type": "uint256"
-			}
-		],
-		"name": "getWGT",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "NFT",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -231,7 +117,7 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "usdt",
 				"type": "uint256"
 			}
 		],
@@ -252,29 +138,67 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "WGA",
-		"outputs": [
+		"inputs": [
 			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "nft_id",
+				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
+		"name": "redemption",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "nft_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "usdt",
+				"type": "uint256"
+			}
+		],
+		"name": "registration",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
-		"name": "WGT",
-		"outputs": [
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "address",
-				"name": "",
+				"name": "addr",
 				"type": "address"
 			}
 		],
-		"stateMutability": "view",
+		"name": "setDelegateAddr",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]
