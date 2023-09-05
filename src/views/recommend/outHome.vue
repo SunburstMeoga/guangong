@@ -35,7 +35,7 @@ import { isAddress } from "ethers"
 import { config } from '@/const/config'
 import axios from 'axios'
 import { Cell, CellGroup, showSuccessToast, showFailToast } from 'vant'
-import { preAddress } from '@/request/ether_request'
+import { preAddress } from '@/request/ether_request/popularized'
 import moment from 'moment'
 
 

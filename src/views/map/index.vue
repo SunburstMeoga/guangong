@@ -106,7 +106,7 @@
 import { Popup, showToast, showSuccessToast, showDialog } from 'vant';
 import FestivalCard from '@/components/festivalCard'
 import ModuleTitle from '@/components/ModuleTitle'
-import { markMap, confirmMapInfo, updataMap, worship } from '@/request/ether_request'
+import { markMap, confirmMapInfo, updataMap, worship } from '@/request/ether_request/map'
 import { getLocationID, userMarkedMapList, userMarkedDetials, worshipList } from '@/request/api_request'
 export default {
     components: { ModuleTitle, [Popup.name]: Popup, FestivalCard, },

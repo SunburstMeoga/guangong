@@ -68,7 +68,7 @@
 
 <script>
 import { RollingText, showSuccessToast } from 'vant';
-import { userLevel, userInfo } from '@/request/ether_request'
+import { userLevel, userInfo } from '@/request/ether_request/game'
 export default {
     components: { [RollingText.name]: RollingText },
     data() {

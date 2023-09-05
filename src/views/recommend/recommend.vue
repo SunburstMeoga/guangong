@@ -58,7 +58,7 @@ import { config } from '@/const/config'
 import axios from 'axios'
 import HomeIn from './inHome.vue'
 import HomeOut from './outHome.vue'
-import { preAddress } from '@/request/ether_request'
+import { preAddress } from '@/request/ether_request/popularized'
 
 export default {
     components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs },

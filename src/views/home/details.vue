@@ -168,7 +168,11 @@
 import { Swipe, SwipeItem, showToast } from 'vant';
 import nfts_list from '@/nft_datas/nfts_list'
 import { config } from '@/const/config'
-import { isAllowance, accountBalance, buy, approve, preAddress } from '@/request/ether_request'
+import { accountBalance } from '@/request/ether_request'
+import { buy } from '@/request/ether_request/game'
+import { preAddress } from '@/request/ether_request/popularized'
+import { isAllowance, approve } from '@/request/ether_request/wgt'
+
 import { ZeroAddress } from "ethers"
 
 
