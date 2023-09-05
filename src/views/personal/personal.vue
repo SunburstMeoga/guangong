@@ -32,7 +32,8 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <div v-for="( _item, _index ) in  pendingList" :key="index" @click="toAassetsDetails(_item)"
+                                <div v-for="( _item, _index ) in  pendingList" :key="index"
+                                    @click="toPendingOrderDetails(_item)"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                     <assets-card type="pending" :imageUrl="_item.infor.imageUrl"
                                         :price="filterPrice(_item.amount)" :name="_item.infor.name"
@@ -49,7 +50,8 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <div v-for="( _item, _index ) in  pendingList" :key="index" @click="toAassetsDetails(_item)"
+                                <div v-for="( _item, _index ) in  pendingList" :key="index"
+                                    @click="toCampaignDetails(_item)"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                     <assets-card type="pending" :imageUrl="_item.infor.imageUrl"
                                         :price="filterPrice(_item.amount)" :name="_item.infor.name"
@@ -178,6 +180,16 @@ export default {
             // return
             this.$router.push({
                 path: '/assets/' + _item.tokenId
+            })
+        },
+        toPendingOrderDetails(_item) {
+            this.$router.push({
+                path: '/pending-order/' + _item.tokenId
+            })
+        },
+        toCampaignDetails(_item) {
+            this.$router.push({
+                path: '/campaign/' + _item.tokenId
             })
         }
     }

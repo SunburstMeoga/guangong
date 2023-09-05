@@ -217,3 +217,10 @@ export async function isApprovedAll(walletAddress, contractAddress) {
   // const result = await tx.wait();
   return result;
 }
+
+//用户撤销NFT挂单
+export async function redemptionNFT(nftId) {
+  const tx = await MARKETTRADE.redemption(nftId);
+  const result = tx.wait();
+  return result;
+}

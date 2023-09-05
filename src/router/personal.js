@@ -12,7 +12,23 @@ const personal = [
     name: "assets",
     component: () => import("@/views/personal/details"),
     meta: {
-      showBar: true,
+      showBar: false,
+    },
+  },
+  {
+    path: "/pending-order/:tokenId",
+    name: "pending-order",
+    component: () => import("@/views/personal/details"),
+    meta: {
+      showBar: false,
+    },
+  },
+  {
+    path: "/campaign/:tokenId",
+    name: "campaign",
+    component: () => import("@/views/personal/details"),
+    meta: {
+      showBar: false,
     },
   },
   {

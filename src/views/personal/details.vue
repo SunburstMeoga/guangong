@@ -1,14 +1,21 @@
 <template>
     <div>
         <div>
-            <div class="pt-24">
+            <div class="py-8 top-0 sticky flex justify-center z-10 bg-black">
+                <div class="w-11/12 ml-auto mr-auto relative flex justify-center items-center text-card-content">
+                    <div class="icon iconfont icon-left absolute left-1" style="font-size: 24px;" @click="cancelPay()">
+                    </div>
+                    <div class="">{{ pageTitle }}</div>
+                </div>
+            </div>
+            <div class="pt-4">
                 <div
                     class="relative ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-4">
                     <div class="w-80 h-80">
                         <img :src="nftInfor.imageUrl" alt="">
                     </div>
                     <div
-                        class="absolute top-0 left-0 rounded-br-xl inline-block px-4 py-2 bg-success-undertone text-sm text-success-word">
+                        class="absolute top-0 left-0 rounded-br-xl inline-block px-2 py-1 bg-success-undertone text-sm text-success-word">
                         {{ nftInfor.stage }}
                     </div>
                 </div>
@@ -233,8 +240,8 @@
 import { Popup, showToast } from 'vant';
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
-import { synthesisNFT, setOff, apppprovalForAll, isAllowance, pendingOrder, isApprovedAll, approve, } from '@/request/ether_request'
-import { pendingOrderApi, nftDetails } from '@/request/api_request'
+import { synthesisNFT, setOff, apppprovalForAll, isAllowance, pendingOrder, isApprovedAll, approve, redemptionNFT } from '@/request/ether_request'
+import { pendingOrderApi, nftDetails, } from '@/request/api_request'
 
 export default {
     components: { [Popup.name]: Popup },
@@ -249,10 +256,12 @@ export default {
             nftInfor: {},
             tokenId: '',
             showPendingOrder: false,
-            pendingOrderAmount: null
+            pendingOrderAmount: null,
+            pageTitle: '资产'
         }
     },
     mounted() {
+        console.log('this.$route', this.$route)
         if (this.$route.params.tokenId) {
             this.tokenId = this.$route.params.tokenId
             this.getNFTDetails()
@@ -265,6 +274,19 @@ export default {
         console.log(this.tokenId)
     },
     methods: {
+        cancelPay() {
+            window.history.back();
+        },
+        //点击撤销挂单按钮
+        handleCenclePendingOrder() {
+            redemptionNFT(this.tokenId)
+                .then(res => {
+                    console.log('撤销挂单', res)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
         //获取资产详情
         getNFTDetails() {
             nftDetails(this.tokenId)
