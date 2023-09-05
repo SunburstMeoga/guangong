@@ -8,6 +8,12 @@ const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider);
 const WGT = new ethers.Contract(config.wgt_addr, config.erc20_abi, provider);
 const NFT = new ethers.Contract(config.nft_addr, config.erc20_abi, provider);
 const MAP = new ethers.Contract(config.map_addr, config.map_abi, provider);
+const POPULARIZED = new ethers.Contract(
+  config.popularized_addr,
+  config.popularized_abi,
+  provider
+);
+
 const MARKET = new ethers.Contract(
   config.market_addr,
   config.market_abi,
@@ -25,7 +31,11 @@ const GAMETRADE = new ethers.Contract(
   signer
 );
 const WGTTRADE = new ethers.Contract(config.wgt_addr, config.erc20_abi, signer);
-const NFTTRADE = new ethers.Contract(config.nft_addr, config.erc20_abi, signer);
+const NFTTRADE = new ethers.Contract(
+  config.nft_addr,
+  config.erc721_abi,
+  signer
+);
 
 const WEB3 = new Web3(window.ethereum);
 
@@ -36,7 +46,7 @@ export async function nftsList(nftTypes) {
   return request;
 }
 
-//是否有授权
+//erc20是否授权
 export async function isAllowance(walletAddress, contractAddress) {
   const request = await WGT.allowance(walletAddress, contractAddress);
   return request;
@@ -48,7 +58,7 @@ export async function accountBalance(walletAddress) {
   return res;
 }
 
-//授权
+//erc20授权
 export async function approve(contractAddress) {
   const tx = await WGTTRADE.approve(contractAddress, ethers.MaxUint256);
   const result = await tx.wait();
@@ -86,7 +96,7 @@ export async function setOff(nftId, tokenId) {
 
 //上级地址
 export async function preAddress(address) {
-  const result = await GAME.spreads(address);
+  const result = await POPULARIZED.spreads(address);
   return result;
 }
 
@@ -191,9 +201,19 @@ export async function exchange() {
   return result;
 }
 
-//NFT授权
+//erc721授权
 export async function apppprovalForAll(contractAddress) {
   const tx = await NFTTRADE.setApprovalForAll(contractAddress, true);
   const result = await tx.wait();
+  return result;
+}
+
+//erc721是否授权
+export async function isApprovedAll(walletAddress, contractAddress) {
+  const result = await NFTTRADE.isApprovedForAll(
+    walletAddress,
+    contractAddress
+  );
+  // const result = await tx.wait();
   return result;
 }

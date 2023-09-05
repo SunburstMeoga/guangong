@@ -168,7 +168,9 @@
 import { Swipe, SwipeItem, showToast } from 'vant';
 import nfts_list from '@/nft_datas/nfts_list'
 import { config } from '@/const/config'
-import { isAllowance, accountBalance, buy, approve } from '@/request/ether_request'
+import { isAllowance, accountBalance, buy, approve, preAddress } from '@/request/ether_request'
+import { ZeroAddress } from "ethers"
+
 
 export default {
     components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
@@ -206,6 +208,12 @@ export default {
             return await isAllowance(window.ethereum.selectedAddress, config.game_addr)
         },
         async handlePay() {
+            const preAddressArr = await preAddress(window.ethereum.selectedAddress)
+            console.log('preAddress', preAddressArr)
+            if (preAddressArr[0] === ZeroAddress) {
+                showToast('当前地址暂无上级，请前往社区寻找上级推荐人')
+                return
+            }
             this.$loading.show()
             const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.game_addr)
             console.log('hasAllowance', hasAllowance)
@@ -228,11 +236,12 @@ export default {
             buy(this.nftInfor.id)
                 .then((res) => {
                     this.$loading.hide()
-                    // showSuccessToast('购买成功')
+                    showToast('购买成功')
                     console.log(res)
                 })
                 .catch((err) => {
                     this.$loading.hide()
+                    showToast('购买失败，请重新购买')
                     console.log(err)
                 })
         },

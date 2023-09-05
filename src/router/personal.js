@@ -8,7 +8,7 @@ const personal = [
     },
   },
   {
-    path: "/assets/:id",
+    path: "/assets/:tokenId",
     name: "assets",
     component: () => import("@/views/personal/details"),
     meta: {

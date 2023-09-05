@@ -95,7 +95,7 @@ export default {
     methods: {
         getPreAddress() {
             this.$loading.show()
-            preAddress(ethereum.selectedAddress)
+            preAddress(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('当前用户上级地址', res)
                     this.$loading.hide()

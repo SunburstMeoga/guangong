@@ -233,7 +233,8 @@
 import { Popup, showToast } from 'vant';
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
-import { synthesisNFT, setOff, apppprovalForAll, isAllowance, pendingOrder } from '@/request/ether_request'
+import { synthesisNFT, setOff, apppprovalForAll, isAllowance, pendingOrder, isApprovedAll, approve, } from '@/request/ether_request'
+import { pendingOrderApi, nftDetails } from '@/request/api_request'
 
 export default {
     components: { [Popup.name]: Popup },
@@ -252,23 +253,34 @@ export default {
         }
     },
     mounted() {
-        if (this.$route.query.tokenId) {
-            this.tokenId = this.$route.query.tokenId
+        if (this.$route.params.tokenId) {
+            this.tokenId = this.$route.params.tokenId
+            this.getNFTDetails()
         }
         const nftItem = nfts_list.filter(item => {
-            return item.id === parseInt(this.$route.params.id)
+            return item.id === (parseInt(this.$route.params.tokenId)) % 100
         })
         this.nftInfor = nftItem[0]
         console.log('nftItem', this.nftInfor)
         console.log(this.tokenId)
     },
     methods: {
+        //获取资产详情
+        getNFTDetails() {
+            nftDetails(this.tokenId)
+                .then(res => {
+                    console.log('资产详情', res)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
         //挂单
         userPendingOrder() {
             pendingOrder(this.tokenId, this.pendingOrderAmount)
                 .then(res => {
                     console.log('挂单成功', res)
-                    this.$loading.hide()
+                    this.updataPendingOrder()
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -277,45 +289,83 @@ export default {
         },
         //挂单弹窗 确认挂单按钮
         async handleConfirmPendingOrder() {
-            console.log(this.tokenId, this.pendingOrderAmount)
             if (!this.pendingOrderAmount) {
                 showToast('请输入挂单金额')
                 return
             }
             this.$loading.show()
-            const hasAllowance = await this.checkAllowanceState()
-            console.log('授权状态', hasAllowance)
-            const approveResult = await this.contractApprove()
-            console.log('授权请求', approveResult)
-            // return
-            if (hasAllowance == 0) {
-                const approveResult = await this.contractApprove()
-                console.log('授权请求', approveResult)
-                if (approveResult.status === 1) {
-                    this.userPendingOrder()
-                } else {
-                    this.$loading.hide()
-                    showToast('授权失败，请重新授权')
+            const erc20ApppprovalState = await this.erc20ApppprovalState()
+            const erc721ApppprovalState = await this.erc721ApppprovalState()
+            if (erc20ApppprovalState == 0 || erc721ApppprovalState == 0) {
+                if (erc20ApppprovalState == 0 && erc721ApppprovalState !== 0) {
+                    const erc20Result = await this.erc20ContractApppproval()
+                    if (erc20Result.status == 1) {
+                        this.userPendingOrder()
+                    } else {
+                        showToast('erc20授权失败，请重新授权')
+                    }
+                } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState == 0) {
+                    const erc721Result = await this.erc721ContractApppproval()
+                    if (erc721Result.status == 1) {
+                        this.userPendingOrder()
+                    } else {
+                        showToast('erc721授权失败，请重新授权')
+                    }
                 }
-            } else {
+            } else if (erc20ApppprovalState == 0 && erc721ApppprovalState == 0) {
+                const erc20Result = await this.erc20ContractApppproval()
+                const erc721Result = await this.erc721ContractApppproval()
+                if (erc20Result == 1 && erc721Result == 1) {
+                    this.userPendingOrder()
+                } else if (erc20Result.status == 1 && erc721Result.status == 0) {
+                    showToast('erc721授权失败')
+                } else if (erc20Result.status == 0 && erc721Result.status == 1) {
+                    showToast('erc20授权失败')
+                } else if (erc20Result.status == 0 && erc721Result.status == 0) {
+                    showToast('授权失败')
+                }
+            } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState !== 0) {
                 this.userPendingOrder()
             }
         },
+        //挂单数据上传到接口
+        updataPendingOrder() {
+            pendingOrderApi(this.tokenId, {
+                owner: window.ethereum.selectedAddress,
+                amount: this.pendingOrderAmount
+            })
+                .then(res => {
+                    console.log('res', res)
+                    this.$loading.hide()
+                    this.showPendingOrder = false
+                })
+                .catch(err => {
+                    console.log('err', err)
+                    this.$loading.hide()
+                })
+        },
         //点击挂单按钮,弹起挂单弹窗
-        handlePendingOrder() {
+        async handlePendingOrder() {
             this.showPendingOrder = true
         },
-        //合约授权
-        async contractApprove() {
-            const result = await apppprovalForAll(config.market_addr)
+        //erc20合约授权操作
+        async erc20ContractApppproval() {
+            const result = await approve(config.market_addr)
             return result
         },
-        //检查合约授权状态
-        async checkAllowanceState() {
+        //erc721合约授权操作
+        async erc721ContractApppproval() {
+            const result = await apppprovalForAll(config.nft_addr)
+            return result
+        },
+        //检查erc20授权状态
+        async erc20ApppprovalState() {
             return await isAllowance(window.ethereum.selectedAddress, config.market_addr)
         },
-        // const hasAllowance = await this.checkAllowanceState()
-        //     console.log('hasAllowance', hasAllowance)
+        //检查erc721授权状态
+        async erc721ApppprovalState() {
+            return await isApprovedAll(window.ethereum.selectedAddress, config.nft_addr)
+        },
         updataNFT() {
             this.$loading.show()
             console.log(this.nftInfor)
