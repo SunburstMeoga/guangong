@@ -6,6 +6,7 @@ const provider = new ethers.BrowserProvider(window.ethereum);
 const signer = await provider.getSigner();
 const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider);
 const WGT = new ethers.Contract(config.wgt_addr, config.erc20_abi, provider);
+const NFT = new ethers.Contract(config.nft_addr, config.erc20_abi, provider);
 const MAP = new ethers.Contract(config.map_addr, config.map_abi, provider);
 const MARKET = new ethers.Contract(
   config.market_addr,
@@ -24,11 +25,13 @@ const GAMETRADE = new ethers.Contract(
   signer
 );
 const WGTTRADE = new ethers.Contract(config.wgt_addr, config.erc20_abi, signer);
+const NFTTRADE = new ethers.Contract(config.nft_addr, config.erc20_abi, signer);
+
 const WEB3 = new Web3(window.ethereum);
 
 export async function nftsList(nftTypes) {
   // const GAME =  new ethers.Contract(config.game_addr, config.game_abi, provider)
-  const request = await GAME.getNFTs(nftTypes);
+  const request = await NFT.getNFTs(nftTypes);
   console.log(request);
   return request;
 }
@@ -36,7 +39,6 @@ export async function nftsList(nftTypes) {
 //是否有授权
 export async function isAllowance(walletAddress, contractAddress) {
   const request = await WGT.allowance(walletAddress, contractAddress);
-  console.log("是否已授权", request);
   return request;
 }
 
@@ -185,6 +187,13 @@ export async function pendingOrder(nftId, amount) {
 //wga兑换wgt
 export async function exchange() {
   const tx = await MARKETTRADE.exchange(ethers.parseEther(wga));
+  const result = await tx.wait();
+  return result;
+}
+
+//NFT授权
+export async function apppprovalForAll(contractAddress) {
+  const tx = await NFTTRADE.setApprovalForAll(contractAddress, true);
   const result = await tx.wait();
   return result;
 }

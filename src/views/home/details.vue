@@ -165,13 +165,13 @@
 </template>
 
 <script>
-import { Swipe, SwipeItem, showSuccessToast } from 'vant';
+import { Swipe, SwipeItem, showToast } from 'vant';
 import nfts_list from '@/nft_datas/nfts_list'
 import { config } from '@/const/config'
 import { isAllowance, accountBalance, buy, approve } from '@/request/ether_request'
 
 export default {
-    components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem, [showSuccessToast.name]: showSuccessToast },
+    components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
         return {
             currentSwipe: 0,
@@ -196,20 +196,28 @@ export default {
             console.log('change', index)
             this.currentSwipe = index
         },
+        //合约授权
+        async contractApprove() {
+            const result = await approve(config.game_addr)
+            return result
+        },
+        //检查合约授权状态
+        async checkAllowanceState() {
+            return await isAllowance(window.ethereum.selectedAddress, config.game_addr)
+        },
         async handlePay() {
             this.$loading.show()
-            const hasAllowance = await isAllowance(ethereum.selectedAddress, config.game_addr)
+            const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.game_addr)
             console.log('hasAllowance', hasAllowance)
             if (hasAllowance == 0) {
-                approve(config.game_addr)
-                    .then(res => {
-                        console.log(res)
-                        this.$loading.hide()
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        this.$loading.hide()
-                    })
+                const approveResult = await this.contractApprove()
+                console.log('approveResult', approveResult)
+                if (approveResult.status == 1) {
+                    this.toPay()
+                } else {
+                    this.$loading.hide()
+                    showToast('授权失败，请重新授权')
+                }
             } else {
                 this.toPay()
             }

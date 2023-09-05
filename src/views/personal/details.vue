@@ -233,7 +233,7 @@
 import { Popup, showToast } from 'vant';
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
-import { synthesisNFT, setOff, approve, isAllowance, pendingOrder } from '@/request/ether_request'
+import { synthesisNFT, setOff, apppprovalForAll, isAllowance, pendingOrder } from '@/request/ether_request'
 
 export default {
     components: { [Popup.name]: Popup },
@@ -268,9 +268,11 @@ export default {
             pendingOrder(this.tokenId, this.pendingOrderAmount)
                 .then(res => {
                     console.log('挂单成功', res)
+                    this.$loading.hide()
                 })
                 .catch(err => {
                     console.log('err', err)
+                    this.$loading.hide()
                 })
         },
         //挂单弹窗 确认挂单按钮
@@ -280,12 +282,19 @@ export default {
                 showToast('请输入挂单金额')
                 return
             }
+            this.$loading.show()
             const hasAllowance = await this.checkAllowanceState()
+            console.log('授权状态', hasAllowance)
+            const approveResult = await this.contractApprove()
+            console.log('授权请求', approveResult)
+            // return
             if (hasAllowance == 0) {
                 const approveResult = await this.contractApprove()
+                console.log('授权请求', approveResult)
                 if (approveResult.status === 1) {
                     this.userPendingOrder()
                 } else {
+                    this.$loading.hide()
                     showToast('授权失败，请重新授权')
                 }
             } else {
@@ -298,12 +307,12 @@ export default {
         },
         //合约授权
         async contractApprove() {
-            const result = await approve(config.market_addr)
+            const result = await apppprovalForAll(config.market_addr)
             return result
         },
         //检查合约授权状态
         async checkAllowanceState() {
-            return await isAllowance(ethereum.selectedAddress, config.market_addr)
+            return await isAllowance(window.ethereum.selectedAddress, config.market_addr)
         },
         // const hasAllowance = await this.checkAllowanceState()
         //     console.log('hasAllowance', hasAllowance)
