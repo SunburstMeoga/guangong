@@ -50,8 +50,36 @@ export async function setOff(nextNFTType, tokenType) {
 }
 
 //使用华佗道具卡
-export async function huatuoProps(walletAddress, nftType) {
-  const tx = await GAMETRADE.huaTuo(walletAddress, nftType, 59);
+export async function huatuoProps(walletAddress, nftIndex) {
+  const tx = await GAMETRADE.huaTuo(walletAddress, nftIndex, 59);
+  const result = await tx.wait();
+  return result;
+}
+
+//使用张角道具卡
+export async function zhangjiaoProps(nftType = 60) {
+  const tx = await GAMETRADE.zhangJiao(nftType);
+  const result = await tx.wait();
+  return result;
+}
+
+//使用诸葛亮道具卡
+export async function zhugeliangProps(walletAddress, nftType) {
+  const tx = await GAMETRADE.zhuGeLiang(walletAddress, nftType);
+  const result = await tx.wait();
+  return result;
+}
+
+//使用孟获道具卡
+export async function menghuoProps(walletAddress, nftType) {
+  const tx = await GAMETRADE.mengHuo(walletAddress, nftType);
+  const result = await tx.wait();
+  return result;
+}
+
+//使用孟获道具卡
+export async function yuanshuProps(walletAddress, nftType) {
+  const tx = await GAMETRADE.yuanShu(walletAddress, nftType);
   const result = await tx.wait();
   return result;
 }

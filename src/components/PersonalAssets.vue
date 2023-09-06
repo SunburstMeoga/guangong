@@ -4,7 +4,7 @@
         <!-- <div class="absolute top-0 left-0">
             <img src="@/assets/personal-bg2.png" alt="">
         </div> -->
-        <div class="flex justify-between items-center mb-4">
+        <!-- <div class="flex justify-between items-center mb-4">
             <div>
                 <span>{{ addressFilter(address) }}</span>
             </div>
@@ -14,17 +14,12 @@
             <div class="">直推收益： </div>
             <div class="text-theme-primary font-bold text-4xl">
                 {{ earningsInfo.usdtTeam1 }} WGT
-                <!-- <div class="flex justify-start items-center">
-                    <div class="mr-1">US$ </div>
-                    <van-rolling-text :text-list="textList" :duration="1" class="my-rolling-text" />
-                </div> -->
             </div>
 
         </div>
         <div class="mb-6">
             <div class="flex justify-start items-center">
                 <span>个人贡献值级别：</span>
-                <!-- <span class="font-bold">{{ contributionLevel(userLevel) }}</span> -->
                 <span class="font-bold">忠字传播大使</span>
 
             </div>
@@ -36,10 +31,6 @@
                     <span>⼀级收益：</span>
                     <span class="font-bold">{{ earningsInfo.usdtTeam2 }} WGT</span>
                 </div>
-                <!-- <div class="flex justify-start items-start">
-                    <span>NFT总数：</span>
-                    <span class="font-bold ">90</span>
-                </div> -->
             </div>
         </div>
         <div>
@@ -62,7 +53,7 @@
                     <div>{{ earningsInfo.usdt }}</div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 

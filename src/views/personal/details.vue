@@ -16,7 +16,7 @@
                     </div>
                     <div
                         class="absolute top-0 left-0 rounded-br-xl inline-block px-2 py-1 bg-success-undertone text-sm text-success-word">
-                        {{ nftInfor.stage }}
+                        {{ getCardType(nftInfor.card_type) }}
                     </div>
                 </div>
 
@@ -25,7 +25,6 @@
                         <div>
                             {{ nftInfor.name }}
                         </div>
-
                     </div>
                     <div class="w-11/12 flex justify-between items-center border-module" v-if="assetState === 'assets'">
                         <div class="buy-button button-word w-full text-lg" @click="handlePendingOrder">
@@ -38,17 +37,15 @@
                             撤销挂单
                         </div>
                     </div>
-
+                    <!-- 角色卡介绍 -->
                     <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'nft_role'">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">詳細資料</div>
-
                         </div>
-                        <div class="mt-8" v-show="showDetails">
+                        <div class="mt-8">
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">階段</div>
                                 <div class="text-base text-card-content">{{ nftInfor.stage }}</div>
-
                             </div>
 
                             <div class="mb-6">
@@ -72,22 +69,96 @@
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">損耗週期</div>
-                                <div class="text-base text-card-content">{{ nftInfor.loss_period }}</div>
+                                <div class="text-base text-card-content">{{ nftInfor.loss_period }} 次</div>
 
                             </div>
                         </div>
                     </div>
-                    <div class="border-module w-11/12 text-card-content" @click="showRequest = !showRequest"
-                        v-if="nftInfor.upgrade_requirements">
+                    <!-- 战法道具卡介绍 -->
+                    <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'tactics_props'">
                         <div class="flex justify-between items-center">
-                            <div class="text-2xl">合成要求</div>
-                            <div class="icon iconfont icon-right  show-icon" :class="showRequest ? '-rotate-90' : ''">
+                            <div class="text-2xl ">道具卡详情</div>
+                        </div>
+                        <div class="mt-8">
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">技能</div>
+                                <div class="text-base text-card-content">{{ nftInfor.prop_features }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">限制</div>
+                                <div class="text-base text-card-content">{{ nftInfor.target }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">注意事项</div>
+                                <div class="text-base text-card-content">{{ nftInfor.tips }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">发行量</div>
+                                <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
                             </div>
                         </div>
-                        <div class="mt-8" v-show="showRequest">
-                            美髯公+赤兔馬+青龍偃月刀
+                    </div>
+                    <!-- 出征令牌介绍 -->
+                    <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'expedition_order'">
+                        <div class="flex justify-between items-center">
+                            <div class="text-base ">可用于以下NFT卡片出征</div>
+                        </div>
+                        <div class="mt-8">
+                            <div class="mb-6">
+                                <!-- <div class="mb-2 text-xs text-icon-gray">可用于以下NFT卡片出征</div> -->
+                                <div class="text-2xl  text-card-content">{{ nftInfor.can_be_used.join("，") }}</div>
+                            </div>
                         </div>
                     </div>
+                    <!-- 合成道具卡介绍 -->
+                    <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'synthesis_props'">
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl ">道具卡介绍</div>
+                        </div>
+                        <div class="mt-8">
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">技能</div>
+                                <div class="text-base text-card-content">{{ nftInfor.prop_features }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">限制</div>
+                                <div class="text-base text-card-content">{{ nftInfor.target }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">注意事项</div>
+                                <div class="text-base text-card-content">{{ nftInfor.tips }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">发行量</div>
+                                <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 财神卡介绍 -->
+                    <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'fortune_card'">
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl ">道具卡介绍</div>
+                        </div>
+                        <div class="mt-8">
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">技能</div>
+                                <div class="text-base text-card-content">{{ nftInfor.prop_features }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">限制</div>
+                                <div class="text-base text-card-content">{{ nftInfor.target }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">注意事项</div>
+                                <div class="text-base text-card-content">{{ nftInfor.tips }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">发行量</div>
+                                <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="border-module w-11/12 text-card-content" @click="showIssue = !showIssue">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">發行方</div>
@@ -105,6 +176,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
                     v-if="assetState === 'assets' && nftInfor.card_type == 'nft_role'">
                     <div class="buy-button w-6/12 text-primary-word text-lg button-word" @click="updataNFT"
@@ -227,10 +299,21 @@
                     :class="item.isChecked ? 'buy-button text-white' : ''">
                     {{ item.name }} 剩余{{ item.acount }}张
                 </div>
-                <div class="w-11/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                <div class="flex w-11/12 justify-between items-center mt-6">
+
+                    <div class="w-5/12  border border-language-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="showPropsCard = false">
+                        取消
+                    </div>
+                    <div class="w-5/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="confirmCampaign">
+                        确认出征
+                    </div>
+                </div>
+                <!-- <div class="w-11/12 bg-language-content mt-6 flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
                     @click="confirmCampaign">
                     确认出征
-                </div>
+                </div> -->
             </div>
         </van-popup>
     </div>
@@ -240,7 +323,7 @@
 import { Popup, showToast } from 'vant';
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
-import { synthesisNFT, setOff, huatuoProps } from '@/request/ether_request/game'
+import { synthesisNFT, setOff, huatuoProps, zhangjiaoProps, zhugeliangProps, menghuoProps, yuanshuProps } from '@/request/ether_request/game'
 import { approve, isAllowance } from '@/request/ether_request/wgt'
 import { apppprovalForAll, isApprovedAll } from '@/request/ether_request/nft'
 import { pendingOrder, redemptionNFT } from '@/request/ether_request/market'
@@ -301,6 +384,16 @@ export default {
     },
     methods: {
         filterAmount, filterTime,
+        //卡类型
+        getCardType(value) {
+            switch (value) {
+                case 'nft_role': return 'NFT角色卡'
+                case 'tactics_props': return '战法道具卡'
+                case 'expedition_order': return '出征令牌'
+                case 'synthesis_props': return '合成道具卡'
+                case 'fortune_card': return '财神卡'
+            }
+        },
         //点击道具卡选项
         clickPropsCard(item, index) {
             this.currentProps = index
@@ -467,8 +560,10 @@ export default {
         },
 
         //出征
-        userCampaign() {
+        async userCampaign() {
             console.log((parseInt(this.tokenId)) % 100, this.nftInfor.outbound_tokens_id)
+            const propsResult = await this.usePropsFromHuaTuo()
+            console.log('道具卡', propsResult)
             setOff((parseInt(this.tokenId)) % 100, this.nftInfor.outbound_tokens_id)
                 .then((res) => {
                     console.log('出征成功', res)
@@ -483,7 +578,31 @@ export default {
 
         //使用华佗道具卡
         async usePropsFromHuaTuo() {
-            const result = huatuoProps(window.ethereum.selectedAddress)
+            const result = await huatuoProps(window.ethereum.selectedAddress)
+            return result;
+        },
+
+        //使用张角道具卡
+        async usePropsFromZhangJiao() {
+            const result = await zhangjiaoProps(nftType)
+            return result;
+        },
+
+        //使用诸葛亮道具卡
+        async usePropsFromZhuGeLiang() {
+            const result = await zhugeliangProps(window.ethereum.selectedAddress, nftType)
+            return result;
+        },
+
+        //使用孟获道具卡
+        async usePropsFromMengHuo() {
+            const result = await menghuoProps(window.ethereum.selectedAddress, nftType)
+            return result;
+        },
+
+        //使用袁术道具卡
+        async usePropsFromYuanShu() {
+            const result = await yuanshuProps(window.ethereum.selectedAddress, nftType)
             return result;
         },
 

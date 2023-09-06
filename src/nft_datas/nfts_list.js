@@ -1,11 +1,14 @@
 import { config } from "@/const/config";
 
 const nfts_list = [
-  // 1.nft角色卡
-  // 2.战法道具卡
-  // 3.出征令牌
-  // 4.合成道具卡
+  // 1.nft角色卡 nft_role
+  // 2.战法道具卡 tactics_props
+  // 3.出征令牌 expedition_order
+  // 4.合成道具卡 synthesis_props
+  // 5.财神卡 fortune_card
+
   //nft角色卡
+
   //武圣出山阶段
   {
     id: 1,
@@ -22,7 +25,7 @@ const nfts_list = [
     token_value: "150U",
     cycle: "1週",
     monthly_interest_rate: "24%",
-    loss_period: "135 次",
+    loss_period: 135,
   },
   {
     id: 2,
@@ -39,7 +42,7 @@ const nfts_list = [
     token_value: "150U",
     cycle: "1週",
     monthly_interest_rate: "32%",
-    loss_period: "150 次",
+    loss_period: 150,
   },
   {
     id: 3,
@@ -56,7 +59,7 @@ const nfts_list = [
     token_value: "150U",
     cycle: "1週",
     monthly_interest_rate: "44%",
-    loss_period: "165 次",
+    loss_period: 165,
   },
   //nft角色卡百战封神阶段
   {
@@ -74,7 +77,7 @@ const nfts_list = [
     token_value: "600U",
     cycle: "1月",
     monthly_interest_rate: "28%",
-    loss_period: "36 次",
+    loss_period: 36,
   },
   {
     id: 5,
@@ -91,7 +94,7 @@ const nfts_list = [
     token_value: "600U",
     cycle: "1 月",
     monthly_interest_rate: "36%",
-    loss_period: "34 次",
+    loss_period: 34,
   },
   {
     id: 6,
@@ -108,7 +111,7 @@ const nfts_list = [
     token_value: "700U",
     cycle: "1 月",
     monthly_interest_rate: "40%",
-    loss_period: "20 次",
+    loss_period: 30,
   },
   {
     id: 7,
@@ -125,7 +128,7 @@ const nfts_list = [
     token_value: "800U",
     cycle: "1 月",
     monthly_interest_rate: "40%",
-    loss_period: "27 次",
+    loss_period: 27,
   },
   {
     id: 8,
@@ -142,7 +145,7 @@ const nfts_list = [
     token_value: "1000U",
     cycle: "1 月",
     monthly_interest_rate: "38%",
-    loss_period: "20 次",
+    loss_period: 32,
   },
   // nft角色卡 万世流芳阶段
   {
@@ -158,7 +161,7 @@ const nfts_list = [
     token_value: "2000U",
     cycle: "2月",
     monthly_interest_rate: "60%",
-    loss_period: "20 次",
+    loss_period: 20,
   },
 
   //战法道具卡
@@ -167,7 +170,7 @@ const nfts_list = [
     name: "華佗",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}/role/59.png`,
+    imageUrl: `${config.api}prop/59.png`,
     number_of_issues: "100萬張",
     prop_features:
       "获得“刮骨疗毒”战法 1 次；使用本战法，可花费角色价值的 70%USDT，将“关公荣耀卡”的损耗周期重置。",
@@ -180,7 +183,7 @@ const nfts_list = [
     name: "张角",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}/role/60.png`,
+    imageUrl: `${config.api}prop/60.png`,
     number_of_issues: "10 万张",
     prop_features:
       "获得“太平道法”战法 1 次；可让自己第一代被推荐账户中所有角色下次出征时长增加 5%；出征收益增加 2%，且其中 1%划归自己。已经获得过增益效果的账户获得 1 次免疫期。",
@@ -193,7 +196,7 @@ const nfts_list = [
     name: "诸葛亮",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}/role/61.png`,
+    imageUrl: `${config.api}prop/61.png`,
     number_of_issues: "10 万张",
     prop_features:
       "获得“草船借箭”战法 1 次；使用后可使自身账户和旗下直属第一代排名前 3 的被推荐账户的所有角色损耗周期延长 1 次（但该次出征时长延长 30%）；每个角色在每个损耗周期中只能接受 1 次“草船借箭”。",
@@ -206,7 +209,7 @@ const nfts_list = [
     name: "孟获",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}/role/62.png`,
+    imageUrl: `${config.api}prop/62.png`,
     number_of_issues: "10 万张",
     prop_features:
       "获得“南蛮入侵”战法 1 次；使用本卡可窃取遭受“南蛮入侵”的账号及旗下第一代推荐账户中所有角色下次出征收益的 1%。遭受过“南蛮入侵”的账号享有 3 次免疫期。",
@@ -218,7 +221,7 @@ const nfts_list = [
     id: 63,
     name: "袁术",
     card_type: "tactics_props",
-    imageUrl: `${config.api}/role/63.png`,
+    imageUrl: `${config.api}prop/63.png`,
     tag: "战法道具卡",
     number_of_issues: "10 万张",
     prop_features:
@@ -236,6 +239,7 @@ const nfts_list = [
     name: "关公令",
     price: "150U",
     card_type: "expedition_order",
+    can_be_used: ["美髯公", "汉寿侯", "武圣"],
   },
   {
     id: 82,
@@ -244,6 +248,7 @@ const nfts_list = [
     name: "结义令",
     price: "600U",
     card_type: "expedition_order",
+    can_be_used: ["结义令"],
   },
   {
     id: 83,
@@ -252,6 +257,7 @@ const nfts_list = [
     name: "擒将令",
     price: "600U",
     card_type: "expedition_order",
+    can_be_used: ["水淹七军"],
   },
   {
     id: 84,
@@ -260,6 +266,7 @@ const nfts_list = [
     name: "拜将令",
     price: "700U",
     card_type: "expedition_order",
+    can_be_used: ["五虎上将"],
   },
   {
     id: 85,
@@ -268,6 +275,7 @@ const nfts_list = [
     name: "斩将令",
     price: "800U",
     card_type: "expedition_order",
+    can_be_used: ["威震华夏"],
   },
   {
     id: 86,
@@ -276,6 +284,7 @@ const nfts_list = [
     name: "通关令",
     price: "1000U",
     card_type: "expedition_order",
+    can_be_used: ["千里单骑"],
   },
   {
     id: 87,
@@ -284,6 +293,7 @@ const nfts_list = [
     name: "财神令",
     price: "2000U",
     card_type: "expedition_order",
+    can_be_used: ["忠义仁勇武财神"],
   },
 
   //合成道具卡

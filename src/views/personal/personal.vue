@@ -195,6 +195,8 @@ export default {
         getPersonNfts() {
             ownerList(window.ethereum.selectedAddress)
                 .then(res => {
+                    console.log('res', res)
+
                     let typeList = []
                     res.data.map(item => {
                         let obj = {}
@@ -211,6 +213,7 @@ export default {
                         })
                     })
                     this.assetsList = newArr
+                    console.log(this.assetsList)
                 })
                 .catch(err => {
                     console.log('err', err)
