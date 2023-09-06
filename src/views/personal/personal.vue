@@ -36,26 +36,28 @@
                                     @click="toPendingOrderDetails(_item)"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                     <assets-card type="pending" :imageUrl="_item.infor.imageUrl"
-                                        :price="filterPrice(_item.amount)" :name="_item.infor.name"
+                                        :price="filterAmount(_item.amount)" :name="_item.infor.name"
                                         :cardType="getCardType(_item.infor.card_type)" :nftID="_item.tokenId" />
                                 </div>
                             </div>
                         </div>
                     </van-tab>
                     <van-tab title="正在出征" class="pt-4">
-                        <div class="" :class="pendingList.length !== 0 ? 'columns-2 gap-x-3' : ''">
-                            <div v-if="pendingList.length === 0">
+                        <div>
+                            <div v-if="campaignList.length === 0">
                                 <div class="text-icon-gray text-xl text-center">
                                     暂无数据
                                 </div>
                             </div>
                             <div v-else>
-                                <div v-for="( _item, _index ) in  pendingList" :key="index"
+                                <div v-for="( _item, _index ) in campaignList" :key="index"
                                     @click="toCampaignDetails(_item)"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
-                                    <assets-card type="pending" :imageUrl="_item.infor.imageUrl"
-                                        :price="filterPrice(_item.amount)" :name="_item.infor.name"
-                                        :cardType="getCardType(_item.infor.card_type)" :nftID="_item.tokenId" />
+                                    <campaign-card type="pending" :nftRole="_item.nft_role" :time="filterTime(_item.time)"
+                                        :imageUrl="_item.infor.imageUrl" :nftToken="_item.nft_token" :count="_item.count"
+                                        :income="_item.income"
+                                        :cammaignAttribute="this.getCammaignAttribute([_item.zhangJiao, _item.zhuGeLiang, _item.mengHuo, _item.yuanShu])"
+                                        :name="_item.infor.name" />
                                 </div>
                             </div>
                         </div>
@@ -71,31 +73,35 @@
 import ModuleTitle from '@/components/ModuleTitle'
 import PersonalAssets from '@/components/PersonalAssets'
 import AssetsCard from '@/components/AssetsCard'
+import CampaignCard from '@/components/CampaignCard'
 import { ownerList, pendingOrderList } from '@/request/api_request'
+import { userInfo } from '@/request/ether_request/game'
 import nfts_list from '@/nft_datas/nfts_list'
-// import { filterPrice } from '@/utils/filterValue'
+import { filterTime, filterAmount } from '@/utils/filterValue'
 
 import { Tab, Tabs, Empty } from 'vant';
 export default {
-    components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, PersonalAssets, AssetsCard },
+    components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, PersonalAssets, AssetsCard, CampaignCard },
     data() {
         return {
             active: 0,
             tabList: [{ title: '所有资产' }, { title: '正在挂单' }],
             assetsList: [],
-            pendingList: []
+            pendingList: [],
+            campaignList: []
             // assetsList: []
         }
     },
     mounted() {
         this.getPersonNfts()
         this.getPendingOrderList()
+        this.getUserInfo()
         console.log('ethereum.selectedAddress', ethereum.selectedAddress)
+        console.log(this.getCammaignAttribute([false, false, true, true]))
     },
     methods: {
-        filterPrice(value) {
-            return parseInt(value).toFixed(4)
-        },
+        filterTime,
+        filterAmount,
         //卡片类型
         getCardType(card_type) {
             if (card_type === 'nft_role') {
@@ -108,11 +114,60 @@ export default {
                 return '出征令牌'
             }
         },
+        //获取出征卡片的属性
+        getCammaignAttribute(attrubutes) {
+            let arr = []
+            attrubutes.map(item => {
+                arr.push(item)
+            })
+            if (arr.indexOf(true) == -1) return '暂无出征属性'
+            arr[0] === true ? arr[0] = '张角' : arr[0] = false
+            arr[1] === true ? arr[1] = '诸葛亮' : arr[1] = false
+            arr[2] === true ? arr[2] = '孟获' : arr[2] = false
+            arr[3] === true ? arr[3] = '袁术' : arr[3] = false
+            let targetArr = arr.filter(item => {
+                return item !== false
+            })
+
+            return targetArr.join("&")
+        },
+        //获取用户信息
+        getUserInfo() {
+            userInfo(window.ethereum.selectedAddress)
+                .then(res => {
+                    console.log('出征卡片', res.cards)
+                    let typeList = []
+                    res.cards.map(item => {
+                        let obj = {}
+                        obj.typeID = item.nft_role > 100 ? item.nft_role % 100 : item.nft_role
+                        obj.tokenId = item.nft_role
+                        obj.nft_role = item.nft_role
+                        obj.time = item.time
+                        obj.nft_token = item.nft_token
+                        obj.cammaignAttribute = item.zhangJiao
+                        obj.count = item.count
+                        typeList.push(obj)
+                    })
+                    let newArr = typeList.filter((v) => nfts_list.some((val) => val.id == v.typeID))
+                    newArr.map(item => {
+                        nfts_list.map(_item => {
+                            if (item.typeID == _item.id) {
+                                item.infor = _item
+                            }
+                        })
+                    })
+                    this.campaignList = newArr
+                    console.log(this.campaignList)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
         //获取用户的挂单列表
         getPendingOrderList() {
             pendingOrderList(window.ethereum.selectedAddress)
                 .then(res => {
-                    console.log('挂单列表', res)
+                    console.log('挂单', res)
                     let typeList = []
                     res.data.map(item => {
                         let obj = {}
@@ -131,16 +186,15 @@ export default {
                         })
                     })
                     this.pendingList = newArr
-                    console.log('pendingList', this.pendingList)
                 })
                 .catch(err => {
                     console.log('err', err)
                 })
         },
+        //用户资产列表
         getPersonNfts() {
             ownerList(window.ethereum.selectedAddress)
                 .then(res => {
-                    console.log('资产列表', res)
                     let typeList = []
                     res.data.map(item => {
                         let obj = {}
@@ -152,14 +206,11 @@ export default {
                     newArr.map(item => {
                         nfts_list.map(_item => {
                             if (item.typeID == _item.id) {
-                                console.log(item)
                                 item.infor = _item
                             }
                         })
                     })
                     this.assetsList = newArr
-                    console.log('assetsList', this.assetsList)
-
                 })
                 .catch(err => {
                     console.log('err', err)

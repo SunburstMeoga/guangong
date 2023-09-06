@@ -27,15 +27,6 @@
                         </div>
 
                     </div>
-                    <!-- <div
-                        class="w-11/12 flex flex-col justify-between items-center bg-more-content text-icon-gray button-word">
-                        <div>
-                            当前NFT可合成为汉寿侯
-                        </div>
-                        <div>
-                            合成路线：美髯公 + 赤兔马 + 青龙偃月刀
-                        </div>
-                    </div> -->
                     <div class="w-11/12 flex justify-between items-center border-module" v-if="assetState === 'assets'">
                         <div class="buy-button button-word w-full text-lg" @click="handlePendingOrder">
                             挂单
@@ -48,7 +39,7 @@
                         </div>
                     </div>
 
-                    <div class="border-module w-11/12 text-card-content">
+                    <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'nft_role'">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">詳細資料</div>
 
@@ -114,19 +105,14 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="flex justify-center items-center pb-32">
-                    <div class="w-11/12 bg-more-content text-icon-gray button-word">
-                        查看更多該階段下更多NFT
-                    </div>
-                </div> -->
                 <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
-                    v-if="assetState === 'assets'">
+                    v-if="assetState === 'assets' && nftInfor.card_type == 'nft_role'">
                     <div class="buy-button w-6/12 text-primary-word text-lg button-word" @click="updataNFT"
                         v-if="nftInfor.outbound_tokens_id !== 87">
                         升级
                     </div>
                     <div class="bg-more-content campaign  flex-1 ml-2 text-primary-word text-lg button-word"
-                        @click="roleSetOff">
+                        @click="handleCampaign">
                         出征
                     </div>
                 </div>
@@ -233,7 +219,7 @@ import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
 import { synthesisNFT, setOff } from '@/request/ether_request/game'
 import { approve, isAllowance } from '@/request/ether_request/wgt'
-import { apppprovalForAll } from '@/request/ether_request/nft'
+import { apppprovalForAll, isApprovedAll } from '@/request/ether_request/nft'
 import { pendingOrder, redemptionNFT } from '@/request/ether_request/market'
 import { pendingOrderApi, nftDetails, } from '@/request/api_request'
 import { filterAmount, filterTime } from '@/utils/filterValue'
@@ -342,26 +328,26 @@ export default {
             }
             this.$loading.show()
             const erc20ApppprovalState = await this.erc20ApppprovalState()
-            const erc721ApppprovalState = await this.erc721ApppprovalState()
-            if (erc20ApppprovalState == 0 || erc721ApppprovalState == 0) {
-                if (erc20ApppprovalState == 0 && erc721ApppprovalState !== 0) {
+            const erc721ApppprovalState = await this.erc721ApppprovalState(config.nft_addr)
+            if (erc20ApppprovalState == 0 || erc721ApppprovalState == false) {
+                if (erc20ApppprovalState == 0 && erc721ApppprovalState !== false) {
                     const erc20Result = await this.erc20ContractApppproval()
                     if (erc20Result.status == 1) {
                         this.userPendingOrder()
                     } else {
                         showToast('erc20授权失败，请重新授权')
                     }
-                } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState == 0) {
-                    const erc721Result = await this.erc721ContractApppproval()
+                } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState == false) {
+                    const erc721Result = await this.erc721ContractApppproval(config.nft_addr)
                     if (erc721Result.status == 1) {
                         this.userPendingOrder()
                     } else {
                         showToast('erc721授权失败，请重新授权')
                     }
                 }
-            } else if (erc20ApppprovalState == 0 && erc721ApppprovalState == 0) {
+            } else if (erc20ApppprovalState == 0 && erc721ApppprovalState == false) {
                 const erc20Result = await this.erc20ContractApppproval()
-                const erc721Result = await this.erc721ContractApppproval()
+                const erc721Result = await this.erc721ContractApppproval(config.nft_addr)
                 if (erc20Result == 1 && erc721Result == 1) {
                     this.userPendingOrder()
                 } else if (erc20Result.status == 1 && erc721Result.status == 0) {
@@ -371,7 +357,7 @@ export default {
                 } else if (erc20Result.status == 0 && erc721Result.status == 0) {
                     showToast('授权失败')
                 }
-            } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState !== 0) {
+            } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState !== false) {
                 this.userPendingOrder()
             }
         },
@@ -401,8 +387,8 @@ export default {
             return result
         },
         //erc721合约授权操作
-        async erc721ContractApppproval() {
-            const result = await apppprovalForAll(config.nft_addr)
+        async erc721ContractApppproval(contractAddress) {
+            const result = await apppprovalForAll(contractAddress)
             return result
         },
         //检查erc20授权状态
@@ -410,8 +396,8 @@ export default {
             return await isAllowance(window.ethereum.selectedAddress, config.market_addr)
         },
         //检查erc721授权状态
-        async erc721ApppprovalState() {
-            return await isApprovedAll(window.ethereum.selectedAddress, config.nft_addr)
+        async erc721ApppprovalState(contractAddress) {
+            return await isApprovedAll(window.ethereum.selectedAddress, contractAddress)
         },
         updataNFT() {
             this.$loading.show()
@@ -427,10 +413,11 @@ export default {
                     this.$loading.hide()
                 })
         },
-        roleSetOff() {
-            this.$loading.show()
-            console.log(this.nftInfor)
-            setOff(this.tokenId, this.nftInfor.outbound_tokens_id)
+
+        //出征
+        userCampaign() {
+            console.log((parseInt(this.tokenId)) % 100, this.nftInfor.outbound_tokens_id)
+            setOff((parseInt(this.tokenId)) % 100, this.nftInfor.outbound_tokens_id)
                 .then((res) => {
                     console.log('出征成功', res)
                     this.$loading.hide()
@@ -438,10 +425,27 @@ export default {
                 })
                 .catch(err => {
                     console.log('出征失败', err)
-
                     this.$loading.hide()
-
                 })
+        },
+
+        //点击出征按钮
+        async handleCampaign() {
+            this.$loading.show()
+            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            console.log('erc721ApppprovalState', erc721ApppprovalState)
+            if (erc721ApppprovalState !== true) {
+                const erc721Result = await this.erc721ContractApppproval(config.game_addr)
+                console.log('erc721Result', erc721Result)
+                if (erc721Result.status == 1) {
+                    this.userCampaign()
+                } else {
+                    this.$loading.hide()
+                    showToast('授权失败')
+                }
+            } else {
+                this.userCampaign()
+            }
         }
     }
 }

@@ -22,8 +22,8 @@ export async function userLevel(address) {
 }
 
 //购买nft
-export async function buy(nftId) {
-  const tx = await GAMETRADE.buy(nftId);
+export async function buy(nftType) {
+  const tx = await GAMETRADE.buy(nftType);
   const result = await tx.wait();
   console.log(result);
   return result;
@@ -40,8 +40,8 @@ export async function synthesisNFT(nftsId, targetId) {
 }
 
 //出征
-export async function setOff(nftId, tokenId) {
-  const tx = await GAMETRADE.create(nftId, tokenId, {
+export async function setOff(nextNFTType, tokenType) {
+  const tx = await GAMETRADE.create(nextNFTType, tokenType, {
     gasLimit: 9999999,
   });
   const result = await tx.wait();

@@ -15,82 +15,14 @@
                         </van-swipe>
                     </div>
                 </div>
-                <!-- <div class="flex justify-center items-center mb-10">
-                    <div v-for="(item, index) in 3"
-                        :class="[index === 0 ? 'ml-0' : '', currentSwipe === index ? 'bg-theme-primary' : 'bg-swipe-bull']"
-                        :key="index" class="w-2 h-2 rounded-full ml-2" />
-                </div> -->
                 <div class="flex flex-col justify-start items-center mb-10">
                     <div class="w-11/12 text-3xl border-module text-card-content font-medium">
                         {{ nftInfor.name }}
                     </div>
-                    <!-- <div class="w-11/12 flex justify-between items-center text-card-content">
-                        <div class="flex justify-center item-center w-4/12 border-r border-card-introduce py-1.5">
-                            <div class="icon iconfont icon-heart mr-2" style="font-size: 20px;"></div>
-                            <div class="mt-px">5</div>
-                        </div>
-                        <div class="flex justify-center item-center w-4/12 border-r border-card-introduce py-1.5">
-                            <div class="icon iconfont icon-view mr-2" style="font-size: 20px;"></div>
-                            <div class="mt-px">1245</div>
-                        </div>
-                        <div class="flex justify-center item-center w-4/12 py-1.5">
-                            <div class="icon iconfont icon-share mr-2" style="font-size: 20px;"></div>
-                            <div class="mt-px">分享</div>
-                        </div>
-
-                    </div> -->
-                    <!-- <div class="border-module">
-                        <div class="text-icon-gray text-xs mb-1">
-                            發行方
-                        </div>
-                        <div class="flex justify-start items-center">
-                            <div class="rounded-full overflow-hidden w-6 h-6 mr-2 bg-theme-primary">
-                                <img src="../../assets/logo.png" alt="">
-                            </div>
-                            <div class="text-card-content font-medium text-lg">
-                                世界關公寶WGT
-                            </div>
-                        </div>
-                        <div class="text-icon-gray text-xs mb-1">
-                            擁有者
-                        </div>
-                        <div class="flex justify-start items-center">
-                            <div class="rounded overflow-hidden w-6 h-6 mr-2">
-                                <img src="https://upload.ucollex.io/cdn-cgi/image/width=512/uploads/dash/ShyePRsApntO.jpg"
-                                    alt="">
-                            </div>
-                            <div class="text-card-content font-medium text-lg">
-                                LeBlanc James
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
-                        <div class="flex justify-between items-center">
-                            <div class="text-2xl ">階段</div>
-                            <div class="icon iconfont icon-right  show-icon" :class="showStage ? '-rotate-90' : ''">
-                            </div>
-                        </div>
-                        <div class="mt-8" v-show="showStage">
-                            {{ nftInfor.currentStage }}
-                        </div>
-                    </div> -->
-                    <!-- <div class="border-module w-11/12 text-card-content" v-if="nftInfor.upgrade_requirements"
-                        @click="showRequest = !showRequest">
-                        <div class="flex justify-between items-center">
-                            <div class="text-2xl">合成要求</div>
-                            <div class="icon iconfont icon-right  show-icon" :class="showRequest ? '-rotate-90' : ''">
-                            </div>
-                        </div>
-                        <div class="mt-8" v-show="showRequest">
-                            {{ nftInfor.upgrade_requirements }}
-                        </div>
-                    </div> -->
                     <div class="border-module w-11/12 text-card-content font-light"
                         v-if="nftInfor.card_type === 'nft_role'">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">詳細資料</div>
-                            <!-- <div class="icon iconfont icon-right  show-icon" :class="showDetails ? '-rotate-90' : ''">
-                            </div> -->
                         </div>
                         <div class="mt-8" v-show="showDetails">
                             <div class="mb-6">
@@ -117,10 +49,6 @@
                                 <div class="text-base text-card-content">{{ nftInfor.cycle }}</div>
 
                             </div>
-                            <!-- <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">出征獎勵（等值WGT）</div>
-                                <div class="text-base text-card-content">159U</div>
-                            </div> -->
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">月化利率</div>
                                 <div class="text-base text-card-content">{{ nftInfor.monthly_interest_rate }}</div>
@@ -149,11 +77,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="flex justify-center items-center pb-32">
-                    <div class="w-11/12 bg-more-content text-icon-gray button-word">
-                        查看更多該階段下更多NFT
-                    </div>
-                </div> -->
                 <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
                     <div class="buy-button text-primary-word text-lg button-word" @click="handlePay">
                         購買 {{ nftInfor.price }}
@@ -197,7 +120,7 @@ export default {
         console.log('this.$route', this.$route)
         this.goodType = this.$route.name
         if (this.$route.name === 'good') {
-            matchNFTData(parseInt(this.$route.params.id))
+            this.matchNFTData(parseInt(this.$route.params.id))
         } else if (this.$route.name === 'market') {
             this.tokenId = this.$route.params.tokenId
             this.getNFTDetails()
@@ -243,13 +166,14 @@ export default {
         },
         //点击购买按钮
         async handlePay() {
+            this.$loading.show()
             const preAddressArr = await preAddress(window.ethereum.selectedAddress)
             console.log('preAddress', preAddressArr)
             if (preAddressArr[0] === ZeroAddress) {
+                this.$loading.hide()
                 showToast('当前地址暂无上级，请前往社区寻找上级推荐人')
                 return
             }
-            this.$loading.show()
             const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.game_addr)
             console.log('hasAllowance', hasAllowance)
             if (hasAllowance == 0) {
@@ -286,6 +210,9 @@ export default {
                 .catch((err) => {
                     this.$loading.hide()
                     showToast('购买失败，请重新购买')
+                    // this.$router.push({
+                    //     path: '/personal'
+                    // })
                     console.log(err)
                 })
         },
