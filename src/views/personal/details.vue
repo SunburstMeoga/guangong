@@ -116,6 +116,14 @@
                         出征
                     </div>
                 </div>
+                <!-- <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
+                    v-if="assetState === 'campaign' && nftInfor.card_type == 'nft_role'">
+
+                    <div class="bg-more-content campaign  flex-1 ml-2 text-primary-word text-lg button-word"
+                        @click="handlePropsCard">
+                        使用道具卡
+                    </div>
+                </div> -->
             </div>
         </div>
         <!-- 合成弹窗 -->
@@ -210,6 +218,21 @@
                 </div>
             </div>
         </van-popup>
+        <!-- 道具卡弹窗 -->
+        <van-popup v-model:show="showPropsCard">
+            <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择道具卡</div>
+                <div @click="clickPropsCard(item)" v-for="(item, index) in propsCardList" :key="index"
+                    class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded"
+                    :class="item.isChecked ? 'buy-button text-white' : ''">
+                    {{ item.name }} 剩余{{ item.acount }}张
+                </div>
+                <div class="w-11/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                    @click="confirmCampaign">
+                    确认出征
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 
@@ -241,7 +264,16 @@ export default {
             assetState: '',
             pageTitle: '',
             showCancelPendingOrder: false,
-            opendingOrderNFTDetails: {}
+            showPropsCard: false,
+            opendingOrderNFTDetails: {},
+            propsCardList: [
+                { name: '华佗', nftType: 59, isChecked: false, acount: 0 },
+                { name: '张角', nftType: 60, isChecked: false, acount: 2 },
+                { name: '诸葛亮', nftType: 61, isChecked: false, acount: 4 },
+                { name: '孟获', nftType: 62, isChecked: false, acount: 1 },
+                { name: '袁术', nftType: 63, isChecked: false, acount: 3 }
+            ],
+            currentProps: []
         }
     },
     mounted() {
@@ -269,6 +301,20 @@ export default {
     },
     methods: {
         filterAmount, filterTime,
+        //点击道具卡选项
+        clickPropsCard(item, index) {
+            this.currentProps = index
+            if (item.acount === 0) {
+                showToast(`${item.name}道具卡剩余0张`)
+                return
+            }
+            item.isChecked = !item.isChecked
+            this.currentProps = this.propsCardList.filter(item => {
+                return item.isChecked
+            })
+            console.log(this.currentProps)
+        },
+
         //点击取消挂单按钮唤起弹窗
         handleCancelPendingOrder() {
             this.showCancelPendingOrder = true
@@ -399,6 +445,7 @@ export default {
         async erc721ApppprovalState(contractAddress) {
             return await isApprovedAll(window.ethereum.selectedAddress, contractAddress)
         },
+        //合成nft
         updataNFT() {
             this.$loading.show()
             console.log(this.nftInfor)
@@ -412,6 +459,11 @@ export default {
                     console.log('合成失败', err)
                     this.$loading.hide()
                 })
+        },
+
+        //点击出征按钮按钮唤起道具卡选择弹窗
+        handleCampaign() {
+            this.showPropsCard = true
         },
 
         //出征
@@ -429,8 +481,8 @@ export default {
                 })
         },
 
-        //点击出征按钮
-        async handleCampaign() {
+        //点击确认出征按钮
+        async confirmCampaign() {
             this.$loading.show()
             const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
             console.log('erc721ApppprovalState', erc721ApppprovalState)

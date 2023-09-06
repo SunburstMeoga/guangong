@@ -49,6 +49,13 @@ export async function setOff(nextNFTType, tokenType) {
   return result;
 }
 
+//使用华佗道具卡
+export async function huatuoProps(walletAddress) {
+  const tx = await GAMETRADE.huaTuo(walletAddress, 0, 59);
+  const result = await tx.wait();
+  return result;
+}
+
 //用户购买财神卡
 export async function buyFortuneCard(id) {
   const tx = await GAMETRADE.buy2(id);
