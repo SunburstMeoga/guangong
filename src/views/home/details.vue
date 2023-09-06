@@ -156,7 +156,7 @@
                 </div> -->
                 <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
                     <div class="buy-button text-primary-word text-lg button-word" @click="handlePay">
-                        購買 US$ 19.98
+                        購買 {{ nftInfor.price }}
                     </div>
                 </div>
             </div>
@@ -172,8 +172,10 @@ import { accountBalance } from '@/request/ether_request'
 import { buy } from '@/request/ether_request/game'
 import { preAddress } from '@/request/ether_request/popularized'
 import { isAllowance, approve } from '@/request/ether_request/wgt'
-
+import { dealNFT } from '@/request/ether_request/market'
+import { nftDetails } from '@/request/api_request'
 import { ZeroAddress } from "ethers"
+import { filterAmount } from '@/utils/filterValue';
 
 
 export default {
@@ -185,22 +187,50 @@ export default {
             showRequest: true,
             showDetails: true,
             showIssue: true,
-            nftInfor: {}
+            nftInfor: {},
+            tokenId: 0,
+            goodType: '',
+            nftAmount: ''
         }
     },
     mounted() {
-        console.log(this.$route.params)
-        const nftItem = nfts_list.filter(item => {
-            return item.id === parseInt(this.$route.params.id)
-        })
-        this.nftInfor = nftItem[0]
-        console.log('nftItem', nftItem)
+        console.log('this.$route', this.$route)
+        this.goodType = this.$route.name
+        if (this.$route.name === 'good') {
+            matchNFTData(parseInt(this.$route.params.id))
+        } else if (this.$route.name === 'market') {
+            this.tokenId = this.$route.params.tokenId
+            this.getNFTDetails()
+        }
     },
     methods: {
-        accountBalance,
+        accountBalance, filterAmount,
         swipeChange(index) {
             console.log('change', index)
             this.currentSwipe = index
+        },
+        //本地匹配nft数据
+        matchNFTData(matchValue, amount) {
+            const nftItem = nfts_list.filter(item => {
+                return matchValue === item.id
+            })
+            this.nftInfor = nftItem[0]
+            if (this.$route.name === 'market') {
+                this.nftInfor.price = this.filterAmount(amount)
+            }
+            console.log('nftItem', nftItem)
+        },
+        //挂单的nft详情
+        getNFTDetails() {
+            nftDetails(this.tokenId)
+                .then(res => {
+                    console.log('资产详情', res)
+                    this.nftAmount = res.data.amount
+                    this.matchNFTData(res.data.id, res.data.amount)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
         },
         //合约授权
         async contractApprove() {
@@ -211,6 +241,7 @@ export default {
         async checkAllowanceState() {
             return await isAllowance(window.ethereum.selectedAddress, config.game_addr)
         },
+        //点击购买按钮
         async handlePay() {
             const preAddressArr = await preAddress(window.ethereum.selectedAddress)
             console.log('preAddress', preAddressArr)
@@ -225,16 +256,25 @@ export default {
                 const approveResult = await this.contractApprove()
                 console.log('approveResult', approveResult)
                 if (approveResult.status == 1) {
-                    this.toPay()
+                    if (this.goodType === 'good') {
+                        this.payFromMall()
+                    } else if (this.goodType === 'market') {
+                        this.payFromMarket()
+                    }
+
                 } else {
                     this.$loading.hide()
                     showToast('授权失败，请重新授权')
                 }
             } else {
-                this.toPay()
+                if (this.goodType === 'good') {
+                    this.payFromMall()
+                } else if (this.goodType === 'market') {
+                    this.payFromMarket()
+                }
             }
         },
-        toPay() {
+        payFromMall() {
             console.log(this.nftInfor.id)
             // return
             buy(this.nftInfor.id)
@@ -249,6 +289,22 @@ export default {
                     console.log(err)
                 })
         },
+        payFromMarket() {
+            dealNFT(this.tokenId, this.nftAmount)
+                .then((res) => {
+                    this.$loading.hide()
+                    showToast('购买成功')
+                    console.log(res)
+                    this.$router.push({
+                        path: '/personal'
+                    })
+                })
+                .catch((err) => {
+                    this.$loading.hide()
+                    showToast('购买失败，请重新购买')
+                    console.log(err)
+                })
+        }
     }
 }
 </script>

@@ -45,7 +45,7 @@ export async function pendingOrderList(address) {
 
 //二手市场列表
 export async function marketList() {
-  const result = await axios.get(`${config.api}market/group`);
+  const result = await axios.get(`${config.api}market/list`);
   return result;
 }
 

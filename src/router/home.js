@@ -8,7 +8,7 @@ const home = [
     },
   },
   {
-    path: "/market/:id",
+    path: "/market/:tokenId",
     name: "market",
     component: () => import("@/views/home/details"),
     meta: {

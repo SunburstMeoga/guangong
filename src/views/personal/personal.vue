@@ -158,16 +158,6 @@ export default {
                         })
                     })
                     this.assetsList = newArr
-                    // typeList.map(item => {
-                    //     nfts_list.map(_item => {
-                    //         if (_item.id == item.typeID) {
-                    //             console.log(_item.id, item.tokenId)
-                    //             _item.tokenId = item.tokenId
-                    //             this.assetsList.push(_item)
-                    //         }
-                    //     })
-
-                    // })
                     console.log('assetsList', this.assetsList)
 
                 })

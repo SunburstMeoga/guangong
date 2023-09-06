@@ -64,8 +64,9 @@
                 <module-title titleWord="NFT市場" hasMore />
             </div>
             <div class="w-full px-4">
-                <div class="mb-4" v-for="(item, index) in marketList" :key="index" @click="toMarketDetails()">
-                    <market-card :imageUrl="item.imageUrl" :name="item.name" />
+                <div class="mb-4" v-for="(item, index) in marketListData" :key="index" @click="toMarketDetails(item)">
+                    <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
+                        :amount="filterAmount(item.amount)" />
                 </div>
             </div>
 
@@ -76,12 +77,13 @@
 <script>
 import { Swipe, SwipeItem } from 'vant';
 import nfts_list from '@/nft_datas/nfts_list'
-
 import ProductCard from '@/components/ProductCard'
 import ModuleTitle from '@/components/ModuleTitle.vue'
 import MarketCard from '@/components/MarketCard'
 import ShopsCard from '@/components/ShopsCard.vue'
 import { hotList, marketList } from '@/request/api_request'
+import { filterAddress, filterAmount } from '@/utils/filterValue'
+
 export default {
     components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
@@ -89,48 +91,41 @@ export default {
             showSkeleton: true,
             ret: [],
             productList: [],
-            // marketList: [
-            //     {
-            //         imageUrl: require('../../assets/guanyu1.png'),
-            //         name: '關羽',
-            //     },
-            //     {
-            //         imageUrl: require('../../assets/guanyu2.png'),
-            //         name: '關羽',
-            //     },
-            //     {
-            //         imageUrl: require('../../assets/guanyu3.png'),
-            //         name: '關羽',
-            //     },
-            //     {
-            //         imageUrl: require('../../assets/huangzhong.png'),
-            //         name: '黃忠',
-            //     },
-            //     {
-            //         imageUrl: require('../../assets/huangzhong1.png'),
-            //         name: '黃忠',
-            //     },
-            // ]
+            marketListData: []
         }
     },
     mounted() {
         console.log(nfts_list)
-        // nfts_list.map(item => {
-        //     if (item.card_type === 'tactics_props' || item.card_type === 'expedition_order' || item.card_type === 'synthesis_props') {
-        //         this.productList.push(item)
-        //     }
-        // })
-        // this.productList.push(nfts_list[0])
-        // console.log(this.productList)
-
         this.getHotList()
         this.getMarketList()
     },
     methods: {
+        filterAddress, filterAmount,
         getMarketList() {
             marketList()
                 .then(res => {
                     console.log('二手', res)
+                    let typeList = []
+                    res.data.map(item => {
+                        let obj = {}
+                        obj.typeID = item.id
+                        obj.tokenId = item.nft_id
+                        obj.amount = item.amount
+                        obj.owner = item.owner
+
+                        typeList.push(obj)
+                    })
+                    let newArr = typeList.filter((v) => nfts_list.some((val) => val.id == v.typeID))
+                    newArr.map(item => {
+                        nfts_list.map(_item => {
+                            if (item.typeID == _item.id) {
+                                console.log(item)
+                                item.infor = _item
+                            }
+                        })
+                    })
+                    this.marketListData = newArr
+                    console.log('marketListData', this.marketListData)
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -166,9 +161,9 @@ export default {
 
             })
         },
-        toMarketDetails() {
+        toMarketDetails(item) {
             this.$router.push({
-                path: '/market/12345567'
+                path: '/market/' + item.tokenId
             })
         },
         toGoodDetails(item) {

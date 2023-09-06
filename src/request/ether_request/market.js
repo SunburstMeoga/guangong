@@ -35,3 +35,9 @@ export async function exchange() {
   const result = await tx.wait();
   return result;
 }
+
+//用户购买二手市场NFT
+export async function dealNFT(nftId, amount) {
+  const result = MARKETTRADE.deal(nftId, ethers.parseEther(amount));
+  return result;
+}
