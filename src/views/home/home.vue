@@ -81,7 +81,7 @@ import ProductCard from '@/components/ProductCard'
 import ModuleTitle from '@/components/ModuleTitle.vue'
 import MarketCard from '@/components/MarketCard'
 import ShopsCard from '@/components/ShopsCard.vue'
-import { hotList } from '@/request/api_request'
+import { hotList, marketList } from '@/request/api_request'
 export default {
     components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
     data() {
@@ -124,8 +124,18 @@ export default {
         // console.log(this.productList)
 
         this.getHotList()
+        this.getMarketList()
     },
     methods: {
+        getMarketList() {
+            marketList()
+                .then(res => {
+                    console.log('二手', res)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
         getHotList() {
             hotList()
                 .then(res => {
