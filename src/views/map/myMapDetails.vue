@@ -98,7 +98,8 @@
 
 <script>
 import { userMarkedDetials } from '@/request/api_request'
-import { markMap, cancelMarkMap, approve, isAllowance } from '@/request/ether_request'
+import { markMap, cancelMarkMap } from '@/request/ether_request/map'
+import { approve, isAllowance } from '@/request/ether_request/wgt'
 import { showToast } from 'vant'
 import { config } from '@/const/config'
 

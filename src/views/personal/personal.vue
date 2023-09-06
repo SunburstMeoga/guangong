@@ -7,23 +7,61 @@
             <div class="w-11/12">
                 <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
                     color="#E20F2A">
-                    <van-tab v-for="(item, index) in assetsList" :title="item.title" class="pt-4">
-                        <div class="" :class="item.list.length !== 0 ? 'columns-2 gap-x-3' : ''">
-                            <div v-if="item.list.length === 0">
+                    <van-tab title="我的NFT" class="pt-4">
+                        <div class="" :class="assetsList.length !== 0 ? 'columns-2 gap-x-3' : ''">
+                            <div v-if="assetsList.length === 0">
                                 <div class="text-icon-gray text-xl text-center">
                                     暂无数据
                                 </div>
                             </div>
                             <div v-else>
-                                <div v-for="( _item, _index ) in  item.list " :key="index" @click="toAassetsDetails(_item)"
+                                <div v-for="( _item, _index ) in assetsList" :key="index" @click="toAassetsDetails(_item)"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
-                                    <assets-card :imageUrl="_item.imageUrl" :price="_item.price" :name="_item.name"
-                                        :cardType="getCardType(_item.card_type)" :token="_item.tokenId" />
+                                    <assets-card :imageUrl="_item.infor.imageUrl" :price="_item.infor.price"
+                                        :name="_item.infor.name" :cardType="getCardType(_item.infor.card_type)"
+                                        :token="_item.tokenId" />
+                                </div>
+                            </div>
+                        </div>
+                    </van-tab>
+                    <van-tab title="正在挂单" class="pt-4">
+                        <div class="" :class="pendingList.length !== 0 ? 'columns-2 gap-x-3' : ''">
+                            <div v-if="pendingList.length === 0">
+                                <div class="text-icon-gray text-xl text-center">
+                                    暂无数据
+                                </div>
+                            </div>
+                            <div v-else>
+                                <div v-for="( _item, _index ) in  pendingList" :key="index"
+                                    @click="toPendingOrderDetails(_item)"
+                                    class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
+                                    <assets-card type="pending" :imageUrl="_item.infor.imageUrl"
+                                        :price="filterPrice(_item.amount)" :name="_item.infor.name"
+                                        :cardType="getCardType(_item.infor.card_type)" :nftID="_item.tokenId" />
+                                </div>
+                            </div>
+                        </div>
+                    </van-tab>
+                    <van-tab title="正在出征" class="pt-4">
+                        <div class="" :class="pendingList.length !== 0 ? 'columns-2 gap-x-3' : ''">
+                            <div v-if="pendingList.length === 0">
+                                <div class="text-icon-gray text-xl text-center">
+                                    暂无数据
+                                </div>
+                            </div>
+                            <div v-else>
+                                <div v-for="( _item, _index ) in  pendingList" :key="index"
+                                    @click="toCampaignDetails(_item)"
+                                    class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
+                                    <assets-card type="pending" :imageUrl="_item.infor.imageUrl"
+                                        :price="filterPrice(_item.amount)" :name="_item.infor.name"
+                                        :cardType="getCardType(_item.infor.card_type)" :nftID="_item.tokenId" />
                                 </div>
                             </div>
                         </div>
                     </van-tab>
                 </van-tabs>
+
             </div>
         </div>
     </div>
@@ -35,29 +73,32 @@ import PersonalAssets from '@/components/PersonalAssets'
 import AssetsCard from '@/components/AssetsCard'
 import { ownerList, pendingOrderList } from '@/request/api_request'
 import nfts_list from '@/nft_datas/nfts_list'
+// import { filterPrice } from '@/utils/filterValue'
 
 import { Tab, Tabs, Empty } from 'vant';
 export default {
     components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, PersonalAssets, AssetsCard },
     data() {
         return {
-            assetsList: [{ title: '所有资产', number: 12, list: [] },
-            { title: '正在售卖', number: 6, list: [] },
-                // { title: '战法道具卡', number: 9, list: [] },
-                // { title: '出征令牌', number: 9, list: [] }
-            ],
+            active: 0,
+            tabList: [{ title: '所有资产' }, { title: '正在挂单' }],
+            assetsList: [],
+            pendingList: []
             // assetsList: []
         }
     },
     mounted() {
         this.getPersonNfts()
+        this.getPendingOrderList()
         console.log('ethereum.selectedAddress', ethereum.selectedAddress)
     },
     methods: {
+        filterPrice(value) {
+            return parseInt(value).toFixed(4)
+        },
         //卡片类型
         getCardType(card_type) {
             if (card_type === 'nft_role') {
-                // 
                 return 'NFT角色卡'
             } else if (card_type === 'synthesis_props') {
                 return '合成道具卡'
@@ -71,56 +112,53 @@ export default {
         getPendingOrderList() {
             pendingOrderList(window.ethereum.selectedAddress)
                 .then(res => {
-                    console.log('用户挂单的列表', res)
+                    console.log('挂单列表', res)
+                    let typeList = []
+                    res.data.map(item => {
+                        let obj = {}
+                        obj.typeID = item.id
+                        obj.tokenId = item.nft_id
+                        obj.amount = item.amount
+                        typeList.push(obj)
+                    })
+                    let newArr = typeList.filter((v) => nfts_list.some((val) => val.id == v.typeID))
+                    newArr.map(item => {
+                        nfts_list.map(_item => {
+                            if (item.typeID == _item.id) {
+                                console.log(item)
+                                item.infor = _item
+                            }
+                        })
+                    })
+                    this.pendingList = newArr
+                    console.log('pendingList', this.pendingList)
                 })
                 .catch(err => {
                     console.log('err', err)
                 })
         },
-        async getPersonNfts() {
+        getPersonNfts() {
             ownerList(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('资产列表', res)
-                    let modIdList = []
-                    let tokenIds = []
+                    let typeList = []
                     res.data.map(item => {
                         let obj = {}
-                        // console.log('tokenid', item.tokenId)
-                        obj.targetId = item.tokenId % 100
+                        obj.typeID = item.tokenId % 100
                         obj.tokenId = item.tokenId
-                        tokenIds.push(obj.targetId)
-                        modIdList.push(obj)
+                        typeList.push(obj)
                     })
-                    let assetsList = []
-                    tokenIds = [...new Set(tokenIds)] //去重
-                    console.log('modIdList', modIdList)
-                    modIdList.map(item => {
+                    let newArr = typeList.filter((v) => nfts_list.some((val) => val.id == v.typeID))
+                    newArr.map(item => {
                         nfts_list.map(_item => {
-                            if (item.targetId === _item.id) {
-                                let obj = {}
-                                obj = _item
-                                obj.tokenId = item.tokenId
-                                // _item.tokenId = item.tokenId
-                                assetsList.push(obj)
-                                console.log(obj)
+                            if (item.typeID == _item.id) {
+                                console.log(item)
+                                item.infor = _item
                             }
                         })
                     })
-                    // console.log('assetsList', assetsList)
-                    // return
-                    // assetsList.map(item => {
-                    //     if (item.card_type === 'nft_role') {
-                    //         this.nftTypeList[0].list.push(item)
-                    //     } else if (item.card_type === 'synthesis_props') {
-                    //         this.nftTypeList[1].list.push(item)
-                    //     } else if (item.card_type === 'tactics_props') {
-                    //         this.nftTypeList[2].list.push(item)
-                    //     } else if (item.card_type === 'expedition_order') {
-                    //         this.nftTypeList[3].list.push(item)
-                    //     }
-                    // })
-                    this.assetsList[0].list = assetsList
-                    console.log('assetsList', assetsList)
+                    this.assetsList = newArr
+                    console.log('assetsList', this.assetsList)
 
                 })
                 .catch(err => {
@@ -131,10 +169,17 @@ export default {
             console.log('item', _item)
             // return
             this.$router.push({
-                path: '/assets/' + _item.id,
-                query: {
-                    tokenId: _item.tokenId
-                }
+                path: '/assets/' + _item.tokenId
+            })
+        },
+        toPendingOrderDetails(_item) {
+            this.$router.push({
+                path: '/pending-order/' + _item.tokenId
+            })
+        },
+        toCampaignDetails(_item) {
+            this.$router.push({
+                path: '/campaign/' + _item.tokenId
             })
         }
     }

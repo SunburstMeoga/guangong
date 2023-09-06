@@ -45,6 +45,18 @@ export async function pendingOrderList(address) {
 
 //二手市场列表
 export async function marketList() {
-  const result = await axios.get(`${config.api}market/group`);
+  const result = await axios.get(`${config.api}market/list`);
+  return result;
+}
+
+//nft挂单
+export async function pendingOrderApi(address, obj) {
+  const result = await axios.post(`${config.api}market/${address}`, obj);
+  return result;
+}
+
+//用户查看nft详情
+export async function nftDetails(nftId) {
+  const result = await axios.get(`${config.api}market/nft/${nftId}`);
   return result;
 }

@@ -12,8 +12,11 @@
         <div class="backdrop-blur-3xl text-sm text-assets-word bg-module-card pl-2 py-1">
             <div class="text-theme-primary text-xl">{{ name }}</div>
             <div class="text-icon-gray">{{ cardType }}</div>
+            <!-- <div class="text-icon-gray"> 正在出征 </div> -->
+            <div v-if="type === 'pending'" class="text-icon-gray">NFT ID # {{ nftID }}</div>
+            <div v-else class="text-icon-gray">token #{{ token }}</div>
             <div class="text-icon-gray text-right pr-2 font-bold">{{ price }}</div>
-            <!-- <div class="text-icon-gray">token #{{ token }}</div> -->
+
         </div>
     </div>
 </template>
@@ -40,6 +43,14 @@ export default {
         cardType: {
             type: String,
             default: ''
+        },
+        type: {
+            type: String,
+            default: ''
+        },
+        nftID: {
+            type: Number,
+            default: 0
         }
     }
 }

@@ -58,7 +58,7 @@ import { config } from '@/const/config'
 import axios from 'axios'
 import HomeIn from './inHome.vue'
 import HomeOut from './outHome.vue'
-import { preAddress } from '@/request/ether_request'
+import { preAddress } from '@/request/ether_request/popularized'
 
 export default {
     components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs },
@@ -95,7 +95,7 @@ export default {
     methods: {
         getPreAddress() {
             this.$loading.show()
-            preAddress(ethereum.selectedAddress)
+            preAddress(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('当前用户上级地址', res)
                     this.$loading.hide()

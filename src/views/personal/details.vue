@@ -1,14 +1,21 @@
 <template>
     <div>
         <div>
-            <div class="pt-24">
+            <div class="py-8 top-0 sticky flex justify-center z-10 bg-black">
+                <div class="w-11/12 ml-auto mr-auto relative flex justify-center items-center text-card-content">
+                    <div class="icon iconfont icon-left absolute left-1" style="font-size: 24px;" @click="cancelPay()">
+                    </div>
+                    <div class="">{{ pageTitle }}</div>
+                </div>
+            </div>
+            <div class="pt-4 pb-12">
                 <div
                     class="relative ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-4">
                     <div class="w-80 h-80">
                         <img :src="nftInfor.imageUrl" alt="">
                     </div>
                     <div
-                        class="absolute top-0 left-0 rounded-br-xl inline-block px-4 py-2 bg-success-undertone text-sm text-success-word">
+                        class="absolute top-0 left-0 rounded-br-xl inline-block px-2 py-1 bg-success-undertone text-sm text-success-word">
                         {{ nftInfor.stage }}
                     </div>
                 </div>
@@ -29,64 +36,22 @@
                             合成路线：美髯公 + 赤兔马 + 青龙偃月刀
                         </div>
                     </div> -->
-                    <div class="w-11/12 flex justify-between items-center border-module">
+                    <div class="w-11/12 flex justify-between items-center border-module" v-if="assetState === 'assets'">
                         <div class="buy-button button-word w-full text-lg" @click="handlePendingOrder">
                             挂单
                         </div>
                     </div>
-
-                    <!-- <div class="border-module">
-                        <div class="text-icon-gray text-xs mb-1">
-                            發行方
-                        </div>
-                        <div class="flex justify-start items-center mb-8">
-                            <div class="rounded-full overflow-hidden w-6 h-6 mr-2">
-                                <img src="https://res.ucollex.io/cdn-cgi/image/width=100/images/20220725/5tKs6wbE7CxCMbpkn5DQ.jpg"
-                                    alt="">
-                            </div>
-                            <div class="text-card-content font-medium text-lg">
-                                monstercat貓廠
-                            </div>
-                        </div>
-                        <div class="text-icon-gray text-xs mb-1">
-                            擁有者
-                        </div>
-                        <div class="flex justify-start items-center">
-                            <div class="rounded overflow-hidden w-6 h-6 mr-2">
-                                <img src="https://upload.ucollex.io/cdn-cgi/image/width=512/uploads/dash/ShyePRsApntO.jpg"
-                                    alt="">
-                            </div>
-                            <div class="text-card-content font-medium text-lg">
-                                LeBlanc James
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- <div class="border-module w-11/12 text-card-content" @click="showStage = !showStage">
-                        <div class="flex justify-between items-center">
-                            <div class="text-2xl ">当前阶段</div>
-                            <div class="icon iconfont icon-right  show-icon" :class="showStage ? '-rotate-90' : ''">
-                            </div>
-                        </div>
-                        <div class="mt-8" v-show="showStage">
-                            武聖出山（yue）
+                    <div class="w-11/12 flex justify-between items-center border-module"
+                        v-if="assetState === 'pending-order'">
+                        <div class="buy-button button-word w-full text-lg" @click="handleCancelPendingOrder">
+                            撤销挂单
                         </div>
                     </div>
-                    <div class="border-module w-11/12 text-card-content" @click="showNextStage = !showNextStage">
-                        <div class="flex justify-between items-center">
-                            <div class="text-2xl ">下一阶段</div>
-                            <div class="icon iconfont icon-right  show-icon" :class="showNextStage ? '-rotate-90' : ''">
-                            </div>
-                        </div>
-                        <div class="mt-8" v-show="showNextStage">
-                            百战封神（每個道具卡价值300U）
-                        </div>
-                    </div> -->
 
                     <div class="border-module w-11/12 text-card-content">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">詳細資料</div>
-                            <!-- <div class="icon iconfont icon-right  show-icon" :class="showDetails ? '-rotate-90' : ''">
-                            </div> -->
+
                         </div>
                         <div class="mt-8" v-show="showDetails">
                             <div class="mb-6">
@@ -94,11 +59,7 @@
                                 <div class="text-base text-card-content">{{ nftInfor.stage }}</div>
 
                             </div>
-                            <!-- <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">發行量</div>
-                                <div class="text-base text-card-content">100</div>
 
-                            </div> -->
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">出征令牌</div>
                                 <div class="text-base text-card-content">{{ nftInfor.outbound_tokens }}</div>
@@ -113,10 +74,7 @@
                                 <div class="text-base text-card-content">{{ nftInfor.cycle }}</div>
 
                             </div>
-                            <!-- <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">出征獎勵（等值WGT）</div>
-                                <div class="text-base text-card-content">159U</div>
-                            </div> -->
+
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">月化利率</div>
                                 <div class="text-base text-card-content">{{ nftInfor.monthly_interest_rate }}</div>
@@ -146,9 +104,8 @@
                             </div>
                         </div>
                         <div class="mt-8 flex justify-start items-center h-14" v-show="showIssue">
-                            <div class="rounded-full overflow-hidden w-10 h-10">
-                                <img src="https://res.ucollex.io/cdn-cgi/image/width=100/images/20220725/5tKs6wbE7CxCMbpkn5DQ.jpg"
-                                    alt="">
+                            <div class="rounded-full overflow-hidden w-10 h-10 bg-theme-primary">
+                                <img src="../../assets/logo.png" alt="">
                             </div>
                             <div class="ml-2 flex flex-col justify-between">
                                 <div class="text-white font-medium">由 世界關公寶WGT 发行</div>
@@ -162,7 +119,8 @@
                         查看更多該階段下更多NFT
                     </div>
                 </div> -->
-                <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
+                <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
+                    v-if="assetState === 'assets'">
                     <div class="buy-button w-6/12 text-primary-word text-lg button-word" @click="updataNFT"
                         v-if="nftInfor.outbound_tokens_id !== 87">
                         升级
@@ -174,6 +132,7 @@
                 </div>
             </div>
         </div>
+        <!-- 合成弹窗 -->
         <van-popup v-model:show="showSynthesis">
             <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
                 <div class=" leading-6 font-helvetica-neue-bold text-base py-6">合成</div>
@@ -205,6 +164,7 @@
                 </div>
             </div>
         </van-popup>
+        <!-- 挂单弹窗 -->
         <van-popup v-model:show="showPendingOrder">
             <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
                 <div class=" leading-6 font-helvetica-neue-bold text-base py-6">NFT挂单</div>
@@ -226,6 +186,44 @@
                 </div>
             </div>
         </van-popup>
+        <!-- 取消挂单弹窗 -->
+        <van-popup v-model:show="showCancelPendingOrder">
+            <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">是否确认撤销该NFT挂单</div>
+                <div class="w-11/12 text-sm mb-1">
+                    NFT Token
+                </div>
+                <div
+                    class="mb-8 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                    # {{ opendingOrderNFTDetails.nft_id }}
+                </div>
+                <div class="w-11/12 text-sm mb-1">
+                    NFT挂单金额
+                </div>
+                <div
+                    class="mb-8 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                    {{ filterAmount(opendingOrderNFTDetails.amount) }}
+                </div>
+                <div class="w-11/12 text-sm mb-1">
+                    NFT挂单时间
+                </div>
+                <div
+                    class="mb-8 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                    {{ filterTime(opendingOrderNFTDetails.utc) }}
+                </div>
+                <div class="flex w-11/12 justify-between items-center">
+
+                    <div class="w-5/12  text-tips-word bg-bottom-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="showCancelPendingOrder = false">
+                        否
+                    </div>
+                    <div class="w-5/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="handleConfirmCancelPendingOrder">
+                        是
+                    </div>
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 
@@ -233,7 +231,12 @@
 import { Popup, showToast } from 'vant';
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
-import { synthesisNFT, setOff, approve, isAllowance, pendingOrder } from '@/request/ether_request'
+import { synthesisNFT, setOff } from '@/request/ether_request/game'
+import { approve, isAllowance } from '@/request/ether_request/wgt'
+import { apppprovalForAll } from '@/request/ether_request/nft'
+import { pendingOrder, redemptionNFT } from '@/request/ether_request/market'
+import { pendingOrderApi, nftDetails, } from '@/request/api_request'
+import { filterAmount, filterTime } from '@/utils/filterValue'
 
 export default {
     components: { [Popup.name]: Popup },
@@ -248,65 +251,168 @@ export default {
             nftInfor: {},
             tokenId: '',
             showPendingOrder: false,
-            pendingOrderAmount: null
+            pendingOrderAmount: null,
+            assetState: '',
+            pageTitle: '',
+            showCancelPendingOrder: false,
+            opendingOrderNFTDetails: {}
         }
     },
     mounted() {
-        if (this.$route.query.tokenId) {
-            this.tokenId = this.$route.query.tokenId
+        console.log('this.$route', this.$route)
+        this.assetState = this.$route.name
+        if (this.assetState === 'assets') {
+            this.pageTitle = '资产详情'
+        } else if (this.assetState === 'pending-order') {
+            this.pageTitle = '正在挂单'
+
+        } else if (this.assetState === 'campaign') {
+            this.pageTitle = '正在出征'
+
+        }
+        if (this.$route.params.tokenId) {
+            this.tokenId = this.$route.params.tokenId
+            this.getNFTDetails()
         }
         const nftItem = nfts_list.filter(item => {
-            return item.id === parseInt(this.$route.params.id)
+            return item.id === (parseInt(this.$route.params.tokenId)) % 100
         })
         this.nftInfor = nftItem[0]
         console.log('nftItem', this.nftInfor)
         console.log(this.tokenId)
     },
     methods: {
-        //挂单
-        userPendingOrder() {
-            pendingOrder(this.tokenId, this.pendingOrderAmount)
+        filterAmount, filterTime,
+        //点击取消挂单按钮唤起弹窗
+        handleCancelPendingOrder() {
+            this.showCancelPendingOrder = true
+        },
+        //点击取消挂单弹窗确认按钮
+        handleConfirmCancelPendingOrder() {
+            this.cancelPendingOrder()
+        },
+        cancelPay() {
+            window.history.back();
+        },
+        //撤销挂单操作
+        cancelPendingOrder() {
+            this.showCancelPendingOrder = false
+            this.$loading.show()
+            redemptionNFT(this.tokenId)
                 .then(res => {
-                    console.log('挂单成功', res)
+                    console.log('撤销挂单', res)
+                    this.$loading.hide()
+                    window.history.back()
+                    showToast('已取消挂单')
+                })
+                .catch(err => {
+                    console.log('err', err)
+                    this.$loading.hide()
+                    showToast('取消失败')
+                })
+        },
+        //获取资产详情
+        getNFTDetails() {
+            nftDetails(this.tokenId)
+                .then(res => {
+                    console.log('资产详情', res)
+                    this.opendingOrderNFTDetails = res.data
                 })
                 .catch(err => {
                     console.log('err', err)
                 })
         },
+        //挂单
+        userPendingOrder() {
+            pendingOrder(this.tokenId, this.pendingOrderAmount)
+                .then(res => {
+                    console.log('挂单成功', res)
+                    this.updataPendingOrder()
+                })
+                .catch(err => {
+                    console.log('err', err)
+                    this.$loading.hide()
+                })
+        },
         //挂单弹窗 确认挂单按钮
         async handleConfirmPendingOrder() {
-            console.log(this.tokenId, this.pendingOrderAmount)
             if (!this.pendingOrderAmount) {
                 showToast('请输入挂单金额')
                 return
             }
-            const hasAllowance = await this.checkAllowanceState()
-            if (hasAllowance == 0) {
-                const approveResult = await this.contractApprove()
-                if (approveResult.status === 1) {
-                    this.userPendingOrder()
-                } else {
-                    showToast('授权失败，请重新授权')
+            this.$loading.show()
+            const erc20ApppprovalState = await this.erc20ApppprovalState()
+            const erc721ApppprovalState = await this.erc721ApppprovalState()
+            if (erc20ApppprovalState == 0 || erc721ApppprovalState == 0) {
+                if (erc20ApppprovalState == 0 && erc721ApppprovalState !== 0) {
+                    const erc20Result = await this.erc20ContractApppproval()
+                    if (erc20Result.status == 1) {
+                        this.userPendingOrder()
+                    } else {
+                        showToast('erc20授权失败，请重新授权')
+                    }
+                } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState == 0) {
+                    const erc721Result = await this.erc721ContractApppproval()
+                    if (erc721Result.status == 1) {
+                        this.userPendingOrder()
+                    } else {
+                        showToast('erc721授权失败，请重新授权')
+                    }
                 }
-            } else {
+            } else if (erc20ApppprovalState == 0 && erc721ApppprovalState == 0) {
+                const erc20Result = await this.erc20ContractApppproval()
+                const erc721Result = await this.erc721ContractApppproval()
+                if (erc20Result == 1 && erc721Result == 1) {
+                    this.userPendingOrder()
+                } else if (erc20Result.status == 1 && erc721Result.status == 0) {
+                    showToast('erc721授权失败')
+                } else if (erc20Result.status == 0 && erc721Result.status == 1) {
+                    showToast('erc20授权失败')
+                } else if (erc20Result.status == 0 && erc721Result.status == 0) {
+                    showToast('授权失败')
+                }
+            } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState !== 0) {
                 this.userPendingOrder()
             }
         },
+        //挂单数据上传到接口
+        updataPendingOrder() {
+            pendingOrderApi(this.tokenId, {
+                owner: window.ethereum.selectedAddress,
+                amount: this.pendingOrderAmount
+            })
+                .then(res => {
+                    console.log('res', res)
+                    this.$loading.hide()
+                    this.showPendingOrder = false
+                })
+                .catch(err => {
+                    console.log('err', err)
+                    this.$loading.hide()
+                })
+        },
         //点击挂单按钮,弹起挂单弹窗
-        handlePendingOrder() {
+        async handlePendingOrder() {
             this.showPendingOrder = true
         },
-        //合约授权
-        async contractApprove() {
+        //erc20合约授权操作
+        async erc20ContractApppproval() {
             const result = await approve(config.market_addr)
             return result
         },
-        //检查合约授权状态
-        async checkAllowanceState() {
-            return await isAllowance(ethereum.selectedAddress, config.market_addr)
+        //erc721合约授权操作
+        async erc721ContractApppproval() {
+            const result = await apppprovalForAll(config.nft_addr)
+            return result
         },
-        // const hasAllowance = await this.checkAllowanceState()
-        //     console.log('hasAllowance', hasAllowance)
+        //检查erc20授权状态
+        async erc20ApppprovalState() {
+            return await isAllowance(window.ethereum.selectedAddress, config.market_addr)
+        },
+        //检查erc721授权状态
+        async erc721ApppprovalState() {
+            return await isApprovedAll(window.ethereum.selectedAddress, config.nft_addr)
+        },
         updataNFT() {
             this.$loading.show()
             console.log(this.nftInfor)

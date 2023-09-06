@@ -38,7 +38,8 @@
 </template>
 
 <script>
-import { isAllowance, approve, exchange } from '@/request/ether_request'
+import { isAllowance, approve } from '@/request/ether_request/wgt'
+import { exchange } from '@/request/ether_request/market'
 import { showToast } from 'vant'
 import { config } from '@/const/config'
 export default {
