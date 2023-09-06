@@ -240,7 +240,7 @@
 import { Popup, showToast } from 'vant';
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
-import { synthesisNFT, setOff } from '@/request/ether_request/game'
+import { synthesisNFT, setOff, huatuoProps } from '@/request/ether_request/game'
 import { approve, isAllowance } from '@/request/ether_request/wgt'
 import { apppprovalForAll, isApprovedAll } from '@/request/ether_request/nft'
 import { pendingOrder, redemptionNFT } from '@/request/ether_request/market'
@@ -479,6 +479,12 @@ export default {
                     console.log('出征失败', err)
                     this.$loading.hide()
                 })
+        },
+
+        //使用华佗道具卡
+        async usePropsFromHuaTuo() {
+            const result = huatuoProps(window.ethereum.selectedAddress)
+            return result;
         },
 
         //点击确认出征按钮
