@@ -7,16 +7,18 @@
                     <div class="">{{ getEarningsTypeWord(earningsType) }}</div>
                 </div>
             </div>
-            <div class="bg-bottom-content rounded w-11/12 ml-auto mr-auto p-4 text-white  mb-8">
+            <div class="bg-bottom-content rounded w-11/12 ml-auto mr-auto p-4 text-white mt-4 mb-8">
                 <div class="flex justify-between items-center">
                     <div>
                         <div class="">已领取：99.99</div>
                         <div class="flex justify-start items-baseline">
-                            <span>待领取：</span>
+                            <span>{{ earningsType === 'wealth_card' || earningsType === 'role_card' || earningsType ===
+                                'individual' ? '待领取' : '待发放' }}：</span>
                             <span class="text-theme-primary font-semibold text-2xl">100.00</span>
                         </div>
                     </div>
-                    <div class="campaign px-2 py-1">
+                    <div class="campaign px-2 py-1 rounded"
+                        v-if="earningsType === 'wealth_card' || earningsType === 'role_card' || earningsType === 'individual'">
                         领取奖励
                     </div>
                 </div>
@@ -32,7 +34,7 @@
             </div> -->
             <div class="w-11/12 ml-auto mr-auto">
                 <div class="mb-2 bg-bottom-content rounded" v-for="(item, index) in 20" :key="index">
-                    <earnings-card />
+                    <earnings-card :isEarings="index % 2 == 0 ? true : false" />
                 </div>
             </div>
         </div>
@@ -62,7 +64,7 @@ export default {
                 case 'role_card': return '角色卡收益'
                 case 'wealth_card': return '财神卡收益'
                 case 'individual': return '个人收益'
-                case 'role_card': return '团队收益'
+                case 'team': return '团队收益'
             }
         },
         goBack() {
