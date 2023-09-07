@@ -170,7 +170,7 @@ const nfts_list = [
     name: "華佗",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}prop/59.png`,
+    imageUrl: `${config.api}prop_method/59.png`,
     number_of_issues: "100萬張",
     prop_features:
       "获得“刮骨疗毒”战法 1 次；使用本战法，可花费角色价值的 70%USDT，将“关公荣耀卡”的损耗周期重置。",
@@ -183,7 +183,7 @@ const nfts_list = [
     name: "张角",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}prop/60.png`,
+    imageUrl: `${config.api}prop_method/60.png`,
     number_of_issues: "10 万张",
     prop_features:
       "获得“太平道法”战法 1 次；可让自己第一代被推荐账户中所有角色下次出征时长增加 5%；出征收益增加 2%，且其中 1%划归自己。已经获得过增益效果的账户获得 1 次免疫期。",
@@ -196,7 +196,7 @@ const nfts_list = [
     name: "诸葛亮",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}prop/61.png`,
+    imageUrl: `${config.api}prop_method/61.png`,
     number_of_issues: "10 万张",
     prop_features:
       "获得“草船借箭”战法 1 次；使用后可使自身账户和旗下直属第一代排名前 3 的被推荐账户的所有角色损耗周期延长 1 次（但该次出征时长延长 30%）；每个角色在每个损耗周期中只能接受 1 次“草船借箭”。",
@@ -209,7 +209,7 @@ const nfts_list = [
     name: "孟获",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}prop/62.png`,
+    imageUrl: `${config.api}prop_method/62.png`,
     number_of_issues: "10 万张",
     prop_features:
       "获得“南蛮入侵”战法 1 次；使用本卡可窃取遭受“南蛮入侵”的账号及旗下第一代推荐账户中所有角色下次出征收益的 1%。遭受过“南蛮入侵”的账号享有 3 次免疫期。",
@@ -221,7 +221,7 @@ const nfts_list = [
     id: 63,
     name: "袁术",
     card_type: "tactics_props",
-    imageUrl: `${config.api}prop/63.png`,
+    imageUrl: `${config.api}prop_method/63.png`,
     tag: "战法道具卡",
     number_of_issues: "10 万张",
     prop_features:

@@ -196,7 +196,6 @@ export default {
             ownerList(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('res', res)
-
                     let typeList = []
                     res.data.map(item => {
                         let obj = {}

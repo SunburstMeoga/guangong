@@ -190,7 +190,7 @@
                 </div>
                 <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
                     v-if="assetState === 'assets' && nftInfor.card_type == 'tactics_props'">
-                    <div class="bg-more-content campaign  flex-1 ml-2 text-primary-word text-lg button-word"
+                    <div class="bg-more-content campaign w-full ml-2 text-primary-word text-lg button-word"
                         @click="handlePropsCard">
                         使用道具卡
                     </div>
@@ -309,17 +309,74 @@
                         确认使用并出征
                     </div>
                 </div>
-                <!-- <div class="w-11/12 bg-language-content mt-6 flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
-                    @click="confirmCampaign">
-                    确认出征
-                </div> -->
             </div>
         </van-popup>
+        <!-- 战法道具卡弹窗 -->
+        <van-popup v-model:show="showPropsCard">
+            <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">"{{ nftInfor.name }}"战法道具卡</div>
+
+                <div class="w-11/12 text-sm mb-1">
+                    道具卡技能
+                </div>
+                <div
+                    class="mb-8 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                    {{ nftInfor.prop_features }}
+                </div>
+                <div class="w-11/12 text-sm mb-1">
+                    {{ nftInfor.id === 60 ? '只能对自己使用' : '作用对象地址' }}
+                </div>
+                <div v-if="nftInfor.id === 60"
+                    class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                    <div class="flex-1">
+                        <!-- <input class="w-full h-full bg-bottom-content text-xs break-all" type="text"
+                            v-model="propsEffectaAddress" placeholder="道具卡作用对象地址" :disabled="nftInfor.id === 60" /> -->
+                        {{ propsEffectaAddress }}
+                    </div>
+                    <div class="bg-language-content flex justify-evenly items-center p-1 text-essentials-white text-xs rounded"
+                        @click="getUserAddress" v-if="showGetUserAddress"
+                        v-show="nftInfor.id === 59 || nftInfor.id === 63 || nftInfor.id === 61">
+                        填入我的地址
+                    </div>
+                </div>
+                <div v-else class="w-11/12">
+                    <div
+                        class="mb-4 break-all text-tips-word w-full  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                        <div>
+                            <input class="w-full h-full bg-bottom-content text-sm break-all" type="text"
+                                v-model="propsEffectaAddress" placeholder="请输入作用地址或选择" />
+                        </div>
+                    </div>
+                    <div
+                        class="mb-4 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                        <div @click="showAddressSelect = true">
+                            选择下级地址
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex w-11/12 justify-between items-center mt-6">
+                    <div class="w-5/12  border border-language-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="showPropsCard = false">
+                        取消
+                    </div>
+                    <div class="w-5/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="handlePropCard(nftInfor.id)">
+                        使用
+                    </div>
+                </div>
+            </div>
+        </van-popup>
+        <van-popup v-model:show="showAddressSelect" round position="bottom" :close-on-click-overlay="false">
+            <van-picker title="请选择地址" :columns="addressList" confirm-button-text @confirm="confirmAddress"
+                @cancel="showAddressSelect = false, showPropsCard = true" />
+        </van-popup>
+
     </div>
 </template>
 
 <script>
-import { Popup, showToast } from 'vant';
+import { Popup, showToast, Picker } from 'vant';
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
 import { synthesisNFT, setOff, huatuoProps, zhangjiaoProps, zhugeliangProps, menghuoProps, yuanshuProps } from '@/request/ether_request/game'
@@ -330,7 +387,7 @@ import { pendingOrderApi, nftDetails, outboundTokens } from '@/request/api_reque
 import { filterAmount, filterTime } from '@/utils/filterValue'
 
 export default {
-    components: { [Popup.name]: Popup },
+    components: { [Popup.name]: Popup, [Picker.name]: Picker },
     data() {
         return {
             showSynthesis: false,
@@ -350,7 +407,9 @@ export default {
             showOutToken: false,
             currentOutToken: 0,
             outTokenList: [],
+            propsEffectaAddress: '',
             opendingOrderNFTDetails: {},
+            showGetUserAddress: true,
             propsCardList: [
                 { name: '华佗', nftType: 59, isChecked: false, acount: 7 },
                 { name: '张角', nftType: 60, isChecked: false, acount: 2 },
@@ -358,11 +417,31 @@ export default {
                 { name: '孟获', nftType: 62, isChecked: false, acount: 1 },
                 { name: '袁术', nftType: 63, isChecked: false, acount: 3 }
             ],
-            currentProps: []
+            currentProps: [],
+            addressList: [
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Hangzhou' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Ningbo' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Wenzhou' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Shaoxing' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Huzhou' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Hangzhou' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Ningbo' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Wenzhou' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Shaoxing' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Huzhou' }, { text: '杭州', value: 'Hangzhou' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Ningbo' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Wenzhou' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Shaoxing' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Huzhou' }, { text: '杭州', value: 'Hangzhou' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Ningbo' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Wenzhou' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Shaoxing' },
+                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Huzhou' },
+            ],
+            showAddressSelect: false
         }
     },
     mounted() {
-        console.log('this.$route', this.$route)
         this.assetState = this.$route.name
         if (this.assetState === 'assets') {
             this.pageTitle = '资产详情'
@@ -381,6 +460,9 @@ export default {
             return item.id === (parseInt(this.$route.params.tokenId)) % 100
         })
         this.nftInfor = nftItem[0]
+        if (this.nftInfor.id === 60) {
+            this.propsEffectaAddress = window.ethereum.selectedAddress
+        }
         console.log('nftItem', this.nftInfor)
         console.log(this.tokenId)
     },
@@ -395,6 +477,18 @@ export default {
                 case 'synthesis_props': return '合成道具卡'
                 case 'fortune_card': return '财神卡'
             }
+        },
+        //确认地址选择器选中的地址
+        confirmAddress(value) {
+            console.log('value', value)
+            console.log(this.addressList[value.selectedIndexes].text)
+            this.propsEffectaAddress = this.addressList[value.selectedIndexes].text
+            this.showAddressSelect = false
+            this.showPropsCard = true
+        },
+        //获取用户地址并填入
+        getUserAddress() {
+            this.propsEffectaAddress = window.ethereum.selectedAddress
         },
         //点击道具卡选项
         clickPropsCard(item, index) {
@@ -413,6 +507,75 @@ export default {
         //点击出征令选项
         clickOutToken(index) {
             this.currentOutToken = index
+        },
+
+        //点击战法道具卡弹窗确认按钮
+        handlePropCard(nftType) {
+            if (!this.propsEffectaAddress) {
+                showToast(`请填写"${this.nftInfor.name}"道具卡作用地址`)
+                return
+            }
+            switch (nftType) {
+                case 59: this.usePropsFromHuaTuo()
+                    break;
+                case 60: this.usePropsFromZhangJiao()
+                    break;
+                case 61: this.usePropsFromZhuGeLiang()
+                    break;
+                case 62: this.usePropsFromMengHuo()
+                    break;
+                case 63: this.usePropsFromYuanShu()
+                    break;
+            }
+        },
+
+        //使用华佗道具卡
+        async usePropsFromHuaTuo() {
+            console.log('华佗道具卡')
+            return
+            const result = await huatuoProps(window.ethereum.selectedAddress)
+            return result;
+        },
+
+        //使用张角道具卡
+        async usePropsFromZhangJiao() {
+            console.log('张角道具卡')
+            return
+            const result = await zhangjiaoProps(nftType)
+            return result;
+        },
+
+        //使用诸葛亮道具卡
+        async usePropsFromZhuGeLiang() {
+            this.showAddressSelect = true
+            console.log('诸葛亮道具卡')
+            return
+            const result = await zhugeliangProps(window.ethereum.selectedAddress, nftType)
+            return result;
+        },
+
+        //使用孟获道具卡
+        async usePropsFromMengHuo() {
+            console.log('孟获道具卡')
+            if (this.propsEffectaAddress.toUpperCase() == (window.ethereum.selectedAddress).toUpperCase()) {
+                showToast(`"${this.nftInfor.name}"只能对他人使用`)
+                return
+            }
+            return
+            const result = await menghuoProps(window.ethereum.selectedAddress, nftType)
+            return result;
+        },
+
+        //使用袁术道具卡
+        async usePropsFromYuanShu() {
+            console.log('袁术道具卡')
+            if (this.propsEffectaAddress.toUpperCase() !== (window.ethereum.selectedAddress).toUpperCase()) {
+                showToast(`"${this.nftInfor.name}"只能对自己使用`)
+                return
+            }
+            return
+            const result = await yuanshuProps(window.ethereum.selectedAddress, nftType)
+            return result;
         },
 
         //点击取消挂单按钮唤起弹窗
@@ -445,6 +608,7 @@ export default {
         },
         //获取资产详情
         getNFTDetails() {
+            console.log('this.tokenId', this.tokenId)
             nftDetails(this.tokenId)
                 .then(res => {
                     console.log('资产详情', res)
@@ -622,39 +786,7 @@ export default {
             this.$loading.hide()
 
             this.showOutToken = true
-        },
-
-        //使用华佗道具卡
-        async usePropsFromHuaTuo() {
-            const result = await huatuoProps(window.ethereum.selectedAddress)
-            return result;
-        },
-
-        //使用张角道具卡
-        async usePropsFromZhangJiao() {
-            const result = await zhangjiaoProps(nftType)
-            return result;
-        },
-
-        //使用诸葛亮道具卡
-        async usePropsFromZhuGeLiang() {
-            const result = await zhugeliangProps(window.ethereum.selectedAddress, nftType)
-            return result;
-        },
-
-        //使用孟获道具卡
-        async usePropsFromMengHuo() {
-            const result = await menghuoProps(window.ethereum.selectedAddress, nftType)
-            return result;
-        },
-
-        //使用袁术道具卡
-        async usePropsFromYuanShu() {
-            const result = await yuanshuProps(window.ethereum.selectedAddress, nftType)
-            return result;
-        },
-
-
+        }
     }
 }
 </script>
