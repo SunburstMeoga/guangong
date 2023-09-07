@@ -92,7 +92,7 @@ import { Swipe, SwipeItem, showToast } from 'vant';
 import nfts_list from '@/nft_datas/nfts_list'
 import { config } from '@/const/config'
 import { accountBalance } from '@/request/ether_request'
-import { buy } from '@/request/ether_request/game'
+import { buy, buyFortuneCard } from '@/request/ether_request/game'
 import { relationshipAddress } from '@/request/ether_request/popularized'
 import { isAllowance, approve } from '@/request/ether_request/wgt'
 import { dealNFT } from '@/request/ether_request/market'
@@ -131,6 +131,16 @@ export default {
         swipeChange(index) {
             console.log('change', index)
             this.currentSwipe = index
+        },
+        //购买财神卡
+        userBuyFortuneCard(nftType) {
+            buyFortuneCard(nftType)
+                .then(res => {
+                    console.log('购买财神卡成功', res)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
         },
         //本地匹配nft数据
         matchNFTData(matchValue, amount) {

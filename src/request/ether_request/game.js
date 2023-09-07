@@ -80,8 +80,8 @@ export async function yuanshuProps(walletAddress, nftId) {
 }
 
 //用户购买财神卡
-export async function buyFortuneCard(id) {
-  const tx = await GAMETRADE.buy2(id);
+export async function buyFortuneCard(nftType) {
+  const tx = await GAMETRADE.buy2(nftType);
   const result = await tx.wait();
   console.log(result);
   return result;
