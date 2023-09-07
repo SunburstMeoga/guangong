@@ -62,6 +62,22 @@
                             </div>
                         </div>
                     </van-tab>
+                    <van-tab title="财神卡" class="pt-4">
+                        <div>
+                            <div v-if="wealthList.length === 0">
+                                <div class="text-icon-gray text-xl text-center">
+                                    暂无数据
+                                </div>
+                            </div>
+                            <div v-else>
+                                <div v-for="( _item, _index ) in wealthList" :key="index" @click="toWealthDetails(_item)"
+                                    class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
+                                    <wealth-card type="pending" :time="filterTime(_item.time)"
+                                        :imageUrl="_item.infor.imageUrl" :name="_item.infor.name" />
+                                </div>
+                            </div>
+                        </div>
+                    </van-tab>
                 </van-tabs>
 
             </div>
@@ -74,6 +90,7 @@ import ModuleTitle from '@/components/ModuleTitle'
 import PersonalAssets from '@/components/PersonalAssets'
 import AssetsCard from '@/components/AssetsCard'
 import CampaignCard from '@/components/CampaignCard'
+import WealthCard from '@/components/WealthCard'
 import { ownerList, pendingOrderList } from '@/request/api_request'
 import { userInfo } from '@/request/ether_request/game'
 import nfts_list from '@/nft_datas/nfts_list'
@@ -81,14 +98,15 @@ import { filterTime, filterAmount } from '@/utils/filterValue'
 
 import { Tab, Tabs, Empty } from 'vant';
 export default {
-    components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, PersonalAssets, AssetsCard, CampaignCard },
+    components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, PersonalAssets, AssetsCard, CampaignCard, WealthCard },
     data() {
         return {
             active: 0,
             tabList: [{ title: '所有资产' }, { title: '正在挂单' }],
             assetsList: [],
             pendingList: [],
-            campaignList: []
+            campaignList: [],
+            wealthList: []
             // assetsList: []
         }
     },
@@ -136,7 +154,7 @@ export default {
             userInfo(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('出征卡片', parseInt(res.cards[0].nft_role) % 100)
-                    let typeList = []
+                    let typeListCampaign = []
                     res.cards.map(item => {
                         let obj = {}
                         obj.typeID = item.nft_role > 100 ? parseInt(item.nft_role) % 100 : item.nft_role
@@ -146,18 +164,37 @@ export default {
                         obj.nft_token = item.nft_token
                         obj.cammaignAttribute = item.zhangJiao
                         obj.count = item.count
-                        typeList.push(obj)
+                        typeListCampaign.push(obj)
                     })
-                    let newArr = typeList.filter((v) => nfts_list.some((val) => val.id == v.typeID))
-                    newArr.map(item => {
+                    let newArrCampaign = typeListCampaign.filter((v) => nfts_list.some((val) => val.id == v.typeID))
+                    newArrCampaign.map(item => {
                         nfts_list.map(_item => {
                             if (item.typeID == _item.id) {
                                 item.infor = _item
                             }
                         })
                     })
-                    this.campaignList = newArr
-                    console.log(this.campaignList)
+                    this.campaignList = newArrCampaign
+
+                    let typeListWealth = []
+                    res.deposits.map(item => {
+                        let obj = {}
+                        obj.typeID = item.token_id > 100 ? parseInt(item.token_id) % 100 : item.nft_role
+                        obj.tokenId = item.token_id
+                        obj.time = item.time
+                        typeListWealth.push(obj)
+                    })
+                    let newArrWealth = typeListWealth.filter((v) => nfts_list.some((val) => val.id == v.typeID))
+                    newArrWealth.map(item => {
+                        nfts_list.map(_item => {
+                            if (item.typeID == _item.id) {
+                                item.infor = _item
+                            }
+                        })
+                    })
+
+                    this.wealthList = newArrWealth
+                    console.log('财神卡', this.wealthList)
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -231,6 +268,11 @@ export default {
             })
         },
         toCampaignDetails(_item) {
+            this.$router.push({
+                path: '/campaign/' + _item.tokenId
+            })
+        },
+        toWealthDetails(_item) {
             this.$router.push({
                 path: '/campaign/' + _item.tokenId
             })
