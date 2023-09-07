@@ -679,8 +679,10 @@ export default {
         //使用孟获道具卡
         async usePropsFromMengHuo(walletAddress, nftId) {
             console.log('孟获道具卡')
+            console.log(this.propsEffectaAddress.toUpperCase(), (window.ethereum.selectedAddress).toUpperCase())
             if (this.propsEffectaAddress.toUpperCase() == (window.ethereum.selectedAddress).toUpperCase()) {
                 showToast(`"${this.nftInfor.name}"只能对他人使用`)
+                this.$loading.hide()
                 return
             }
             menghuoProps(walletAddress, nftId)

@@ -4,23 +4,33 @@
         <!-- <div class="absolute top-0 left-0">
             <img src="@/assets/personal-bg2.png" alt="">
         </div> -->
-        <!-- <div class="flex justify-between items-center mb-4">
+        <div class="flex justify-between items-center mb-4">
             <div>
                 <span>{{ addressFilter(address) }}</span>
             </div>
             <div class="buy-button py-1 px-2 text-sm text-primary-word rounded" @click="copyAddress">复制地址</div>
         </div>
         <div class="mb-6 flex justify-start items-baseline">
-            <div class="">直推收益： </div>
+            <div class="">总资产： </div>
+            <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
             <div class="text-theme-primary font-bold text-4xl">
-                {{ earningsInfo.usdtTeam1 }} WGT
+                <!-- {{ earningsInfo.usdt + earningsInfo.selfUsdt }} WGT -->
+                99.99 WGT
+            </div>
+
+        </div>
+        <div class="mb-6">
+            <div class="flex justify-start items-center">
+                <span>总收益：</span>
+                <!-- <span class="font-bold text-theme-primary">{{  earningsInfo.usdt + earningsInfo.selfUsdt }} WGT </span> -->
+                <span class="font-bold text-theme-primary"> 99.99 WGT </span>
             </div>
 
         </div>
         <div class="mb-6">
             <div class="flex justify-start items-center">
                 <span>个人贡献值级别：</span>
-                <span class="font-bold">忠字传播大使</span>
+                <span class="font-bold">忠字传播大使(贡献值：4234)</span>
 
             </div>
 
@@ -28,23 +38,25 @@
         <div class="mb-6">
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-start">
-                    <span>⼀级收益：</span>
-                    <span class="font-bold">{{ earningsInfo.usdtTeam2 }} WGT</span>
+                    <span>个人收益池金额：</span>
+                    <span class="font-bold">{{ earningsInfo.poolTeam }} WGT</span>
                 </div>
             </div>
         </div>
         <div>
             <div class="flex justify-between items-center font-normal text-xs">
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5">
-                    <div>星级收益</div>
+                    <!-- 不知道是哪个字段 -->
+                    <div>角色卡收益</div>
                     <div class="">{{ earningsInfo.usdtStar }}</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5">
-                    <div>二级收益</div>
-                    <div>{{ earningsInfo.usdtTeam3 }}</div>
+                    <div>财神卡收益</div>
+                    <div>{{ earningsInfo.usdtStar }}</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5"
                     @click="viewEarnings('individual')">
+
                     <div>个人收益</div>
                     <div>{{ earningsInfo.selfUsdt }}</div>
                 </div>
@@ -53,7 +65,7 @@
                     <div>{{ earningsInfo.usdt }}</div>
                 </div>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
