@@ -58,7 +58,7 @@ import { config } from '@/const/config'
 import axios from 'axios'
 import HomeIn from './inHome.vue'
 import HomeOut from './outHome.vue'
-import { preAddress } from '@/request/ether_request/popularized'
+import { relationshipAddress } from '@/request/ether_request/popularized'
 
 export default {
     components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs },
@@ -74,7 +74,7 @@ export default {
         }
     },
     async created() {
-        this.getPreAddress()
+        this.getRelationshipAddress()
         if (this.$route.query.p && this.$route.query.p !== ZeroAddress) {
             this.title = '签名'
             this.isSign = true
@@ -93,9 +93,9 @@ export default {
     },
 
     methods: {
-        getPreAddress() {
+        getRelationshipAddress() {
             this.$loading.show()
-            preAddress(window.ethereum.selectedAddress)
+            relationshipAddress(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('当前用户上级地址', res)
                     this.$loading.hide()
@@ -182,9 +182,9 @@ export default {
             this.load()
         },
         async load() {
-            const provider = new ethers.BrowserProvider(window.ethereum)
-            const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider)
-            const ret = await GAME.spreads(ethereum.selectedAddress)
+            // const provider = new ethers.BrowserProvider(window.ethereum)
+            // const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider)
+            const ret = await relationshipAddress(ethereum.selectedAddress)
             this.$store.commit('setParentAddress', ret.parent)
             if (ret.parent == ZeroAddress) {
                 this.inHome = false

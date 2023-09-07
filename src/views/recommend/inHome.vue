@@ -72,7 +72,7 @@ import { config } from '@/const/config'
 import axios from 'axios'
 import { Cell, CellGroup, showSuccessToast } from 'vant'
 import moment from 'moment'
-import { preAddress } from '@/request/ether_request/popularized'
+import { relationshipAddress } from '@/request/ether_request/popularized'
 
 export default {
     components: { [Cell.name]: Cell, [CellGroup.name]: CellGroup, },
@@ -90,7 +90,7 @@ export default {
     mounted() {
         this.address = ethereum.selectedAddress
         this.load()
-        preAddress(ethereum.selectedAddress)
+        relationshipAddress(ethereum.selectedAddress)
             .then(res => {
                 this.p_address = res[0]
             })

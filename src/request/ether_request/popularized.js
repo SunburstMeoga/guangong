@@ -10,8 +10,8 @@ const POPULARIZED = new ethers.Contract(
   provider
 );
 
-//上级地址
-export async function preAddress(address) {
-  const result = await POPULARIZED.spreads(address);
+//查询当前地址相关的上下级地址
+export async function relationshipAddress(walletAddress) {
+  const result = await POPULARIZED.spreads(walletAddress);
   return result;
 }

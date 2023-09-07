@@ -93,7 +93,7 @@ import nfts_list from '@/nft_datas/nfts_list'
 import { config } from '@/const/config'
 import { accountBalance } from '@/request/ether_request'
 import { buy } from '@/request/ether_request/game'
-import { preAddress } from '@/request/ether_request/popularized'
+import { relationshipAddress } from '@/request/ether_request/popularized'
 import { isAllowance, approve } from '@/request/ether_request/wgt'
 import { dealNFT } from '@/request/ether_request/market'
 import { nftDetails } from '@/request/api_request'
@@ -167,7 +167,7 @@ export default {
         //点击购买按钮
         async handlePay() {
             this.$loading.show()
-            const preAddressArr = await preAddress(window.ethereum.selectedAddress)
+            const preAddressArr = await relationshipAddress(window.ethereum.selectedAddress)
             console.log('preAddress', preAddressArr)
             if (preAddressArr[0] === ZeroAddress) {
                 this.$loading.hide()

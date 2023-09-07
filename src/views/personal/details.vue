@@ -385,6 +385,7 @@ import { apppprovalForAll, isApprovedAll } from '@/request/ether_request/nft'
 import { pendingOrder, redemptionNFT } from '@/request/ether_request/market'
 import { pendingOrderApi, nftDetails, outboundTokens } from '@/request/api_request'
 import { filterAmount, filterTime } from '@/utils/filterValue'
+import { relationshipAddress } from '@/request/ether_request/popularized'
 
 export default {
     components: { [Popup.name]: Popup, [Picker.name]: Picker },
@@ -463,11 +464,22 @@ export default {
         if (this.nftInfor.id === 60) {
             this.propsEffectaAddress = window.ethereum.selectedAddress
         }
+        this.getLowerAddress()
         console.log('nftItem', this.nftInfor)
         console.log(this.tokenId)
     },
     methods: {
         filterAmount, filterTime,
+        //获取当钱地址的下级地址
+        getLowerAddress() {
+            relationshipAddress(window.ethereum.selectedAddress)
+                .then(res => {
+                    console.log('推荐关系地址', res.child)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
         //卡类型
         getCardType(value) {
             switch (value) {
