@@ -30,7 +30,8 @@
         <div class="mb-2">
             <div class="flex justify-start items-center">
                 <span>个人贡献值级别：</span>
-                <span class="font-bold">忠字传播大使(贡献值：4234)</span>
+                <span class="font-bold flex justify-start items-baseline"> <span>忠字传播大使 </span> <span
+                        class="text-xs font-normal pl-1">(贡献值：4234)</span> </span>
 
             </div>
 
