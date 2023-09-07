@@ -10,7 +10,7 @@
             </div>
             <div class="buy-button py-1 px-2 text-sm text-primary-word rounded" @click="copyAddress">复制地址</div>
         </div>
-        <div class="mb-6 flex justify-start items-baseline">
+        <div class="mb-2 flex justify-start items-baseline">
             <div class="">总资产： </div>
             <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
             <div class="text-theme-primary font-bold text-4xl">
@@ -19,7 +19,7 @@
             </div>
 
         </div>
-        <div class="mb-6">
+        <div class="mb-2">
             <div class="flex justify-start items-center">
                 <span>总收益：</span>
                 <!-- <span class="font-bold text-theme-primary">{{  earningsInfo.usdt + earningsInfo.selfUsdt }} WGT </span> -->
@@ -27,7 +27,7 @@
             </div>
 
         </div>
-        <div class="mb-6">
+        <div class="mb-2">
             <div class="flex justify-start items-center">
                 <span>个人贡献值级别：</span>
                 <span class="font-bold">忠字传播大使(贡献值：4234)</span>
@@ -35,7 +35,7 @@
             </div>
 
         </div>
-        <div class="mb-6">
+        <div class="mb-4 pb-4 border-b border-card-border">
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-start">
                     <span>个人收益池金额：</span>
@@ -45,24 +45,26 @@
         </div>
         <div>
             <div class="flex justify-between items-center font-normal text-xs">
-                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5">
+                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5"
+                    @click="viewEarnings('role_card')">
                     <!-- 不知道是哪个字段 -->
                     <div>角色卡收益</div>
                     <div class="">{{ earningsInfo.usdtStar }}</div>
                 </div>
-                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5">
+                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5"
+                    @click="viewEarnings('wealth_card')">
                     <div>财神卡收益</div>
                     <div>{{ earningsInfo.usdtStar }}</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5"
                     @click="viewEarnings('individual')">
-
                     <div>个人收益</div>
                     <div>{{ earningsInfo.selfUsdt }}</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 py-1.5" @click="viewEarnings('team')">
                     <div>团队收益</div>
-                    <div>{{ earningsInfo.usdt }}</div>
+                    <!-- <div>{{ earningsInfo.usdt }}</div> -->
+                    0
                 </div>
             </div>
         </div>
