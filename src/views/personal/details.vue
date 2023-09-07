@@ -349,8 +349,20 @@
                     </div>
                     <div
                         class="mb-4 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
-                        <div @click="showAddressSelect = true">
-                            选择下级地址
+                        <div @click="handleChoiceAddress">
+                            选择作用地址
+                        </div>
+                    </div>
+                    <div v-if="nftInfor.id == 59"
+                        class="mb-4 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                        <div @click="handleChoiceAddressNFT">
+                            选择作用地址下的NFT角色卡
+                        </div>
+                    </div>
+                    <div v-if="nftInfor.id == 59"
+                        class="mb-4 break-all text-tips-word w-full  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
+                        <div>
+                            当前选择：{{ propEffectNftRole }}
                         </div>
                     </div>
                 </div>
@@ -367,11 +379,17 @@
                 </div>
             </div>
         </van-popup>
+        <!-- 选择地址弹窗 -->
         <van-popup v-model:show="showAddressSelect" round position="bottom" :close-on-click-overlay="false">
-            <van-picker title="请选择地址" :columns="addressList" confirm-button-text @confirm="confirmAddress"
+            <van-picker title="请选择地址" :columns="lowerAddressList" confirm-button-text @confirm="confirmAddress"
                 @cancel="showAddressSelect = false, showPropsCard = true" />
         </van-popup>
 
+        <!-- 当前选择的地址下正在出征nft弹窗 -->
+        <van-popup v-model:show="showCardFromAddress" round position="bottom" :close-on-click-overlay="false">
+            <van-picker title="请选择NFT" :columns="expeditionCards" confirm-button-text @confirm="handleConfirmEffectCard"
+                @cancel="showCardFromAddress = false, showPropsCard = true" />
+        </van-popup>
     </div>
 </template>
 
@@ -379,7 +397,7 @@
 import { Popup, showToast, Picker } from 'vant';
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
-import { synthesisNFT, setOff, huatuoProps, zhangjiaoProps, zhugeliangProps, menghuoProps, yuanshuProps } from '@/request/ether_request/game'
+import { synthesisNFT, setOff, huatuoProps, zhangjiaoProps, zhugeliangProps, menghuoProps, yuanshuProps, userInfo } from '@/request/ether_request/game'
 import { approve, isAllowance } from '@/request/ether_request/wgt'
 import { apppprovalForAll, isApprovedAll } from '@/request/ether_request/nft'
 import { pendingOrder, redemptionNFT } from '@/request/ether_request/market'
@@ -419,27 +437,13 @@ export default {
                 { name: '袁术', nftType: 63, isChecked: false, acount: 3 }
             ],
             currentProps: [],
-            addressList: [
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Hangzhou' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Ningbo' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Wenzhou' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Shaoxing' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Huzhou' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Hangzhou' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Ningbo' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Wenzhou' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Shaoxing' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Huzhou' }, { text: '杭州', value: 'Hangzhou' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Ningbo' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Wenzhou' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Shaoxing' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Huzhou' }, { text: '杭州', value: 'Hangzhou' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Ningbo' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Wenzhou' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Shaoxing' },
-                { text: '0x1E7e6F6E85668dD1783f3f94a45F71a716Eaf5cB', value: 'Huzhou' },
-            ],
-            showAddressSelect: false
+            lowerAddressList: [],
+            showAddressSelect: false,
+            propEffectNftIndex: null,
+            propEffectNftRole: '',
+            expeditionCards: [],
+            loadingExpeditionCards: false,
+            showCardFromAddress: false
         }
     },
     mounted() {
@@ -464,17 +468,68 @@ export default {
         if (this.nftInfor.id === 60) {
             this.propsEffectaAddress = window.ethereum.selectedAddress
         }
+        if (this.nftInfor.id !== 62) {
+            this.lowerAddressList = [{ text: window.ethereum.selectedAddress, value: 0 }]
+        }
         this.getLowerAddress()
         console.log('nftItem', this.nftInfor)
         console.log(this.tokenId)
     },
     methods: {
         filterAmount, filterTime,
-        //获取当钱地址的下级地址
+        handleChoiceAddressNFT() {
+            if (this.lowerAddressList.lenght == 0) {
+                showToast('当前地址暂无出征卡片')
+                return
+            }
+            this.showCardFromAddress = true
+        },
+        //点击选中的作用nft
+        handleConfirmEffectCard(value) {
+            console.log(value)
+            this.propEffectNftIndex = this.expeditionCards[value.selectedIndexes].value
+            this.propEffectNftRole = this.expeditionCards[value.selectedIndexes].text
+            this.showCardFromAddress = false
+        },
+        //获取某个地址下正在出征的nft
+        getExpeditionCards(walletAddress) {
+            userInfo(walletAddress)
+                .then(res => {
+                    console.log('res', res.cards)
+                    res.cards.map((item, index) => {
+                        let obj = {}
+                        obj.text = '#' + item.nft_role
+                        obj.value = index
+                        this.expeditionCards.push(obj)
+                    })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        // 获取道具卡施法地址正在出征的卡片
+        async getPropEffectNftIndex(walletAddress) {
+            return await userInfo(walletAddress)
+        },
+        //点击选择地址唤起选择地址弹窗
+        handleChoiceAddress() {
+            if (this.lowerAddressList.length == 0) {
+                showToast('当前暂无下级地址')
+                return
+            }
+            this.showAddressSelect = true
+        },
+        //获取当前地址的下级地址
         getLowerAddress() {
             relationshipAddress(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('推荐关系地址', res.child)
+                    res.child.map(item => {
+                        let obj = {}
+                        obj.text = item
+                        obj.value = item
+                        this.lowerAddressList.push(obj)
+                    })
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -490,11 +545,20 @@ export default {
                 case 'fortune_card': return '财神卡'
             }
         },
+        //地址弹窗数据发生变化
+        async changeAddress(value) {
+            console.log('change', value)
+            return
+            this.loadingExpeditionCards = true
+            const expeditionCards = await this.getExpeditionCards(this.propsEffectaAddress)
+        },
         //确认地址选择器选中的地址
-        confirmAddress(value) {
+        async confirmAddress(value) {
             console.log('value', value)
-            console.log(this.addressList[value.selectedIndexes].text)
-            this.propsEffectaAddress = this.addressList[value.selectedIndexes].text
+            console.log(this.lowerAddressList[value.selectedIndexes].text, this.propEffectNftIndex)
+            this.propsEffectaAddress = this.lowerAddressList[value.selectedIndexes].text
+            this.getExpeditionCards(this.propsEffectaAddress)
+
             this.showAddressSelect = false
             this.showPropsCard = true
         },
@@ -522,72 +586,137 @@ export default {
         },
 
         //点击战法道具卡弹窗确认按钮
-        handlePropCard(nftType) {
+        async handlePropCard(nftType) {
+            this.$loading.show()
             if (!this.propsEffectaAddress) {
                 showToast(`请填写"${this.nftInfor.name}"道具卡作用地址`)
                 return
             }
+            // const testIndex = await this.getPropEffectNftIndex(this.propsEffectaAddress)
+            // console.log('testIndex', testIndex)
+            // return
+            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            console.log('erc721ApppprovalState', erc721ApppprovalState)
+            if (erc721ApppprovalState !== true) {
+                const erc721Result = await this.erc721ContractApppproval(config.game_addr)
+                console.log('erc721Result', erc721Result)
+                if (erc721Result.status == 1) {
+                    this.getUsePropCard(nftType)
+                } else {
+                    this.$loading.hide()
+                    showToast('授权失败')
+                }
+            } else {
+                this.getUsePropCard(nftType)
+            }
+
+        },
+
+        //当前使用的战法道具卡
+        getUsePropCard(nftType) {
             switch (nftType) {
                 case 59: this.usePropsFromHuaTuo()
                     break;
-                case 60: this.usePropsFromZhangJiao()
+                case 60: this.usePropsFromZhangJiao(this.tokenId)
                     break;
-                case 61: this.usePropsFromZhuGeLiang()
+                case 61: this.usePropsFromZhuGeLiang(this.propsEffectaAddress, this.tokenId)
                     break;
-                case 62: this.usePropsFromMengHuo()
+                case 62: this.usePropsFromMengHuo(this.propsEffectaAddress, this.tokenId)
                     break;
-                case 63: this.usePropsFromYuanShu()
+                case 63: this.usePropsFromYuanShu(this.propsEffectaAddress, this.tokenId)
                     break;
             }
         },
-
         //使用华佗道具卡
         async usePropsFromHuaTuo() {
-            console.log('华佗道具卡')
-            return
-            const result = await huatuoProps(window.ethereum.selectedAddress)
-            return result;
+            console.log('华佗道具卡', this.propsEffectaAddress, this.propEffectNftIndex, this.nftInfor.id)
+            huatuoProps(this.propsEffectaAddress, this.propEffectNftIndex, this.tokenId)
+                .then(res => {
+                    showToast(`${this.nftInfor.name}道具卡使用成功`)
+                    this.$loading.hide()
+                    window.history.back()
+                })
+                .catch(err => {
+                    showToast(`${this.nftInfor.name}道具卡使用失败`)
+                    console.log(err)
+                })
         },
 
         //使用张角道具卡
-        async usePropsFromZhangJiao() {
-            console.log('张角道具卡')
-            return
-            const result = await zhangjiaoProps(nftType)
-            return result;
+        async usePropsFromZhangJiao(nftType) {
+            console.log('张角道具卡', nftType)
+            zhangjiaoProps(nftType)
+                .then(res => {
+                    showToast(`${this.nftInfor.name}道具卡使用成功`)
+                    this.$loading.hide()
+                    window.history.back()
+                })
+                .catch(err => {
+                    showToast(`${this.nftInfor.name}道具卡使用失败`)
+                    this.$loading.hide()
+
+                    console.log(err)
+                })
         },
 
         //使用诸葛亮道具卡
-        async usePropsFromZhuGeLiang() {
-            this.showAddressSelect = true
+        async usePropsFromZhuGeLiang(walletAddress, nftId) {
             console.log('诸葛亮道具卡')
-            return
-            const result = await zhugeliangProps(window.ethereum.selectedAddress, nftType)
-            return result;
+            zhugeliangProps(walletAddress, nftId)
+                .then(res => {
+                    showToast(`${this.nftInfor.name}道具卡使用成功`)
+                    this.$loading.hide()
+                    window.history.back()
+                })
+                .catch(err => {
+                    showToast(`${this.nftInfor.name}道具卡使用失败`)
+                    this.$loading.hide()
+
+                    console.log(err)
+                })
         },
 
         //使用孟获道具卡
-        async usePropsFromMengHuo() {
+        async usePropsFromMengHuo(walletAddress, nftId) {
             console.log('孟获道具卡')
             if (this.propsEffectaAddress.toUpperCase() == (window.ethereum.selectedAddress).toUpperCase()) {
                 showToast(`"${this.nftInfor.name}"只能对他人使用`)
                 return
             }
-            return
-            const result = await menghuoProps(window.ethereum.selectedAddress, nftType)
-            return result;
+            menghuoProps(walletAddress, nftId)
+                .then(res => {
+                    showToast(`${this.nftInfor.name}道具卡使用成功`)
+                    this.$loading.hide()
+                    window.history.back()
+                })
+                .catch(err => {
+                    showToast(`${this.nftInfor.name}道具卡使用失败`)
+                    this.$loading.hide()
+
+                    console.log(err)
+                })
         },
 
         //使用袁术道具卡
-        async usePropsFromYuanShu() {
+        async usePropsFromYuanShu(walletAddress, nftId) {
             console.log('袁术道具卡')
             if (this.propsEffectaAddress.toUpperCase() !== (window.ethereum.selectedAddress).toUpperCase()) {
                 showToast(`"${this.nftInfor.name}"只能对自己使用`)
                 return
             }
-            return
-            const result = await yuanshuProps(window.ethereum.selectedAddress, nftType)
-            return result;
+            yuanshuProps(walletAddress, nftId)
+                .then(res => {
+                    showToast(`${this.nftInfor.name}道具卡使用成功`)
+                    this.$loading.hide()
+                    window.history.back()
+                })
+                .catch(err => {
+                    showToast(`${this.nftInfor.name}道具卡使用失败`)
+                    this.$loading.hide()
+
+                    console.log(err)
+                })
+
         },
 
         //点击取消挂单按钮唤起弹窗

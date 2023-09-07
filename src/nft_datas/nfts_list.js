@@ -18,7 +18,7 @@ const nfts_list = [
     next_nft_id: 2,
     next_need_nfts: [1, 31, 32],
     outbound_tokens_id: 81,
-    imageUrl: `${config.api}/role/1.png`,
+    imageUrl: `${config.api}/role/1_2.png`,
     upgrade_requirements: "",
     price: "400U",
     outbound_tokens: "關公令",
@@ -35,7 +35,7 @@ const nfts_list = [
     next_nft_id: 3,
     next_need_nfts: [2, 33, 34, 35],
     outbound_tokens_id: 81,
-    imageUrl: `${config.api}/role/2.png`,
+    imageUrl: `${config.api}/role/2_2.png`,
     upgrade_requirements: "美髯公 + 赤兔馬 + 青龍偃月刀",
     price: "600U",
     outbound_tokens: "關公令",
@@ -52,7 +52,7 @@ const nfts_list = [
     next_nft_id: 4,
     next_need_nfts: [3, 36, 37],
     outbound_tokens_id: 81,
-    imageUrl: `${config.api}/role/3.png`,
+    imageUrl: `${config.api}/role/3_2.png`,
     upgrade_requirements: "漢壽侯 + 周倉 + 關平 + 廖化",
     price: "900U",
     outbound_tokens: "關公令",
@@ -70,7 +70,7 @@ const nfts_list = [
     next_nft_id: 5,
     next_need_nfts: [3, 38, 39, 40],
     outbound_tokens_id: 82,
-    imageUrl: `${config.api}/role/4.png`,
+    imageUrl: `${config.api}/role/4_2.png`,
     upgrade_requirements: "武聖 + 張飛 + 劉備",
     price: "1500U",
     outbound_tokens: "結義令",
@@ -87,7 +87,7 @@ const nfts_list = [
     next_nft_id: 6,
     next_need_nfts: [3, 36, 41, 42, 43],
     outbound_tokens_id: 83,
-    imageUrl: `${config.api}/role/5.png`,
+    imageUrl: `${config.api}/role/5_2.png`,
     upgrade_requirements: "武圣+曹仁+于禁+庞德",
     price: "1800U",
     outbound_tokens: "擒将令",
@@ -104,7 +104,7 @@ const nfts_list = [
     next_nft_id: 7,
     next_need_nfts: [3, 40, 44, 45, 46],
     outbound_tokens_id: 84,
-    imageUrl: `${config.api}/role/6.png`,
+    imageUrl: `${config.api}/role/6_2.png`,
     upgrade_requirements: "武圣+张飞+赵云+马超+黄忠",
     price: "2100U",
     outbound_tokens: "拜将令",
@@ -121,7 +121,7 @@ const nfts_list = [
     next_nft_id: 8,
     next_need_nfts: [3, 48, 49, 50, 51, 52, 53, 54],
     outbound_tokens_id: 85,
-    imageUrl: `${config.api}/role/7.png`,
+    imageUrl: `${config.api}/role/7_2.png`,
     upgrade_requirements: "武圣+华雄+颜良+文丑+庞德",
     price: "2100U",
     outbound_tokens: "斩将令",
@@ -138,7 +138,7 @@ const nfts_list = [
     next_nft_id: 9,
     next_need_nfts: [3, 55, 56, 57, 58],
     outbound_tokens_id: 86,
-    imageUrl: `${config.api}/role/8.png`,
+    imageUrl: `${config.api}/role/8_2.png`,
     upgrade_requirements: "武圣+孔秀+孟坦+韩福+卞喜+王植+秦琪+蔡阳",
     price: "3000U",
     outbound_tokens: "通关令",
@@ -154,7 +154,7 @@ const nfts_list = [
     stage: "萬世流芳",
     card_type: "nft_role",
     outbound_tokens_id: 87,
-    imageUrl: `${config.api}/role/9.png`,
+    imageUrl: `${config.api}/role/9_2.png`,
     upgrade_requirements: "武圣+忠+义+仁+勇",
     price: "4500U",
     outbound_tokens: "财神令",
@@ -170,7 +170,7 @@ const nfts_list = [
     name: "華佗",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}prop_method/59.png`,
+    imageUrl: `${config.api}prop_method/59_2.png`,
     number_of_issues: "100萬張",
     prop_features:
       "获得“刮骨疗毒”战法 1 次；使用本战法，可花费角色价值的 70%USDT，将“关公荣耀卡”的损耗周期重置。",
@@ -183,7 +183,7 @@ const nfts_list = [
     name: "张角",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}prop_method/60.png`,
+    imageUrl: `${config.api}prop_method/60_2.png`,
     number_of_issues: "10 万张",
     prop_features:
       "获得“太平道法”战法 1 次；可让自己第一代被推荐账户中所有角色下次出征时长增加 5%；出征收益增加 2%，且其中 1%划归自己。已经获得过增益效果的账户获得 1 次免疫期。",
@@ -196,7 +196,7 @@ const nfts_list = [
     name: "诸葛亮",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}prop_method/61.png`,
+    imageUrl: `${config.api}prop_method/61_2.png`,
     number_of_issues: "10 万张",
     prop_features:
       "获得“草船借箭”战法 1 次；使用后可使自身账户和旗下直属第一代排名前 3 的被推荐账户的所有角色损耗周期延长 1 次（但该次出征时长延长 30%）；每个角色在每个损耗周期中只能接受 1 次“草船借箭”。",
@@ -209,7 +209,7 @@ const nfts_list = [
     name: "孟获",
     tag: "战法道具卡",
     card_type: "tactics_props",
-    imageUrl: `${config.api}prop_method/62.png`,
+    imageUrl: `${config.api}prop_method/62_2.png`,
     number_of_issues: "10 万张",
     prop_features:
       "获得“南蛮入侵”战法 1 次；使用本卡可窃取遭受“南蛮入侵”的账号及旗下第一代推荐账户中所有角色下次出征收益的 1%。遭受过“南蛮入侵”的账号享有 3 次免疫期。",
@@ -221,7 +221,7 @@ const nfts_list = [
     id: 63,
     name: "袁术",
     card_type: "tactics_props",
-    imageUrl: `${config.api}prop_method/63.png`,
+    imageUrl: `${config.api}prop_method/63_2.png`,
     tag: "战法道具卡",
     number_of_issues: "10 万张",
     prop_features:
@@ -234,7 +234,7 @@ const nfts_list = [
   //出征令牌
   {
     id: 81,
-    imageUrl: `${config.api}/token/81.png`,
+    imageUrl: `${config.api}/token/81_2.png`,
     tag: "出征令牌",
     name: "关公令",
     price: "150U",
@@ -243,7 +243,7 @@ const nfts_list = [
   },
   {
     id: 82,
-    imageUrl: `${config.api}/token/82.png`,
+    imageUrl: `${config.api}/token/82_2.png`,
     tag: "出征令牌",
     name: "结义令",
     price: "600U",
@@ -252,7 +252,7 @@ const nfts_list = [
   },
   {
     id: 83,
-    imageUrl: `${config.api}/token/83.png`,
+    imageUrl: `${config.api}/token/83_2.png`,
     tag: "出征令牌",
     name: "擒将令",
     price: "600U",
@@ -261,7 +261,7 @@ const nfts_list = [
   },
   {
     id: 84,
-    imageUrl: `${config.api}/token/84.png`,
+    imageUrl: `${config.api}/token/84_2.png`,
     tag: "出征令牌",
     name: "拜将令",
     price: "700U",
@@ -270,7 +270,7 @@ const nfts_list = [
   },
   {
     id: 85,
-    imageUrl: `${config.api}/token/85.png`,
+    imageUrl: `${config.api}/token/85_2.png`,
     tag: "出征令牌",
     name: "斩将令",
     price: "800U",
@@ -279,7 +279,7 @@ const nfts_list = [
   },
   {
     id: 86,
-    imageUrl: `${config.api}/token/86.png`,
+    imageUrl: `${config.api}/token/86_2.png`,
     tag: "出征令牌",
     name: "通关令",
     price: "1000U",
@@ -288,7 +288,7 @@ const nfts_list = [
   },
   {
     id: 87,
-    imageUrl: `${config.api}/token/87.png`,
+    imageUrl: `${config.api}/token/87_2.png`,
     tag: "出征令牌",
     name: "财神令",
     price: "2000U",
@@ -299,7 +299,7 @@ const nfts_list = [
   //合成道具卡
   {
     id: 31,
-    imageUrl: `${config.api}/prop_synth/31.png`,
+    imageUrl: `${config.api}/prop_synth/31_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     name: "赤兔马",
@@ -307,7 +307,7 @@ const nfts_list = [
   },
   {
     id: 32,
-    imageUrl: `${config.api}/prop_synth/32.png`,
+    imageUrl: `${config.api}/prop_synth/32_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     name: "青龙偃月刀",
@@ -315,7 +315,7 @@ const nfts_list = [
   },
   {
     id: 33,
-    imageUrl: `${config.api}/prop_synth/33.png`,
+    imageUrl: `${config.api}/prop_synth/33_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     name: "周仓",
@@ -324,14 +324,14 @@ const nfts_list = [
   {
     id: 34,
     name: "关平",
-    imageUrl: `${config.api}/prop_synth/34.png`,
+    imageUrl: `${config.api}/prop_synth/34_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     price: "100U",
   },
   {
     id: 35,
-    imageUrl: `${config.api}/prop_synth/35.png`,
+    imageUrl: `${config.api}/prop_synth/35_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     name: "廖化",
@@ -339,7 +339,7 @@ const nfts_list = [
   },
   {
     id: 36,
-    imageUrl: `${config.api}/prop_synth/36.png`,
+    imageUrl: `${config.api}/prop_synth/36_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     name: "张飞",
@@ -347,7 +347,7 @@ const nfts_list = [
   },
   {
     id: 37,
-    imageUrl: `${config.api}/prop_synth/37.png`,
+    imageUrl: `${config.api}/prop_synth/37_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     name: "刘备",
@@ -355,7 +355,7 @@ const nfts_list = [
   },
   {
     id: 38,
-    imageUrl: `${config.api}/prop_synth/38.png`,
+    imageUrl: `${config.api}/prop_synth/38_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     name: "曹仁",
@@ -363,7 +363,7 @@ const nfts_list = [
   },
   {
     id: 39,
-    imageUrl: `${config.api}/prop_synth/39.png`,
+    imageUrl: `${config.api}/prop_synth/39_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     name: "于禁",
@@ -371,7 +371,7 @@ const nfts_list = [
   },
   {
     id: 40,
-    imageUrl: `${config.api}/prop_synth/40.png`,
+    imageUrl: `${config.api}/prop_synth/40_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     name: "庞德",
@@ -379,7 +379,7 @@ const nfts_list = [
   },
   {
     id: 41,
-    imageUrl: `${config.api}/prop_synth/41.png`,
+    imageUrl: `${config.api}/prop_synth/41_2.png`,
     tag: "合成道具卡",
     card_type: "synthesis_props",
     name: "赵云",
@@ -388,14 +388,14 @@ const nfts_list = [
   {
     id: 42,
     name: "马超",
-    imageUrl: `${config.api}/prop_synth/42.png`,
+    imageUrl: `${config.api}/prop_synth/42_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "300U",
   },
   {
     id: 43,
-    imageUrl: `${config.api}/prop_synth/43.png`,
+    imageUrl: `${config.api}/prop_synth/43_2.png`,
     card_type: "synthesis_props",
     name: "黄忠",
     tag: "合成道具卡",
@@ -403,7 +403,7 @@ const nfts_list = [
   },
   {
     id: 44,
-    imageUrl: `${config.api}/prop_synth/44.png`,
+    imageUrl: `${config.api}/prop_synth/44_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     name: "华雄",
@@ -412,7 +412,7 @@ const nfts_list = [
   {
     id: 45,
     name: "颜良",
-    imageUrl: `${config.api}/prop_synth/45.png`,
+    imageUrl: `${config.api}/prop_synth/45_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "300U",
@@ -420,7 +420,7 @@ const nfts_list = [
   {
     id: 46,
     name: "文丑",
-    imageUrl: `${config.api}/prop_synth/46.png`,
+    imageUrl: `${config.api}/prop_synth/46_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "300U",
@@ -428,14 +428,14 @@ const nfts_list = [
   {
     id: 47,
     name: "庞德",
-    imageUrl: `${config.api}/prop_synth/47.png`,
+    imageUrl: `${config.api}/prop_synth/47_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "300U",
   },
   {
     id: 48,
-    imageUrl: `${config.api}/prop_synth/48.png`,
+    imageUrl: `${config.api}/prop_synth/48_2.png`,
     card_type: "synthesis_props",
     name: "孔秀",
     tag: "合成道具卡",
@@ -443,7 +443,7 @@ const nfts_list = [
   },
   {
     id: 49,
-    imageUrl: `${config.api}/prop_synth/49.png`,
+    imageUrl: `${config.api}/prop_synth/49_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     name: "孟坦",
@@ -452,7 +452,7 @@ const nfts_list = [
   {
     id: 50,
     name: "韩福",
-    imageUrl: `${config.api}/prop_synth/50.png`,
+    imageUrl: `${config.api}/prop_synth/50_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "300U",
@@ -460,7 +460,7 @@ const nfts_list = [
   {
     id: 51,
     name: "卞喜",
-    imageUrl: `${config.api}/prop_synth/51.png`,
+    imageUrl: `${config.api}/prop_synth/51_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "300U",
@@ -468,7 +468,7 @@ const nfts_list = [
   {
     id: 52,
     name: "王植",
-    imageUrl: `${config.api}/prop_synth/52.png`,
+    imageUrl: `${config.api}/prop_synth/52_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "300U",
@@ -476,7 +476,7 @@ const nfts_list = [
   {
     id: 53,
     name: "秦琪",
-    imageUrl: `${config.api}/prop_synth/53.png`,
+    imageUrl: `${config.api}/prop_synth/53_2.png`,
     card_type: "synthesis_props",
     tag: "出征令牌",
     price: "300U",
@@ -484,7 +484,7 @@ const nfts_list = [
   {
     id: 54,
     name: "蔡阳",
-    imageUrl: `${config.api}/prop_synth/54.png`,
+    imageUrl: `${config.api}/prop_synth/54_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "300U",
@@ -492,7 +492,7 @@ const nfts_list = [
   {
     id: 55,
     name: "忠",
-    imageUrl: `${config.api}/prop_synth/55.png`,
+    imageUrl: `${config.api}/prop_synth/55_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "900U",
@@ -500,7 +500,7 @@ const nfts_list = [
   {
     id: 56,
     name: "义",
-    imageUrl: `${config.api}/prop_synth/56.png`,
+    imageUrl: `${config.api}/prop_synth/56_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "900U",
@@ -508,7 +508,7 @@ const nfts_list = [
   {
     id: 57,
     name: "仁",
-    imageUrl: `${config.api}/prop_synth/57.png`,
+    imageUrl: `${config.api}/prop_synth/57_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "900U",
@@ -516,7 +516,7 @@ const nfts_list = [
   {
     id: 58,
     name: "勇",
-    imageUrl: `${config.api}/prop_synth/58.png`,
+    imageUrl: `${config.api}/prop_synth/58_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "900U",
