@@ -40,8 +40,8 @@ export async function synthesisNFT(nftsId, targetId) {
 }
 
 //出征
-export async function setOff(nextNFTType, tokenType) {
-  const tx = await GAMETRADE.create(nextNFTType, tokenType, {
+export async function setOff(nftId, expeditionOrder) {
+  const tx = await GAMETRADE.create(nftId, expeditionOrder, {
     gasLimit: 9999999,
   });
   const result = await tx.wait();

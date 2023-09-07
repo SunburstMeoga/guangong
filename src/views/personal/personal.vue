@@ -135,11 +135,11 @@ export default {
         getUserInfo() {
             userInfo(window.ethereum.selectedAddress)
                 .then(res => {
-                    console.log('出征卡片', res.cards)
+                    console.log('出征卡片', parseInt(res.cards[0].nft_role) % 100)
                     let typeList = []
                     res.cards.map(item => {
                         let obj = {}
-                        obj.typeID = item.nft_role > 100 ? item.nft_role % 100 : item.nft_role
+                        obj.typeID = item.nft_role > 100 ? parseInt(item.nft_role) % 100 : item.nft_role
                         obj.tokenId = item.nft_role
                         obj.nft_role = item.nft_role
                         obj.time = item.time

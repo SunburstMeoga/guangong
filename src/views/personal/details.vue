@@ -137,24 +137,24 @@
                     <!-- 财神卡介绍 -->
                     <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'fortune_card'">
                         <div class="flex justify-between items-center">
-                            <div class="text-2xl ">道具卡介绍</div>
+                            <div class="text-2xl ">{{ nftInfor.name }}财神卡详情</div>
                         </div>
                         <div class="mt-8">
                             <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">技能</div>
-                                <div class="text-base text-card-content">{{ nftInfor.prop_features }}</div>
+                                <div class="mb-2 text-xs text-icon-gray">阶段</div>
+                                <div class="text-base text-card-content">{{ nftInfor.level }}</div>
                             </div>
                             <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">限制</div>
-                                <div class="text-base text-card-content">{{ nftInfor.target }}</div>
+                                <div class="mb-2 text-xs text-icon-gray">角色价值 等值 WGT）U</div>
+                                <div class="text-base text-card-content">{{ nftInfor.circulation }}</div>
                             </div>
                             <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">注意事项</div>
-                                <div class="text-base text-card-content">{{ nftInfor.tips }}</div>
+                                <div class="mb-2 text-xs text-icon-gray">财神奖励 等值 WGT）U</div>
+                                <div class="text-base text-card-content">{{ nftInfor.award }}</div>
                             </div>
                             <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">发行量</div>
-                                <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
+                                <div class="mb-2 text-xs text-icon-gray">周期（天）</div>
+                                <div class="text-base text-card-content">{{ nftInfor.cycle }}</div>
                             </div>
                         </div>
                     </div>
@@ -188,14 +188,13 @@
                         出征
                     </div>
                 </div>
-                <!-- <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
-                    v-if="assetState === 'campaign' && nftInfor.card_type == 'nft_role'">
-
+                <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
+                    v-if="assetState === 'assets' && nftInfor.card_type == 'tactics_props'">
                     <div class="bg-more-content campaign  flex-1 ml-2 text-primary-word text-lg button-word"
                         @click="handlePropsCard">
                         使用道具卡
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
         <!-- 合成弹窗 -->
@@ -290,24 +289,24 @@
                 </div>
             </div>
         </van-popup>
-        <!-- 道具卡弹窗 -->
-        <van-popup v-model:show="showPropsCard">
+        <!-- 出征令弹窗 -->
+        <van-popup v-model:show="showOutToken">
             <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
-                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择道具卡</div>
-                <div @click="clickPropsCard(item)" v-for="(item, index) in propsCardList" :key="index"
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择{{ nftInfor.outbound_tokens }}</div>
+                <div @click="clickOutToken(index)" v-for="(item, index) in outTokenList" :key="index"
                     class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded"
-                    :class="item.isChecked ? 'buy-button text-white' : ''">
-                    {{ item.name }} 剩余{{ item.acount }}张
+                    :class="currentOutToken === index ? 'buy-button text-white' : ''">
+                    {{ nftInfor.outbound_tokens }} #{{ item.tokenId }}
                 </div>
                 <div class="flex w-11/12 justify-between items-center mt-6">
 
-                    <div class="w-5/12  border border-language-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
-                        @click="showPropsCard = false">
+                    <div class="w-4/12  border border-language-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="showOutToken = false">
                         取消
                     </div>
-                    <div class="w-5/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                    <div class="w-7/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
                         @click="confirmCampaign">
-                        确认出征
+                        确认使用并出征
                     </div>
                 </div>
                 <!-- <div class="w-11/12 bg-language-content mt-6 flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
@@ -327,7 +326,7 @@ import { synthesisNFT, setOff, huatuoProps, zhangjiaoProps, zhugeliangProps, men
 import { approve, isAllowance } from '@/request/ether_request/wgt'
 import { apppprovalForAll, isApprovedAll } from '@/request/ether_request/nft'
 import { pendingOrder, redemptionNFT } from '@/request/ether_request/market'
-import { pendingOrderApi, nftDetails, } from '@/request/api_request'
+import { pendingOrderApi, nftDetails, outboundTokens } from '@/request/api_request'
 import { filterAmount, filterTime } from '@/utils/filterValue'
 
 export default {
@@ -348,9 +347,12 @@ export default {
             pageTitle: '',
             showCancelPendingOrder: false,
             showPropsCard: false,
+            showOutToken: false,
+            currentOutToken: 0,
+            outTokenList: [],
             opendingOrderNFTDetails: {},
             propsCardList: [
-                { name: '华佗', nftType: 59, isChecked: false, acount: 0 },
+                { name: '华佗', nftType: 59, isChecked: false, acount: 7 },
                 { name: '张角', nftType: 60, isChecked: false, acount: 2 },
                 { name: '诸葛亮', nftType: 61, isChecked: false, acount: 4 },
                 { name: '孟获', nftType: 62, isChecked: false, acount: 1 },
@@ -406,6 +408,11 @@ export default {
                 return item.isChecked
             })
             console.log(this.currentProps)
+        },
+
+        //点击出征令选项
+        clickOutToken(index) {
+            this.currentOutToken = index
         },
 
         //点击取消挂单按钮唤起弹窗
@@ -554,17 +561,25 @@ export default {
                 })
         },
 
-        //点击出征按钮按钮唤起道具卡选择弹窗
-        handleCampaign() {
+        //点击使用道具卡按钮
+        handlePropsCard() {
             this.showPropsCard = true
+        },
+
+        //获取当前出征的角色卡需要的出征令牌存货
+        async campaignNeededOutboundTokens() {
+            const result = await outboundTokens(window.ethereum.selectedAddress, this.nftInfor.outbound_tokens_id)
+            if (result.data.length !== 0) {
+                this.outTokenList = result.data
+                return this.outTokenList
+            }
+            return result.data.length
         },
 
         //出征
         async userCampaign() {
-            console.log((parseInt(this.tokenId)) % 100, this.nftInfor.outbound_tokens_id)
-            const propsResult = await this.usePropsFromHuaTuo()
-            console.log('道具卡', propsResult)
-            setOff((parseInt(this.tokenId)) % 100, this.nftInfor.outbound_tokens_id)
+            console.log(parseInt(this.tokenId), this.outTokenList[this.currentOutToken].tokenId)
+            setOff(parseInt(this.tokenId), this.outTokenList[this.currentOutToken].tokenId)
                 .then((res) => {
                     console.log('出征成功', res)
                     this.$loading.hide()
@@ -574,6 +589,39 @@ export default {
                     console.log('出征失败', err)
                     this.$loading.hide()
                 })
+        },
+
+        //点击出征令牌弹窗的确认按钮
+        async confirmCampaign() {
+            this.$loading.show()
+            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            console.log('erc721ApppprovalState', erc721ApppprovalState)
+            if (erc721ApppprovalState !== true) {
+                const erc721Result = await this.erc721ContractApppproval(config.game_addr)
+                console.log('erc721Result', erc721Result)
+                if (erc721Result.status == 1) {
+                    this.userCampaign()
+                } else {
+                    this.$loading.hide()
+                    showToast('授权失败')
+                }
+            } else {
+                this.userCampaign()
+            }
+        },
+
+        //点击底部出征按钮
+        async handleCampaign() {
+            this.$loading.show()
+            const tokensAcount = await this.campaignNeededOutboundTokens()
+            if (tokensAcount == 0) {
+                this.$loading.hide()
+                showToast(`请先购买${this.nftInfor.outbound_tokens}`)
+                return
+            }
+            this.$loading.hide()
+
+            this.showOutToken = true
         },
 
         //使用华佗道具卡
@@ -606,24 +654,7 @@ export default {
             return result;
         },
 
-        //点击确认出征按钮
-        async confirmCampaign() {
-            this.$loading.show()
-            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
-            console.log('erc721ApppprovalState', erc721ApppprovalState)
-            if (erc721ApppprovalState !== true) {
-                const erc721Result = await this.erc721ContractApppproval(config.game_addr)
-                console.log('erc721Result', erc721Result)
-                if (erc721Result.status == 1) {
-                    this.userCampaign()
-                } else {
-                    this.$loading.hide()
-                    showToast('授权失败')
-                }
-            } else {
-                this.userCampaign()
-            }
-        }
+
     }
 }
 </script>

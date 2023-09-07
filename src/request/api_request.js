@@ -60,3 +60,11 @@ export async function nftDetails(nftId) {
   const result = await axios.get(`${config.api}market/nft/${nftId}`);
   return result;
 }
+
+//用户查看某个出征令牌的数量
+export async function outboundTokens(address, tokenType) {
+  const result = await axios.get(
+    `${config.api}nft/owner/${address}/${tokenType}`
+  );
+  return result;
+}
