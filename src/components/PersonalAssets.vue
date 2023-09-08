@@ -13,9 +13,9 @@
         <div class="mb-2 flex justify-start items-baseline">
             <div class="">总资产： </div>
             <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
-            <div class="text-theme-primary font-bold text-4xl">
-                <!-- {{ earningsInfo.usdt + earningsInfo.selfUsdt }} WGT -->
-                99.99 WGT
+            <div class="text-theme-primary flex justify-start items-baseline">
+                <div class="font-bold text-4xl">{{ earningsInfo.poolTeam }}</div>
+                <div class="text-xs font-normal pl-1">(WGT + WGA)</div>
             </div>
 
         </div>
@@ -23,15 +23,16 @@
             <div class="flex justify-start items-center">
                 <span>总收益：</span>
                 <!-- <span class="font-bold text-theme-primary">{{  earningsInfo.usdt + earningsInfo.selfUsdt }} WGT </span> -->
-                <span class="font-bold text-theme-primary"> 99.99 WGT </span>
+                <span class="font-bold text-theme-primary"> {{ $store.state.userInfor.income_sum }} WGT </span>
             </div>
 
         </div>
         <div class="mb-2">
             <div class="flex justify-start items-center">
                 <span>个人贡献值级别：</span>
-                <span class="font-bold flex justify-start items-baseline"> <span>忠字传播大使 </span> <span
-                        class="text-xs font-normal pl-1">(贡献值：4234)</span> </span>
+                <span class="font-bold flex justify-start items-baseline"> <span>{{
+                    contributionLevel($store.state.userInfor.personal) }} </span> <span
+                        class="text-xs font-normal pl-1">(贡献值：{{ $store.state.userInfor.personal }})</span> </span>
 
             </div>
 
@@ -46,26 +47,25 @@
         </div>
         <div>
             <div class="flex justify-between items-center font-normal text-xs">
-                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5"
+                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1"
                     @click="viewEarnings('role_card')">
                     <!-- 不知道是哪个字段 -->
                     <div>角色卡收益</div>
-                    <div class="">{{ earningsInfo.usdtStar }}</div>
+                    <div class="">{{ $store.state.userInfor.income_card }}</div>
                 </div>
-                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5"
+                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1"
                     @click="viewEarnings('wealth_card')">
                     <div>财神卡收益</div>
-                    <div>{{ earningsInfo.usdtStar }}</div>
+                    <div>{{ $store.state.userInfor.income_deposit }}</div>
                 </div>
-                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1.5"
+                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1"
                     @click="viewEarnings('individual')">
                     <div>个人收益</div>
-                    <div>{{ earningsInfo.selfUsdt }}</div>
+                    <div>{{ $store.state.userInfor.income_personal }}</div>
                 </div>
-                <div class="flex flex-col justify-center items-center w-3/12 py-1.5" @click="viewEarnings('team')">
+                <div class="flex flex-col justify-center items-center w-3/12 py-1" @click="viewEarnings('team')">
                     <div>团队收益</div>
-                    <!-- <div>{{ earningsInfo.usdt }}</div> -->
-                    0
+                    <div>{{ $store.state.userInfor.income_team }}</div>
                 </div>
             </div>
         </div>
@@ -75,6 +75,8 @@
 <script>
 import { RollingText, showSuccessToast } from 'vant';
 import { userLevel, userInfo } from '@/request/ether_request/game'
+import { userIncome } from '@/request/api_request'
+
 export default {
     components: { [RollingText.name]: RollingText },
     data() {
@@ -90,37 +92,62 @@ export default {
 
         }
         this.address = window.ethereum.selectedAddress
-        this.getUserLevel()
         this.getUserInfo()
+        this.getUserIncome()
     },
     methods: {
+        getUserIncome() {
+            userIncome(window.ethereum.selectedAddress)
+                .then(res => {
+                    console.log(res)
+                    const { income_card, income_deposit, income_personal, income_pool, income_sum, income_team, personal } = res.data
+                    let obj = {
+                        address: window.ethereum.selectedAddress,
+                        income_card: income_card,
+                        income_deposit: income_deposit, income_personal: income_personal, income_pool: income_pool, income_sum: income_sum, income_team: income_team, personal: personal
+                    }
+
+                    this.$store.commit('updateUserInfor', obj)
+                    console.log(this.$store.state.userInfor)
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
         //用户贡献值对应大使
-        contributionLevel(level) {
-            switch (level) {
-                case 0:
+        contributionLevel(contributionValue) {
+            if (contributionValue === 0 && contributionValue < 10000) {
+                return '忠字传播大使'
+            } else if (contributionValue >= 10000 && contributionValue < 50000) {
+                return '义字传播大使'
+            } else if (contributionValue >= 50000 && contributionValue < 100000) {
+                return '仁字传播大使'
+            } else if (contributionValue >= 100000 && contributionValue < 300000) {
+                return '勇字传播大使'
+            } else if (contributionValue >= 300000 && contributionValue < 500000) {
+                return '礼字传播大使'
+            } else if (contributionValue >= 500000 && contributionValue < 1000000) {
+                return '智字传播大使'
+            } else if (contributionValue >= 1000000 && contributionValue < 3000000) {
+                return '信字传播大使'
+            } else if (contributionValue >= 3000000 && contributionValue < 70000000) {
+                return '财字传播大使'
+            } else if (contributionValue >= 70000000) {
+                return '富字传播大使'
             }
         },
         //获取用户收益信息
         getUserInfo() {
             userInfo(window.ethereum.selectedAddress)
                 .then(res => {
-                    console.log('用户收益详情', res)
+                    // console.log('用户收益详情', res)
                     this.earningsInfo = res
                 })
                 .catch(err => {
                     console.log('err', err)
                 })
         },
-        getUserLevel() {
-            userLevel(window.ethereum.selectedAddress)
-                .then(res => {
-                    console.log('用户当前等级', res)
-                    this.userLevel = res
-                })
-                .catch(err => {
-                    console.log('err', err)
-                })
-        },
+
         copyAddress() {
             navigator.clipboard.writeText(this.address).then(() => {
                 showSuccessToast('复制成功')
@@ -130,7 +157,6 @@ export default {
             });
         },
         addressFilter(value) {
-            console.log('value', value)
             if (value === undefined || value === null) return
             let arr = value.split('')
             let targetStr

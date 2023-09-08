@@ -68,3 +68,9 @@ export async function outboundTokens(address, tokenType) {
   );
   return result;
 }
+
+//查看用户总收益
+export async function userIncome(walletAddress) {
+  const result = await axios.get(`${config.api}income/${walletAddress}`);
+  return result;
+}

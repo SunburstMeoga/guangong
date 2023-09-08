@@ -132,9 +132,14 @@ export default {
             console.log('change', index)
             this.currentSwipe = index
         },
-
         //购买财神卡
         userBuyFortuneCard() {
+            console.log(this.canBuyWealthCard())
+            if (!this.canBuyWealthCard()) {
+                showToast(`当前等级不可购买${this.nftInfor.name}`)
+                this.$loading.hide()
+                return
+            }
             buyFortuneCard(this.nftInfor.id)
                 .then(res => {
                     this.$loading.hide()
@@ -145,9 +150,6 @@ export default {
                     console.log('err', err)
                     this.$loading.hide()
                     showToast('购买失败，请重新购买')
-                    // this.$router.push({
-                    //     path: '/personal'
-                    // })
                     console.log(err)
                 })
         },
@@ -187,6 +189,65 @@ export default {
         isWealthCard(nftType) {
             let arr = [10, 11, 12, 13, 14, 15, 161, 7, 18, 19, 20, 21, 22]
             return arr.indexOf(nftType)
+        },
+        //判断当前用户等级能否购买该类型财神卡
+        canBuyWealthCard() {
+            const contributionValue = this.$store.state.userInfor.personal
+            if (contributionValue === 0 && contributionValue < 10000) {
+                if (this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
+                    return true
+                } else {
+                    return false
+                }
+            } else if (contributionValue >= 10000 && contributionValue < 50000) {
+                if (this.nftInfor.id === 13) {
+                    return true
+                } else {
+                    return false
+                }
+            } else if (contributionValue >= 50000 && contributionValue < 100000) {
+                if (this.nftInfor.id === 14) {
+                    return true
+                } else {
+                    return false
+                }
+            } else if (contributionValue >= 100000 && contributionValue < 300000) {
+                if (this.nftInfor.id === 15) {
+                    return true
+                } else {
+                    return false
+                }
+            } else if (contributionValue >= 300000 && contributionValue < 500000) {
+                if (this.nftInfor.id === 16) {
+                    return true
+                } else {
+                    return false
+                }
+            } else if (contributionValue >= 500000 && contributionValue < 1000000) {
+                if (this.nftInfor.id === 17) {
+                    return true
+                } else {
+                    return false
+                }
+            } else if (contributionValue >= 1000000 && contributionValue < 3000000) {
+                if (this.nftInfor.id === 18) {
+                    return true
+                } else {
+                    return false
+                }
+            } else if (contributionValue >= 3000000 && contributionValue < 70000000) {
+                if (this.nftInfor.id === 19 || this.nftInfor.id === 20 || this.nftInfor.id === 21) {
+                    return true
+                } else {
+                    return false
+                }
+            } else if (contributionValue >= 70000000) {
+                if (this.nftInfor.id === 22) {
+                    return true
+                } else {
+                    return false
+                }
+            }
         },
         //点击购买按钮
         async handlePay() {

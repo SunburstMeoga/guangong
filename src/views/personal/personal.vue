@@ -96,6 +96,7 @@ import { userInfo } from '@/request/ether_request/game'
 import nfts_list from '@/nft_datas/nfts_list'
 import { filterTime, filterAmount } from '@/utils/filterValue'
 
+
 import { Tab, Tabs, Empty } from 'vant';
 export default {
     components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, PersonalAssets, AssetsCard, CampaignCard, WealthCard },
@@ -114,8 +115,8 @@ export default {
         this.getPersonNfts()
         this.getPendingOrderList()
         this.getUserInfo()
-        console.log('ethereum.selectedAddress', ethereum.selectedAddress)
-        console.log(this.getCammaignAttribute([false, false, true, true]))
+        // console.log('ethereum.selectedAddress', ethereum.selectedAddress)
+        // console.log(this.getCammaignAttribute([false, false, true, true]))
     },
     methods: {
         filterTime,
@@ -153,7 +154,7 @@ export default {
         getUserInfo() {
             userInfo(window.ethereum.selectedAddress)
                 .then(res => {
-                    console.log('财神卡片', res.deposits)
+                    // console.log('财神卡片', res.deposits)
                     let typeListCampaign = []
                     res.cards.map(item => {
                         let obj = {}
@@ -194,7 +195,7 @@ export default {
                     })
 
                     this.wealthList = newArrWealth
-                    console.log('财神卡', this.wealthList)
+                    // console.log('财神卡', this.wealthList)
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -204,7 +205,7 @@ export default {
         getPendingOrderList() {
             pendingOrderList(window.ethereum.selectedAddress)
                 .then(res => {
-                    console.log('挂单', res)
+                    // console.log('挂单', res)
                     let typeList = []
                     res.data.map(item => {
                         let obj = {}
@@ -217,7 +218,6 @@ export default {
                     newArr.map(item => {
                         nfts_list.map(_item => {
                             if (item.typeID == _item.id) {
-                                console.log(item)
                                 item.infor = _item
                             }
                         })
@@ -232,7 +232,7 @@ export default {
         getPersonNfts() {
             ownerList(window.ethereum.selectedAddress)
                 .then(res => {
-                    console.log('res', res)
+                    // console.log('res', res)
                     let typeList = []
                     res.data.map(item => {
                         let obj = {}
@@ -249,7 +249,7 @@ export default {
                         })
                     })
                     this.assetsList = newArr
-                    console.log(this.assetsList)
+                    // console.log(this.assetsList)
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -273,9 +273,9 @@ export default {
             })
         },
         toWealthDetails(_item) {
-            this.$router.push({
-                path: '/campaign/' + _item.tokenId
-            })
+            // this.$router.push({
+            //     path: '/campaign/' + _item.tokenId
+            // })
         }
     }
 }

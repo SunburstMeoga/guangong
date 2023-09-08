@@ -10,7 +10,7 @@
             </div> -->
         </div>
         <div class="backdrop-blur-3xl text-sm text-assets-word bg-module-card pl-2 py-1">
-            <div class="text-theme-primary text-2xl font-semibold">{{ name }}</div>
+            <div class="text-theme-primary text-2xl font-semibold mb-3">{{ name }}</div>
             <div class="text-icon-gray">收益开始时间：{{ time }}</div>
         </div>
     </div>
@@ -28,6 +28,10 @@ export default {
             type: Number,
             default: 0
         },
+        imageUrl: {
+            type: String,
+            default: ''
+        }
     }
 }
 </script>
