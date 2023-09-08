@@ -93,11 +93,12 @@ import AssetsCard from '@/components/AssetsCard'
 import CampaignCard from '@/components/CampaignCard'
 import WealthCard from '@/components/WealthCard'
 import { ownerList, pendingOrderList } from '@/request/api_request'
-import { userInfo, campaignEarnings, wealthEarnings, wealthEarningsInfor } from '@/request/ether_request/game'
+import { userInfo, campaignEarnings, wealthEarnings } from '@/request/ether_request/game'
 import nfts_list from '@/nft_datas/nfts_list'
 import { filterTime, filterAmount } from '@/utils/filterValue'
 import { isApprovedAll, apppprovalForAll } from '@/request/ether_request/nft'
 import { config } from '@/const/config'
+import { wealthEarningsInfor } from '@/request/ether_request/help'
 
 
 
