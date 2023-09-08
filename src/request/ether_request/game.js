@@ -87,14 +87,14 @@ export async function receivePoolEarnings(receiveAmount) {
 }
 
 //用户领取财神卡收益
-export async function wealthEarnings() {
+export async function wealthEarnings(cardIndex) {
   const result = await GAMETRADE.income2(cardIndex);
   const tx = await tx.wait();
   return result;
 }
 
 //用户领取出征卡收益
-export async function campaignEarnings() {
+export async function campaignEarnings(cardIndex) {
   const result = await GAMETRADE.income1(cardIndex);
   const tx = await tx.wait();
   return result;

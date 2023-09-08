@@ -39,9 +39,26 @@
         </div>
         <div class="mb-4 pb-4 border-b border-card-border">
             <div class="flex justify-between items-center">
-                <div class="flex justify-start items-start">
+                <div class="flex justify-start items-center">
                     <span>个人收益池金额：</span>
                     <span class="font-bold">{{ earningsInfo.poolTeam }} WGT</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4 pb-4 border-b border-card-border">
+            <div class="flex justify-between items-center">
+                <div class="flex justify-start items-center">
+                    <span>奖金池总金额：</span>
+                    <span class="font-bold">{{ earningsInfo.poolTeam }} WGT</span>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4 pb-4 border-b border-card-border">
+            <div class="flex justify-between items-center">
+                <div class="flex justify-start items-center">
+                    <span>可领取金额：</span>
+                    <span class="font-bold ">{{ earningsInfo.poolTeam }} WGT</span>
+                    <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded">领取</span>
                 </div>
             </div>
         </div>
@@ -76,7 +93,8 @@
 import { RollingText, showSuccessToast } from 'vant';
 import { userInfo } from '@/request/ether_request/game'
 import { userIncome } from '@/request/api_request'
-import { wgtAssets, wgaAssets } from '@/request/ether_request/wgt'
+import { wgtAssets } from '@/request/ether_request/wgt'
+import { wgaAssets } from '@/request/ether_request/wga'
 import Web3 from "web3";
 
 export default {
@@ -197,6 +215,11 @@ img {
 
 .buy-button {
     background: linear-gradient(90deg, rgba(250, 52, 168, 1) 9%, rgba(255, 150, 62, 1) 100%);
+}
+
+.campaign {
+    background: rgb(89, 32, 116);
+    background: linear-gradient(90deg, rgba(89, 32, 116, 1) 5%, rgba(115, 29, 120, 1) 37%, rgba(185, 20, 131, 1) 76%, rgba(226, 15, 138, 1) 100%);
 }
 
 .my-rolling-text {

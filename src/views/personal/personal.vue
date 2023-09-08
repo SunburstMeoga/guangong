@@ -51,9 +51,9 @@
                             </div>
                             <div v-else>
                                 <div v-for="( _item, _index ) in campaignList" :key="index"
-                                    @click="toCampaignDetails(_item)"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                     <campaign-card type="pending" :nftRole="_item.nft_role" :time="filterTime(_item.time)"
+                                        @receiveProceeds="handleReceiveCampaignProceeds(_index)"
                                         :imageUrl="_item.infor.imageUrl" :nftToken="_item.nft_token" :count="_item.count"
                                         :income="_item.income"
                                         :cammaignAttribute="this.getCammaignAttribute([_item.zhangJiao, _item.zhuGeLiang, _item.mengHuo, _item.yuanShu])"
@@ -70,10 +70,11 @@
                                 </div>
                             </div>
                             <div v-else>
-                                <div v-for="( _item, _index ) in wealthList" :key="index" @click="toWealthDetails(_item)"
+                                <div v-for="( _item, _index ) in wealthList" :key="index"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
-                                    <wealth-card type="pending" :time="filterTime(_item.time)"
-                                        :imageUrl="_item.infor.imageUrl" :name="_item.infor.name" />
+                                    <wealth-card @receiveProceeds="handleReceiveWealthProceeds(_index)" type="pending"
+                                        :time="filterTime(_item.time)" :imageUrl="_item.infor.imageUrl"
+                                        :name="_item.infor.name" />
                                 </div>
                             </div>
                         </div>
@@ -92,12 +93,16 @@ import AssetsCard from '@/components/AssetsCard'
 import CampaignCard from '@/components/CampaignCard'
 import WealthCard from '@/components/WealthCard'
 import { ownerList, pendingOrderList } from '@/request/api_request'
-import { userInfo } from '@/request/ether_request/game'
+import { userInfo, campaignEarnings, wealthEarnings } from '@/request/ether_request/game'
 import nfts_list from '@/nft_datas/nfts_list'
 import { filterTime, filterAmount } from '@/utils/filterValue'
+import { isApprovedAll, apppprovalForAll } from '@/request/ether_request/nft'
+import { config } from '@/const/config'
 
 
-import { Tab, Tabs, Empty } from 'vant';
+
+
+import { Tab, Tabs, showToast } from 'vant';
 export default {
     components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, PersonalAssets, AssetsCard, CampaignCard, WealthCard },
     data() {
@@ -121,6 +126,83 @@ export default {
     methods: {
         filterTime,
         filterAmount,
+        //检查erc721授权状态
+        async erc721ApppprovalState(contractAddress) {
+            return await isApprovedAll(window.ethereum.selectedAddress, contractAddress)
+        },
+        //erc721合约授权操作
+        async erc721ContractApppproval(contractAddress) {
+            const result = await apppprovalForAll(contractAddress)
+            return result
+        },
+        //用户领取出征卡收益
+        userReceiveCampaign(index) {
+            campaignEarnings(index)
+                .then(res => {
+                    console.log(res)
+                    showToast('领取成功')
+                    this.getUserInfo()
+                    this.$loading.hide()
+                })
+                .catch(err => {
+                    showToast('领取失败')
+                    this.$loading.hide()
+                    console.log('err', err)
+                })
+        },
+        //用户领取财神卡收益
+        userReceiveWealth(index) {
+            wealthEarnings(index)
+                .then(res => {
+                    console.log(res)
+                    showToast('领取成功')
+                    this.getUserInfo()
+                    this.$loading.hide()
+                })
+                .catch(err => {
+                    showToast('领取失败')
+                    this.$loading.hide()
+                    console.log('err', err)
+
+                })
+        },
+        //点击领取出征卡收益
+        async handleReceiveCampaignProceeds(index) {
+            this.$loading.show()
+            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            if (erc721ApppprovalState !== true) {
+                const erc721Result = await this.erc721ContractApppproval(config.game_addr)
+                console.log('erc721Result', erc721Result)
+                if (erc721Result.status == 1) {
+                    this.userReceiveCampaign(index)
+                } else {
+                    this.$loading.hide()
+                    showToast('授权失败')
+                }
+            } else {
+                this.userReceiveCampaign(index)
+            }
+
+        },
+        //点击领取财神卡收益
+        async handleReceiveWealthProceeds(index) {
+            this.$loading.show()
+            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            if (erc721ApppprovalState !== true) {
+                const erc721Result = await this.erc721ContractApppproval(config.game_addr)
+                console.log('erc721Result', erc721Result)
+                if (erc721Result.status == 1) {
+                    this.userReceiveWealth(index)
+                } else {
+                    this.$loading.hide()
+                    showToast('授权失败')
+                }
+            } else {
+                this.userReceiveWealth(index)
+            }
+
+
+        },
         //卡片类型
         getCardType(card_type) {
             if (card_type === 'nft_role') {

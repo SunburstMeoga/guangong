@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import { isAllowance, approve, wgtAssets, wgaAssets } from '@/request/ether_request/wgt'
+import { wgtAssets } from '@/request/ether_request/wgt'
+import { isAllowance, approve, wgaAssets } from '@/request/ether_request/wga'
 import { exchange } from '@/request/ether_request/market'
 import { showToast } from 'vant'
 import { config } from '@/const/config'
@@ -92,6 +93,7 @@ export default {
                     console.log('res', res)
                     showToast('兑换成功')
                     this.$loading.hide()
+                    this.getUserTotalAssets()
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -106,6 +108,7 @@ export default {
             }
             this.$loading.show()
             const hasAllowance = await this.checkAllowanceState()
+            console.log(hasAllowance)
             if (hasAllowance == 0) {
                 const approveResult = await this.contractApprove()
                 console.log('approveResult', approveResult)
@@ -125,7 +128,7 @@ export default {
         },
         //检查合约授权状态
         async checkAllowanceState() {
-            return await isAllowance(ethereum.selectedAddress, config.market_addr)
+            return await isAllowance(window.ethereum.selectedAddress, config.market_addr)
         },
         cancelPay() {
             window.history.back();
