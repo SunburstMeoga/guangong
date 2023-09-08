@@ -153,7 +153,7 @@ export default {
         getUserInfo() {
             userInfo(window.ethereum.selectedAddress)
                 .then(res => {
-                    console.log('出征卡片', parseInt(res.cards[0].nft_role) % 100)
+                    console.log('财神卡片', res.deposits)
                     let typeListCampaign = []
                     res.cards.map(item => {
                         let obj = {}
@@ -179,7 +179,7 @@ export default {
                     let typeListWealth = []
                     res.deposits.map(item => {
                         let obj = {}
-                        obj.typeID = item.token_id > 100 ? parseInt(item.token_id) % 100 : item.nft_role
+                        obj.typeID = item.token_id > 100 ? parseInt(item.token_id) % 100 : item.token_id
                         obj.tokenId = item.token_id
                         obj.time = item.time
                         typeListWealth.push(obj)

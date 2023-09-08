@@ -132,14 +132,23 @@ export default {
             console.log('change', index)
             this.currentSwipe = index
         },
+
         //购买财神卡
-        userBuyFortuneCard(nftType) {
-            buyFortuneCard(nftType)
+        userBuyFortuneCard() {
+            buyFortuneCard(this.nftInfor.id)
                 .then(res => {
-                    console.log('购买财神卡成功', res)
+                    this.$loading.hide()
+                    showToast('购买成功')
+                    console.log(res)
                 })
                 .catch(err => {
                     console.log('err', err)
+                    this.$loading.hide()
+                    showToast('购买失败，请重新购买')
+                    // this.$router.push({
+                    //     path: '/personal'
+                    // })
+                    console.log(err)
                 })
         },
         //本地匹配nft数据
@@ -174,8 +183,14 @@ export default {
         async checkAllowanceState() {
             return await isAllowance(window.ethereum.selectedAddress, config.game_addr)
         },
+        //判断当前购买的卡片是否为财神卡
+        isWealthCard(nftType) {
+            let arr = [10, 11, 12, 13, 14, 15, 161, 7, 18, 19, 20, 21, 22]
+            return arr.indexOf(nftType)
+        },
         //点击购买按钮
         async handlePay() {
+            console.log('财神卡？', this.isWealthCard(this.nftInfor.id))
             this.$loading.show()
             const preAddressArr = await relationshipAddress(window.ethereum.selectedAddress)
             console.log('preAddress', preAddressArr)
@@ -190,10 +205,14 @@ export default {
                 const approveResult = await this.contractApprove()
                 console.log('approveResult', approveResult)
                 if (approveResult.status == 1) {
-                    if (this.goodType === 'good') {
-                        this.payFromMall()
-                    } else if (this.goodType === 'market') {
-                        this.payFromMarket()
+                    if (this.isWealthCard(this.nftInfor.id) === -1) {
+                        if (this.goodType === 'good') {
+                            this.payFromMall()
+                        } else if (this.goodType === 'market') {
+                            this.payFromMarket()
+                        }
+                    } else {
+                        this.userBuyFortuneCard()
                     }
 
                 } else {
@@ -201,10 +220,14 @@ export default {
                     showToast('授权失败，请重新授权')
                 }
             } else {
-                if (this.goodType === 'good') {
-                    this.payFromMall()
-                } else if (this.goodType === 'market') {
-                    this.payFromMarket()
+                if (this.isWealthCard(this.nftInfor.id) === -1) {
+                    if (this.goodType === 'good') {
+                        this.payFromMall()
+                    } else if (this.goodType === 'market') {
+                        this.payFromMarket()
+                    }
+                } else {
+                    this.userBuyFortuneCard()
                 }
             }
         },
