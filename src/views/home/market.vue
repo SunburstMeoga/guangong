@@ -8,14 +8,15 @@
         <div class="absolute left-0">
           <img src="@/assets/shop-bg2.png" alt="">
         </div>
-        <div class="mt-10 py-10">
-          <!-- <div class="w-11/12 mr-auto ml-auto">
-            <div v-for="(item, index) in cardList" :key="index">
-              <market-card :imageUrl="item.imageUrl" />
+        <div class="mt-12 pb-10 relative z-10">
+          <div class="w-11/12 mr-auto ml-auto mt-4">
+            <div v-for="(item, index) in nftRoleCards" :key="index" class="mb-4" @click="toMarketDetails(item)">
+              <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
+                :amount="filterAmount(item.amount)" />
             </div>
-          </div> -->
-          <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
-            color="#E20F2A" @click-tab="onClickTab">
+          </div>
+          <!-- <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
+            color="#E20F2A">
             <van-tab title="NFT角色卡">
               <div class="w-11/12 mr-auto ml-auto mt-4">
                 <div v-for="(item, index) in nftRoleCards" :key="index" class="mb-4" @click="toMarketDetails(item)">
@@ -45,7 +46,7 @@
                 </div>
               </div>
             </van-tab>
-          </van-tabs>
+          </van-tabs> -->
         </div>
       </div>
     </div>
