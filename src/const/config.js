@@ -4,6 +4,7 @@ import game_abi from "./game.json";
 import market_abi from "./market.json";
 import map_abi from "./map.json";
 import popularized_abi from "./popularized.json";
+import help_abi from "./help.json";
 
 const config = {
   erc20_abi: erc20_abi,
@@ -12,6 +13,7 @@ const config = {
   market_abi: market_abi,
   map_abi: map_abi,
   popularized_abi: popularized_abi,
+  help_abi: help_abi,
   usdt_addr: "0xc0cf857BdC00c6eF5544aD5E920edd9848CCb9C8",
   wgt_addr: "0x5E822d2c5b16F1a4Be09839a397E636DF1136Fc8",
   wga_addr: "0x4477ab4e190c88B70C29Fe73ACdA53943D6Ef46d",
@@ -22,6 +24,7 @@ const config = {
   market_addr: "0x1C7B7313264579716A8e59510506CEB58f1819c0",
 
   game_addr: "0xb426B6d400f776bf13D660f4A5E375CdCE0bD2aC",
+  help_addr: "0x748d9f64f353069007c55eb1E3A8529F25D9B344",
   // A 0x52974912707C5cBB1C2d25C66307942901c1d2A3
   // B 0x40972d311BC09e2b57A47E81D854CF4905A57e24
   api: "http://47.115.211.205/api/",

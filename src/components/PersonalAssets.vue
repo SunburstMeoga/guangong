@@ -49,7 +49,7 @@
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center">
                     <span>奖金池总金额：</span>
-                    <span class="font-bold">{{ earningsInfo.poolTeam }} WGT</span>
+                    <span class="font-bold">{{ poolInfor.a }} WGT</span>
                 </div>
             </div>
         </div>
@@ -57,8 +57,9 @@
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center">
                     <span>可领取金额：</span>
-                    <span class="font-bold ">{{ earningsInfo.poolTeam }} WGT</span>
-                    <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded">领取</span>
+                    <span class="font-bold ">{{ poolInfor.b }} WGT</span>
+                    <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded"
+                        @click="userReceivePoolEarnings">领取</span>
                 </div>
             </div>
         </div>
@@ -90,11 +91,13 @@
 </template>
 
 <script>
-import { RollingText, showSuccessToast } from 'vant';
-import { userInfo } from '@/request/ether_request/game'
+import { RollingText, showSuccessToast, showToast } from 'vant';
+import { userInfo, receivePoolEarnings } from '@/request/ether_request/game'
 import { userIncome } from '@/request/api_request'
 import { wgtAssets } from '@/request/ether_request/wgt'
 import { wgaAssets } from '@/request/ether_request/wga'
+import { poolEarningsInfor } from '@/request/ether_request/help'
+
 import Web3 from "web3";
 
 export default {
@@ -104,7 +107,8 @@ export default {
             address: window.ethereum.selectedAddress,
             earningsInfo: {},
             userLevel: 0,
-            totalAssets: '0'
+            totalAssets: '0',
+            poolInfor: {}
         }
     },
     mounted() {
@@ -114,7 +118,26 @@ export default {
         this.getUserTotalAssets()
     },
     methods: {
-
+        //领取总奖池收益
+        userReceivePoolEarnings() {
+            receivePoolEarnings(this.poolInfor.b)
+                .then(res => {
+                    showToast('领取成功')
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
+        //获取奖金池信息
+        getPoolInfor() {
+            poolEarningsInfor(window.ethereum.selectedAddress)
+                .then(res => {
+                    this.poolInfor = res
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
         async getUserTotalAssets() {
             const WEB3 = new Web3(window.ethereum);
             // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')

@@ -7,6 +7,9 @@
                     <div v-for="(item, index) in worshipsList" :key="index" class="bg-black rounded mb-4">
                         <festival-card :cardInfo="item" @handlewWrship="toWrship" />
                     </div>
+                    <div v-if="worshipsList.length !== 0">
+                        暂无关公地图数据
+                    </div>
                 </div>
             </div>
 

@@ -93,12 +93,11 @@ import AssetsCard from '@/components/AssetsCard'
 import CampaignCard from '@/components/CampaignCard'
 import WealthCard from '@/components/WealthCard'
 import { ownerList, pendingOrderList } from '@/request/api_request'
-import { userInfo, campaignEarnings, wealthEarnings } from '@/request/ether_request/game'
+import { userInfo, campaignEarnings, wealthEarnings, wealthEarningsInfor } from '@/request/ether_request/game'
 import nfts_list from '@/nft_datas/nfts_list'
 import { filterTime, filterAmount } from '@/utils/filterValue'
 import { isApprovedAll, apppprovalForAll } from '@/request/ether_request/nft'
 import { config } from '@/const/config'
-
 
 
 
@@ -112,7 +111,8 @@ export default {
             assetsList: [],
             pendingList: [],
             campaignList: [],
-            wealthList: []
+            wealthList: [],
+
             // assetsList: []
         }
     },
@@ -120,6 +120,7 @@ export default {
         this.getPersonNfts()
         this.getPendingOrderList()
         this.getUserInfo()
+        this.getPoolInfor()
         // console.log('ethereum.selectedAddress', ethereum.selectedAddress)
         // console.log(this.getCammaignAttribute([false, false, true, true]))
     },
@@ -133,6 +134,11 @@ export default {
         //erc721合约授权操作
         async erc721ContractApppproval(contractAddress) {
             const result = await apppprovalForAll(contractAddress)
+            return result
+        },
+        //获取当前财神卡能领取的金额
+        async getCampaignReceiveAmount(nftIndex) {
+            const result = await wealthEarningsInfor(window.ethereum.selectedAddress, nftIndex)
             return result
         },
         //用户领取出征卡收益
@@ -187,6 +193,13 @@ export default {
         //点击领取财神卡收益
         async handleReceiveWealthProceeds(index) {
             this.$loading.show()
+
+            const wealthAmount = await this.getCampaignReceiveAmount(index)
+            if (wealthAmount == 0) {
+                showToast('当前NFT可领取金额为0')
+                this.$loading.hide()
+                return
+            }
             const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
             if (erc721ApppprovalState !== true) {
                 const erc721Result = await this.erc721ContractApppproval(config.game_addr)
