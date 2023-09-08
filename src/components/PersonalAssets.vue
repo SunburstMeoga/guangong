@@ -121,11 +121,21 @@ export default {
     methods: {
         //领取总奖池收益
         userReceivePoolEarnings() {
+            this.$loading.show()
+            if (this.poolInfor.b == 0) {
+                showToast('无可领取余额')
+                this.$loading.hide()
+                return
+            }
             receivePoolEarnings(this.poolInfor.b)
                 .then(res => {
                     showToast('领取成功')
+                    this.$loading.hide()
                 })
                 .catch(err => {
+                    showToast('领取失败')
+                    this.$loading.hide()
+
                     console.log('err', err)
                 })
         },
@@ -133,6 +143,7 @@ export default {
         getPoolInfor() {
             poolEarningsInfor(window.ethereum.selectedAddress)
                 .then(res => {
+                    console.log('奖池信息', res)
                     this.poolInfor = res
                 })
                 .catch(err => {
