@@ -116,6 +116,7 @@ export default {
         this.getUserInfo()
         this.getUserIncome()
         this.getUserTotalAssets()
+        this.getPoolInfor()
     },
     methods: {
         //领取总奖池收益

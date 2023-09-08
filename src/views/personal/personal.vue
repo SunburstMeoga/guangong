@@ -120,7 +120,6 @@ export default {
         this.getPersonNfts()
         this.getPendingOrderList()
         this.getUserInfo()
-        this.getPoolInfor()
         // console.log('ethereum.selectedAddress', ethereum.selectedAddress)
         // console.log(this.getCammaignAttribute([false, false, true, true]))
     },
