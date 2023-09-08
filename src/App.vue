@@ -22,7 +22,7 @@ export default {
     getUserIncome() {
       userIncome(window.ethereum.selectedAddress)
         .then(res => {
-          console.log(res)
+          // console.log(res)
           const { income_card, income_deposit, income_personal, income_pool, income_sum, income_team, personal } = res.data
           let obj = {
             address: window.ethereum.selectedAddress,
@@ -31,7 +31,7 @@ export default {
           }
 
           this.$store.commit('updateUserInfor', obj)
-          console.log(this.$store.state.userInfor)
+          // console.log(this.$store.state.userInfor)
         })
         .catch(err => {
           console.log('err', err)

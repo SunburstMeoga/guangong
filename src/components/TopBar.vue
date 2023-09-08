@@ -90,7 +90,6 @@ export default {
         viewGoods() {
             this.$router.push({
                 path: '/nfts/mall',
-                query: { type: 'mall' }
             })
             this.showRight = false
         },
@@ -102,8 +101,8 @@ export default {
         },
         viewMarket() {
             this.$router.push({
-                path: '/nfts/market',
-                query: { type: 'market' }
+                path: '/nfts/market'
+
             })
             this.showRight = false
         },

@@ -300,7 +300,7 @@ export default {
         getPendingOrderList() {
             pendingOrderList(window.ethereum.selectedAddress)
                 .then(res => {
-                    // console.log('挂单', res)
+                    console.log('挂单', res)
                     let typeList = []
                     res.data.map(item => {
                         let obj = {}

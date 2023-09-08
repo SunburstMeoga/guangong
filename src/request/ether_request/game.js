@@ -30,8 +30,8 @@ export async function buy(nftType) {
 }
 
 //合成nft
-export async function synthesisNFT(nftsId, targetId) {
-  const tx = await GAMETRADE.upgradeRole(nftsId, targetId, {
+export async function synthesisNFT(nftsType, targetType) {
+  const tx = await GAMETRADE.upgradeRole(nftsType, targetType, {
     gasLimit: 9999999,
   });
   const result = await tx.wait();

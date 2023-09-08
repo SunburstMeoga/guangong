@@ -450,21 +450,19 @@ export default {
         this.assetState = this.$route.name
         if (this.assetState === 'assets') {
             this.pageTitle = '资产详情'
+            const nftItem = nfts_list.filter(item => {
+                return item.id === (parseInt(this.$route.params.tokenId)) % 100
+            })
+            this.nftInfor = nftItem[0]
         } else if (this.assetState === 'pending-order') {
             this.pageTitle = '正在挂单'
-
         } else if (this.assetState === 'campaign') {
             this.pageTitle = '正在出征'
-
         }
         if (this.$route.params.tokenId) {
             this.tokenId = this.$route.params.tokenId
-            this.getNFTDetails()
         }
-        const nftItem = nfts_list.filter(item => {
-            return item.id === (parseInt(this.$route.params.tokenId)) % 100
-        })
-        this.nftInfor = nftItem[0]
+
         if (this.nftInfor.id === 60) {
             this.propsEffectaAddress = window.ethereum.selectedAddress
         }
@@ -734,9 +732,11 @@ export default {
         },
         //撤销挂单操作
         cancelPendingOrder() {
+            console.log(this.opendingOrderNFTDetails.nft_id)
+            // return
             this.showCancelPendingOrder = false
             this.$loading.show()
-            redemptionNFT(this.tokenId)
+            redemptionNFT(this.opendingOrderNFTDetails.nft_id)
                 .then(res => {
                     console.log('撤销挂单', res)
                     this.$loading.hide()
@@ -756,6 +756,10 @@ export default {
                 .then(res => {
                     console.log('资产详情', res)
                     this.opendingOrderNFTDetails = res.data
+                    const nftItem = nfts_list.filter(item => {
+                        return item.id === res.data.id
+                    })
+                    this.nftInfor = nftItem[0]
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -763,10 +767,15 @@ export default {
         },
         //挂单
         userPendingOrder() {
+            console.log(this.tokenId, this.pendingOrderAmount)
+            // return
             pendingOrder(this.tokenId, this.pendingOrderAmount)
                 .then(res => {
                     console.log('挂单成功', res)
-                    this.updataPendingOrder()
+                    // this.updataPendingOrder()
+                    this.$loading.hide()
+
+                    window.history.back()
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -855,7 +864,8 @@ export default {
         //合成nft
         updataNFT() {
             this.$loading.show()
-            console.log(this.nftInfor)
+            console.log(this.nftInfor.next_need_nfts, this.nftInfor.next_nft_id)
+            // return
             synthesisNFT(this.nftInfor.next_need_nfts, this.nftInfor.next_nft_id)
                 .then((res) => {
                     console.log('合成成功', res)

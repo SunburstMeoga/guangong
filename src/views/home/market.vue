@@ -8,53 +8,40 @@
         <div class="absolute left-0">
           <img src="@/assets/shop-bg2.png" alt="">
         </div>
-
-        <div class="mt-20 py-10">
-          <van-tabs v-model:active="active" shrink swipeable sticky title-active-color="#E20F2A" background="#121212"
+        <div class="mt-10 py-10">
+          <!-- <div class="w-11/12 mr-auto ml-auto">
+            <div v-for="(item, index) in cardList" :key="index">
+              <market-card :imageUrl="item.imageUrl" />
+            </div>
+          </div> -->
+          <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
             color="#E20F2A" @click-tab="onClickTab">
-            <van-tab v-for="( item, index ) in typeList " :title="item" class="pt-4">
-              <div class="w-full mb-6">
-                <div class="w-11/12 mr-auto ml-auto flex justify-start items-center">
-                  <div class="mr-6">
-                    <van-popover v-model:show="toggleStage" :actions="actionsStage"
-                      :close-on-click-outside="closeOnClickAction" theme="dark" placement="bottom-start">
-                      <div class="py-2 px-2">
-                        <div v-for="(item, index) in actionsStage" class="mb-2" :key="index">
-                          <div class="mb-1 text-base text-card-content">{{ item.text }}</div>
-                          <div class="flex justify-start items-center">
-                            <div class="text-xs p-2 rounded bg-more-content text-icon-gray"
-                              v-for="(_item, _index) in item.chlid"
-                              :class="[_index === 0 ? '' : 'ml-1', _item.checked ? 'clicked' : '']"
-                              @click="uploadStage(_item)">
-                              {{ _item.text }}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="flex justify-end items-center mb-4">
-                        <div class="buy-button button-word" @click="handleConfirm">确定</div>
-                        <div class="campaign button-word ml-4 mr-2" @click="handleReset">重置</div>
-                      </div>
-                      <template #reference>
-                        <div class="flex justify-center items-center py-2 px-2 rounded bg-language-content">
-                          <div class="mr-2 text-sm" v-if="currentStage.length === 0 && cardTypeIndex === 0">所有角色</div>
-                          <div class="mr-2 text-sm" v-else>
-                            <span class="px-1" v-for="(item, index) in currentStage" :key="index">{{ item.text }}</span>
-                          </div>
-                          <div class="icon iconfont icon-top transition ease-in-out duration-300" style="font-size: 12px;"
-                            :class="toggleStage ? 'rotate-180' : ''">
-                          </div>
-                        </div>
-                      </template>
-                    </van-popover>
-                  </div>
+            <van-tab title="NFT角色卡">
+              <div class="w-11/12 mr-auto ml-auto mt-4">
+                <div v-for="(item, index) in nftRoleCards" :key="index" class="mb-4" @click="toMarketDetails(item)">
+                  <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
+                    :amount="filterAmount(item.amount)" />
                 </div>
               </div>
-              <div class="w-11/12 ml-auto mr-auto">
-                <div class="mb-6" v-for="(item, index ) in cardList " :key="index" @click="toMarketDetails(item)">
-                  <div>
-                    <market-card :imageUrl="item.imageUrl" :name="item.name" />
-                  </div>
+            </van-tab>
+            <van-tab title="合成道具卡">
+              <div class="w-11/12 mr-auto ml-auto">
+                <div v-for="(item, index) in 4" :key="index">
+                  <market-card />
+                </div>
+              </div>
+            </van-tab>
+            <van-tab title="战法道具卡">
+              <div class="w-11/12 mr-auto ml-auto">
+                <div v-for="(item, index) in 4" :key="index">
+                  <market-card />
+                </div>
+              </div>
+            </van-tab>
+            <van-tab title="出征令牌">
+              <div class="w-11/12 mr-auto ml-auto">
+                <div v-for="(item, index) in 4" :key="index">
+                  <market-card />
                 </div>
               </div>
             </van-tab>
@@ -71,9 +58,12 @@ import MarketCard from '@/components/MarketCard'
 import nfts_list from '@/nft_datas/nfts_list'
 import { Tab, Tabs, Popover } from 'vant';
 import { marketList } from '@/request/api_request'
+import { filterAmount } from '@/utils/filterValue';
 
 export default {
-  components: { ModuleTitle, MarketCard, [Tab.name]: Tab, [Tabs.name]: Tabs, [Popover.name]: Popover },
+  components: {
+    ModuleTitle, MarketCard, [Tab.name]: Tab, [Tabs.name]: Tabs, [Popover.name]: Popover
+  },
   data() {
     return {
       typeList: ['NFT角色卡', '合成道具卡', '战法道具卡', '出征令牌'],
@@ -89,17 +79,41 @@ export default {
         { text: '万世流芳', chlid: [{ text: '忠义仁勇', checked: false }, { text: '武财神', checked: false }] },
       ],
       cardList: [],
-      cardTypeIndex: 0
+      cardTypeIndex: 0,
+      nftRoleCards: [],
+      synthesisPropsCards: [],
+      tacticsPropCards: [],
+      campaignProps: []
     }
   },
   mounted() {
     this.getMarketList()
   },
   methods: {
+    filterAmount,
     getMarketList() {
       marketList()
         .then(res => {
           console.log('二手列表', res)
+          let typeList = []
+          res.data.map(item => {
+            let obj = {}
+            obj.typeID = item.id
+            obj.tokenId = item.nft_id
+            obj.amount = item.amount
+            obj.owner = item.owner
+            typeList.push(obj)
+          })
+          let newArr = typeList.filter((v) => nfts_list.some((val) => val.id == v.typeID))
+          newArr.map(item => {
+            nfts_list.map(_item => {
+              if (item.typeID == _item.id) {
+                item.infor = _item
+              }
+            })
+          })
+          this.nftRoleCards = newArr
+          console.log('nftRoleCards', this.nftRoleCards)
         })
         .catch(err => {
           console.log('err', err)
@@ -130,8 +144,10 @@ export default {
       }
     },
     toMarketDetails(item) {
+      console.log('item', item)
+      // return
       this.$router.push({
-        path: '/good/' + item.id
+        path: '/market/' + item.tokenId
       })
     },
     handleConfirm() {
