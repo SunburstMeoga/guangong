@@ -14,7 +14,7 @@
             <div class="">总资产： </div>
             <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
             <div class="text-theme-primary flex justify-start items-baseline">
-                <div class="font-bold text-4xl">{{ earningsInfo.poolTeam }}</div>
+                <div class="font-bold text-4xl">{{ totalAssets }}</div>
                 <div class="text-xs font-normal pl-1">(WGT + WGA)</div>
             </div>
 
@@ -74,28 +74,37 @@
 
 <script>
 import { RollingText, showSuccessToast } from 'vant';
-import { userLevel, userInfo } from '@/request/ether_request/game'
+import { userInfo } from '@/request/ether_request/game'
 import { userIncome } from '@/request/api_request'
+import { wgtAssets, wgaAssets } from '@/request/ether_request/wgt'
+import Web3 from "web3";
 
 export default {
     components: { [RollingText.name]: RollingText },
     data() {
         return {
-
             address: window.ethereum.selectedAddress,
             earningsInfo: {},
-            userLevel: 0
+            userLevel: 0,
+            totalAssets: '0'
         }
     },
     mounted() {
-        if (ethereum.selectedAddress) {
-
-        }
         this.address = window.ethereum.selectedAddress
         this.getUserInfo()
         this.getUserIncome()
+        this.getUserTotalAssets()
     },
     methods: {
+
+        async getUserTotalAssets() {
+            const WEB3 = new Web3(window.ethereum);
+            // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
+            const wgt = await wgtAssets(window.ethereum.selectedAddress)
+            const wga = await wgaAssets(window.ethereum.selectedAddress)
+            console.log(WEB3.utils.fromWei(wgt + wga, 'ether'))
+            this.totalAssets = WEB3.utils.fromWei(wgt + wga, 'ether')
+        },
         getUserIncome() {
             userIncome(window.ethereum.selectedAddress)
                 .then(res => {

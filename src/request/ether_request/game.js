@@ -79,6 +79,27 @@ export async function yuanshuProps(walletAddress, nftId) {
   return result;
 }
 
+//用户领取奖金池收益
+export async function receivePoolEarnings(receiveAmount) {
+  const result = await GAMETRADE.income3(receiveAmount);
+  const tx = await tx.wait();
+  return result;
+}
+
+//用户领取财神卡收益
+export async function wealthEarnings() {
+  const result = await GAMETRADE.income2(cardIndex);
+  const tx = await tx.wait();
+  return result;
+}
+
+//用户领取出征卡收益
+export async function campaignEarnings() {
+  const result = await GAMETRADE.income1(cardIndex);
+  const tx = await tx.wait();
+  return result;
+}
+
 //用户购买财神卡
 export async function buyFortuneCard(nftType) {
   const tx = await GAMETRADE.buy2(nftType);

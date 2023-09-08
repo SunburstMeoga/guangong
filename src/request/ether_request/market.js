@@ -30,8 +30,9 @@ export async function pendingOrder(nftId, amount) {
 }
 
 //wga兑换wgt
-export async function exchange() {
-  const tx = await MARKETTRADE.exchange(ethers.parseEther(wga));
+export async function exchange(exchangeAmount) {
+  console.log(ethers.parseEther(exchangeAmount));
+  const tx = await MARKETTRADE.exchange(ethers.parseEther(exchangeAmount));
   const result = await tx.wait();
   return result;
 }
