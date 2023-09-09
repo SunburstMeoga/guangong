@@ -81,6 +81,7 @@ export default {
             this.p_address = this.$route.query.p
             if ((this.$route.query.p).toUpperCase() === (window.ethereum.selectedAddress).toUpperCase()) {
                 this.isSign = false
+                this.title = '推荐关系'
             }
         } else {
             this.title = '推荐关系'
