@@ -70,7 +70,7 @@
 import { ethers } from "ethers"
 import { config } from '@/const/config'
 import axios from 'axios'
-import { Cell, CellGroup, showSuccessToast } from 'vant'
+import { Cell, CellGroup, showSuccessToast, showToast } from 'vant'
 import moment from 'moment'
 import { relationshipAddress } from '@/request/ether_request/popularized'
 
@@ -100,12 +100,43 @@ export default {
     },
     methods: {
         copyAddress() {
-            navigator.clipboard.writeText(this.share).then(() => {
-                showSuccessToast('复制成功')
-            }, () => {
-                // Toast.fail(this.$t('toast.copyFail'))
+            if (navigator.clipboard && window.isSecureContext) {
+                console.log('aaa')
+                navigator.clipboard.writeText(this.share).then(() => {
+                    showSuccessToast('复制成功')
+                }, () => {
+                    showToast('复制失败')
 
-            });
+                });
+            } else {
+                console.log('bbb')
+                let textArea = document.createElement('textarea')
+                textArea.value = this.share
+                // 使text area不在viewport，同时设置不可见
+                textArea.style.position = 'absolute'
+                textArea.style.opacity = 0
+                textArea.style.left = '-999999px'
+                textArea.style.top = '-999999px'
+                document.body.appendChild(textArea)
+                textArea.focus()
+                textArea.select()
+                return new Promise((res, rej) => {
+                    // 执行复制命令并移除文本框
+                    document.execCommand('copy') ? res('复制成功') : rej('复制失败')
+                    textArea.remove()
+                })
+                    .then((res) => {
+                        // 从 resolve 获取正常结果
+                        console.log(res)
+                        this.successMsgBox(res)
+                    })
+                    .catch((res) => {
+                        // 从 reject 获取异常结果
+                        console.log(res)
+                        this.successMsgBox(res)
+                    })
+            }
+
         },
         timeFormat(obj) {
             if (obj == null) {
