@@ -25,16 +25,17 @@ export default {
     async accountHasChanged() {
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length !== 0) {
+          this.$router.go(0)
           // this.getWalletBalance(accounts[0])
           // this.getNodeList(accounts[0])
           // console.log('isConnected', this.Web3.currentProvider._state.isConnected)
-          showDialog({
-            message: '账户发生变化',
-            theme: 'round-button',
-          }).then(() => {
-            // on close
-            this.$router.go(0)
-          });
+          // showDialog({
+          //   message: '账户发生变化',
+          //   theme: 'round-button',
+          // }).then(() => {
+          //   // on close
+          //   this.$router.go(0)
+          // });
         }
       })
     },
