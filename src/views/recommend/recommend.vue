@@ -75,9 +75,13 @@ export default {
     },
     async created() {
         if (this.$route.query.p && this.$route.query.p !== ZeroAddress) {
+
             this.title = '签名'
             this.isSign = true
             this.p_address = this.$route.query.p
+            if ((this.$route.query.p).toUpperCase() === (window.ethereum.selectedAddress).toUpperCase()) {
+                this.isSign = false
+            }
         } else {
             this.title = '推荐关系'
             this.getRelationshipAddress()
@@ -129,7 +133,7 @@ export default {
                 domain: {
                     chainId: config.chainId,
                     name: 'GWT NFT Game',
-                    verifyingContract: config.game_addr,
+                    verifyingContract: config.popularized_addr,
                     version: '1'
                 },
                 message: { addr_p: this.p_address, addr_c: ethereum.selectedAddress, index: 0 },
@@ -184,7 +188,7 @@ export default {
         },
         async load() {
             // const provider = new ethers.BrowserProvider(window.ethereum)
-            // const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider)
+            // const GAME = new ethers.Contract(config.popularized_addr, config.game_abi, provider)
             const ret = await relationshipAddress(ethereum.selectedAddress)
             this.$store.commit('setParentAddress', ret.parent)
             if (ret.parent == ZeroAddress) {

@@ -162,7 +162,7 @@ export default {
             const id = this.childs0[key].id
             const provider = new ethers.BrowserProvider(window.ethereum)
             const signer = await provider.getSigner()
-            const GAME = new ethers.Contract(config.game_addr, config.game_abi, signer)
+            const GAME = new ethers.Contract(config.popularized_addr, config.popularized_abi, signer)
             const v = '0x' + sign.substring(130)
             const r = sign.substring(0, 66)
             const s = '0x' + sign.substring(66, 130)

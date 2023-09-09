@@ -10,6 +10,7 @@
 import TopBar from '@/components/TopBar'
 import FooterBar from '@/components/FooterBar'
 import { userIncome } from '@/request/api_request'
+import { showDialog } from 'vant'
 
 export default {
   name: 'App',
@@ -17,8 +18,26 @@ export default {
   mounted() {
     this.$store.commit('updateUserInfor', { address: 'address' })
     this.getUserIncome()
+    this.accountHasChanged()
   },
   methods: {
+    //账户状态发生变化
+    async accountHasChanged() {
+      window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length !== 0) {
+          // this.getWalletBalance(accounts[0])
+          // this.getNodeList(accounts[0])
+          // console.log('isConnected', this.Web3.currentProvider._state.isConnected)
+          showDialog({
+            message: '账户发生变化',
+            theme: 'round-button',
+          }).then(() => {
+            // on close
+            this.$router.go(0)
+          });
+        }
+      })
+    },
     getUserIncome() {
       userIncome(window.ethereum.selectedAddress)
         .then(res => {

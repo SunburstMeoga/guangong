@@ -91,7 +91,7 @@ export default {
                 domain: {
                     chainId: config.chainId,
                     name: 'GWT NFT Game',
-                    verifyingContract: config.game_addr,
+                    verifyingContract: config.popularized_addr,
                     version: '1'
                 },
                 message: { addr_p: this.p_address, addr_c: this.address, index: 0 },
