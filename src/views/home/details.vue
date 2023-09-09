@@ -120,7 +120,7 @@ export default {
         console.log('this.$route', this.$route)
         this.goodType = this.$route.name
         if (this.$route.name === 'good') {
-            this.matchNFTData(parseInt(this.$route.params.id))
+            this.matchNFTData(parseInt(this.$route.params.tokenId))
         } else if (this.$route.name === 'market') {
             this.tokenId = this.$route.params.tokenId
             this.getNFTDetails()
@@ -170,7 +170,7 @@ export default {
                 .then(res => {
                     console.log('资产详情', res)
                     this.nftAmount = res.data.amount
-                    this.matchNFTData(res.data.id, res.data.amount)
+                    this.matchNFTData(res.data.nft_id > 100 ? res.data.nft_id % 100 : res.data.nft_id, res.data.amount)
                 })
                 .catch(err => {
                     console.log('err', err)

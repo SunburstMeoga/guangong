@@ -23,7 +23,7 @@
                 暂无玩家出售NFT角色卡
               </div>
               <div class="w-11/12 mr-auto ml-auto">
-                <div v-for="(item, index) in nftRoleCards" :key="index" class="mb-4" @click="toMarketDetails(item)">
+                <div v-for="(item, index) in nftRoleCards" :key="index" @click="toMarketDetails(item)">
                   <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
                     :amount="filterAmount(item.amount)" />
                 </div>
@@ -35,7 +35,7 @@
                 暂无玩家出售合成道具卡
               </div>
               <div class="w-11/12 mr-auto ml-auto">
-                <div v-for="(item, index) in synthesisPropsCards" :key="index">
+                <div v-for="(item, index) in synthesisPropsCards" :key="index" @click="toMarketDetails(item)">
                   <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
                     :amount="filterAmount(item.amount)" />
                 </div>
@@ -47,7 +47,7 @@
                 暂无玩家出售战法道具卡
               </div>
               <div class="w-11/12 mr-auto ml-auto">
-                <div v-for="(item, index) in tacticsPropCards" :key="index">
+                <div v-for="(item, index) in tacticsPropCards" :key="index" @click="toMarketDetails(item)">
                   <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
                     :amount="filterAmount(item.amount)" />
                 </div>
@@ -59,7 +59,7 @@
                 暂无玩家出售出征令牌
               </div>
               <div class="w-11/12 mr-auto ml-auto">
-                <div v-for="(item, index) in campaignProps" :key="index">
+                <div v-for="(item, index) in campaignProps" :key="index" @click="toMarketDetails(item)">
                   <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
                     :amount="filterAmount(item.amount)" />
                 </div>
@@ -243,4 +243,5 @@ img {
 .clicked {
   background: black;
   @apply shadow-lg;
-}</style>
+}
+</style>
