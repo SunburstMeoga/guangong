@@ -165,21 +165,24 @@ export default {
                     this.$loading.hide()
                     console.log('上传地图id到智能合约', res)
                     navigator.clipboard.writeText(this.shareUrl).then(() => {
-                        // showDialog({
-                        //     title: '上传地图成功',
-                        //     message: '地图已上传成功，并已复制邀请链接',
-                        // }).then(() => {
 
-                        // });
-                        showToast('地图已上传成功，并已复制邀请链接')
+                        this.$confirm.show({
+                            title: "成功！",
+                            content: "地图已上传成功，并已复制邀请链接",
+                            showCancelButton: false,
+                            onConfirm: () => {
+
+                            },
+                        });
                     }, () => {
-                        showToast('地图已上传成功')
-                        // showDialog({
-                        //     title: '上传地图成功',
-                        //     message: '地图已上传成功!',
-                        // }).then(() => {
+                        this.$confirm.show({
+                            title: "成功！",
+                            content: "地图已上传成功",
+                            showCancelButton: false,
+                            onConfirm: () => {
 
-                        // });
+                            },
+                        });
                     });
 
                 })
@@ -209,15 +212,17 @@ export default {
                 .then(res => {
                     console.log('已确认', res)
                     this.$loading.hide()
-                    showToast('已确认该地址')
-                    // showDialog({
-                    //     message: '已确认该地址',
-                    //     theme: 'round-button',
-                    // }).then(() => {
-                    //     that.$router.push({
-                    //         path: '/'
-                    //     })
-                    // });
+                    this.$confirm.show({
+                        title: "提示",
+                        content: "已确认该地址",
+                        showCancelButton: false,
+                        onConfirm: () => {
+                            that.$router.push({
+                                path: '/'
+                            })
+                        },
+                    });
+
                 })
                 .catch(err => {
                     console.log('err', err)

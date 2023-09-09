@@ -107,14 +107,15 @@ export default {
                     this.$loading.hide()
                     if (res[0] === ZeroAddress) {
                         this.isNewUser = true
-                        showToast('当前地址暂无上级，请前往社区寻找上级推荐人')
-                        // showDialog({
-                        //     message: '当前地址暂无上级，请前往社区寻找上级推荐人',
-                        //     theme: 'round-button',
-                        // }).then(() => {
-                        //     // on close
-                        // window.history.back();
-                        // });
+                        // showToast('当前地址暂无上级，请前往社区寻找上级推荐人')
+                        this.$confirm.show({
+                            title: "提示",
+                            content: "当前地址暂无上级，请前往社区寻找上级推荐人",
+                            showCancelButton: false,
+                            onConfirm: () => {
+
+                            },
+                        });
                     } else {
                         this.isNewUser = false
                     }

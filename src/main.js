@@ -8,10 +8,12 @@ import router from "./router";
 import i18n from "./language";
 import store from "./store";
 import loading from "@/components/loading";
+import Confirm from "./components/confirm";
 createApp(App)
   .use(router)
   .use(Vant)
   .use(i18n)
   .use(store)
   .use(loading)
+  .use(Confirm)
   .mount("#app");

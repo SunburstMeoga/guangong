@@ -150,12 +150,34 @@ export default {
         async handleMarkMap() {
             this.$loading.show()
             const hasAllowance = await this.checkAllowanceState()
+
             console.log('hasAllowance', hasAllowance)
             if (hasAllowance == 0) {
-                const approveResult = await this.contractApprove()
-                if (approveResult.status === 1) {
-                    this.markMapLocation()
-                }
+                this.$loading.hide()
+                this.$confirm.show({
+                    title: "提示",
+                    content: "当前用户未授权，请先完成授权",
+                    onConfirm: () => {
+                        this.$loading.show()
+                        this.contractApprove()
+                            .then(res => {
+                                console.log(res)
+                                this.$confirm.hide()
+                                this.$loading.hide()
+                                showToast('授权成功')
+                            })
+                            .catch(err => {
+                                this.$confirm.hide()
+                                this.$loading.hide()
+
+                                showToast('授权失败')
+                            })
+                    },
+                    onCancel: () => {
+                        this.$confirm.hide()
+                    }
+                });
+                return
             } else if (hasAllowance < 1000) {
                 console.log('hasAllowance < 1000', hasAllowance)
                 showToast('余额不足。')

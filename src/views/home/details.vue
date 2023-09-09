@@ -78,8 +78,14 @@
                     </div>
                 </div>
                 <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
-                    <div class="buy-button text-primary-word text-lg button-word" @click="handlePay">
-                        購買 {{ nftInfor.price }}
+                    <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
+                        @click="handlePay">
+                        <span>
+                            购买 {{ nftInfor.price }}U
+                        </span>
+                        <span class="text-sm font-light pl-2">
+                            (WGT余额:{{ Number($store.state.wgtBalance).toFixed(2) }})
+                        </span>
                     </div>
                 </div>
             </div>
@@ -265,14 +271,14 @@ export default {
         },
         //点击购买按钮
         async handlePay() {
-            if (this.isInsufficientBalance(Number(this.nftInfor.price))) {
+            if (this.isInsufficientBalance(Number(this.nftInfor.price))) { //判断是否余额不足
                 showToast(`余额不足`)
                 this.$loading.hide()
                 return
             }
-            console.log('财神卡？', this.isWealthCard(this.nftInfor.id))
+            console.log('财神卡？', this.isWealthCard(this.nftInfor.id)) //当前购买的卡片是否为财神卡
             this.$loading.show()
-            const preAddressArr = await relationshipAddress(window.ethereum.selectedAddress)
+            const preAddressArr = await relationshipAddress(window.ethereum.selectedAddress) //是否有上级地址
             console.log('preAddress', preAddressArr)
             if (preAddressArr[0] === ZeroAddress) {
                 this.$loading.hide()
@@ -280,36 +286,74 @@ export default {
                 return
             }
             const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.game_addr)
-            console.log('hasAllowance', hasAllowance)
             if (hasAllowance == 0) {
-                const approveResult = await this.contractApprove()
-                console.log('approveResult', approveResult)
-                if (approveResult.status == 1) {
-                    if (this.isWealthCard(this.nftInfor.id) === -1) {
-                        if (this.goodType === 'good') {
-                            this.payFromMall()
-                        } else if (this.goodType === 'market') {
-                            this.payFromMarket()
-                        }
-                    } else {
-                        this.userBuyFortuneCard()
-                    }
+                this.$loading.hide()
+                this.$confirm.show({
+                    title: "提示",
+                    content: "当前用户未授权，请先完成授权",
+                    onConfirm: () => {
+                        this.$loading.show()
+                        this.contractApprove()
+                            .then(res => {
+                                console.log(res)
+                                this.$confirm.hide()
+                                this.$loading.hide()
+                                showToast('授权成功')
+                            })
+                            .catch(err => {
+                                this.$confirm.hide()
+                                this.$loading.hide()
 
-                } else {
-                    this.$loading.hide()
-                    showToast('授权失败，请重新授权')
+                                showToast('授权失败')
+                            })
+                    },
+                    onCancel: () => {
+                        this.$confirm.hide()
+                    }
+                });
+                return
+            }
+
+            if (this.isWealthCard(this.nftInfor.id) === -1) {
+                if (this.goodType === 'good') {
+                    this.payFromMall()
+                } else if (this.goodType === 'market') {
+                    this.payFromMarket()
                 }
             } else {
-                if (this.isWealthCard(this.nftInfor.id) === -1) {
-                    if (this.goodType === 'good') {
-                        this.payFromMall()
-                    } else if (this.goodType === 'market') {
-                        this.payFromMarket()
-                    }
-                } else {
-                    this.userBuyFortuneCard()
-                }
+                this.userBuyFortuneCard()
             }
+
+            // console.log('hasAllowance', hasAllowance)
+            // if (hasAllowance == 0) {
+            //     const approveResult = await this.contractApprove()
+            //     console.log('approveResult', approveResult)
+            //     if (approveResult.status == 1) {
+            //         if (this.isWealthCard(this.nftInfor.id) === -1) {
+            //             if (this.goodType === 'good') {
+            //                 this.payFromMall()
+            //             } else if (this.goodType === 'market') {
+            //                 this.payFromMarket()
+            //             }
+            //         } else {
+            //             this.userBuyFortuneCard()
+            //         }
+
+            //     } else {
+            //         this.$loading.hide()
+            //         showToast('授权失败，请重新授权')
+            //     }
+            // } else {
+            //     if (this.isWealthCard(this.nftInfor.id) === -1) {
+            //         if (this.goodType === 'good') {
+            //             this.payFromMall()
+            //         } else if (this.goodType === 'market') {
+            //             this.payFromMarket()
+            //         }
+            //     } else {
+            //         this.userBuyFortuneCard()
+            //     }
+            // }
         },
         payFromMall() {
             console.log(this.nftInfor.id)

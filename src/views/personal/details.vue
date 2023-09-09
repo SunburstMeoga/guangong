@@ -593,21 +593,38 @@ export default {
             // const testIndex = await this.getPropEffectNftIndex(this.propsEffectaAddress)
             // console.log('testIndex', testIndex)
             // return
+
             const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
             console.log('erc721ApppprovalState', erc721ApppprovalState)
             if (erc721ApppprovalState !== true) {
-                const erc721Result = await this.erc721ContractApppproval(config.game_addr)
-                console.log('erc721Result', erc721Result)
-                if (erc721Result.status == 1) {
-                    this.getUsePropCard(nftType)
-                } else {
-                    this.$loading.hide()
-                    showToast('授权失败')
-                }
+                this.$loading.hide()
+                this.$confirm.show({
+                    title: "提示",
+                    content: "当前用户未进行erc721授权，请先完成授权",
+                    onConfirm: () => {
+                        this.$loading.show()
+                        this.erc721ContractApppproval(config.game_addr)
+                            .then(res => {
+                                console.log(res)
+                                this.$confirm.hide()
+                                this.$loading.hide()
+                                showToast('授权成功')
+                            })
+                            .catch(err => {
+                                this.$confirm.hide()
+                                this.$loading.hide()
+
+                                showToast('授权失败')
+                            })
+                    },
+                    onCancel: () => {
+                        this.$confirm.hide()
+                    }
+                });
+                return
             } else {
                 this.getUsePropCard(nftType)
             }
-
         },
 
         //当前使用的战法道具卡
@@ -914,14 +931,31 @@ export default {
             const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
             console.log('erc721ApppprovalState', erc721ApppprovalState)
             if (erc721ApppprovalState !== true) {
-                const erc721Result = await this.erc721ContractApppproval(config.game_addr)
-                console.log('erc721Result', erc721Result)
-                if (erc721Result.status == 1) {
-                    this.userCampaign()
-                } else {
-                    this.$loading.hide()
-                    showToast('授权失败')
-                }
+                this.$loading.hide()
+                this.$confirm.show({
+                    title: "提示",
+                    content: "当前用户未进行erc721授权，请先完成授权",
+                    onConfirm: () => {
+                        this.$loading.show()
+                        this.erc721ContractApppproval(config.game_addr)
+                            .then(res => {
+                                console.log(res)
+                                this.$confirm.hide()
+                                this.$loading.hide()
+                                showToast('授权成功')
+                            })
+                            .catch(err => {
+                                this.$confirm.hide()
+                                this.$loading.hide()
+
+                                showToast('授权失败')
+                            })
+                    },
+                    onCancel: () => {
+                        this.$confirm.hide()
+                    }
+                });
+                return
             } else {
                 this.userCampaign()
             }

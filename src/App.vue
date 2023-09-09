@@ -17,10 +17,12 @@ export default {
   name: 'App',
   components: { TopBar, FooterBar, [showDialog.name]: showDialog },
   mounted() {
+
     this.$store.commit('updateUserInfor', { address: 'address' })
     this.getUserIncome()
     this.accountHasChanged()
     this.getWgtBalance()
+
   },
   methods: {
     //获取wgt余额
@@ -33,18 +35,14 @@ export default {
     async accountHasChanged() {
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length !== 0) {
-          this.$router.go(0)
-          this.getWgtBalance()
-          // this.getWalletBalance(accounts[0])
-          // this.getNodeList(accounts[0])
-          // console.log('isConnected', this.Web3.currentProvider._state.isConnected)
-          // showDialog({
-          //   message: '账户发生变化',
-          //   theme: 'round-button',
-          // }).then(() => {
-          //   // on close
-          //   this.$router.go(0)
-          // });
+          this.$confirm.show({
+            title: "提示",
+            content: "账户发生变化，请重新获取账户信息",
+            showCancelButton: false,
+            onConfirm: () => {
+              this.$router.go(0)
+            },
+          });
         }
       })
     },
