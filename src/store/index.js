@@ -16,6 +16,7 @@ const store = createStore({
         income_team: 0,
         personal: 0,
       },
+      wgtBalance: 0,
     };
   },
   mutations: {
@@ -31,6 +32,9 @@ const store = createStore({
     updateUserInfor(state, payload) {
       state.userInfor = payload;
       // console.log(state, payload, test);
+    },
+    updatWgtBalance(state, value) {
+      state.wgtBalance = value;
     },
   },
   actions: {

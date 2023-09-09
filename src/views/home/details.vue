@@ -99,7 +99,7 @@ import { dealNFT } from '@/request/ether_request/market'
 import { nftDetails } from '@/request/api_request'
 import { ZeroAddress } from "ethers"
 import { filterAmount } from '@/utils/filterValue';
-
+import { WGTFromUSDT } from '@/request/ether_request/help'
 
 export default {
     components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
@@ -128,6 +128,15 @@ export default {
     },
     methods: {
         accountBalance, filterAmount,
+        async isInsufficientBalance(usdt) {
+            const result = await WGTFromUSDT(usdt)
+            console.log(this.$store.state.wgtBalance, result)
+            if (this.$store.state.wgtBalance < result) {
+                return true
+            } else {
+                return false
+            }
+        },
         swipeChange(index) {
             console.log('change', index)
             this.currentSwipe = index
@@ -137,6 +146,11 @@ export default {
             console.log(this.canBuyWealthCard())
             if (!this.canBuyWealthCard()) {
                 showToast(`当前等级不可购买${this.nftInfor.name}`)
+                this.$loading.hide()
+                return
+            }
+            if (this.isInsufficientBalance(this.nftInfor.price)) {
+                showToast(`余额不足`)
                 this.$loading.hide()
                 return
             }
@@ -251,6 +265,11 @@ export default {
         },
         //点击购买按钮
         async handlePay() {
+            if (this.isInsufficientBalance(Number(this.nftInfor.price))) {
+                showToast(`余额不足`)
+                this.$loading.hide()
+                return
+            }
             console.log('财神卡？', this.isWealthCard(this.nftInfor.id))
             this.$loading.show()
             const preAddressArr = await relationshipAddress(window.ethereum.selectedAddress)

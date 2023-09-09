@@ -10,6 +10,7 @@
 import TopBar from '@/components/TopBar'
 import FooterBar from '@/components/FooterBar'
 import { userIncome } from '@/request/api_request'
+import { wgtAssets } from '@/request/ether_request/wgt'
 import { showDialog } from 'vant'
 
 export default {
@@ -19,13 +20,21 @@ export default {
     this.$store.commit('updateUserInfor', { address: 'address' })
     this.getUserIncome()
     this.accountHasChanged()
+    this.getWgtBalance()
   },
   methods: {
+    //获取wgt余额
+    async getWgtBalance() {
+      const wgt = await wgtAssets(window.ethereum.selectedAddress)
+      this.$store.commit('updatWgtBalance', wgt)
+      console.log(this.$store.state)
+    },
     //账户状态发生变化
     async accountHasChanged() {
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length !== 0) {
           this.$router.go(0)
+          this.getWgtBalance()
           // this.getWalletBalance(accounts[0])
           // this.getNodeList(accounts[0])
           // console.log('isConnected', this.Web3.currentProvider._state.isConnected)

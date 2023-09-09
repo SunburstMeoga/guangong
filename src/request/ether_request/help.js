@@ -9,8 +9,15 @@ export async function wealthEarningsInfor(address, nftIndex) {
   const result = HELP.GetIncome2(address, nftIndex);
   return result;
 }
+
 //总奖金池收益信息
 export async function poolEarningsInfor(address) {
   const result = await HELP.GetIncome3(address);
+  return result;
+}
+
+//获取商品价格usdt所需的wgt
+export async function WGTFromUSDT(usdt) {
+  const result = await HELP.getWGT(usdt);
   return result;
 }
