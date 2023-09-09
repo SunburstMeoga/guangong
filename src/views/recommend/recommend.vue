@@ -18,10 +18,10 @@
             </div>
 
         </div>
-        <div v-if="isNewUser">
+        <!-- <div v-if="isNewUser">
             新用户
-        </div>
-        <div v-else>
+        </div> -->
+        <div v-if="!isNewUser">
             <div v-if="!isSign">
                 <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
                     color="#E20F2A">
@@ -70,17 +70,17 @@ export default {
             title: '推荐关系',
             isSign: false,
             p_address: '',
-            isNewUser: true
+            isNewUser: false
         }
     },
     async created() {
-        this.getRelationshipAddress()
         if (this.$route.query.p && this.$route.query.p !== ZeroAddress) {
             this.title = '签名'
             this.isSign = true
             this.p_address = this.$route.query.p
         } else {
             this.title = '推荐关系'
+            this.getRelationshipAddress()
             this.isSign = false
         }
         console.log(ethereum.selectedAddress)
@@ -93,6 +93,7 @@ export default {
     },
 
     methods: {
+        //查找当前用户上级地址
         getRelationshipAddress() {
             this.$loading.show()
             relationshipAddress(window.ethereum.selectedAddress)
