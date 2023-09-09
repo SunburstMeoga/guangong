@@ -58,7 +58,7 @@ export default defineComponent({
         }, // 确认按钮文本
         confirmColor: {
             type: String,
-            default: "#409EFF",
+            default: "#E20F2A",
         },
         cancelText: {
             type: String,
@@ -107,7 +107,7 @@ export default defineComponent({
     z-index: 999;
     transform: translateZ(9999px);
     letter-spacing: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.8);
 }
 
 .modal {
@@ -118,15 +118,16 @@ export default defineComponent({
     width: 300px;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
-    background: #fff;
-    border-radius: 4px;
+    background: #18181B;
+    border-radius: 8px;
+    color: #FBFBFB;
 }
 
 .modal-title {
     padding: 24px 28px 0 28px;
     font-size: 18px;
     line-height: 25px;
-    color: #030303;
+    color: #71717a;
 }
 
 .modal-content {
@@ -186,7 +187,7 @@ export default defineComponent({
 .btn-confirm {
     position: relative;
     flex: 1;
-    color: #409eff;
+    color: #E20F2A;
 }
 </style>
   

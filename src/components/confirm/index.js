@@ -9,7 +9,7 @@ const defaultsOptions = {
   content: "内容",
   confirmText: "确定",
   cancelText: "取消",
-  confirmColor: "#409EFF",
+  confirmColor: "#E20F2A",
   showCancelButton: true,
   showConfirmButton: true,
   clickMaskToClose: false,
