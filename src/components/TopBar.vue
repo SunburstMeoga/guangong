@@ -37,19 +37,18 @@
                             <div class="icon iconfont icon-tumblr2 mr-4" style="font-size: 22px;"></div>
                             <div class="icon iconfont icon-Instagram" style="font-size: 22px;"></div>
                         </div>
-                        <!-- <van-popover @select="setLanguage" v-model:show="showPopover" theme="dark" :actions="actions"
+                        <van-popover @select="setLanguage" v-model:show="showPopover" theme="dark" :actions="actions"
                             placement="top-start" @open="showLanguage = !showLanguage"
                             @close="showLanguage = !showLanguage">
                             <template #reference>
                                 <div class="flex justify-center items-center py-2 px-2 rounded bg-language-content">
                                     <div class="icon iconfont icon-language mr-2"></div>
-                                    <div class="mr-2 text-sm">繁體中文</div>
+                                    <div class="mr-2 text-sm">{{ $t('product.buy') }}</div>
                                     <div class="icon iconfont icon-top transition ease-in-out duration-300"
                                         :class="showLanguage ? 'rotate-180' : ''"></div>
                                 </div>
                             </template>
-                        </van-popover> -->
-
+                        </van-popover>
                     </div>
                 </div>
 
@@ -125,9 +124,8 @@ export default {
         },
         setLanguage(actions) {
             this.$i18n.locale = actions.value
-            this.$store.commit('setLanguage', actions.value)
-            localStorage.setItem('language', actions.value)
-            console.log(this.$store.state)
+            localStorage.setItem('locale', this.$i18n.locale)
+            console.log(this.$i18n.locale)
         },
         handleScroll() {
             if (scrollY >= 100) {
