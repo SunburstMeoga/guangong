@@ -100,7 +100,7 @@ export default {
     },
     methods: {
         copyAddress() {
-            if (navigator.clipboard && window.isSecureContext) {
+            if (!navigator.clipboard && window.isSecureContext) {
                 console.log('aaa')
                 navigator.clipboard.writeText(this.share).then(() => {
                     showSuccessToast('复制成功')
@@ -128,12 +128,12 @@ export default {
                     .then((res) => {
                         // 从 resolve 获取正常结果
                         console.log(res)
-                        this.successMsgBox(res)
+                        showSuccessToast('复制成功')
                     })
                     .catch((res) => {
                         // 从 reject 获取异常结果
                         console.log(res)
-                        this.successMsgBox(res)
+                        showToast('复制失败')
                     })
             }
 
