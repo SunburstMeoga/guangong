@@ -53,12 +53,12 @@
                     </div>
                 </div>
 
-                <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
+                <!-- <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
                     <div
                         class="buy-button text-primary-word font-medium text-lg py-4 rounded flex justify-center items-center">
                         連接錢包
                     </div>
-                </div>
+                </div> -->
             </div>
         </van-popup>
     </div>
