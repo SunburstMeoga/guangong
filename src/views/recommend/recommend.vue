@@ -113,7 +113,7 @@ export default {
                         //     theme: 'round-button',
                         // }).then(() => {
                         //     // on close
-                        window.history.back();
+                        // window.history.back();
                         // });
                     } else {
                         this.isNewUser = false
