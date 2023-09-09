@@ -249,7 +249,8 @@ export default {
         getUserInfo() {
             userInfo(window.ethereum.selectedAddress)
                 .then(res => {
-                    // console.log('财神卡片', res.deposits)
+                    console.log('出征和财神卡', res.deposits)
+                    //出征
                     let typeListCampaign = []
                     res.cards.map(item => {
                         let obj = {}
@@ -272,6 +273,7 @@ export default {
                     })
                     this.campaignList = newArrCampaign
 
+                    //财神卡
                     let typeListWealth = []
                     res.deposits.map(item => {
                         let obj = {}
@@ -304,7 +306,7 @@ export default {
                     let typeList = []
                     res.data.map(item => {
                         let obj = {}
-                        obj.typeID = item.id
+                        obj.typeID = item.nft_id > 100 ? item.nft_id % 100 : item.nft_id
                         obj.tokenId = item.nft_id
                         obj.amount = item.amount
                         typeList.push(obj)
@@ -327,7 +329,7 @@ export default {
         getPersonNfts() {
             ownerList(window.ethereum.selectedAddress)
                 .then(res => {
-                    // console.log('res', res)
+                    console.log('res', res)
                     let typeList = []
                     res.data.map(item => {
                         let obj = {}
