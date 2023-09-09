@@ -4,7 +4,7 @@ const personal = [
     name: "personal",
     component: () => import("@/views/personal/personal"),
     meta: {
-      showBar: true,
+      showTopBar: true,
     },
   },
   {
@@ -12,7 +12,7 @@ const personal = [
     name: "assets",
     component: () => import("@/views/personal/details"),
     meta: {
-      showBar: false,
+      showTopBar: false,
     },
   },
   {
@@ -20,7 +20,7 @@ const personal = [
     name: "pending-order",
     component: () => import("@/views/personal/details"),
     meta: {
-      showBar: false,
+      showTopBar: false,
     },
   },
   {
@@ -28,7 +28,7 @@ const personal = [
     name: "campaign",
     component: () => import("@/views/personal/details"),
     meta: {
-      showBar: false,
+      showTopBar: false,
     },
   },
   {
@@ -36,7 +36,7 @@ const personal = [
     name: "earnings",
     component: () => import("@/views/personal/earnings"),
     meta: {
-      showBar: false,
+      showTopBar: false,
     },
   },
 ];

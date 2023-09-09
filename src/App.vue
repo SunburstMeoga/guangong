@@ -1,8 +1,8 @@
 <template>
   <div>
-    <top-bar v-if="this.$route.meta.showBar" />
+    <top-bar v-if="this.$route.meta.showTopBar" />
     <router-view class="min-h-screen" />
-    <footer-bar v-if="this.$route.meta.showBar" />
+    <footer-bar v-if="this.$route.meta.showBottomInfor" />
   </div>
 </template>
 

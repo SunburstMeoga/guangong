@@ -4,7 +4,7 @@ const home = [
     name: "home",
     component: () => import("@/views/home/home"),
     meta: {
-      showBar: true,
+      showTopBar: true,
     },
   },
   {
@@ -12,7 +12,7 @@ const home = [
     name: "market",
     component: () => import("@/views/home/details"),
     meta: {
-      showBar: true,
+      showTopBar: true,
     },
   },
   {
@@ -20,7 +20,7 @@ const home = [
     name: "good",
     component: () => import("@/views/home/details"),
     meta: {
-      showBar: true,
+      showTopBar: true,
     },
   },
   {
@@ -28,7 +28,7 @@ const home = [
     name: "mall/list",
     component: () => import("@/views/home/nfts"),
     meta: {
-      showBar: true,
+      showTopBar: true,
     },
   },
   {
@@ -36,7 +36,7 @@ const home = [
     name: "market/list",
     component: () => import("@/views/home/market"),
     meta: {
-      showBar: true,
+      showTopBar: true,
     },
   },
   {
@@ -44,7 +44,7 @@ const home = [
     name: "checkout",
     component: () => import("@/views/home/checkout"),
     meta: {
-      showBar: false,
+      showTopBar: false,
     },
   },
 ];

@@ -4,7 +4,7 @@ const exchange = [
     name: "exchange",
     component: () => import("@/views/exchange/exchange"),
     meta: {
-      showBar: false,
+      showTopBar: false,
     },
   },
 ];

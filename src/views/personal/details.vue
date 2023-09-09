@@ -77,7 +77,7 @@
                     <!-- 战法道具卡介绍 -->
                     <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'tactics_props'">
                         <div class="flex justify-between items-center">
-                            <div class="text-2xl ">道具卡详情</div>
+                            <div class="text-2xl ">{{ nftInfo.name }}道具卡详情</div>
                         </div>
                         <div class="mt-8">
                             <div class="mb-6">
@@ -89,12 +89,12 @@
                                 <div class="text-base text-card-content">{{ nftInfor.target }}</div>
                             </div>
                             <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">注意事项</div>
-                                <div class="text-base text-card-content">{{ nftInfor.tips }}</div>
-                            </div>
-                            <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">发行量</div>
                                 <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">注意事项</div>
+                                <div class="text-base  text-theme-primary font-semibold">{{ nftInfor.tips }}</div>
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                         </div>
                     </div>
                     <!-- 合成道具卡介绍 -->
-                    <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'synthesis_props'">
+                    <!-- <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'synthesis_props'">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">道具卡介绍</div>
                         </div>
@@ -133,7 +133,7 @@
                                 <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- 财神卡介绍 -->
                     <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'fortune_card'">
                         <div class="flex justify-between items-center">

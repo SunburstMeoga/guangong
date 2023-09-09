@@ -3,22 +3,20 @@
         <div>
             <div class="pt-24">
                 <div
-                    class="ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-2">
+                    class="relative ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-4">
                     <div class="w-80 h-80">
-                        <van-swipe class="my-swipe" :autoplay="0" indicator-color="#E20F2A" :show-indicators="false"
-                            @change="swipeChange">
-                            <van-swipe-item>
-                                <div class="w-80 h-80">
-                                    <img :src="nftInfor.imageUrl" alt="">
-                                </div>
-                            </van-swipe-item>
-                        </van-swipe>
+                        <img :src="nftInfor.imageUrl" alt="">
+                    </div>
+                    <div
+                        class="absolute top-0 left-0 rounded-br-xl inline-block px-2 py-1 bg-success-undertone text-sm text-success-word">
+                        {{ getCardType(nftInfor.card_type) }}
                     </div>
                 </div>
                 <div class="flex flex-col justify-start items-center mb-10">
                     <div class="w-11/12 text-3xl border-module text-card-content font-medium">
                         {{ nftInfor.name }}
                     </div>
+                    <!-- nft角色卡信息 -->
                     <div class="border-module w-11/12 text-card-content font-light"
                         v-if="nftInfor.card_type === 'nft_role'">
                         <div class="flex justify-between items-center">
@@ -55,16 +53,103 @@
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">損耗週期</div>
-                                <div class="text-base text-card-content">{{ nftInfor.loss_period }}</div>
+                                <div class="text-base text-card-content">{{ nftInfor.loss_period }} 次</div>
 
                             </div>
                         </div>
                     </div>
-                    <div class="border-module w-11/12 text-card-content" @click="showIssue = !showIssue">
+                    <!-- 战法道具卡信息 -->
+                    <div class="border-module w-11/12 text-card-content font-light"
+                        v-if="nftInfor.card_type === 'tactics_props'">
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl ">{{ nftInfor.name }}道具卡详情</div>
+                        </div>
+                        <div class="mt-8">
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">技能</div>
+                                <div class="text-base text-card-content">{{ nftInfor.prop_features }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">限制</div>
+                                <div class="text-base text-card-content">{{ nftInfor.target }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">发行量</div>
+                                <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">注意事项</div>
+                                <div class="text-base text-theme-primary font-semibold">{{ nftInfor.tips }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 出征令牌介绍 -->
+                    <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'expedition_order'">
+                        <div class="flex justify-between items-center">
+                            <div class="text-base ">可用于以下NFT卡片出征</div>
+                        </div>
+                        <div class="mt-8">
+                            <div class="mb-6">
+                                <!-- <div class="mb-2 text-xs text-icon-gray">可用于以下NFT卡片出征</div> -->
+                                <div class="text-2xl  text-card-content">{{ nftInfor.can_be_used.join("，") }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 合成道具卡介绍 -->
+                    <!-- <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'synthesis_props'">
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl ">道具卡介绍</div>
+                        </div>
+                        <div class="mt-8">
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">技能</div>
+                                <div class="text-base text-card-content">{{ nftInfor.prop_features }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">限制</div>
+                                <div class="text-base text-card-content">{{ nftInfor.target }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">注意事项</div>
+                                <div class="text-base text-card-content">{{ nftInfor.tips }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">发行量</div>
+                                <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- 财神卡介绍 -->
+                    <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'fortune_card'">
+                        <div class="flex justify-between items-center">
+                            <div class="text-2xl ">{{ nftInfor.name }}财神卡详情</div>
+                        </div>
+                        <div class="mt-8">
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">阶段</div>
+                                <div class="text-base text-card-content">{{ nftInfor.level }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">角色价值 等值 WGT）U</div>
+                                <div class="text-base text-card-content">{{ nftInfor.circulation }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">财神奖励 等值 WGT）U</div>
+                                <div class="text-base text-card-content">{{ nftInfor.award }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">周期（天）</div>
+                                <div class="text-base text-card-content">{{ nftInfor.cycle }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="border-module w-11/12 text-card-content mb-20">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">發行方</div>
-                            <div class="icon iconfont icon-right  show-icon" :class="showIssue ? '-rotate-90' : ''">
-                            </div>
+                            <!-- <div class="icon iconfont icon-right  show-icon" :class="showIssue ? '-rotate-90' : ''">
+                            </div> -->
                         </div>
                         <div class="mt-8 flex justify-start items-center h-14" v-show="showIssue">
                             <div class="rounded-full overflow-hidden w-10 h-10 bg-theme-primary">
@@ -72,7 +157,7 @@
                             </div>
                             <div class="ml-2 flex flex-col justify-between">
                                 <div class="text-white font-medium">由 世界關公寶WGT 发行</div>
-                                <div class="text-icon-gray">Oct 28, 2022 at 12:34am</div>
+                                <div class="text-icon-gray">发行于 2023.09.08</div>
                             </div>
                         </div>
                     </div>
@@ -134,6 +219,16 @@ export default {
     },
     methods: {
         accountBalance, filterAmount,
+        //卡类型
+        getCardType(value) {
+            switch (value) {
+                case 'nft_role': return 'NFT角色卡'
+                case 'tactics_props': return '战法道具卡'
+                case 'expedition_order': return '出征令牌'
+                case 'synthesis_props': return '合成道具卡'
+                case 'fortune_card': return '财神卡'
+            }
+        },
         async isInsufficientBalance(usdt) {
             const result = await WGTFromUSDT(usdt)
             console.log(this.$store.state.wgtBalance, result)

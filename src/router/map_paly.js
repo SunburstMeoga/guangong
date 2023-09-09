@@ -4,7 +4,7 @@ const mapPlay = [
     name: "map",
     component: () => import("@/views/map/index"),
     meta: {
-      showBar: true,
+      showTopBar: true,
     },
   },
   {
@@ -12,7 +12,7 @@ const mapPlay = [
     name: "my-maps",
     component: () => import("@/views/map/my"),
     meta: {
-      showBar: false,
+      showTopBar: false,
     },
   },
   {
@@ -20,7 +20,7 @@ const mapPlay = [
     name: "my-details",
     component: () => import("@/views/map/myMapDetails"),
     meta: {
-      showBar: false,
+      showTopBar: false,
     },
   },
 ];
