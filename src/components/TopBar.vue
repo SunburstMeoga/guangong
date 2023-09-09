@@ -37,11 +37,10 @@
                             <div class="icon iconfont icon-tumblr2 mr-4" style="font-size: 22px;"></div>
                             <div class="icon iconfont icon-Instagram" style="font-size: 22px;"></div>
                         </div>
-                        <van-popover @select="setLanguage" v-model:show="showPopover" theme="dark" :actions="actions"
+                        <!-- <van-popover @select="setLanguage" v-model:show="showPopover" theme="dark" :actions="actions"
                             placement="top-start" @open="showLanguage = !showLanguage"
                             @close="showLanguage = !showLanguage">
                             <template #reference>
-                                <!-- <van-button type="primary">深色风格</van-button> -->
                                 <div class="flex justify-center items-center py-2 px-2 rounded bg-language-content">
                                     <div class="icon iconfont icon-language mr-2"></div>
                                     <div class="mr-2 text-sm">繁體中文</div>
@@ -49,7 +48,7 @@
                                         :class="showLanguage ? 'rotate-180' : ''"></div>
                                 </div>
                             </template>
-                        </van-popover>
+                        </van-popover> -->
 
                     </div>
                 </div>
