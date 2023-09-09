@@ -112,7 +112,7 @@ import ModuleTitle from '@/components/ModuleTitle'
 import { markMap, confirmMapInfo, updataMap, worship } from '@/request/ether_request/map'
 import { getLocationID, userMarkedMapList, userMarkedDetials, worshipList } from '@/request/api_request'
 export default {
-    components: { ModuleTitle, [Popup.name]: Popup, FestivalCard, },
+    components: { ModuleTitle, [Popup.name]: Popup, FestivalCard,, [showDialog.name]: showDialog },
     data() {
         return {
             active: 0,

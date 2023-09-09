@@ -14,7 +14,7 @@ import { showDialog } from 'vant'
 
 export default {
   name: 'App',
-  components: { TopBar, FooterBar },
+  components: { TopBar, FooterBar, [showDialog.name]: showDialog },
   mounted() {
     this.$store.commit('updateUserInfor', { address: 'address' })
     this.getUserIncome()
