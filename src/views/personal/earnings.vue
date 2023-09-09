@@ -17,10 +17,9 @@
                             <span class="text-theme-primary font-semibold text-2xl">100.00</span>
                         </div>
                     </div>
-                    <div class="campaign px-2 py-1 rounded"
-                        v-if="earningsType === 'wealth_card' || earningsType === 'role_card' || earningsType === 'individual'">
+                    <!-- <div class="campaign px-2 py-1 rounded" v-if="earningsType === 'individual'">
                         领取奖励
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="text-white w-11/12 mr-auto ml-auto flex justify-between items-center py-2">
