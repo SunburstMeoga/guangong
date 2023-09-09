@@ -61,7 +61,7 @@ import HomeOut from './outHome.vue'
 import { relationshipAddress } from '@/request/ether_request/popularized'
 
 export default {
-    components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs, , [showDialog.name]: showDialog },
+    components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs, [showDialog.name]: showDialog },
     data() {
         return {
             inHome: false,
