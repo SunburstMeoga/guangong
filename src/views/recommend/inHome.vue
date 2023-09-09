@@ -100,7 +100,7 @@ export default {
     },
     methods: {
         copyAddress() {
-            if (!navigator.clipboard && window.isSecureContext) {
+            if (navigator.clipboard && window.isSecureContext) {
                 console.log('aaa')
                 navigator.clipboard.writeText(this.share).then(() => {
                     showSuccessToast('复制成功')
