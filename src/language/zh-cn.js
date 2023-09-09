@@ -5,6 +5,16 @@ module.exports = {
   product: {
     buy: "购买",
   },
+  menu: {
+    personal_center: "个人中心",
+    guangong_map: "关公地图",
+    recommend: "推荐关系",
+    official_release: "官方发售",
+    wgt_exchange: "WGT兑换",
+    nft_market: "NFT市场",
+    about_us: "关于我们",
+    help: "帮助",
+  },
   button: {
     buy: "购买 {amount}",
     view_details: "查看详情",

@@ -19,17 +19,17 @@
             <div class="bg-cover-content w-full h-full relative">
                 <div class="pt-10 text-white w-11/12 ml-auto mr-auto">
                     <div class="border-module">
-                        <div class="mb-6" @click="viewAssets">個人中心</div>
-                        <div class="mb-6" @click="toMap">关公地图</div>
-                        <div class="mb-6" @click="toRecommend">推荐关系</div>
-                        <div class="mb-6" @click="viewGoods">官方发售</div>
-                        <div class="mb-6" @click="toWGTExchangeWGA">WGT兑换</div>
-                        <div class="" @click="viewMarket">NFT市场</div>
+                        <div class="mb-6" @click="viewAssets">{{ $t('menu.personal_center') }}</div>
+                        <div class="mb-6" @click="toMap">{{ $t('menu.guangong_map') }}</div>
+                        <div class="mb-6" @click="toRecommend">{{ $t('menu.recommend') }}</div>
+                        <div class="mb-6" @click="viewGoods">{{ $t('menu.official_release') }}</div>
+                        <div class="mb-6" @click="toWGTExchangeWGA">{{ $t('menu.wgt_exchange') }}</div>
+                        <div class="" @click="viewMarket">{{ $t('menu.nft_market') }}</div>
                     </div>
                     <div>
                         <div class="mb-6">FAQ</div>
-                        <div class="mb-6">Help</div>
-                        <div class="mb-6">關於我們</div>
+                        <div class="mb-6">{{ $t('menu.help') }}</div>
+                        <div class="mb-6">{{ $t('menu.about_us') }}</div>
                         <div class="flex justify-start items-center mb-6">
                             <div class="icon iconfont icon-twitter-fill mr-4" style="font-size: 22px;"></div>
                             <div class="icon iconfont icon-facebook-fill mr-4" style="font-size: 22px;"></div>
@@ -43,7 +43,7 @@
                             <template #reference>
                                 <div class="flex justify-center items-center py-2 px-2 rounded bg-language-content">
                                     <div class="icon iconfont icon-language mr-2"></div>
-                                    <div class="mr-2 text-sm">{{ $t('product.buy') }}</div>
+                                    <div class="mr-2 text-sm">{{ $t('language.current_language') }}</div>
                                     <div class="icon iconfont icon-top transition ease-in-out duration-300"
                                         :class="showLanguage ? 'rotate-180' : ''"></div>
                                 </div>

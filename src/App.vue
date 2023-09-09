@@ -17,12 +17,13 @@ export default {
   name: 'App',
   components: { TopBar, FooterBar, [showDialog.name]: showDialog },
   mounted() {
-
     this.$store.commit('updateUserInfor', { address: 'address' })
     this.getUserIncome()
     this.accountHasChanged()
     this.getWgtBalance()
-
+    if (localStorage.getItem('locale')) {
+      this.$i18n.locale = localStorage.getItem('locale')
+    }
   },
   methods: {
     //获取wgt余额
