@@ -8,45 +8,64 @@
         <div class="absolute left-0">
           <img src="@/assets/shop-bg2.png" alt="">
         </div>
-        <div class="mt-12 pb-10 relative z-10">
-          <div class="w-11/12 mr-auto ml-auto mt-4">
+        <div class="mt-10 py-20 relative z-10">
+          <!-- <div class="w-11/12 mr-auto ml-auto mt-4">
             <div v-for="(item, index) in nftRoleCards" :key="index" class="mb-4" @click="toMarketDetails(item)">
               <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
                 :amount="filterAmount(item.amount)" />
             </div>
-          </div>
-          <!-- <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
+          </div> -->
+          <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
             color="#E20F2A">
-            <van-tab title="NFT角色卡">
-              <div class="w-11/12 mr-auto ml-auto mt-4">
+            <van-tab title="NFT角色卡" class="mt-2">
+              <div class="w-11/12 mr-auto ml-auto text-center pt-8 text-icon-gray text-xl"
+                v-if="nftRoleCards.length == 0">
+                暂无玩家出售NFT角色卡
+              </div>
+              <div class="w-11/12 mr-auto ml-auto">
                 <div v-for="(item, index) in nftRoleCards" :key="index" class="mb-4" @click="toMarketDetails(item)">
                   <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
                     :amount="filterAmount(item.amount)" />
                 </div>
               </div>
             </van-tab>
-            <van-tab title="合成道具卡">
+            <van-tab title="合成道具卡" class="mt-2">
+              <div class="w-11/12 mr-auto ml-auto text-center pt-8 text-icon-gray text-xl"
+                v-if="synthesisPropsCards.length == 0">
+                暂无玩家出售合成道具卡
+              </div>
               <div class="w-11/12 mr-auto ml-auto">
-                <div v-for="(item, index) in 4" :key="index">
-                  <market-card />
+                <div v-for="(item, index) in synthesisPropsCards" :key="index">
+                  <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
+                    :amount="filterAmount(item.amount)" />
                 </div>
               </div>
             </van-tab>
-            <van-tab title="战法道具卡">
+            <van-tab title="战法道具卡" class="mt-2">
+              <div class="w-11/12 mr-auto ml-auto text-center pt-8 text-icon-gray text-xl"
+                v-if="tacticsPropCards.length == 0">
+                暂无玩家出售战法道具卡
+              </div>
               <div class="w-11/12 mr-auto ml-auto">
-                <div v-for="(item, index) in 4" :key="index">
-                  <market-card />
+                <div v-for="(item, index) in tacticsPropCards" :key="index">
+                  <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
+                    :amount="filterAmount(item.amount)" />
                 </div>
               </div>
             </van-tab>
-            <van-tab title="出征令牌">
+            <van-tab title="出征令牌" class="mt-2">
+              <div class="w-11/12 mr-auto ml-auto text-center pt-8 text-icon-gray text-xl"
+                v-if="campaignProps.length == 0">
+                暂无玩家出售出征令牌
+              </div>
               <div class="w-11/12 mr-auto ml-auto">
-                <div v-for="(item, index) in 4" :key="index">
-                  <market-card />
+                <div v-for="(item, index) in campaignProps" :key="index">
+                  <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
+                    :amount="filterAmount(item.amount)" />
                 </div>
               </div>
             </van-tab>
-          </van-tabs> -->
+          </van-tabs>
         </div>
       </div>
     </div>
@@ -99,7 +118,7 @@ export default {
           let typeList = []
           res.data.map(item => {
             let obj = {}
-            obj.typeID = item.id
+            obj.typeID = item.nft_id > 100 ? item.nft_id % 100 : item.nft_id
             obj.tokenId = item.nft_id
             obj.amount = item.amount
             obj.owner = item.owner
@@ -113,8 +132,25 @@ export default {
               }
             })
           })
-          this.nftRoleCards = newArr
+          newArr.map(item => {
+            if (item.infor.card_type == 'nft_role') {
+              this.nftRoleCards.push(item)
+            } else if (item.infor.card_type == 'synthesis_props') {
+              this.synthesisPropsCards.push(item)
+            } else if (item.infor.card_type == 'tactics_props') {
+              this.tacticsPropCards.push(item)
+            } else if (item.infor.card_type == 'expedition_order') {
+              this.campaignProps.push(item)
+            }
+          })
+          // this.nftRoleCards = newArr
+          console.log('newArr', newArr)
+
           console.log('nftRoleCards', this.nftRoleCards)
+          console.log('synthesisPropsCards', this.synthesisPropsCards)
+          console.log('tacticsPropCards', this.tacticsPropCards)
+          console.log('campaignProps', this.campaignProps)
+
         })
         .catch(err => {
           console.log('err', err)
@@ -207,5 +243,4 @@ img {
 .clicked {
   background: black;
   @apply shadow-lg;
-}
-</style>
+}</style>
