@@ -10,8 +10,8 @@
                 </div>
 
                 <div class="mt-20 py-10">
-                    <van-tabs v-model:active="active" shrink swipeable sticky title-active-color="#E20F2A"
-                        background="#121212" color="#E20F2A" @click-tab="onClickTab">
+                    <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
+                        color="#E20F2A" @click-tab="onClickTab">
                         <van-tab v-for="( item, index ) in typeList " :title="item" class="pt-4">
 
                             <div class="w-11/12 ml-auto mr-auto">

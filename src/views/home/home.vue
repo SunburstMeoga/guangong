@@ -108,7 +108,7 @@ export default {
                     let typeList = []
                     res.data.map(item => {
                         let obj = {}
-                        obj.typeID = item.id
+                        obj.typeID = item.nft_id > 100 ? item.nft_id % 100 : item.nft_id
                         obj.tokenId = item.nft_id
                         obj.amount = item.amount
                         obj.owner = item.owner
