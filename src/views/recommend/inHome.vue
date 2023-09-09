@@ -76,8 +76,6 @@ import { relationshipAddress } from '@/request/ether_request/popularized'
 
 export default {
     components: { [Cell.name]: Cell, [CellGroup.name]: CellGroup, },
-
-
     data() {
         return {
             address: '',
@@ -146,17 +144,21 @@ export default {
         },
 
         async load() {
+            this.$loading.show()
             this.address = ethereum.selectedAddress
             this.p_address = this.$store.state.p_addr
             const ret0 = await axios.get(`${config.api}friends/childs/${this.address}/0`)
             this.childs0 = ret0.data
             const ret1 = await axios.get(`${config.api}friends/childs/${this.address}/1`)
             this.childs1 = ret1.data
+            this.$loading.hide()
+
             console.log(ret0, ret1)
         },
 
 
         async bind(key) {
+            this.$loading.show()
             const sign = this.childs0[key].sign
             const c_addr = this.childs0[key].c_addr
             const id = this.childs0[key].id
@@ -172,7 +174,9 @@ export default {
             const ret = await axios.put(`${config.api}friends/${id}`)
             console.log(ret.data)
             this.load()
+            this.$loading.hide()
             showSuccessToast('绑定成功')
+            this.$store.commit('changeRealoadLowAddress', true)
         },
         cancelPay() {
             window.history.back();

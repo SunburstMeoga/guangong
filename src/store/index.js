@@ -17,6 +17,7 @@ const store = createStore({
         personal: 0,
       },
       wgtBalance: 0,
+      realoadLowAddress: false,
     };
   },
   mutations: {
@@ -35,6 +36,9 @@ const store = createStore({
     },
     updatWgtBalance(state, value) {
       state.wgtBalance = value;
+    },
+    changeRealoadLowAddress(state, value) {
+      state.realoadLowAddress = value;
     },
   },
   actions: {

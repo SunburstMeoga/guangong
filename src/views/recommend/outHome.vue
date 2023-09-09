@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="flex flex-col text-icon-gray justify-center items-center">
+            {{ realoadLowAddress }}
             <div class="w-11/12 text-left mb-2">当前地址</div>
             <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-6">
                 <div class="text-sm">{{ address }}</div>
@@ -52,6 +53,22 @@ export default {
             childs1: [],
         }
     },
+    computed: {
+        realoadLowAddress() {
+            return this.$store.state.realoadLowAddress
+        }
+    },
+    watch: {
+        realoadLowAddress: {
+            handler(status) {
+                if (status) {
+                    this.load()
+                }
+            },
+            deep: true,
+            immediate: true,
+        },
+    },
     async mounted() {
         const newUrl = new URL(window.location.href)
         this.p_address = newUrl.searchParams.get('p')
@@ -63,6 +80,7 @@ export default {
                 console.log('err', err)
             })
         this.load()
+
         //console.log(this.p_address)
     },
 
@@ -74,12 +92,17 @@ export default {
             return moment(obj * 1000).format('YYYY-MM-DD HH:mm:ss')
         },
         async load() {
+            this.$loading.show()
+            console.log('触发load函数')
             this.address = ethereum.selectedAddress
             this.p_address = this.$store.state.p_addr
             const ret0 = await axios.get(`${config.api}friends/childs/${this.address}/0`)
+
             this.childs0 = ret0.data
             const ret1 = await axios.get(`${config.api}friends/childs/${this.address}/1`)
             this.childs1 = ret1.data
+            this.$store.commit('changeRealoadLowAddress', false)
+            this.$loading.hide()
             console.log(ret0, ret1)
         },
         async sign() {
@@ -87,6 +110,7 @@ export default {
                 showFailToast('上级地址错误')
                 return
             }
+            this.$loading.show()
             const msgParams = {
                 domain: {
                     chainId: config.chainId,
@@ -120,6 +144,7 @@ export default {
                 sign: sign_data
             }
             const ret = await axios.post(`${config.api}friends/${this.address}`, obj)
+            this.$loading.hide()
             console.log(ret.data)
             showSuccessToast('签名成功')
         },
