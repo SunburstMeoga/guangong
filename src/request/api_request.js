@@ -86,3 +86,11 @@ export async function userIncome(walletAddress) {
   const result = await axios.get(`${config.api}income/${walletAddress}`);
   return result;
 }
+
+//查找用户某个类型nft的个数
+export async function acountFromNFTType(walletAddress, nftType) {
+  const reslut = await axios.get(
+    `${config.api}nft/owner/${walletAddress}/${nftType}`
+  );
+  return reslut;
+}

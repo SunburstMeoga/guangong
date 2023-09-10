@@ -208,12 +208,7 @@ export default {
         },
         async isInsufficientBalance(usdt) {
             const result = await WGTFromUSDT(usdt)
-            console.log(this.$store.state.wgtBalance, result)
-            if (this.$store.state.wgtBalance < result) {
-                return true
-            } else {
-                return false
-            }
+            return this.$store.state.wgtBalance < result
         },
         swipeChange(index) {
             console.log('change', index)
@@ -224,11 +219,6 @@ export default {
             console.log(this.canBuyWealthCard())
             if (!this.canBuyWealthCard()) {
                 showToast(`当前等级不可购买${this.nftInfor.name}`)
-                this.$loading.hide()
-                return
-            }
-            if (this.isInsufficientBalance(this.nftInfor.price)) {
-                showToast(`余额不足`)
                 this.$loading.hide()
                 return
             }
@@ -343,7 +333,8 @@ export default {
         },
         //点击购买按钮
         async handlePay() {
-            if (this.isInsufficientBalance(Number(this.nftInfor.price))) { //判断是否余额不足
+            const isInsufficientBalance = await this.isInsufficientBalance(this.nftInfor.price)
+            if (isInsufficientBalance) { //判断是否余额不足
                 showToast(`余额不足`)
                 this.$loading.hide()
                 return
