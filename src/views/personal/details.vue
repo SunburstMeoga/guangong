@@ -158,7 +158,7 @@
 
                 <div class="fixed flex justify-between items-center left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
                     v-if="assetState === 'assets' && nftInfor.card_type == 'nft_role'">
-                    <div class="buy-button w-6/12 text-primary-word text-lg button-word" @click="updataNFT"
+                    <div class="buy-button w-6/12 text-primary-word text-lg button-word" @click="getUserAcountFromNFTType"
                         v-if="nftInfor.outbound_tokens_id !== 87">
                         升级
                     </div>
@@ -380,7 +380,7 @@ import { synthesisNFT, setOff, huatuoProps, zhangjiaoProps, zhugeliangProps, men
 import { approve, isAllowance } from '@/request/ether_request/wgt'
 import { apppprovalForAll, isApprovedAll } from '@/request/ether_request/nft'
 import { pendingOrder, redemptionNFT } from '@/request/ether_request/market'
-import { pendingOrderApi, cancelOrderApi, nftDetails, outboundTokens } from '@/request/api_request'
+import { pendingOrderApi, cancelOrderApi, nftDetails, outboundTokens, acountFromNFTType } from '@/request/api_request'
 import { filterAmount, filterTime } from '@/utils/filterValue'
 import { relationshipAddress } from '@/request/ether_request/popularized'
 
@@ -422,7 +422,8 @@ export default {
             propEffectNftRole: '',
             expeditionCards: [],
             loadingExpeditionCards: false,
-            showCardFromAddress: false
+            showCardFromAddress: false,
+            needArr: []
         }
     },
     mounted() {
@@ -877,12 +878,40 @@ export default {
         async erc721ApppprovalState(contractAddress) {
             return await isApprovedAll(window.ethereum.selectedAddress, contractAddress)
         },
-        //合成nft
-        updataNFT() {
+        //获取当前用户拥有的某个类型的nft
+        getUserAcountFromNFTType() {
+
+            let syntheticMaterials = []
             this.$loading.show()
-            console.log(this.nftInfor.next_need_nfts, this.nftInfor.next_nft_id)
+            this.nftInfor.next_need_nfts.map(item => {
+                acountFromNFTType(window.ethereum.selectedAddress, item)
+                    .then(res => {
+                        this.needArr.push(res.data)
+                        if (res.data.length === 0) {
+                            this.$loading.hide()
+                            showToast('合成材料不足')
+                            return
+                        }
+                        console.log('needArr', this.needArr)
+                        if (this.needArr.length == this.nftInfor.next_need_nfts.length) {
+                            this.needArr.map((_item, _index) => {
+                                syntheticMaterials[_index] = _item[0].tokenId
+                            })
+                            this.updataNFT(syntheticMaterials)
+                            console.log(syntheticMaterials)
+                        }
+                    })
+                    .catch(err => {
+                        console.log('err', err)
+                    })
+            })
+        },
+        //合成nft
+        updataNFT(syntheticMaterials) {
+
+            console.log(syntheticMaterials, this.nftInfor.next_nft_id)
             // return
-            synthesisNFT(this.nftInfor.next_need_nfts, this.nftInfor.next_nft_id)
+            synthesisNFT(syntheticMaterials, this.nftInfor.next_nft_id)
                 .then((res) => {
                     console.log('合成成功', res)
                     this.$loading.hide()
