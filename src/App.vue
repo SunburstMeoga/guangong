@@ -21,9 +21,9 @@ export default {
     this.getUserIncome()
     this.accountHasChanged()
     this.getWgtBalance()
-    if (localStorage.getItem('locale')) {
-      this.$i18n.locale = localStorage.getItem('locale')
-    }
+    // if (localStorage.getItem('locale')) {
+    //   this.$i18n.locale = localStorage.getItem('locale')
+    // }
   },
   methods: {
     //获取wgt余额

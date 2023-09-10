@@ -233,9 +233,9 @@ export default {
             return targetStr
         },
         viewEarnings(type) {
-            this.$router.push({
-                path: '/earnings/' + type
-            })
+            // this.$router.push({
+            //     path: '/earnings/' + type
+            // })
         }
     }
 }

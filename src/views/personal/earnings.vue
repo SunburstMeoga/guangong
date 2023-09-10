@@ -7,7 +7,7 @@
                     <div class="">{{ getEarningsTypeWord(earningsType) }}</div>
                 </div>
             </div>
-            <div class="bg-bottom-content rounded w-11/12 ml-auto mr-auto p-4 text-white mt-4 mb-8">
+            <!-- <div class="bg-bottom-content rounded w-11/12 ml-auto mr-auto p-4 text-white mt-4 mb-8">
                 <div class="flex justify-between items-center">
                     <div>
                         <div class="">已领取：99.99</div>
@@ -17,11 +17,11 @@
                             <span class="text-theme-primary font-semibold text-2xl">100.00</span>
                         </div>
                     </div>
-                    <!-- <div class="campaign px-2 py-1 rounded" v-if="earningsType === 'individual'">
+                    <div class="campaign px-2 py-1 rounded" v-if="earningsType === 'individual'">
                         领取奖励
-                    </div> -->
+                    </div>
                 </div>
-            </div>
+            </div> -->
             <div class="text-white w-11/12 mr-auto ml-auto flex justify-between items-center py-2">
                 <div class="font-medium text-xl">收益记录</div>
                 <div @click="showBottom = true" class="py-2 px-4 text-center text-white rounded bg-bottom-content">

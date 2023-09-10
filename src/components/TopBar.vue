@@ -37,7 +37,7 @@
                             <div class="icon iconfont icon-tumblr2 mr-4" style="font-size: 22px;"></div>
                             <div class="icon iconfont icon-Instagram" style="font-size: 22px;"></div>
                         </div>
-                        <van-popover @select="setLanguage" v-model:show="showPopover" theme="dark" :actions="actions"
+                        <!-- <van-popover @select="setLanguage" v-model:show="showPopover" theme="dark" :actions="actions"
                             placement="top-start" @open="showLanguage = !showLanguage"
                             @close="showLanguage = !showLanguage">
                             <template #reference>
@@ -48,7 +48,7 @@
                                         :class="showLanguage ? 'rotate-180' : ''"></div>
                                 </div>
                             </template>
-                        </van-popover>
+                        </van-popover> -->
                     </div>
                 </div>
 

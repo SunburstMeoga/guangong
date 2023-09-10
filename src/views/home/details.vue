@@ -146,7 +146,7 @@
                             购买 {{ nftInfor.price }}U
                         </span>
                         <span class="text-sm font-light pl-2">
-                            (WGT余额:{{ Number($store.state.wgtBalance).toFixed(2) }})
+                            (WGT余额:{{ $store.state.wgtBalance }})
                         </span>
                     </div>
                 </div>
