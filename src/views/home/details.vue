@@ -95,30 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 合成道具卡介绍 -->
-                    <!-- <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'synthesis_props'">
-                        <div class="flex justify-between items-center">
-                            <div class="text-2xl ">道具卡介绍</div>
-                        </div>
-                        <div class="mt-8">
-                            <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">技能</div>
-                                <div class="text-base text-card-content">{{ nftInfor.prop_features }}</div>
-                            </div>
-                            <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">限制</div>
-                                <div class="text-base text-card-content">{{ nftInfor.target }}</div>
-                            </div>
-                            <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">注意事项</div>
-                                <div class="text-base text-card-content">{{ nftInfor.tips }}</div>
-                            </div>
-                            <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">发行量</div>
-                                <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
-                            </div>
-                        </div>
-                    </div> -->
+
                     <!-- 财神卡介绍 -->
                     <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'fortune_card'">
                         <div class="flex justify-between items-center">
@@ -187,7 +164,7 @@ import { buy, buyFortuneCard } from '@/request/ether_request/game'
 import { relationshipAddress } from '@/request/ether_request/popularized'
 import { isAllowance, approve } from '@/request/ether_request/wgt'
 import { dealNFT } from '@/request/ether_request/market'
-import { nftDetails } from '@/request/api_request'
+import { nftDetails, buyMarketNFTApi } from '@/request/api_request'
 import { ZeroAddress } from "ethers"
 import { filterAmount } from '@/utils/filterValue';
 import { WGTFromUSDT } from '@/request/ether_request/help'
@@ -471,6 +448,17 @@ export default {
         payFromMarket() {
             dealNFT(this.tokenId, this.nftAmount)
                 .then((res) => {
+                    this.updataMarketNFTApi()
+                })
+                .catch((err) => {
+                    this.$loading.hide()
+                    showToast('购买失败，请重新购买')
+                    console.log(err)
+                })
+        },
+        updataMarketNFTApi() {
+            buyMarketNFTApi(this.tokenId)
+                .then(res => {
                     this.$loading.hide()
                     showToast('购买成功')
                     console.log(res)

@@ -95,7 +95,7 @@ export default {
         }
     },
     mounted() {
-        console.log(nfts_list)
+        // console.log(nfts_list)
         this.getHotList()
         this.getMarketList()
     },

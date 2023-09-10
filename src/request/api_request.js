@@ -49,9 +49,21 @@ export async function marketList() {
   return result;
 }
 
-//nft挂单
+//nft挂单数据到接口
 export async function pendingOrderApi(address, obj) {
   const result = await axios.post(`${config.api}market/${address}`, obj);
+  return result;
+}
+
+//nft撤销挂单数据到接口
+export async function cancelOrderApi(nftId) {
+  const result = await axios.put(`${config.api}market/${nftId}/2`);
+  return result;
+}
+
+//用户购买二手nft上传数据到接口
+export async function buyMarketNFTApi() {
+  const result = await axios.put(`${config.api}market/${nftId}/1`);
   return result;
 }
 

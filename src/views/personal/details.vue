@@ -21,9 +21,12 @@
                 </div>
 
                 <div class="flex flex-col justify-start items-center mb-10">
-                    <div class="w-11/12 text-card-content font-medium text-3xl mb-4 flex justify-between items-center">
+                    <div class="w-11/12 text-card-content font-medium text-3xl mb-4">
                         <div>
                             {{ nftInfor.name }}
+                        </div>
+                        <div class="text-icon-gray text-base mt-2" v-if="assetState === 'pending-order'">
+                            挂单价格：{{ filterAmount(opendingOrderNFTDetails.amount) }}
                         </div>
                     </div>
                     <div class="w-11/12 flex justify-between items-center border-module" v-if="assetState === 'assets'">
@@ -110,30 +113,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- 合成道具卡介绍 -->
-                    <!-- <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'synthesis_props'">
-                        <div class="flex justify-between items-center">
-                            <div class="text-2xl ">道具卡介绍</div>
-                        </div>
-                        <div class="mt-8">
-                            <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">技能</div>
-                                <div class="text-base text-card-content">{{ nftInfor.prop_features }}</div>
-                            </div>
-                            <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">限制</div>
-                                <div class="text-base text-card-content">{{ nftInfor.target }}</div>
-                            </div>
-                            <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">注意事项</div>
-                                <div class="text-base text-card-content">{{ nftInfor.tips }}</div>
-                            </div>
-                            <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">发行量</div>
-                                <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
-                            </div>
-                        </div>
-                    </div> -->
                     <!-- 财神卡介绍 -->
                     <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'fortune_card'">
                         <div class="flex justify-between items-center">
@@ -401,7 +380,7 @@ import { synthesisNFT, setOff, huatuoProps, zhangjiaoProps, zhugeliangProps, men
 import { approve, isAllowance } from '@/request/ether_request/wgt'
 import { apppprovalForAll, isApprovedAll } from '@/request/ether_request/nft'
 import { pendingOrder, redemptionNFT } from '@/request/ether_request/market'
-import { pendingOrderApi, nftDetails, outboundTokens } from '@/request/api_request'
+import { pendingOrderApi, cancelOrderApi, nftDetails, outboundTokens } from '@/request/api_request'
 import { filterAmount, filterTime } from '@/utils/filterValue'
 import { relationshipAddress } from '@/request/ether_request/popularized'
 
@@ -448,6 +427,9 @@ export default {
     },
     mounted() {
         this.assetState = this.$route.name
+        if (this.$route.params.tokenId) {
+            this.tokenId = this.$route.params.tokenId
+        }
         if (this.assetState === 'assets') {
             this.pageTitle = '资产详情'
             const nftItem = nfts_list.filter(item => {
@@ -456,13 +438,13 @@ export default {
             this.nftInfor = nftItem[0]
         } else if (this.assetState === 'pending-order') {
             this.pageTitle = '正在挂单'
+            this.getNFTDetails()
         } else if (this.assetState === 'campaign') {
             this.pageTitle = '正在出征'
-        }
-        if (this.$route.params.tokenId) {
-            this.tokenId = this.$route.params.tokenId
+            // this.getNFTDetails()
         }
 
+        //
         if (this.nftInfor.id === 60) {
             this.propsEffectaAddress = window.ethereum.selectedAddress
         }
@@ -756,9 +738,9 @@ export default {
             redemptionNFT(this.opendingOrderNFTDetails.nft_id)
                 .then(res => {
                     console.log('撤销挂单', res)
+                    this.updataCancelOrderApi()
                     this.$loading.hide()
-                    window.history.back()
-                    showToast('已取消挂单')
+
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -774,9 +756,11 @@ export default {
                     console.log('资产详情', res)
                     this.opendingOrderNFTDetails = res.data
                     const nftItem = nfts_list.filter(item => {
-                        return item.id === res.data.id
+                        const nftType = res.data.nft_id > 100 ? res.data.nft_id % 100 : res.data.nft_id
+                        return item.id === nftType
                     })
                     this.nftInfor = nftItem[0]
+                    console.log(this.nftInfor)
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -839,6 +823,21 @@ export default {
             } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState !== false) {
                 this.userPendingOrder()
             }
+        },
+        //取消挂单数据上传到数据接口
+        updataCancelOrderApi() {
+            cancelOrderApi(this.tokenId)
+                .then(res => {
+                    console.log('res', res)
+                    this.$loading.hide()
+                    window.history.back()
+                    showToast('已取消挂单')
+                    this.showPendingOrder = false
+                })
+                .catch(err => {
+                    console.log('err', err)
+                    this.$loading.hide()
+                })
         },
         //挂单数据上传到接口
         updataPendingOrder() {
