@@ -789,7 +789,7 @@ export default {
             pendingOrder(this.tokenId, this.pendingOrderAmount)
                 .then(res => {
                     console.log('挂单成功', res)
-                    // this.updataPendingOrder()
+                    this.updataPendingOrder()
                     this.$loading.hide()
 
                     window.history.back()
