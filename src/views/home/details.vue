@@ -145,9 +145,9 @@
                         <span>
                             购买 {{ nftInfor.price }}U
                         </span>
-                        <span class="text-sm font-light pl-2">
-                            (WGT余额:{{ $store.state.wgtBalance }})
-                        </span>
+                        <!-- <span class="text-sm font-light pl-2">
+                            (WGT余额:{{ getFilterAmount($store.state.wgtBalance) }})
+                        </span> -->
                     </div>
                 </div>
             </div>
@@ -168,6 +168,7 @@ import { nftDetails, buyMarketNFTApi } from '@/request/api_request'
 import { ZeroAddress } from "ethers"
 import { filterAmount } from '@/utils/filterValue';
 import { WGTFromUSDT } from '@/request/ether_request/help'
+import Web3 from "web3";
 
 export default {
     components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
@@ -196,6 +197,13 @@ export default {
     },
     methods: {
         accountBalance, filterAmount,
+        getFilterAmount(amount) {
+            const WEB3 = new Web3(window.ethereum);
+            // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
+
+            const reslut = WEB3.utils.fromWei(amount, 'ether')
+            return reslut
+        },
         //卡类型
         getCardType(value) {
             switch (value) {
@@ -333,7 +341,10 @@ export default {
         },
         //点击购买按钮
         async handlePay() {
-            const isInsufficientBalance = await this.isInsufficientBalance(this.nftInfor.price)
+            console.log(Number(this.nftInfor.price).toFixed(0))
+            // return
+            const isInsufficientBalance = await this.isInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
+
             if (isInsufficientBalance) { //判断是否余额不足
                 showToast(`余额不足`)
                 this.$loading.hide()

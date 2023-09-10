@@ -63,15 +63,16 @@ export default {
     },
     mounted() {
         this.cardList = nfts_list.filter(item => {
-            return item.card_type === 'nft_role'
+            return item.id === 1
         })
     },
     methods: {
         onClickTab(item) {
             console.log(item.name)
+            this.cardList = []
             switch (item.name) {
                 case 0: this.cardList = nfts_list.filter(item => {
-                    return item.card_type === 'nft_role'
+                    return item.id === 1
                 });
                     break;
                 //合成道具卡

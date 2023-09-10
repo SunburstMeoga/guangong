@@ -30,9 +30,10 @@
         <div class="mb-2">
             <div class="flex justify-start items-center">
                 <span>个人贡献值级别：</span>
-                <span class="font-bold flex justify-start items-baseline"> <span>{{
-                    contributionLevel($store.state.userInfor.personal) }} </span> <span
-                        class="text-xs font-normal pl-1">(贡献值：{{ $store.state.userInfor.personal }})</span> </span>
+                <span class="font-bold flex justify-start items-baseline">
+                    <span>{{ contributionLevel(Number(getFilterAmount($store.state.userInfor.personal))) }} </span> <span
+                        class="text-xs font-normal pl-1">(贡献值：{{ getFilterAmount($store.state.userInfor.personal) }})</span>
+                </span>
 
             </div>
 
@@ -119,6 +120,13 @@ export default {
         this.getPoolInfor()
     },
     methods: {
+        getFilterAmount(amount) {
+            const WEB3 = new Web3(window.ethereum);
+            // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
+
+            const reslut = WEB3.utils.fromWei(amount, 'ether')
+            return reslut
+        },
         //领取总奖池收益
         userReceivePoolEarnings() {
             this.$loading.show()
@@ -178,7 +186,7 @@ export default {
         },
         //用户贡献值对应大使
         contributionLevel(contributionValue) {
-            if (contributionValue === 0 && contributionValue < 10000) {
+            if (contributionValue > 0 && contributionValue < 10000) {
                 return '忠字传播大使'
             } else if (contributionValue >= 10000 && contributionValue < 50000) {
                 return '义字传播大使'

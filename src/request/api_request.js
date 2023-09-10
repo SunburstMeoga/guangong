@@ -62,7 +62,7 @@ export async function cancelOrderApi(nftId) {
 }
 
 //用户购买二手nft上传数据到接口
-export async function buyMarketNFTApi() {
+export async function buyMarketNFTApi(nftId) {
   const result = await axios.put(`${config.api}market/${nftId}/1`);
   return result;
 }

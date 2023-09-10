@@ -780,7 +780,7 @@ export default {
                     window.history.back()
                 })
                 .catch(err => {
-                    console.log('err', err)
+                    showToast('挂单失败，请重新挂单')
                     this.$loading.hide()
                 })
         },
@@ -791,39 +791,71 @@ export default {
                 return
             }
             this.$loading.show()
-            const erc20ApppprovalState = await this.erc20ApppprovalState()
-            const erc721ApppprovalState = await this.erc721ApppprovalState(config.nft_addr)
-            if (erc20ApppprovalState == 0 || erc721ApppprovalState == false) {
-                if (erc20ApppprovalState == 0 && erc721ApppprovalState !== false) {
-                    const erc20Result = await this.erc20ContractApppproval()
-                    if (erc20Result.status == 1) {
-                        this.userPendingOrder()
-                    } else {
-                        showToast('erc20授权失败，请重新授权')
+            // const erc20ApppprovalState = await this.erc20ApppprovalState()
+
+            const erc721ApppprovalState = await this.erc721ApppprovalState(config.market_addr)
+            console.log('erc721ApppprovalState', erc721ApppprovalState)
+            if (erc721ApppprovalState !== true) {
+                this.$loading.hide()
+                this.showPendingOrder = false
+                this.$confirm.show({
+                    title: "提示",
+                    content: "当前用户未进行erc721授权，请先完成授权",
+                    onConfirm: () => {
+                        this.$loading.show()
+                        this.erc721ContractApppproval(config.market_addr)
+                            .then(res => {
+                                console.log(res)
+                                this.$confirm.hide()
+                                this.$loading.hide()
+                                showToast('授权成功')
+                            })
+                            .catch(err => {
+                                this.$confirm.hide()
+                                this.$loading.hide()
+
+                                showToast('授权失败')
+                            })
+                    },
+                    onCancel: () => {
+                        this.$confirm.hide()
                     }
-                } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState == false) {
-                    const erc721Result = await this.erc721ContractApppproval(config.nft_addr)
-                    if (erc721Result.status == 1) {
-                        this.userPendingOrder()
-                    } else {
-                        showToast('erc721授权失败，请重新授权')
-                    }
-                }
-            } else if (erc20ApppprovalState == 0 && erc721ApppprovalState == false) {
-                const erc20Result = await this.erc20ContractApppproval()
-                const erc721Result = await this.erc721ContractApppproval(config.nft_addr)
-                if (erc20Result == 1 && erc721Result == 1) {
-                    this.userPendingOrder()
-                } else if (erc20Result.status == 1 && erc721Result.status == 0) {
-                    showToast('erc721授权失败')
-                } else if (erc20Result.status == 0 && erc721Result.status == 1) {
-                    showToast('erc20授权失败')
-                } else if (erc20Result.status == 0 && erc721Result.status == 0) {
-                    showToast('授权失败')
-                }
-            } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState !== false) {
+                });
+                return
+            } else {
                 this.userPendingOrder()
             }
+            // if (erc20ApppprovalState == 0 || erc721ApppprovalState == false) {
+            //     if (erc20ApppprovalState == 0 && erc721ApppprovalState !== false) {
+            //         const erc20Result = await this.erc20ContractApppproval()
+            //         if (erc20Result.status == 1) {
+            //             this.userPendingOrder()
+            //         } else {
+            //             showToast('erc20授权失败，请重新授权')
+            //         }
+            //     } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState == false) {
+            //         const erc721Result = await this.erc721ContractApppproval(config.market_addr)
+            //         if (erc721Result.status == 1) {
+            //             this.userPendingOrder()
+            //         } else {
+            //             showToast('erc721授权失败，请重新授权')
+            //         }
+            //     }
+            // } else if (erc20ApppprovalState == 0 && erc721ApppprovalState == false) {
+            //     const erc20Result = await this.erc20ContractApppproval()
+            //     const erc721Result = await this.erc721ContractApppproval(config.market_addr)
+            //     if (erc20Result == 1 && erc721Result == 1) {
+            //         this.userPendingOrder()
+            //     } else if (erc20Result.status == 1 && erc721Result.status == 0) {
+            //         showToast('erc721授权失败')
+            //     } else if (erc20Result.status == 0 && erc721Result.status == 1) {
+            //         showToast('erc20授权失败')
+            //     } else if (erc20Result.status == 0 && erc721Result.status == 0) {
+            //         showToast('授权失败')
+            //     }
+            // } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState !== false) {
+            //     this.userPendingOrder()
+            // }
         },
         //取消挂单数据上传到数据接口
         updataCancelOrderApi() {
@@ -880,7 +912,6 @@ export default {
         },
         //获取当前用户拥有的某个类型的nft
         getUserAcountFromNFTType() {
-
             let syntheticMaterials = []
             this.$loading.show()
             this.nftInfor.next_need_nfts.map(item => {
@@ -960,6 +991,7 @@ export default {
             console.log('erc721ApppprovalState', erc721ApppprovalState)
             if (erc721ApppprovalState !== true) {
                 this.$loading.hide()
+                this.showOutToken = false
                 this.$confirm.show({
                     title: "提示",
                     content: "当前用户未进行erc721授权，请先完成授权",

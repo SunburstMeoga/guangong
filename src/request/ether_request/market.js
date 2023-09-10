@@ -39,6 +39,7 @@ export async function exchange(exchangeAmount) {
 
 //用户购买二手市场NFT
 export async function dealNFT(nftId, amount) {
+  console.log(amount, ethers.parseEther(amount));
   const result = MARKETTRADE.deal(nftId, ethers.parseEther(amount));
   return result;
 }
