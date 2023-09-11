@@ -272,8 +272,8 @@ export default {
             return result
         },
         //检查合约授权状态
-        async checkAllowanceState() {
-            return await isAllowance(window.ethereum.selectedAddress, config.game_addr)
+        async checkAllowanceState(walletAddress, contractAddress) {
+            return await isAllowance(walletAddress, contractAddress)
         },
         //判断当前购买的卡片是否为财神卡
         isWealthCard(nftType) {
