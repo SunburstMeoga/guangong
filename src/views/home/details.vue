@@ -1,7 +1,14 @@
 <template>
     <div>
         <div>
-            <div class="pt-24">
+            <div class="py-8 top-0 sticky flex justify-center z-10 bg-black">
+                <div class="w-11/12 ml-auto mr-auto relative flex justify-center items-center text-card-content">
+                    <div class="icon iconfont icon-left absolute left-1" style="font-size: 24px;" @click="cancelPay()">
+                    </div>
+                    <div class="">{{ nftInfor.name }}</div>
+                </div>
+            </div>
+            <div class="pt-4">
                 <div
                     class="relative ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-4">
                     <div class="w-80 h-80">
@@ -232,6 +239,9 @@ export default {
                 return
             }
             this.currentPayWay = index
+        },
+        cancelPay() {
+            window.history.back();
         },
         getFilterAmount(amount) {
             const WEB3 = new Web3(window.ethereum);

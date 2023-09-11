@@ -25,6 +25,9 @@
                         <div>
                             {{ nftInfor.name }}
                         </div>
+                        <div class="text-icon-gray text-base mt-2">
+                            No. {{ tokenId }}
+                        </div>
                         <div class="text-icon-gray text-base mt-2" v-if="assetState === 'pending-order'">
                             挂单价格：{{ filterAmount(opendingOrderNFTDetails.amount) }}
                         </div>
@@ -888,6 +891,7 @@ export default {
                 showToast('请先连接钱包')
                 return
             }
+            console.log(this.nftInfor.upgrade_requirements)
             let syntheticMaterials = []
             this.$loading.show()
             this.nftInfor.next_need_nfts.map(item => {
@@ -896,7 +900,7 @@ export default {
                         this.needArr.push(res.data)
                         if (res.data.length === 0) {
                             this.$loading.hide()
-                            showToast('合成材料不足')
+                            showToast(`合成需要：${this.nftInfor.upgrade_requirements}`)
                             return
                         }
                         console.log('needArr', this.needArr)
@@ -951,9 +955,12 @@ export default {
                 .then((res) => {
                     console.log('合成成功', res)
                     this.$loading.hide()
+                    showToast('合成成功')
                     window.history.back();
                 })
                 .catch(err => {
+                    showToast('合成成功')
+
                     console.log('合成失败', err)
                     this.$loading.hide()
                 })
