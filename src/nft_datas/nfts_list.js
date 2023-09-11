@@ -248,7 +248,7 @@ const nfts_list = [
     name: "结义令",
     price: "600",
     card_type: "expedition_order",
-    can_be_used: ["结义令"],
+    can_be_used: ["桃园结义"],
   },
   {
     id: 83,

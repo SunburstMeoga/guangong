@@ -303,14 +303,23 @@ export default {
                     console.log('err', err)
                 })
         },
-        //合约授权
-        async contractApprove(contractAddress) {
+        //WGT合约授权
+        async WGTContractApprove(contractAddress) {
             const result = await wgtContractApi.approve(contractAddress)
             return result
         },
-        //检查合约授权状态
-        async checkAllowanceState(walletAddress, contractAddress) {
+        //WGA合约授权
+        async WGAContractApprove(contractAddress) {
+            const result = await wgaContractApi.approve(contractAddress)
+            return result
+        },
+        //检查WGT合约授权状态
+        async checkWGTAllowanceState(walletAddress, contractAddress) {
             return await wgtContractApi.isAllowance(walletAddress, contractAddress)
+        },
+        //检查WGA合约授权状态
+        async checkWGAAllowanceState(walletAddress, contractAddress) {
+            return await wgaContractApi.isAllowance(walletAddress, contractAddress)
         },
         //判断当前购买的卡片是否为财神卡
         isWealthCard(nftType) {
@@ -422,27 +431,51 @@ export default {
             console.log('财神卡？', this.isWealthCard(this.nftInfor.id)) //当前购买的卡片是否为财神卡
             this.showPayWay = false
             this.$loading.show()
-            const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
-            if (hasAllowance == 0) {
+            let currentPayWayAllowanState; //当前支付方式合约授权状态
+            // const hasWGTAllowance = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
+            // const hasWGAAllowance = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
+            if (this.currentPayWay === 0) {
+                currentPayWayAllowanState = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
+            } else {
+                currentPayWayAllowanState = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
+            }
+
+            if (currentPayWayAllowanState == 0) {
                 this.$loading.hide()
                 this.$confirm.show({
                     title: "提示",
                     content: "当前用户未授权，请先完成授权",
                     onConfirm: () => {
                         this.$loading.show()
-                        this.contractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
-                            .then(res => {
-                                console.log(res)
-                                this.$confirm.hide()
-                                this.$loading.hide()
-                                showToast('授权成功')
-                            })
-                            .catch(err => {
-                                this.$confirm.hide()
-                                this.$loading.hide()
+                        if (this.currentPayWay === 0) {
+                            this.WGTContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                                .then(res => {
+                                    console.log(res)
+                                    this.$confirm.hide()
+                                    this.$loading.hide()
+                                    showToast('授权成功')
+                                })
+                                .catch(err => {
+                                    this.$confirm.hide()
+                                    this.$loading.hide()
 
-                                showToast('授权失败')
-                            })
+                                    showToast('授权失败')
+                                })
+                        } else {
+                            this.WGAContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                                .then(res => {
+                                    console.log(res)
+                                    this.$confirm.hide()
+                                    this.$loading.hide()
+                                    showToast('授权成功')
+                                })
+                                .catch(err => {
+                                    this.$confirm.hide()
+                                    this.$loading.hide()
+
+                                    showToast('授权失败')
+                                })
+                        }
                     },
                     onCancel: () => {
                         this.$confirm.hide()
