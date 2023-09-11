@@ -7,8 +7,12 @@ let gameContractApi = {};
 if (window.ethereum.selectedAddress) {
   provider = new ethers.BrowserProvider(window.ethereum);
   signer = await provider.getSigner();
-  GAME = new ethers.Contract(config.game_addr, config.game_abi, provider);
-  GAMETRADE = new ethers.Contract(config.game_addr, config.game_abi, signer);
+  const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider);
+  const GAMETRADE = new ethers.Contract(
+    config.game_addr,
+    config.game_abi,
+    signer
+  );
 
   gameContractApi = {
     //用户收益查询

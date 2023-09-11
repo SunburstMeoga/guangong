@@ -3,9 +3,10 @@ import { config } from "@/const/config";
 
 let provider = {};
 let helpContractApi = {};
+
 if (window.ethereum.selectedAddress) {
   provider = new ethers.BrowserProvider(window.ethereum);
-  HELP = new ethers.Contract(config.help_addr, config.help_abi, provider);
+  const HELP = new ethers.Contract(config.help_addr, config.help_abi, provider);
 
   helpContractApi = {
     //财神卡领取收益信息

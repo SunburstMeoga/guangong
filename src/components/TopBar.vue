@@ -52,8 +52,7 @@
                     </div>
                 </div>
 
-                <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
-                    v-if="window.ethereum.selectedAddress">
+                <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content" v-if="hasWalletAddress">
                     <div class="buy-button text-primary-word font-medium text-lg py-4 rounded flex justify-center items-center"
                         @click="handleConnect">
                         連接錢包
@@ -79,11 +78,17 @@ export default {
                 { text: '繁體中文', value: 'zh-hk' },
                 { text: 'English', value: 'en-us' },
             ],
-            currentScrollY: 0
+            currentScrollY: 0,
+            hasWalletAddress: false
         }
     },
     mounted() {
         window.addEventListener('scroll', this.handleScroll)
+        if (window.ethereum && window.ethereum.selectedAddress) {
+            this.hasWalletAddress = false
+        } else {
+            this.hasWalletAddress = true
+        }
     },
     methods: {
         //点击链接钱包按钮
@@ -93,6 +98,7 @@ export default {
                 const accounts = await ethereum.request({
                     method: 'eth_requestAccounts',
                 })
+                this.showRight = false
                 this.$store.commit('updateUserInfor', { address: accounts[0] })
 
             } catch (error) {
