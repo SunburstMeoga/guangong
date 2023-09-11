@@ -428,7 +428,7 @@ const nfts_list = [
   {
     id: 47,
     name: "庞德",
-    imageUrl: `${config.api}/prop_synth/47_2.png`,
+    imageUrl: `${config.api}/prop_synth/40_2.png`,
     card_type: "synthesis_props",
     tag: "合成道具卡",
     price: "300",
