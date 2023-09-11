@@ -13,7 +13,7 @@
                     <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
                         color="#E20F2A" @click-tab="onClickTab">
                         <van-tab title="NFT角色卡">
-                            <div class="w-11/12 ml-auto mr-auto">
+                            <div class="w-11/12 ml-auto mr-auto mb-10">
                                 <div class="mb-6" v-for="(item, index ) in nftCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
@@ -23,7 +23,7 @@
                             </div>
                         </van-tab>
                         <van-tab title="合成道具卡">
-                            <div class="w-11/12 ml-auto mr-auto">
+                            <div class="w-11/12 ml-auto mr-auto mb-10">
                                 <div class="mb-6" v-for="(item, index ) in synthesisPropCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
@@ -33,7 +33,7 @@
                             </div>
                         </van-tab>
                         <van-tab title="战法道具卡">
-                            <div class="w-11/12 ml-auto mr-auto">
+                            <div class="w-11/12 ml-auto mr-auto mb-10">
                                 <div class="mb-6" v-for="(item, index ) in racticsPropCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
@@ -43,7 +43,7 @@
                             </div>
                         </van-tab>
                         <van-tab title="出征令牌">
-                            <div class="w-11/12 ml-auto mr-auto">
+                            <div class="w-11/12 ml-auto mr-auto mb-10">
                                 <div class="mb-6" v-for="(item, index ) in campaignTokens " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
@@ -53,7 +53,7 @@
                             </div>
                         </van-tab>
                         <van-tab title="财神卡">
-                            <div class="w-11/12 ml-auto mr-auto">
+                            <div class="w-11/12 ml-auto mr-auto mb-10">
                                 <div class="mb-6" v-for="(item, index ) in wealthCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
