@@ -100,14 +100,7 @@ export default {
             }
         },
         async handleConnect() {
-            try {
-                const accounts = await ethereum.request({
-                    method: 'eth_requestAccounts',
-                })
-                this.getWalletBalance(accounts[0])
-            } catch (error) {
-                console.error(error)
-            }
+            this.login()
         },
         viewGoods() {
             this.$router.push({
