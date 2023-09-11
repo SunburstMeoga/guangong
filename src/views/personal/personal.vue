@@ -4,7 +4,7 @@
             <div class="w-full">
                 <personal-assets />
             </div>
-            <div class="w-11/12">
+            <div class="w-11/12 pb-20">
                 <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
                     color="#E20F2A">
                     <van-tab title="我的NFT" class="pt-4">
