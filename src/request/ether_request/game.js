@@ -77,19 +77,20 @@ if (window.ethereum) {
     },
     //用户领取奖金池收益
     receivePoolEarnings: async function (receiveAmount) {
-      const result = await GAMETRADE.income3(receiveAmount);
-      const tx = await tx.wait();
+      const tx = await GAMETRADE.income3(receiveAmount);
+      const result = await tx.wait();
       return result;
     },
     //用户领取财神卡收益
     wealthEarnings: async function (cardIndex) {
-      const result = await GAMETRADE.income2(cardIndex);
-      const tx = await tx.wait();
+      const tx = await GAMETRADE.income2(cardIndex);
+      const result = await tx.wait();
       return result;
     },
     //用户领取出征卡收益
     campaignEarnings: async function campaignEarnings(cardIndex) {
-      const result = await GAMETRADE.income1(cardIndex);
+      const tx = await GAMETRADE.income1(cardIndex);
+      const result = await tx.wait();
       return result;
     },
     //用户购买财神卡
