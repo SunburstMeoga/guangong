@@ -23,7 +23,7 @@
             <div class="flex justify-start items-center">
                 <span>总收益：</span>
                 <!-- <span class="font-bold text-theme-primary">{{  earningsInfo.usdt + earningsInfo.selfUsdt }} WGT </span> -->
-                <span class="font-bold text-theme-primary"> {{ getFilterAmount($store.state.userInfor.income_sum) }} WGT
+                <span class="font-bold text-theme-primary"> {{ $store.state.userInfor.income_sum }} WGT
                 </span>
             </div>
 
@@ -32,8 +32,8 @@
             <div class="flex justify-start items-center">
                 <span>个人贡献值级别：</span>
                 <span class="font-bold flex justify-start items-baseline">
-                    <span>{{ contributionLevel(Number(getFilterAmount($store.state.userInfor.personal))) }} </span> <span
-                        class="text-xs font-normal pl-1">(贡献值：{{ getFilterAmount($store.state.userInfor.personal) }})</span>
+                    <span>{{ contributionLevel($store.state.userInfor.personal) }} </span> <span
+                        class="text-xs font-normal pl-1">(贡献值：{{ $store.state.userInfor.personal }})</span>
                 </span>
 
             </div>
@@ -142,8 +142,9 @@ export default {
         getFilterAmount(amount) {
             const WEB3 = new Web3(window.ethereum);
             // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
-
             const reslut = WEB3.utils.fromWei(amount, 'ether')
+            console.log(amount, reslut)
+
             return reslut
         },
         //领取总奖池收益
@@ -176,6 +177,9 @@ export default {
                 .then(res => {
                     console.log('奖池信息', res)
                     this.poolInfor = res
+                    this.poolInfor.a = this.getFilterAmount(res.a)
+                    this.poolInfor.b = this.getFilterAmount(res.b)
+
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -236,7 +240,7 @@ export default {
             gameContractApi.userInfo(window.ethereum.selectedAddress)
                 .then(res => {
                     // console.log('用户收益详情', res)
-                    this.earningsInfo = res
+                    this.earningsInfo.poolTeam = this.getFilterAmount(res.poolTeam)
                 })
                 .catch(err => {
                     console.log('err', err)

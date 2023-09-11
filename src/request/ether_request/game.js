@@ -90,7 +90,6 @@ if (window.ethereum) {
     //用户领取出征卡收益
     campaignEarnings: async function campaignEarnings(cardIndex) {
       const result = await GAMETRADE.income1(cardIndex);
-      const tx = await tx.wait();
       return result;
     },
     //用户购买财神卡

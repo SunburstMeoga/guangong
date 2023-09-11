@@ -147,6 +147,7 @@ export default {
         },
         //用户领取出征卡收益
         userReceiveCampaign(index) {
+            console.log(index)
             gameContractApi.campaignEarnings(index)
                 .then(res => {
                     console.log(res)
