@@ -904,7 +904,7 @@ export default {
                             return
                         }
                         console.log('needArr', this.needArr)
-                        syntheticMaterials = []
+                        // syntheticMaterials = []
                         if (this.needArr.length == this.nftInfor.next_need_nfts.length) {
                             this.needArr.map((_item, _index) => {
                                 syntheticMaterials[_index] = _item[0].tokenId
