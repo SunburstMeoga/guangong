@@ -176,9 +176,11 @@ export default {
             helpContractApi.poolEarningsInfor(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('奖池信息', res)
-                    this.poolInfor = res
-                    this.poolInfor.a = this.getFilterAmount(res.a)
-                    this.poolInfor.b = this.getFilterAmount(res.b)
+                    // this.poolInfor = res
+                    // this.poolInfor.a = this.getFilterAmount(res.a)
+                    // this.poolInfor.b = this.getFilterAmount(res.b)
+                    this.poolInfor.a = res.a
+                    this.poolInfor.b = res.b
 
                 })
                 .catch(err => {
@@ -240,7 +242,9 @@ export default {
             gameContractApi.userInfo(window.ethereum.selectedAddress)
                 .then(res => {
                     // console.log('用户收益详情', res)
-                    this.earningsInfo.poolTeam = this.getFilterAmount(res.poolTeam)
+                    // this.earningsInfo.poolTeam = this.getFilterAmount(res.poolTeam)
+                    this.earningsInfo.poolTeam = res.poolTeam
+
                 })
                 .catch(err => {
                     console.log('err', err)

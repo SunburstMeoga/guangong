@@ -342,8 +342,9 @@ export default {
         },
         //判断当前用户等级能否购买该类型财神卡
         canBuyWealthCard() {
+            console.log(this.$store.state.userInfor.personal)
             const contributionValue = this.$store.state.userInfor.personal
-            if (contributionValue === 0 && contributionValue < 10000) {
+            if (contributionValue >= 0 && contributionValue < 10000) {
                 if (this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
                     return true
                 } else {
