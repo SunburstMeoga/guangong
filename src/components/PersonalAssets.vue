@@ -59,8 +59,8 @@
                 <div class="flex justify-start items-center">
                     <span>可领取金额：</span>
                     <span class="font-bold ">{{ poolInfor.b }} WGT</span>
-                    <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded" @click="userReceivePoolEarnings">{{
-                        window.ethereum.selectedAddress }}</span>
+                    <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded"
+                        @click="userReceivePoolEarnings">领取收益</span>
                 </div>
             </div>
         </div>
@@ -120,8 +120,18 @@ export default {
             this.getUserInfo()
             this.getUserIncome()
             this.getUserTotalAssets()
+        } else {
+            this.$confirm.show({
+                title: "提示",
+                content: "请先连接钱包",
+                showCancelButton: false,
+                onConfirm: () => {
+                    this.$router.push({
+                        path: '/'
+                    })
+                },
+            });
         }
-
 
     },
     methods: {

@@ -439,6 +439,8 @@ export default {
             } else {
                 currentPayWayAllowanState = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
             }
+            console.log('currentPayWayAllowanState', this.currentPayWay, currentPayWayAllowanState)
+            // return
 
             if (currentPayWayAllowanState == 0) {
                 this.$loading.hide()
