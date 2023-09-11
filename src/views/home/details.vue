@@ -359,7 +359,13 @@ export default {
                 showToast('当前地址暂无上级，请前往社区寻找上级推荐人')
                 return
             }
-            const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.market_addr)
+            const hasAllowance = 0
+            if (this.goodType === 'good') {
+                hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.game_addr)
+            } else if (this.goodType === 'market') {
+                hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.market_addr)
+            }
+            // const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.market_addr)
             if (hasAllowance == 0) {
                 this.$loading.hide()
                 this.$confirm.show({
@@ -367,7 +373,7 @@ export default {
                     content: "当前用户未授权，请先完成授权",
                     onConfirm: () => {
                         this.$loading.show()
-                        this.contractApprove(config.market_addr)
+                        this.contractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
                             .then(res => {
                                 console.log(res)
                                 this.$confirm.hide()
