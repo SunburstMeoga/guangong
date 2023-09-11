@@ -120,6 +120,7 @@ export default {
             this.getUserInfo()
             this.getUserIncome()
             this.getUserTotalAssets()
+            this.getPoolInfor()
         } else {
             this.$confirm.show({
                 title: "提示",
