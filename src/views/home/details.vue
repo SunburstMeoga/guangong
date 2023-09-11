@@ -214,8 +214,12 @@ export default {
         console.log('this.$route', this.$route)
         this.goodType = this.$route.name
         if (this.$route.name === 'good') {
+            console.log('good')
+            console.log(this.$route.params.id)
             this.matchNFTData(parseInt(this.$route.params.id))
         } else if (this.$route.name === 'market') {
+            console.log('market')
+
             this.tokenId = this.$route.params.tokenId
             this.getNFTDetails()
         }

@@ -914,8 +914,36 @@ export default {
             })
         },
         //合成nft
-        updataNFT(syntheticMaterials) {
+        async updataNFT(syntheticMaterials) {
+            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            if (erc721ApppprovalState !== true) {
+                this.$loading.hide()
+                this.showOutToken = false
+                this.$confirm.show({
+                    title: "提示",
+                    content: "当前用户未进行erc721授权，请先完成授权",
+                    onConfirm: () => {
+                        this.$loading.show()
+                        this.erc721ContractApppproval(config.game_addr)
+                            .then(res => {
+                                console.log(res)
+                                this.$confirm.hide()
+                                this.$loading.hide()
+                                showToast('授权成功')
+                            })
+                            .catch(err => {
+                                this.$confirm.hide()
+                                this.$loading.hide()
 
+                                showToast('授权失败')
+                            })
+                    },
+                    onCancel: () => {
+                        this.$confirm.hide()
+                    }
+                });
+                return
+            }
             console.log(syntheticMaterials, this.nftInfor.next_nft_id)
             // return
             gameContractApi.synthesisNFT(syntheticMaterials, this.nftInfor.next_nft_id)
