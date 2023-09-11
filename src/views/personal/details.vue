@@ -376,13 +376,15 @@
 import { Popup, showToast, Picker } from 'vant';
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
-import { synthesisNFT, setOff, huatuoProps, zhangjiaoProps, zhugeliangProps, menghuoProps, yuanshuProps, userInfo } from '@/request/ether_request/game'
-import { approve, isAllowance } from '@/request/ether_request/wgt'
-import { apppprovalForAll, isApprovedAll } from '@/request/ether_request/nft'
-import { pendingOrder, redemptionNFT } from '@/request/ether_request/market'
+import { gameContractApi } from '@/request/ether_request/game'
+import { wgtContractApi } from '@/request/ether_request/wgt'
+import { nftContractApi } from '@/request/ether_request/nft'
+
+
+import { marketContractApi } from '@/request/ether_request/market'
 import { pendingOrderApi, cancelOrderApi, nftDetails, outboundTokens, acountFromNFTType } from '@/request/api_request'
 import { filterAmount, filterTime } from '@/utils/filterValue'
-import { relationshipAddress } from '@/request/ether_request/popularized'
+import { popularContractApi } from '@/request/ether_request/popularized'
 
 export default {
     components: { [Popup.name]: Popup, [Picker.name]: Picker },
@@ -474,7 +476,7 @@ export default {
         },
         //获取某个地址下正在出征的nft
         getExpeditionCards(walletAddress) {
-            userInfo(walletAddress)
+            gameContractApi.userInfo(walletAddress)
                 .then(res => {
                     console.log('res', res.cards)
                     res.cards.map((item, index) => {
@@ -490,7 +492,7 @@ export default {
         },
         // 获取道具卡施法地址正在出征的卡片
         async getPropEffectNftIndex(walletAddress) {
-            return await userInfo(walletAddress)
+            return await gameContractApi.userInfo(walletAddress)
         },
         //点击选择地址唤起选择地址弹窗
         handleChoiceAddress() {
@@ -502,7 +504,7 @@ export default {
         },
         //获取当前地址的下级地址
         getLowerAddress() {
-            relationshipAddress(window.ethereum.selectedAddress)
+            popularContractApi.relationshipAddress(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('推荐关系地址', res.child)
                     res.child.map(item => {
@@ -628,7 +630,7 @@ export default {
         //使用华佗道具卡
         async usePropsFromHuaTuo() {
             console.log('华佗道具卡', this.propsEffectaAddress, this.propEffectNftIndex, this.nftInfor.id)
-            huatuoProps(this.propsEffectaAddress, this.propEffectNftIndex, this.tokenId)
+            gameContractApi.huatuoProps(this.propsEffectaAddress, this.propEffectNftIndex, this.tokenId)
                 .then(res => {
                     showToast(`${this.nftInfor.name}道具卡使用成功`)
                     this.$loading.hide()
@@ -643,7 +645,7 @@ export default {
         //使用张角道具卡
         async usePropsFromZhangJiao(nftType) {
             console.log('张角道具卡', nftType)
-            zhangjiaoProps(nftType)
+            gameContractApi.zhangjiaoProps(nftType)
                 .then(res => {
                     showToast(`${this.nftInfor.name}道具卡使用成功`)
                     this.$loading.hide()
@@ -660,7 +662,7 @@ export default {
         //使用诸葛亮道具卡
         async usePropsFromZhuGeLiang(walletAddress, nftId) {
             console.log('诸葛亮道具卡')
-            zhugeliangProps(walletAddress, nftId)
+            gameContractApi.zhugeliangProps(walletAddress, nftId)
                 .then(res => {
                     showToast(`${this.nftInfor.name}道具卡使用成功`)
                     this.$loading.hide()
@@ -683,7 +685,7 @@ export default {
                 this.$loading.hide()
                 return
             }
-            menghuoProps(walletAddress, nftId)
+            gameContractApi.menghuoProps(walletAddress, nftId)
                 .then(res => {
                     showToast(`${this.nftInfor.name}道具卡使用成功`)
                     this.$loading.hide()
@@ -704,7 +706,7 @@ export default {
                 showToast(`"${this.nftInfor.name}"只能对自己使用`)
                 return
             }
-            yuanshuProps(walletAddress, nftId)
+            gameContractApi.yuanshuProps(walletAddress, nftId)
                 .then(res => {
                     showToast(`${this.nftInfor.name}道具卡使用成功`)
                     this.$loading.hide()
@@ -736,7 +738,7 @@ export default {
             // return
             this.showCancelPendingOrder = false
             this.$loading.show()
-            redemptionNFT(this.opendingOrderNFTDetails.nft_id)
+            marketContractApi.redemptionNFT(this.opendingOrderNFTDetails.nft_id)
                 .then(res => {
                     console.log('撤销挂单', res)
                     this.updataCancelOrderApi()
@@ -771,7 +773,7 @@ export default {
         userPendingOrder() {
             console.log(this.tokenId, this.pendingOrderAmount)
             // return
-            pendingOrder(this.tokenId, (this.pendingOrderAmount).toString())
+            marketContractApi.pendingOrder(this.tokenId, (this.pendingOrderAmount).toString())
                 .then(res => {
                     console.log('挂单成功', res)
                     this.updataPendingOrder()
@@ -826,37 +828,6 @@ export default {
             } else {
                 this.userPendingOrder()
             }
-            // if (erc20ApppprovalState == 0 || erc721ApppprovalState == false) {
-            //     if (erc20ApppprovalState == 0 && erc721ApppprovalState !== false) {
-            //         const erc20Result = await this.erc20ContractApppproval()
-            //         if (erc20Result.status == 1) {
-            //             this.userPendingOrder()
-            //         } else {
-            //             showToast('erc20授权失败，请重新授权')
-            //         }
-            //     } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState == false) {
-            //         const erc721Result = await this.erc721ContractApppproval(config.market_addr)
-            //         if (erc721Result.status == 1) {
-            //             this.userPendingOrder()
-            //         } else {
-            //             showToast('erc721授权失败，请重新授权')
-            //         }
-            //     }
-            // } else if (erc20ApppprovalState == 0 && erc721ApppprovalState == false) {
-            //     const erc20Result = await this.erc20ContractApppproval()
-            //     const erc721Result = await this.erc721ContractApppproval(config.market_addr)
-            //     if (erc20Result == 1 && erc721Result == 1) {
-            //         this.userPendingOrder()
-            //     } else if (erc20Result.status == 1 && erc721Result.status == 0) {
-            //         showToast('erc721授权失败')
-            //     } else if (erc20Result.status == 0 && erc721Result.status == 1) {
-            //         showToast('erc20授权失败')
-            //     } else if (erc20Result.status == 0 && erc721Result.status == 0) {
-            //         showToast('授权失败')
-            //     }
-            // } else if (erc20ApppprovalState !== 0 && erc721ApppprovalState !== false) {
-            //     this.userPendingOrder()
-            // }
         },
         //取消挂单数据上传到数据接口
         updataCancelOrderApi() {
@@ -895,24 +866,28 @@ export default {
         },
         //erc20合约授权操作
         async erc20ContractApppproval() {
-            const result = await approve(config.market_addr)
+            const result = await wgtContractApi.approve(config.market_addr)
             return result
         },
         //erc721合约授权操作
         async erc721ContractApppproval(contractAddress) {
-            const result = await apppprovalForAll(contractAddress)
+            const result = await nftContractApi.apppprovalForAll(contractAddress)
             return result
         },
         //检查erc20授权状态
         async erc20ApppprovalState() {
-            return await isAllowance(window.ethereum.selectedAddress, config.market_addr)
+            return await wgtContractApi.isAllowance(window.ethereum.selectedAddress, config.market_addr)
         },
         //检查erc721授权状态
         async erc721ApppprovalState(contractAddress) {
-            return await isApprovedAll(window.ethereum.selectedAddress, contractAddress)
+            return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)
         },
         //获取当前用户拥有的某个类型的nft
         getUserAcountFromNFTType() {
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先连接钱包')
+                return
+            }
             let syntheticMaterials = []
             this.$loading.show()
             this.nftInfor.next_need_nfts.map(item => {
@@ -943,7 +918,7 @@ export default {
 
             console.log(syntheticMaterials, this.nftInfor.next_nft_id)
             // return
-            synthesisNFT(syntheticMaterials, this.nftInfor.next_nft_id)
+            gameContractApi.synthesisNFT(syntheticMaterials, this.nftInfor.next_nft_id)
                 .then((res) => {
                     console.log('合成成功', res)
                     this.$loading.hide()
@@ -957,6 +932,10 @@ export default {
 
         //点击使用道具卡按钮
         handlePropsCard() {
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先连接钱包')
+                return
+            }
             this.showPropsCard = true
         },
 
@@ -973,7 +952,7 @@ export default {
         //出征
         async userCampaign() {
             console.log(parseInt(this.tokenId), this.outTokenList[this.currentOutToken].tokenId)
-            setOff(parseInt(this.tokenId), this.outTokenList[this.currentOutToken].tokenId)
+            gameContractApi.setOff(parseInt(this.tokenId), this.outTokenList[this.currentOutToken].tokenId)
                 .then((res) => {
                     console.log('出征成功', res)
                     this.$loading.hide()
@@ -1024,6 +1003,10 @@ export default {
 
         //点击底部出征按钮
         async handleCampaign() {
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先连接钱包')
+                return
+            }
             this.$loading.show()
             const tokensAcount = await this.campaignNeededOutboundTokens()
             if (tokensAcount == 0) {

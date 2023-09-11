@@ -52,9 +52,9 @@
 </template>
 
 <script>
-import { wgtAssets } from '@/request/ether_request/wgt'
-import { isAllowance, approve, wgaAssets } from '@/request/ether_request/wga'
-import { exchange } from '@/request/ether_request/market'
+import { wgtContractApi } from '@/request/ether_request/wgt'
+import { wgaContractApi } from '@/request/ether_request/wga'
+import { marketContractApi } from '@/request/ether_request/market'
 import { showToast } from 'vant'
 import { config } from '@/const/config'
 import Web3 from "web3";
@@ -73,8 +73,8 @@ export default {
         async getUserTotalAssets() {
             const WEB3 = new Web3(window.ethereum);
             // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
-            const wgt = await wgtAssets(window.ethereum.selectedAddress)
-            const wga = await wgaAssets(window.ethereum.selectedAddress)
+            const wgt = await wgtContractApi.wgtAssets(window.ethereum.selectedAddress)
+            const wga = await wgaContractApi.wgaAssets(window.ethereum.selectedAddress)
             this.wgtAmount = WEB3.utils.fromWei(wgt, 'ether')
             this.wgaAmount = WEB3.utils.fromWei(wga, 'ether')
             console.log(WEB3.utils.fromWei(wgt + wga, 'ether'))
@@ -88,7 +88,7 @@ export default {
             // console.log('this.exchangeAmount', this.exchangeAmount)
             // const exchangeAmount = WEB3.utils.toWei(this.exchangeAmount, 'ether')
             // console.log(exchangeAmount)
-            exchange(this.exchangeAmount)
+            marketContractApi.exchange(this.exchangeAmount)
                 .then(res => {
                     console.log('res', res)
                     showToast('兑换成功')
@@ -123,12 +123,12 @@ export default {
         },
         //合约授权
         async contractApprove() {
-            const result = await approve(config.market_addr)
+            const result = await wgaContractApi.approve(config.market_addr)
             return result
         },
         //检查合约授权状态
         async checkAllowanceState() {
-            return await isAllowance(window.ethereum.selectedAddress, config.market_addr)
+            return await wgaContractApi.isAllowance(window.ethereum.selectedAddress, config.market_addr)
         },
         cancelPay() {
             window.history.back();

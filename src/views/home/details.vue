@@ -160,14 +160,12 @@ import { Swipe, SwipeItem, showToast } from 'vant';
 import nfts_list from '@/nft_datas/nfts_list'
 import { config } from '@/const/config'
 import { accountBalance } from '@/request/ether_request'
-import { buy, buyFortuneCard } from '@/request/ether_request/game'
-import { relationshipAddress } from '@/request/ether_request/popularized'
-import { isAllowance, approve } from '@/request/ether_request/wgt'
-import { dealNFT } from '@/request/ether_request/market'
+import { gameContractApi } from '@/request/ether_request/game'
+import { wgtContractApi } from '@/request/ether_request/wgt'
+import { marketContractApi } from '@/request/ether_request/market'
 import { nftDetails, buyMarketNFTApi } from '@/request/api_request'
-import { ZeroAddress } from "ethers"
 import { filterAmount } from '@/utils/filterValue';
-import { WGTFromUSDT } from '@/request/ether_request/help'
+import { helpContractApi } from '@/request/ether_request/help'
 import Web3 from "web3";
 
 export default {
@@ -215,7 +213,7 @@ export default {
             }
         },
         async isInsufficientBalance(usdt) {
-            const result = await WGTFromUSDT(usdt)
+            const result = await helpContractApi.WGTFromUSDT(usdt)
             return this.$store.state.wgtBalance < result
         },
         swipeChange(index) {
@@ -230,7 +228,7 @@ export default {
                 this.$loading.hide()
                 return
             }
-            buyFortuneCard(this.nftInfor.id)
+            gameContractApi.buyFortuneCard(this.nftInfor.id)
                 .then(res => {
                     this.$loading.hide()
                     showToast('购买成功')
@@ -268,12 +266,12 @@ export default {
         },
         //合约授权
         async contractApprove(contractAddress) {
-            const result = await approve(contractAddress)
+            const result = await wgtContractApi.approve(contractAddress)
             return result
         },
         //检查合约授权状态
         async checkAllowanceState(walletAddress, contractAddress) {
-            return await isAllowance(walletAddress, contractAddress)
+            return await wgtContractApi.isAllowance(walletAddress, contractAddress)
         },
         //判断当前购买的卡片是否为财神卡
         isWealthCard(nftType) {
@@ -341,6 +339,10 @@ export default {
         },
         //点击购买按钮
         async handlePay() {
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先连接钱包')
+                return
+            }
             console.log(Number(this.nftInfor.price).toFixed(0))
             // return
             const isInsufficientBalance = await this.isInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
@@ -397,42 +399,11 @@ export default {
             } else {
                 this.userBuyFortuneCard()
             }
-
-            // console.log('hasAllowance', hasAllowance)
-            // if (hasAllowance == 0) {
-            //     const approveResult = await this.contractApprove()
-            //     console.log('approveResult', approveResult)
-            //     if (approveResult.status == 1) {
-            //         if (this.isWealthCard(this.nftInfor.id) === -1) {
-            //             if (this.goodType === 'good') {
-            //                 this.payFromMall()
-            //             } else if (this.goodType === 'market') {
-            //                 this.payFromMarket()
-            //             }
-            //         } else {
-            //             this.userBuyFortuneCard()
-            //         }
-
-            //     } else {
-            //         this.$loading.hide()
-            //         showToast('授权失败，请重新授权')
-            //     }
-            // } else {
-            //     if (this.isWealthCard(this.nftInfor.id) === -1) {
-            //         if (this.goodType === 'good') {
-            //             this.payFromMall()
-            //         } else if (this.goodType === 'market') {
-            //             this.payFromMarket()
-            //         }
-            //     } else {
-            //         this.userBuyFortuneCard()
-            //     }
-            // }
         },
         payFromMall() {
             console.log(this.nftInfor.id)
             // return
-            buy(this.nftInfor.id)
+            gameContractApi.buy(this.nftInfor.id)
                 .then((res) => {
                     this.$loading.hide()
                     showToast('购买成功')
@@ -441,16 +412,14 @@ export default {
                 .catch((err) => {
                     this.$loading.hide()
                     showToast('购买失败，请重新购买')
-                    // this.$router.push({
-                    //     path: '/personal'
-                    // })
+
                     console.log(err)
                 })
         },
         payFromMarket() {
             console.log(this.tokenId, Math.ceil(Number(this.nftAmount)))
             // return
-            dealNFT(this.tokenId, (Math.ceil(Number(this.nftAmount))).toString())
+            marketContractApi.dealNFT(this.tokenId, (Math.ceil(Number(this.nftAmount))).toString())
                 .then((res) => {
                     this.updataMarketNFTApi()
                 })

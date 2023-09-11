@@ -99,7 +99,6 @@
 <script>
 import { userMarkedDetials } from '@/request/api_request'
 import { markMap, cancelMarkMap } from '@/request/ether_request/map'
-import { approve, isAllowance } from '@/request/ether_request/wgt'
 import { showToast } from 'vant'
 import { config } from '@/const/config'
 
@@ -144,7 +143,7 @@ export default {
         },
         //对当前合约地址进行授权
         async contractApprove() {
-            const result = await approve(config.map_addr)
+            const result = await wgtContractApi.approve(config.map_addr)
             return result
         },
         async handleMarkMap() {
@@ -187,7 +186,7 @@ export default {
         },
         //检查授权状态
         async checkAllowanceState() {
-            return await isAllowance(ethereum.selectedAddress, config.map_addr)
+            return await wgtContractApi.isAllowance(ethereum.selectedAddress, config.map_addr)
         },
 
         //认证关公地图

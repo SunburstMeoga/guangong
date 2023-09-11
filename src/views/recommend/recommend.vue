@@ -58,7 +58,7 @@ import { config } from '@/const/config'
 import axios from 'axios'
 import HomeIn from './inHome.vue'
 import HomeOut from './outHome.vue'
-import { relationshipAddress } from '@/request/ether_request/popularized'
+import { popularContractApi } from '@/request/ether_request/popularized'
 
 export default {
     components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs, [showDialog.name]: showDialog },
@@ -101,7 +101,7 @@ export default {
         //查找当前用户上级地址
         getRelationshipAddress() {
             this.$loading.show()
-            relationshipAddress(window.ethereum.selectedAddress)
+            popularContractApi.relationshipAddress(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('当前用户上级地址', res)
                     this.$loading.hide()
@@ -192,7 +192,7 @@ export default {
         async load() {
             // const provider = new ethers.BrowserProvider(window.ethereum)
             // const GAME = new ethers.Contract(config.popularized_addr, config.game_abi, provider)
-            const ret = await relationshipAddress(ethereum.selectedAddress)
+            const ret = await popularContractApi.relationshipAddress(ethereum.selectedAddress)
             this.$store.commit('setParentAddress', ret.parent)
             if (ret.parent == ZeroAddress) {
                 this.inHome = false

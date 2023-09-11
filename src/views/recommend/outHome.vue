@@ -36,7 +36,7 @@ import { isAddress } from "ethers"
 import { config } from '@/const/config'
 import axios from 'axios'
 import { Cell, CellGroup, showSuccessToast, showFailToast } from 'vant'
-import { relationshipAddress } from '@/request/ether_request/popularized'
+import { popularContractApi } from '@/request/ether_request/popularized'
 import moment from 'moment'
 
 
@@ -72,7 +72,7 @@ export default {
     async mounted() {
         const newUrl = new URL(window.location.href)
         this.p_address = newUrl.searchParams.get('p')
-        relationshipAddress(ethereum.selectedAddress)
+        popularContractApi.relationshipAddress(ethereum.selectedAddress)
             .then(res => {
                 this.p_address = res[0]
             })

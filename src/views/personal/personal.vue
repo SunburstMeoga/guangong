@@ -93,10 +93,12 @@ import AssetsCard from '@/components/AssetsCard'
 import CampaignCard from '@/components/CampaignCard'
 import WealthCard from '@/components/WealthCard'
 import { ownerList, pendingOrderList } from '@/request/api_request'
-import { userInfo, campaignEarnings, wealthEarnings } from '@/request/ether_request/game'
+import { gameContractApi } from '@/request/ether_request/game'
+
 import nfts_list from '@/nft_datas/nfts_list'
 import { filterTime, filterAmount } from '@/utils/filterValue'
-import { isApprovedAll, apppprovalForAll } from '@/request/ether_request/nft'
+import { nftContractApi } from '@/request/ether_request/nft'
+
 import { config } from '@/const/config'
 import { wealthEarningsInfor } from '@/request/ether_request/help'
 
@@ -118,9 +120,11 @@ export default {
         }
     },
     mounted() {
-        this.getPersonNfts()
-        this.getPendingOrderList()
-        this.getUserInfo()
+        if (window.ethereum.selectedAddress) {
+            this.getPersonNfts()
+            this.getPendingOrderList()
+            this.getUserInfo()
+        }
         // console.log('ethereum.selectedAddress', ethereum.selectedAddress)
         // console.log(this.getCammaignAttribute([false, false, true, true]))
     },
@@ -129,21 +133,21 @@ export default {
         filterAmount,
         //检查erc721授权状态
         async erc721ApppprovalState(contractAddress) {
-            return await isApprovedAll(window.ethereum.selectedAddress, contractAddress)
+            return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)
         },
         //erc721合约授权操作
         async erc721ContractApppproval(contractAddress) {
-            const result = await apppprovalForAll(contractAddress)
+            const result = await nftContractApi.apppprovalForAll(contractAddress)
             return result
         },
         //获取当前财神卡能领取的金额
         async getCampaignReceiveAmount(nftIndex) {
-            const result = await wealthEarningsInfor(window.ethereum.selectedAddress, nftIndex)
+            const result = await helpContractApi.wealthEarningsInfor(window.ethereum.selectedAddress, nftIndex)
             return result
         },
         //用户领取出征卡收益
         userReceiveCampaign(index) {
-            campaignEarnings(index)
+            gameContractApi.campaignEarnings(index)
                 .then(res => {
                     console.log(res)
                     showToast('领取成功')
@@ -158,7 +162,7 @@ export default {
         },
         //用户领取财神卡收益
         userReceiveWealth(index) {
-            wealthEarnings(index)
+            gameContractApi.wealthEarnings(index)
                 .then(res => {
                     console.log(res)
                     showToast('领取成功')
@@ -264,7 +268,7 @@ export default {
         },
         //获取用户信息
         getUserInfo() {
-            userInfo(window.ethereum.selectedAddress)
+            gameContractApi.userInfo(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('出征和财神卡', res.deposits)
                     //出征

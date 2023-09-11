@@ -7,6 +7,10 @@ import popularized_abi from "./popularized.json";
 import help_abi from "./help.json";
 
 const config = {
+  chainId: "46655",
+  rpc_url: "http://47.115.211.205/rpc",
+  chainName: "WGT MainNet",
+  blockExplorerUrls: "",
   erc20_abi: erc20_abi,
   erc721_abi: erc721_abi,
   game_abi: game_abi,

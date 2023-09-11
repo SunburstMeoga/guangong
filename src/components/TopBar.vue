@@ -20,7 +20,7 @@
                 <div class="pt-10 text-white w-11/12 ml-auto mr-auto">
                     <div class="border-module">
                         <div class="mb-6" @click="viewAssets">{{ $t('menu.personal_center') }}</div>
-                        <div class="mb-6" @click="toMap">{{ $t('menu.guangong_map') }}</div>
+                        <!-- <div class="mb-6" @click="toMap">{{ $t('menu.guangong_map') }}</div> -->
                         <div class="mb-6" @click="toRecommend">{{ $t('menu.recommend') }}</div>
                         <div class="mb-6" @click="viewGoods">{{ $t('menu.official_release') }}</div>
                         <div class="mb-6" @click="toWGTExchangeWGA">{{ $t('menu.wgt_exchange') }}</div>
@@ -52,19 +52,20 @@
                     </div>
                 </div>
 
-                <!-- <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
-                    <div
-                        class="buy-button text-primary-word font-medium text-lg py-4 rounded flex justify-center items-center">
+                <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
+                    v-if="window.ethereum.selectedAddress">
+                    <div class="buy-button text-primary-word font-medium text-lg py-4 rounded flex justify-center items-center"
+                        @click="handleConnect">
                         連接錢包
                     </div>
-                </div> -->
+                </div>
             </div>
         </van-popup>
     </div>
 </template>
 
 <script>
-import { Popup } from 'vant'
+import { Popup, showToast } from 'vant'
 export default {
     components: { [Popup.name]: Popup },
     data() {
@@ -85,6 +86,29 @@ export default {
         window.addEventListener('scroll', this.handleScroll)
     },
     methods: {
+        //点击链接钱包按钮
+        async login() {
+            console.log('Login')
+            try {
+                const accounts = await ethereum.request({
+                    method: 'eth_requestAccounts',
+                })
+                this.$store.commit('updateUserInfor', { address: accounts[0] })
+
+            } catch (error) {
+                showToast('连接失败，请重新连接')
+            }
+        },
+        async handleConnect() {
+            try {
+                const accounts = await ethereum.request({
+                    method: 'eth_requestAccounts',
+                })
+                this.getWalletBalance(accounts[0])
+            } catch (error) {
+                console.error(error)
+            }
+        },
         viewGoods() {
             this.$router.push({
                 path: '/nfts/mall',
@@ -105,18 +129,30 @@ export default {
             this.showRight = false
         },
         toRecommend() {
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先连接钱包')
+                return
+            }
             this.$router.push({
                 path: '/recommend'
             })
             this.showRight = false
         },
         viewAssets() {
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先连接钱包')
+                return
+            }
             this.$router.push({
                 path: '/personal'
             })
             this.showRight = false
         },
         toWGTExchangeWGA() {
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先连接钱包')
+                return
+            }
             this.$router.push({
                 path: '/exchange'
             })

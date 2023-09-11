@@ -59,8 +59,8 @@
                 <div class="flex justify-start items-center">
                     <span>可领取金额：</span>
                     <span class="font-bold ">{{ poolInfor.b }} WGT</span>
-                    <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded"
-                        @click="userReceivePoolEarnings">领取</span>
+                    <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded" @click="userReceivePoolEarnings">{{
+                        window.ethereum.selectedAddress }}</span>
                 </div>
             </div>
         </div>
@@ -93,11 +93,13 @@
 
 <script>
 import { RollingText, showSuccessToast, showToast } from 'vant';
-import { userInfo, receivePoolEarnings } from '@/request/ether_request/game'
+// import { userInfo, receivePoolEarnings } from '@/request/ether_request/game'
+import { gameContractApi } from '@/request/ether_request/game'
+
 import { userIncome } from '@/request/api_request'
-import { wgtAssets } from '@/request/ether_request/wgt'
-import { wgaAssets } from '@/request/ether_request/wga'
-import { poolEarningsInfor } from '@/request/ether_request/help'
+import { wgtContractApi } from '@/request/ether_request/wgt'
+import { wgaContractApi } from '@/request/ether_request/wga'
+import { helpContractApi } from '@/request/ether_request/help'
 
 import Web3 from "web3";
 
@@ -114,10 +116,13 @@ export default {
     },
     mounted() {
         this.address = window.ethereum.selectedAddress
-        this.getUserInfo()
-        this.getUserIncome()
-        this.getUserTotalAssets()
-        this.getPoolInfor()
+        if (window.ethereum.selectedAddress) {
+            this.getUserInfo()
+            this.getUserIncome()
+            this.getUserTotalAssets()
+        }
+
+
     },
     methods: {
         getFilterAmount(amount) {
@@ -129,13 +134,16 @@ export default {
         },
         //领取总奖池收益
         userReceivePoolEarnings() {
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先登录')
+            }
             this.$loading.show()
             if (this.poolInfor.b == 0) {
                 showToast('无可领取余额')
                 this.$loading.hide()
                 return
             }
-            receivePoolEarnings(this.poolInfor.b)
+            gameContractApi.receivePoolEarnings(this.poolInfor.b)
                 .then(res => {
                     showToast('领取成功')
                     this.$loading.hide()
@@ -149,7 +157,7 @@ export default {
         },
         //获取奖金池信息
         getPoolInfor() {
-            poolEarningsInfor(window.ethereum.selectedAddress)
+            helpContractApi.poolEarningsInfor(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('奖池信息', res)
                     this.poolInfor = res
@@ -161,8 +169,8 @@ export default {
         async getUserTotalAssets() {
             const WEB3 = new Web3(window.ethereum);
             // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
-            const wgt = await wgtAssets(window.ethereum.selectedAddress)
-            const wga = await wgaAssets(window.ethereum.selectedAddress)
+            const wgt = await wgtContractApi.wgtAssets(window.ethereum.selectedAddress)
+            const wga = await wgaContractApi.wgaAssets(window.ethereum.selectedAddress)
             console.log(WEB3.utils.fromWei(wgt + wga, 'ether'))
             this.totalAssets = WEB3.utils.fromWei(wgt + wga, 'ether')
         },
@@ -208,7 +216,7 @@ export default {
         },
         //获取用户收益信息
         getUserInfo() {
-            userInfo(window.ethereum.selectedAddress)
+            gameContractApi.userInfo(window.ethereum.selectedAddress)
                 .then(res => {
                     // console.log('用户收益详情', res)
                     this.earningsInfo = res
