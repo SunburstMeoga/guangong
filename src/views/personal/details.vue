@@ -83,7 +83,7 @@
                     <!-- 战法道具卡介绍 -->
                     <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'tactics_props'">
                         <div class="flex justify-between items-center">
-                            <div class="text-2xl ">{{ nftInfo.name }}道具卡详情</div>
+                            <div class="text-2xl ">{{ nftInfor.name }}道具卡详情</div>
                         </div>
                         <div class="mt-8">
                             <div class="mb-6">
@@ -344,7 +344,7 @@
                     <div v-if="nftInfor.id == 59"
                         class="mb-4 break-all text-tips-word w-full  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
                         <div>
-                            当前选择：{{ propEffectNftRole }}
+                            当前选择角色卡编号：{{ propEffectNftRole }}
                         </div>
                     </div>
                 </div>
@@ -457,7 +457,7 @@ export default {
         if (this.nftInfor.id !== 62) {
             this.lowerAddressList = [{ text: window.ethereum.selectedAddress, value: 0 }]
         }
-        this.getLowerAddress()
+        // this.getLowerAddress()
         console.log('nftItem', this.nftInfor)
         console.log(this.tokenId)
     },
@@ -479,6 +479,7 @@ export default {
         },
         //获取某个地址下正在出征的nft
         getExpeditionCards(walletAddress) {
+            this.expeditionCards = []
             gameContractApi.userInfo(walletAddress)
                 .then(res => {
                     console.log('res', res.cards)
@@ -573,11 +574,12 @@ export default {
 
         //点击战法道具卡弹窗确认按钮
         async handlePropCard(nftType) {
-            this.$loading.show()
             if (!this.propsEffectaAddress) {
                 showToast(`请填写"${this.nftInfor.name}"道具卡作用地址`)
                 return
             }
+            this.$loading.show()
+
             // const testIndex = await this.getPropEffectNftIndex(this.propsEffectaAddress)
             // console.log('testIndex', testIndex)
             // return
@@ -611,12 +613,13 @@ export default {
                 });
                 return
             } else {
-                this.getUsePropCard(nftType)
+                this.getUsePropCard(this.nftInfor.id)
             }
         },
 
         //当前使用的战法道具卡
         getUsePropCard(nftType) {
+
             switch (nftType) {
                 case 59: this.usePropsFromHuaTuo()
                     break;
@@ -632,6 +635,12 @@ export default {
         },
         //使用华佗道具卡
         async usePropsFromHuaTuo() {
+            if (this.propEffectNftIndex === null) {
+                console.log(this.propEffectNftIndex)
+                this.$loading.hide()
+                showToast('请选择作用地址的角色卡')
+                return
+            }
             console.log('华佗道具卡', this.propsEffectaAddress, this.propEffectNftIndex, this.nftInfor.id)
             gameContractApi.huatuoProps(this.propsEffectaAddress, this.propEffectNftIndex, this.tokenId)
                 .then(res => {
