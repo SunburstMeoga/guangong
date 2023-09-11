@@ -213,7 +213,7 @@
             <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
                 <div class=" leading-6 font-helvetica-neue-bold text-base py-6">NFT挂单</div>
                 <div class="w-11/12 text-sm mb-1">
-                    挂单金额 （USDT）
+                    挂单金额（USDT）
                 </div>
                 <div
                     class="mb-8 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
@@ -771,7 +771,7 @@ export default {
         userPendingOrder() {
             console.log(this.tokenId, this.pendingOrderAmount)
             // return
-            pendingOrder(this.tokenId, this.pendingOrderAmount)
+            pendingOrder(this.tokenId, (this.pendingOrderAmount).toString())
                 .then(res => {
                     console.log('挂单成功', res)
                     this.updataPendingOrder()
@@ -780,6 +780,7 @@ export default {
                     window.history.back()
                 })
                 .catch(err => {
+                    console.log(err)
                     showToast('挂单失败，请重新挂单')
                     this.$loading.hide()
                 })
