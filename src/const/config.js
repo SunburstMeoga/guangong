@@ -32,7 +32,7 @@ const config = {
   // A 0x52974912707C5cBB1C2d25C66307942901c1d2A3
   // B 0x40972d311BC09e2b57A47E81D854CF4905A57e24
   api: "http://47.115.211.205/api/",
-  chainId: "0xb63f",
+  // chainId: "0xb63f",
   // 1 设置NFTbaseURL
   // 2
   /*

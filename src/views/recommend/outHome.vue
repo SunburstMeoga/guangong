@@ -6,7 +6,7 @@
                 <div class="text-sm">{{ address }}</div>
             </div>
             <div class="w-11/12 text-left mb-2">上级地址</div>
-            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-6">
+            <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4 break-all ">
                 <div class="text-sm">{{ p_address }}</div>
             </div>
             <div class="w-11/12 text-left mb-2" v-if="childs1.length !== 0">我的下级</div>
