@@ -532,6 +532,7 @@ const nfts_list = [
     circulation: 100,
     award: 104.6666667,
     cycle: 7,
+    price: "100",
   },
 
   {
@@ -543,6 +544,7 @@ const nfts_list = [
     circulation: 500,
     award: 552.5,
     cycle: 15,
+    price: "500",
   },
   {
     id: 12,
@@ -553,6 +555,7 @@ const nfts_list = [
     circulation: 1000,
     award: 1220,
     cycle: 30,
+    price: "1000",
   },
   {
     id: 13,
@@ -563,6 +566,7 @@ const nfts_list = [
     circulation: 3000,
     award: 3690,
     cycle: 30,
+    price: "3000",
   },
   {
     id: 14,
@@ -573,6 +577,7 @@ const nfts_list = [
     circulation: 5000,
     award: 6200,
     cycle: 30,
+    price: "5000",
   },
   {
     id: 15,
@@ -583,6 +588,7 @@ const nfts_list = [
     circulation: 10000,
     award: 12500,
     cycle: 30,
+    price: "10000",
   },
   {
     id: 16,
@@ -593,6 +599,7 @@ const nfts_list = [
     circulation: 20000,
     award: 25200,
     cycle: 30,
+    price: "20000",
   },
   {
     id: 17,
@@ -603,6 +610,7 @@ const nfts_list = [
     circulation: 30000,
     award: 38100,
     cycle: 30,
+    price: "30000",
   },
   {
     id: 18,
@@ -613,6 +621,7 @@ const nfts_list = [
     circulation: 50000,
     award: 64000,
     cycle: 30,
+    price: "50000",
   },
   {
     id: 19,
@@ -623,6 +632,7 @@ const nfts_list = [
     circulation: 100000,
     award: 143500,
     cycle: 45,
+    price: "100000",
   },
   {
     id: 20,
@@ -633,6 +643,7 @@ const nfts_list = [
     circulation: 200000,
     award: 320000,
     cycle: 60,
+    price: "200000",
   },
   {
     id: 21,
@@ -643,6 +654,7 @@ const nfts_list = [
     circulation: 500000,
     award: 1175000,
     cycle: 90,
+    price: "500000",
   },
   {
     id: 22,
@@ -653,6 +665,7 @@ const nfts_list = [
     circulation: 1000000,
     award: 4600000,
     cycle: 180,
+    price: "1000000",
   },
 ];
 
