@@ -13,7 +13,7 @@
             <div class="text-theme-primary text-xl">{{ name }}</div>
             <div class="text-icon-gray">{{ cardType }}</div>
             <!-- <div class="text-icon-gray"> 正在出征 </div> -->
-            <div v-if="type === 'pending'" class="text-icon-gray">NFT ID # {{ nftID }}</div>
+            <div v-if="type === 'pending'" class="text-icon-gray">No. {{ nftID }}</div>
             <div v-else class="text-icon-gray">No. {{ token }}</div>
             <div class="text-icon-gray text-right pr-2 font-bold">{{ price }}</div>
 

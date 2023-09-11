@@ -51,8 +51,8 @@ if (window.ethereum) {
       return result;
     },
     //使用华佗道具卡
-    huatuoProps: async function (walletAddress, nftIndex) {
-      const result = await GAMETRADE.huaTuo(walletAddress, nftIndex, 59);
+    huatuoProps: async function (walletAddress, nftIndex, tokenId) {
+      const result = await GAMETRADE.huaTuo(walletAddress, nftIndex, tokenId);
       return result;
     },
     //使用张角道具卡

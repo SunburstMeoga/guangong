@@ -53,7 +53,8 @@
                                 <div v-for="( _item, _index ) in campaignList" :key="index"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                     <campaign-card type="pending" :nftRole="_item.nft_role" :time="filterTime(_item.time)"
-                                        @receiveProceeds="handleReceiveCampaignProceeds(_index)"
+                                        @campaignAgain="handleCampaignAgain(_item, _index)"
+                                        @receiveProceeds="handleReceiveCampaignProceeds(_item, _index)"
                                         :imageUrl="_item.infor.imageUrl" :nftToken="_item.nft_token" :count="_item.count"
                                         :income="_item.income"
                                         :cammaignAttribute="this.getCammaignAttribute([_item.zhangJiao, _item.zhuGeLiang, _item.mengHuo, _item.yuanShu])"
@@ -83,6 +84,27 @@
 
             </div>
         </div>
+        <van-popup v-model:show="showOutToken">
+            <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择{{ nftInfor.outbound_tokens }}</div>
+                <div @click="clickOutToken(index)" v-for="(item, index) in outTokenList" :key="index"
+                    class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded"
+                    :class="currentOutToken === index ? 'buy-button text-white' : ''">
+                    {{ nftInfor.outbound_tokens }} #{{ item.tokenId }}
+                </div>
+                <div class="flex w-11/12 justify-between items-center mt-6">
+
+                    <div class="w-4/12  border border-language-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="showOutToken = false">
+                        取消
+                    </div>
+                    <div class="w-7/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="confirmCampaign">
+                        确认使用并出征
+                    </div>
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 
@@ -92,7 +114,7 @@ import PersonalAssets from '@/components/PersonalAssets'
 import AssetsCard from '@/components/AssetsCard'
 import CampaignCard from '@/components/CampaignCard'
 import WealthCard from '@/components/WealthCard'
-import { ownerList, pendingOrderList } from '@/request/api_request'
+import { ownerList, pendingOrderList, outboundTokens } from '@/request/api_request'
 import gameContractApi from '@/request/ether_request/game'
 
 import nfts_list from '@/nft_datas/nfts_list'
@@ -104,9 +126,9 @@ import helpContractApi from '@/request/ether_request/help'
 
 
 
-import { Tab, Tabs, showToast } from 'vant';
+import { Tab, Tabs, showToast, Popup } from 'vant';
 export default {
-    components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, PersonalAssets, AssetsCard, CampaignCard, WealthCard },
+    components: { ModuleTitle, [Tab.name]: Tab, [Tabs.name]: Tabs, [Popup.name]: Popup, PersonalAssets, AssetsCard, CampaignCard, WealthCard },
     data() {
         return {
             active: 0,
@@ -115,7 +137,10 @@ export default {
             pendingList: [],
             campaignList: [],
             wealthList: [],
-
+            outTokenList: [],
+            showOutToken: false,
+            currentOutToken: 0,
+            nftInfor: {}
             // assetsList: []
         }
     },
@@ -145,8 +170,106 @@ export default {
             const result = await helpContractApi.wealthEarningsInfor(window.ethereum.selectedAddress, nftIndex)
             return result
         },
+        //获取当前出征的角色卡需要的出征令牌存货
+        async campaignNeededOutboundTokens(outbound_tokens_id) {
+            const result = await outboundTokens(window.ethereum.selectedAddress, outbound_tokens_id)
+            if (result.data.length !== 0) {
+                this.outTokenList = result.data
+                return this.outTokenList
+            }
+            return result.data.length
+        },
+        //再次出征
+        async handleCampaignAgain(item, index) {
+            this.nftInfor = item.infor
+            if (item.count >= item.infor.loss_period) {
+                showToast('当前卡已到达最大出征次数')
+                return
+            }
+            if (!item.income) {
+                showToast('本次出征收益未领取')
+                return
+            }
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先连接钱包')
+                return
+            }
+            this.$loading.show()
+            const tokensAcount = await this.campaignNeededOutboundTokens()
+            if (tokensAcount == 0) {
+                this.$loading.hide()
+                showToast(`请先购买${item.infor.outbound_tokens}`)
+                return
+            }
+            this.$loading.hide()
+            this.showOutToken = true
+            console.log(item.infor.loss_period)
+        },
+        //erc721合约授权操作
+        async erc721ContractApppproval(contractAddress) {
+            const result = await nftContractApi.apppprovalForAll(contractAddress)
+            return result
+        },
+        //检查erc721授权状态
+        async erc721ApppprovalState(contractAddress) {
+            return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)
+        },
+        //出征
+        async userCampaign() {
+            console.log(parseInt(this.nftInfor.tokenId), this.outTokenList[this.currentOutToken].tokenId)
+            gameContractApi.setOff(parseInt(this.nftInfor.tokenId), this.outTokenList[this.currentOutToken].tokenId)
+                .then((res) => {
+                    console.log('出征成功', res)
+                    this.$loading.hide()
+                    window.history.back();
+                })
+                .catch(err => {
+                    console.log('出征失败', err)
+                    this.$loading.hide()
+                })
+        },
+        //点击出征令牌弹窗的确认按钮
+        async confirmCampaign() {
+            this.$loading.show()
+            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            console.log('erc721ApppprovalState', erc721ApppprovalState)
+            if (erc721ApppprovalState !== true) {
+                this.$loading.hide()
+                this.showOutToken = false
+                this.$confirm.show({
+                    title: "提示",
+                    content: "当前用户未进行erc721授权，请先完成授权",
+                    onConfirm: () => {
+                        this.$loading.show()
+                        this.erc721ContractApppproval(config.game_addr)
+                            .then(res => {
+                                console.log(res)
+                                this.$confirm.hide()
+                                this.$loading.hide()
+                                showToast('授权成功')
+                            })
+                            .catch(err => {
+                                this.$confirm.hide()
+                                this.$loading.hide()
+
+                                showToast('授权失败')
+                            })
+                    },
+                    onCancel: () => {
+                        this.$confirm.hide()
+                    }
+                });
+                return
+            } else {
+                this.userCampaign()
+            }
+        },
         //用户领取出征卡收益
-        userReceiveCampaign(index) {
+        userReceiveCampaign(item, index) {
+            if (item.income) {
+                showToast('本次出征收益已领取，不可重复领取')
+                return
+            }
             console.log(index)
             gameContractApi.campaignEarnings(index)
                 .then(res => {
@@ -178,20 +301,20 @@ export default {
                 })
         },
         //点击领取出征卡收益
-        async handleReceiveCampaignProceeds(index) {
+        async handleReceiveCampaignProceeds(item, index) {
             this.$loading.show()
             const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
             if (erc721ApppprovalState !== true) {
                 const erc721Result = await this.erc721ContractApppproval(config.game_addr)
                 console.log('erc721Result', erc721Result)
                 if (erc721Result.status == 1) {
-                    this.userReceiveCampaign(index)
+                    this.userReceiveCampaign(item, index)
                 } else {
                     this.$loading.hide()
                     showToast('授权失败')
                 }
             } else {
-                this.userReceiveCampaign(index)
+                this.userReceiveCampaign(item, index)
             }
 
         },

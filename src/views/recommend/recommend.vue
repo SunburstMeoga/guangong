@@ -169,15 +169,6 @@ export default {
             this.$loading.hide()
             showSuccessToast('签名成功')
         },
-        copyAddress() {
-            navigator.clipboard.writeText('sfasdfasdf').then(() => {
-                showSuccessToast('复制成功')
-
-            }, () => {
-                Toast.fail(this.$t('toast.copyFail'))
-
-            });
-        },
         cancelPay() {
             window.history.back();
         },
