@@ -448,12 +448,15 @@ export default {
             let currentPayWayAllowanState; //当前支付方式合约授权状态
             // const hasWGTAllowance = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
             // const hasWGAAllowance = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
-            if (this.currentPayWay === 0) {
+            if (this.currentPayWay == 0) {
+                console.log('wgt支付')
                 currentPayWayAllowanState = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
             } else {
                 currentPayWayAllowanState = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
+                console.log('wga支付')
+
             }
-            console.log('currentPayWayAllowanState', `当前支付方式${this.currentPay}`, `当前支付方式是否授权${currentPayWayAllowanState}`)
+            console.log('currentPayWayAllowanState', `当前支付方式${this.currentPayWay}`, `当前支付方式是否授权${currentPayWayAllowanState}`)
             // return
 
             if (currentPayWayAllowanState == 0) {
@@ -516,7 +519,7 @@ export default {
             this.showPayWayPopup()
         },
         payFromMall() {
-            console.log(this.nftInfor.id)
+            console.log(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
             // return
             gameContractApi.buy(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
                 .then((res) => {

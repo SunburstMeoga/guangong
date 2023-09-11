@@ -15,7 +15,7 @@
             <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
             <div class="text-theme-primary flex justify-start items-baseline">
                 <!-- <div class="font-bold text-4xl">{{ totalAssets }}</div> -->
-                <div class=" pl-1">{{ wgtBalance }}WGT | {{ wgaBalance }}WGA</div>
+                <div class="font-bold">{{ wgtBalance }}WGT | {{ wgaBalance }}WGA</div>
             </div>
 
         </div>
@@ -23,7 +23,8 @@
             <div class="flex justify-start items-center">
                 <span>总收益：</span>
                 <!-- <span class="font-bold text-theme-primary">{{  earningsInfo.usdt + earningsInfo.selfUsdt }} WGT </span> -->
-                <span class="font-bold text-theme-primary"> {{ $store.state.userInfor.income_sum }} WGT </span>
+                <span class="font-bold text-theme-primary"> {{ getFilterAmount($store.state.userInfor.income_sum) }} WGT
+                </span>
             </div>
 
         </div>
