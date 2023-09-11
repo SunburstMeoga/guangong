@@ -12,10 +12,49 @@
                 <div class="mt-20 py-10">
                     <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
                         color="#E20F2A" @click-tab="onClickTab">
-                        <van-tab v-for="( item, index ) in typeList " :title="item" class="pt-4">
-
+                        <van-tab title="NFT角色卡">
                             <div class="w-11/12 ml-auto mr-auto">
-                                <div class="mb-6" v-for="(item, index ) in cardList " :key="index"
+                                <div class="mb-6" v-for="(item, index ) in nftCards " :key="index"
+                                    @click="toGoodDetails(item)">
+                                    <div>
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
+                                    </div>
+                                </div>
+                            </div>
+                        </van-tab>
+                        <van-tab title="合成道具卡">
+                            <div class="w-11/12 ml-auto mr-auto">
+                                <div class="mb-6" v-for="(item, index ) in synthesisPropCards " :key="index"
+                                    @click="toGoodDetails(item)">
+                                    <div>
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
+                                    </div>
+                                </div>
+                            </div>
+                        </van-tab>
+                        <van-tab title="战法道具卡">
+                            <div class="w-11/12 ml-auto mr-auto">
+                                <div class="mb-6" v-for="(item, index ) in racticsPropCards " :key="index"
+                                    @click="toGoodDetails(item)">
+                                    <div>
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
+                                    </div>
+                                </div>
+                            </div>
+                        </van-tab>
+                        <van-tab title="出征令牌">
+                            <div class="w-11/12 ml-auto mr-auto">
+                                <div class="mb-6" v-for="(item, index ) in campaignTokens " :key="index"
+                                    @click="toGoodDetails(item)">
+                                    <div>
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
+                                    </div>
+                                </div>
+                            </div>
+                        </van-tab>
+                        <van-tab title="财神卡">
+                            <div class="w-11/12 ml-auto mr-auto">
+                                <div class="mb-6" v-for="(item, index ) in wealthCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
                                         <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
@@ -48,7 +87,6 @@ export default {
             currentStage: [],
             closeOnClickAction: false,
             priceSort: '升序',
-
             actionsTime: [
                 { text: '升序' },
                 { text: '降序' },
@@ -58,39 +96,43 @@ export default {
                 { text: '降序' },
             ],
             nfts: [],
-            cardList: []
+            nftCards: [],
+            synthesisPropCards: [],
+            racticsPropCards: [],
+            campaignTokens: [],
+            wealthCards: [],
         }
     },
     mounted() {
-        this.cardList = nfts_list.filter(item => {
+        this.nftCards = nfts_list.filter(item => {
             return item.id === 1
         })
     },
     methods: {
         onClickTab(item) {
             console.log(item.name)
-            this.cardList = []
+            // this.cardList = []
             switch (item.name) {
-                case 0: this.cardList = nfts_list.filter(item => {
+                case 0: this.nftCards = nfts_list.filter(item => {
                     return item.id === 1
                 });
                     break;
                 //合成道具卡
-                case 1: this.cardList = nfts_list.filter(item => {
+                case 1: this.synthesisPropCards = nfts_list.filter(item => {
                     return item.card_type === 'synthesis_props'
                 });
                     break;
                 // 战法道具卡
-                case 2: this.cardList = nfts_list.filter(item => {
+                case 2: this.racticsPropCards = nfts_list.filter(item => {
                     return item.card_type === 'tactics_props'
                 });
                     break;
                 // 出征令牌
-                case 3: this.cardList = nfts_list.filter(item => {
+                case 3: this.campaignTokens = nfts_list.filter(item => {
                     return item.card_type === 'expedition_order'
                 });
                 // 财神卡
-                case 4: this.cardList = nfts_list.filter(item => {
+                case 4: this.wealthCards = nfts_list.filter(item => {
                     return item.card_type === 'fortune_card'
                 });
             }
