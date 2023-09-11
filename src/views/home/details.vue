@@ -160,12 +160,12 @@ import { Swipe, SwipeItem, showToast } from 'vant';
 import nfts_list from '@/nft_datas/nfts_list'
 import { config } from '@/const/config'
 import { accountBalance } from '@/request/ether_request'
-import { gameContractApi } from '@/request/ether_request/game'
-import { wgtContractApi } from '@/request/ether_request/wgt'
-import { marketContractApi } from '@/request/ether_request/market'
+import gameContractApi from '@/request/ether_request/game'
+import wgtContractApi from '@/request/ether_request/wgt'
+import marketContractApi from '@/request/ether_request/market'
 import { nftDetails, buyMarketNFTApi } from '@/request/api_request'
 import { filterAmount } from '@/utils/filterValue';
-import { helpContractApi } from '@/request/ether_request/help'
+import helpContractApi from '@/request/ether_request/help'
 import Web3 from "web3";
 
 export default {
@@ -213,6 +213,7 @@ export default {
             }
         },
         async isInsufficientBalance(usdt) {
+            console.log(helpContractApi)
             const result = await helpContractApi.WGTFromUSDT(usdt)
             return this.$store.state.wgtBalance < result
         },

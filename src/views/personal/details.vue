@@ -376,15 +376,15 @@
 import { Popup, showToast, Picker } from 'vant';
 import { config } from '@/const/config'
 import nfts_list from '@/nft_datas/nfts_list'
-import { gameContractApi } from '@/request/ether_request/game'
-import { wgtContractApi } from '@/request/ether_request/wgt'
-import { nftContractApi } from '@/request/ether_request/nft'
+import gameContractApi from '@/request/ether_request/game'
+import wgtContractApi from '@/request/ether_request/wgt'
+import nftContractApi from '@/request/ether_request/nft'
 
 
-import { marketContractApi } from '@/request/ether_request/market'
+import marketContractApi from '@/request/ether_request/market'
 import { pendingOrderApi, cancelOrderApi, nftDetails, outboundTokens, acountFromNFTType } from '@/request/api_request'
 import { filterAmount, filterTime } from '@/utils/filterValue'
-import { popularContractApi } from '@/request/ether_request/popularized'
+import popularContractApi from '@/request/ether_request/popularized'
 
 export default {
     components: { [Popup.name]: Popup, [Picker.name]: Picker },

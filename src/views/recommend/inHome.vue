@@ -72,7 +72,7 @@ import { config } from '@/const/config'
 import axios from 'axios'
 import { Cell, CellGroup, showSuccessToast, showToast } from 'vant'
 import moment from 'moment'
-import { popularContractApi } from '@/request/ether_request/popularized'
+import popularContractApi from '@/request/ether_request/popularized'
 
 export default {
     components: { [Cell.name]: Cell, [CellGroup.name]: CellGroup, },

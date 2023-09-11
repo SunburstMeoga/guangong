@@ -52,9 +52,9 @@
 </template>
 
 <script>
-import { wgtContractApi } from '@/request/ether_request/wgt'
-import { wgaContractApi } from '@/request/ether_request/wga'
-import { marketContractApi } from '@/request/ether_request/market'
+import wgtContractApi from '@/request/ether_request/wgt'
+import wgaContractApi from '@/request/ether_request/wga'
+import marketContractApi from '@/request/ether_request/market'
 import { showToast } from 'vant'
 import { config } from '@/const/config'
 import Web3 from "web3";

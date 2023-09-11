@@ -94,12 +94,12 @@
 <script>
 import { RollingText, showSuccessToast, showToast } from 'vant';
 // import { userInfo, receivePoolEarnings } from '@/request/ether_request/game'
-import { gameContractApi } from '@/request/ether_request/game'
+import gameContractApi from '@/request/ether_request/game'
 
 import { userIncome } from '@/request/api_request'
-import { wgtContractApi } from '@/request/ether_request/wgt'
-import { wgaContractApi } from '@/request/ether_request/wga'
-import { helpContractApi } from '@/request/ether_request/help'
+import wgtContractApi from '@/request/ether_request/wgt'
+import wgaContractApi from '@/request/ether_request/wga'
+import helpContractApi from '@/request/ether_request/help'
 
 import Web3 from "web3";
 

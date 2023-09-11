@@ -58,7 +58,7 @@ import { config } from '@/const/config'
 import axios from 'axios'
 import HomeIn from './inHome.vue'
 import HomeOut from './outHome.vue'
-import { popularContractApi } from '@/request/ether_request/popularized'
+import popularContractApi from '@/request/ether_request/popularized'
 
 export default {
     components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs, [showDialog.name]: showDialog },

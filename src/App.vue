@@ -10,7 +10,7 @@
 import TopBar from '@/components/TopBar'
 import FooterBar from '@/components/FooterBar'
 import { userIncome } from '@/request/api_request'
-import { wgtContractApi } from '@/request/ether_request/wgt'
+import wgtContractApi from '@/request/ether_request/wgt'
 import { config } from "@/const/config";
 import { showDialog } from 'vant'
 
