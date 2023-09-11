@@ -267,8 +267,8 @@ export default {
                 })
         },
         //合约授权
-        async contractApprove() {
-            const result = await approve(config.game_addr)
+        async contractApprove(contractAddress) {
+            const result = await approve(contractAddress)
             return result
         },
         //检查合约授权状态
@@ -359,7 +359,7 @@ export default {
                 showToast('当前地址暂无上级，请前往社区寻找上级推荐人')
                 return
             }
-            const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.game_addr)
+            const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.market_addr)
             if (hasAllowance == 0) {
                 this.$loading.hide()
                 this.$confirm.show({
@@ -367,7 +367,7 @@ export default {
                     content: "当前用户未授权，请先完成授权",
                     onConfirm: () => {
                         this.$loading.show()
-                        this.contractApprove()
+                        this.contractApprove(config.market_addr)
                             .then(res => {
                                 console.log(res)
                                 this.$confirm.hide()
@@ -448,6 +448,8 @@ export default {
                 })
         },
         payFromMarket() {
+            console.log(this.tokenId, this.nftAmount)
+            // return
             dealNFT(this.tokenId, this.nftAmount)
                 .then((res) => {
                     this.updataMarketNFTApi()

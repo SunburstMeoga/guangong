@@ -32,7 +32,7 @@
                 <span>个人贡献值级别：</span>
                 <span class="font-bold flex justify-start items-baseline">
                     <span>{{ contributionLevel(Number(getFilterAmount($store.state.userInfor.personal))) }} </span> <span
-                        class="text-xs font-normal pl-1">(贡献值：{{ getFilterAmount($store.state.userInfor.personal) }})</span>
+                        class="text-xs font-normal pl-1">(贡献值：{{ $store.state.userInfor.personal }})</span>
                 </span>
 
             </div>
