@@ -4,7 +4,7 @@ import { config } from "@/const/config";
 let provider = {};
 let signer = {};
 let marketContractApi = {};
-if (window.ethereum.selectedAddress) {
+if (window.ethereum) {
   provider = new ethers.BrowserProvider(window.ethereum);
   signer = await provider.getSigner();
   const MARKET = new ethers.Contract(

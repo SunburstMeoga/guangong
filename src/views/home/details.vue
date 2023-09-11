@@ -152,16 +152,40 @@
                 </div>
             </div>
         </div>
+        <!-- 支付方式弹窗 -->
+        <van-popup v-model:show="showPayWay" position="bottom">
+            <div class="text-card-content bg-cover-content flex w-full pb-6 flex-col justify-start items-center">
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择支付方式</div>
+                <div @click="clickPayWay(item, index)" v-for="(item, index) in payWayList" :key="index"
+                    class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-between items-center py-3.5 px-2 text-essentials-white text-sm rounded"
+                    :class="currentPayWay === index ? 'buy-button text-white' : ''">
+                    <span>{{ item.name }}</span>
+                    <span>余额：{{ item.amount }}</span>
+                </div>
+                <div class="flex w-11/12 justify-between items-center mt-6">
+
+                    <div class="w-4/12  border border-language-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="showPayWay = false">
+                        取消
+                    </div>
+                    <div class="w-7/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded"
+                        @click="handleConfirmPay">
+                        确认支付
+                    </div>
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 
 <script>
-import { Swipe, SwipeItem, showToast } from 'vant';
+import { Swipe, SwipeItem, showToast, Popup } from 'vant';
 import nfts_list from '@/nft_datas/nfts_list'
 import { config } from '@/const/config'
 import { accountBalance } from '@/request/ether_request'
 import gameContractApi from '@/request/ether_request/game'
 import wgtContractApi from '@/request/ether_request/wgt'
+import wgaContractApi from '@/request/ether_request/wga'
 import marketContractApi from '@/request/ether_request/market'
 import { nftDetails, buyMarketNFTApi } from '@/request/api_request'
 import { filterAmount } from '@/utils/filterValue';
@@ -169,7 +193,7 @@ import helpContractApi from '@/request/ether_request/help'
 import Web3 from "web3";
 
 export default {
-    components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
+    components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem, [Popup.name]: Popup },
     data() {
         return {
             currentSwipe: 0,
@@ -180,7 +204,10 @@ export default {
             nftInfor: {},
             tokenId: 0,
             goodType: '',
-            nftAmount: ''
+            nftAmount: '',
+            showPayWay: false,
+            currentPayWay: 0,
+            payWayList: []
         }
     },
     mounted() {
@@ -195,10 +222,16 @@ export default {
     },
     methods: {
         accountBalance, filterAmount,
+        clickPayWay(item, index) {
+            if (item.isInsufficientBalance) {
+                showToast(`${item.name}余额不足`)
+                return
+            }
+            this.currentPayWay = index
+        },
         getFilterAmount(amount) {
             const WEB3 = new Web3(window.ethereum);
             // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
-
             const reslut = WEB3.utils.fromWei(amount, 'ether')
             return reslut
         },
@@ -212,9 +245,14 @@ export default {
                 case 'fortune_card': return '财神卡'
             }
         },
-        async isInsufficientBalance(usdt) {
+        async wgtIsInsufficientBalance(usdt) {
             console.log(helpContractApi)
             const result = await helpContractApi.WGTFromUSDT(usdt)
+            return this.$store.state.wgtBalance < result
+        },
+        async wgaIsInsufficientBalance(usdt) {
+            console.log(helpContractApi)
+            const result = await helpContractApi.WGAFromUSDT(usdt)
             return this.$store.state.wgtBalance < result
         },
         swipeChange(index) {
@@ -338,30 +376,52 @@ export default {
                 }
             }
         },
-        //点击购买按钮
-        async handlePay() {
+
+        //获取wgt余额
+        async getWGTBalance(walletAddress) {
+            console.log(wgtContractApi)
+            const result = await wgtContractApi.wgtAssets(walletAddress)
+            // this.payWayList[0] = { name: 'WGT支付', amount: result }
+            return result
+        },
+
+        //获取wga余额
+        async getWGABalance(walletAddress) {
+            const result = await wgaContractApi.wgaAssets(walletAddress)
+            // this.payWayList[0] = { name: 'WGA支付', amount: result }
+            return result
+        },
+
+        //唤起支付方式弹窗
+        async showPayWayPopup() {
             if (!window.ethereum.selectedAddress) {
                 showToast('请先连接钱包')
                 return
             }
-            console.log(Number(this.nftInfor.price).toFixed(0))
-            // return
-            const isInsufficientBalance = await this.isInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
-
-            if (isInsufficientBalance) { //判断是否余额不足
-                showToast(`余额不足`)
+            this.$loading.show()
+            const wgtIsInsufficientBalance = await this.wgtIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
+            const wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
+            const wgtBalance = await this.getWGTBalance(window.ethereum.selectedAddress)
+            const wgaBalance = await this.getWGABalance(window.ethereum.selectedAddress)
+            if (wgtIsInsufficientBalance && !wgaIsInsufficientBalance) {
+                this.currentPayWay = 1
+            } else if (wgtIsInsufficientBalance && wgaIsInsufficientBalance) {
                 this.$loading.hide()
+                showToast('购买NFT所需的WGT或WGA不足')
                 return
             }
+            this.payWayList[0] = { name: 'WGT支付', amount: this.getFilterAmount(wgtBalance), isWgt: true, isInsufficientBalance: wgtIsInsufficientBalance }
+            this.payWayList[1] = { name: 'WGA支付', amount: this.getFilterAmount(wgaBalance), isWgt: false, isInsufficientBalance: wgaIsInsufficientBalance }
+            this.$loading.hide()
+            this.showPayWay = true
+        },
+
+        //点击支付弹窗确认支付按钮
+        async handleConfirmPay() {
+            console.log(Number(this.nftInfor.price).toFixed(0))
             console.log('财神卡？', this.isWealthCard(this.nftInfor.id)) //当前购买的卡片是否为财神卡
+            this.showPayWay = false
             this.$loading.show()
-            // const preAddressArr = await relationshipAddress(window.ethereum.selectedAddress) //是否有上级地址
-            console.log('preAddress', preAddressArr)
-            // if (preAddressArr[0] === ZeroAddress) {
-            //     this.$loading.hide()
-            //     showToast('当前地址暂无上级，请前往社区寻找上级推荐人')
-            //     return
-            // }
             const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
             if (hasAllowance == 0) {
                 this.$loading.hide()
@@ -401,10 +461,15 @@ export default {
                 this.userBuyFortuneCard()
             }
         },
+
+        //点击购买按钮并唤起支付方式弹窗
+        async handlePay() {
+            this.showPayWayPopup()
+        },
         payFromMall() {
             console.log(this.nftInfor.id)
             // return
-            gameContractApi.buy(this.nftInfor.id)
+            gameContractApi.buy(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
                 .then((res) => {
                     this.$loading.hide()
                     showToast('购买成功')

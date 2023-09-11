@@ -4,7 +4,7 @@ import { config } from "@/const/config";
 let provider = {};
 let helpContractApi = {};
 
-if (window.ethereum.selectedAddress) {
+if (window.ethereum) {
   provider = new ethers.BrowserProvider(window.ethereum);
   const HELP = new ethers.Contract(config.help_addr, config.help_abi, provider);
 
@@ -22,6 +22,11 @@ if (window.ethereum.selectedAddress) {
     //获取商品价格usdt所需的wgt
     WGTFromUSDT: async function (usdt) {
       const result = await HELP.getWGT(usdt);
+      return result;
+    },
+    //获取商品价格usdt所需的wga
+    WGAFromUSDT: async function (usdt) {
+      const result = await HELP.getWGA(usdt);
       return result;
     },
   };

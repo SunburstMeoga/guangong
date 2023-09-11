@@ -4,7 +4,7 @@ import { config } from "@/const/config";
 let provider = {};
 let signer = {};
 let gameContractApi = {};
-if (window.ethereum.selectedAddress) {
+if (window.ethereum) {
   provider = new ethers.BrowserProvider(window.ethereum);
   signer = await provider.getSigner();
   const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider);
@@ -26,8 +26,8 @@ if (window.ethereum.selectedAddress) {
       return result;
     },
     //购买nft
-    buy: async function (nftType) {
-      const tx = await GAMETRADE.buy(nftType);
+    buy: async function (nftType, isWGT) {
+      const tx = await GAMETRADE.buy(nftType, isWGT);
       const result = await tx.wait();
       console.log(result);
       return result;
