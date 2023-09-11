@@ -40,7 +40,7 @@ export default {
     components: { ModuleTitle, MallCard, [Tab.name]: Tab, [Tabs.name]: Tabs, [Popover.name]: Popover },
     data() {
         return {
-            typeList: ['NFT角色卡', '合成道具卡', '战法道具卡', '出征令牌'],
+            typeList: ['NFT角色卡', '合成道具卡', '战法道具卡', '出征令牌', '财神卡'],
             goodsType: 'mall',
             toggleStage: false,
             toggleTime: false,
@@ -88,6 +88,10 @@ export default {
                 // 出征令牌
                 case 3: this.cardList = nfts_list.filter(item => {
                     return item.card_type === 'expedition_order'
+                });
+                // 财神卡
+                case 4: this.cardList = nfts_list.filter(item => {
+                    return item.card_type === 'fortune_card'
                 });
             }
         },

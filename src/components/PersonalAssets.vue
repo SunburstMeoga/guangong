@@ -14,8 +14,8 @@
             <div class="">总资产： </div>
             <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
             <div class="text-theme-primary flex justify-start items-baseline">
-                <div class="font-bold text-4xl">{{ totalAssets }}</div>
-                <div class="text-xs font-normal pl-1">(WGT + WGA)</div>
+                <!-- <div class="font-bold text-4xl">{{ totalAssets }}</div> -->
+                <div class=" pl-1">{{ wgtBalance }}WGT | {{ wgaBalance }}WGA</div>
             </div>
 
         </div>
@@ -32,7 +32,7 @@
                 <span>个人贡献值级别：</span>
                 <span class="font-bold flex justify-start items-baseline">
                     <span>{{ contributionLevel(Number(getFilterAmount($store.state.userInfor.personal))) }} </span> <span
-                        class="text-xs font-normal pl-1">(贡献值：{{ $store.state.userInfor.personal }})</span>
+                        class="text-xs font-normal pl-1">(贡献值：{{ getFilterAmount($store.state.userInfor.personal) }})</span>
                 </span>
 
             </div>
@@ -111,7 +111,9 @@ export default {
             earningsInfo: {},
             userLevel: 0,
             totalAssets: '0',
-            poolInfor: {}
+            poolInfor: {},
+            wgtBalance: '0',
+            wgaBalance: '0'
         }
     },
     mounted() {
@@ -184,7 +186,9 @@ export default {
             const wgt = await wgtContractApi.wgtAssets(window.ethereum.selectedAddress)
             const wga = await wgaContractApi.wgaAssets(window.ethereum.selectedAddress)
             console.log(WEB3.utils.fromWei(wgt + wga, 'ether'))
-            this.totalAssets = WEB3.utils.fromWei(wgt + wga, 'ether')
+            this.wgtBalance = WEB3.utils.fromWei(wgt, 'ether')
+            this.wgaBalance = WEB3.utils.fromWei(wga, 'ether')
+
         },
         getUserIncome() {
             userIncome(window.ethereum.selectedAddress)

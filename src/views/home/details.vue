@@ -453,7 +453,7 @@ export default {
             } else {
                 currentPayWayAllowanState = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
             }
-            console.log('currentPayWayAllowanState', this.currentPayWay, currentPayWayAllowanState)
+            console.log('currentPayWayAllowanState', `当前支付方式${this.currentPay}`, `当前支付方式是否授权${currentPayWayAllowanState}`)
             // return
 
             if (currentPayWayAllowanState == 0) {
