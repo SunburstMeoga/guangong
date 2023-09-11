@@ -448,9 +448,9 @@ export default {
                 })
         },
         payFromMarket() {
-            console.log(this.tokenId, this.nftAmount)
-            return
-            dealNFT(this.tokenId, this.nftAmount)
+            console.log(this.tokenId, Math.ceil(Number(this.nftAmount)))
+            // return
+            dealNFT(this.tokenId, Math.ceil(Number(this.nftAmount)))
                 .then((res) => {
                     this.updataMarketNFTApi()
                 })
