@@ -352,20 +352,14 @@ export default {
             }
             console.log('财神卡？', this.isWealthCard(this.nftInfor.id)) //当前购买的卡片是否为财神卡
             this.$loading.show()
-            const preAddressArr = await relationshipAddress(window.ethereum.selectedAddress) //是否有上级地址
+            // const preAddressArr = await relationshipAddress(window.ethereum.selectedAddress) //是否有上级地址
             console.log('preAddress', preAddressArr)
-            if (preAddressArr[0] === ZeroAddress) {
-                this.$loading.hide()
-                showToast('当前地址暂无上级，请前往社区寻找上级推荐人')
-                return
-            }
-            const hasAllowance = 0
-            if (this.goodType === 'good') {
-                hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.game_addr)
-            } else if (this.goodType === 'market') {
-                hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.market_addr)
-            }
-            // const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, config.market_addr)
+            // if (preAddressArr[0] === ZeroAddress) {
+            //     this.$loading.hide()
+            //     showToast('当前地址暂无上级，请前往社区寻找上级推荐人')
+            //     return
+            // }
+            const hasAllowance = await this.checkAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
             if (hasAllowance == 0) {
                 this.$loading.hide()
                 this.$confirm.show({
