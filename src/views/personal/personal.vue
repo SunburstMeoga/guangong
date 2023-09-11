@@ -100,7 +100,7 @@ import { filterTime, filterAmount } from '@/utils/filterValue'
 import nftContractApi from '@/request/ether_request/nft'
 
 import { config } from '@/const/config'
-import { wealthEarningsInfor } from '@/request/ether_request/help'
+import helpContractApi from '@/request/ether_request/help'
 
 
 
