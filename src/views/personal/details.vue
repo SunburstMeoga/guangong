@@ -217,7 +217,7 @@
                 </div>
                 <div
                     class="mb-8 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
-                    <input class="w-full h-full bg-bottom-content" type="text" v-model="pendingOrderAmount"
+                    <input class="w-full h-full bg-bottom-content" type="number" v-model="pendingOrderAmount"
                         placeholder="请输入挂单金额">
                 </div>
                 <div class="w-11/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
