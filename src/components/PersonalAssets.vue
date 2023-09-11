@@ -157,6 +157,7 @@ export default {
             gameContractApi.receivePoolEarnings(this.poolInfor.b)
                 .then(res => {
                     showToast('领取成功')
+                    this.this.getPoolInfor()
                     this.$loading.hide()
                 })
                 .catch(err => {
