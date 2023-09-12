@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { Swipe, SwipeItem } from 'vant';
+import { Swipe, SwipeItem, showToast } from 'vant';
 import nfts_list from '@/nft_datas/nfts_list'
 import ProductCard from '@/components/ProductCard'
 import ModuleTitle from '@/components/ModuleTitle.vue'
@@ -174,6 +174,10 @@ export default {
             })
         },
         toGoodDetails(item) {
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先连接钱包')
+                return
+            }
             this.$router.push({
                 path: '/good/' + item.id
             })

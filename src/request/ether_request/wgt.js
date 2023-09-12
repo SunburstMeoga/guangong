@@ -4,7 +4,7 @@ import { config } from "@/const/config";
 let provider = {};
 let signer = {};
 let wgtContractApi = {};
-if (window.ethereum) {
+if (window.ethereum && window.ethereum.selectedAddress) {
   provider = new ethers.BrowserProvider(window.ethereum);
   signer = await provider.getSigner();
   const WGT = new ethers.Contract(config.wgt_addr, config.erc20_abi, provider);

@@ -4,7 +4,7 @@ import { config } from "@/const/config";
 let provider = {};
 let signer = {};
 let wgaContractApi = {};
-if (window.ethereum) {
+if (window.ethereum && window.ethereum.selectedAddress) {
   provider = new ethers.BrowserProvider(window.ethereum);
   signer = await provider.getSigner();
   const WGA = new ethers.Contract(config.wga_addr, config.erc20_abi, provider);

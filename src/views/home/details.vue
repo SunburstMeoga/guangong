@@ -45,7 +45,7 @@
                                 <div class="text-base text-card-content">{{ nftInfor.outbound_tokens }}</div>
                             </div>
                             <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">令牌價（等值WGT）</div>
+                                <div class="mb-2 text-xs text-icon-gray">令牌價</div>
                                 <div class="text-base text-card-content">{{ nftInfor.token_value }}</div>
 
                             </div>
@@ -114,11 +114,11 @@
                                 <div class="text-base text-card-content">{{ nftInfor.level }}</div>
                             </div>
                             <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">角色价值（等值WGT）</div>
+                                <div class="mb-2 text-xs text-icon-gray">角色价值</div>
                                 <div class="text-base text-card-content">{{ nftInfor.circulation }}</div>
                             </div>
                             <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">财神奖励（等值WGT）</div>
+                                <div class="mb-2 text-xs text-icon-gray">财神奖励</div>
                                 <div class="text-base text-card-content">{{ nftInfor.award }}</div>
                             </div>
                             <div class="mb-6">
