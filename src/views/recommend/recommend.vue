@@ -51,7 +51,7 @@
             新用户
         </div> -->
         <div v-else>
-            <div v-if="isRecommended && isSign" class="flex flex-col text-icon-gray justify-center items-center">
+            <div v-if="isSign" class="flex flex-col text-icon-gray justify-center items-center">
                 <div class="w-11/12 text-left mb-2">上级地址</div>
                 <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-10">
                     <div class="text-sm">{{ p_address }}</div>
@@ -66,7 +66,8 @@
                 <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
                     color="#E20F2A">
                     <van-tab title="建立关系" class="pt-4">
-                        <HomeIn :recommendInfor="recommendInfor" :toBeBoundList="toBeBoundList" />
+                        <HomeIn :recommendInfor="recommendInfor" :toBeBoundList="toBeBoundList" :shareUrl="shareUrl"
+                            :canShare="canShare" />
                     </van-tab>
                     <van-tab title="我的下级" class="pt-4">
                         <HomeOut :myLowerInfo="myLowerInfo" />
@@ -88,6 +89,7 @@ import axios from 'axios'
 import HomeIn from './inHome.vue'
 import HomeOut from './outHome.vue'
 import popularContractApi from '@/request/ether_request/popularized'
+import gameContractApi from '@/request/ether_request/game'
 import { toBeBound, boundList } from '@/request/api_request'
 
 export default {
@@ -112,7 +114,9 @@ export default {
             myLowerInfo: {
                 currentAddress: '',
                 preAddress: ''
-            }
+            },
+            shareUrl: '',
+            canShare: false
         }
     },
     async created() {
@@ -145,37 +149,59 @@ export default {
     async mounted() {
         // this.getRelationshipAddress()
         // return
-        const relationshipAddressInfor = await this.getRelationshipAddress()
+        let relationshipAddressInfor;
         if (this.$route.query.p && this.$route.query.p !== ZeroAddress) {
-            if (relationshipAddressInfor.parent !== ZeroAddress) {
-                this.showConfirmPopup()
+            this.p_address = this.$route.query.p
+            relationshipAddressInfor = await this.getRelationshipAddress(this.$route.query.p)
+            if (relationshipAddressInfor.child.length >= 36) {
+                this.showConfirmPopup("该地址已达到邀请上线，无法签名")
             }
             this.isSign = true //通过别人的邀请链接进来的
-            // return
+            return
+        }
+        relationshipAddressInfor = await this.getRelationshipAddress(window.ethereum.selectedAddress)
+        if (relationshipAddressInfor.parent !== ZeroAddress) {
+            this.showConfirmPopup("您已拥有上级用户，不可签名其它地址")
         }
         console.log(relationshipAddressInfor.parent, relationshipAddressInfor.child)
-        // relationshipAddressInfor.parent == ZeroAddress ? this.isRecommended = false : this.isRecommended = true
+        relationshipAddressInfor.parent == ZeroAddress ? this.isRecommended = false : this.isRecommended = true
         this.recommendInfor.currentAddress = window.ethereum.selectedAddress
         this.myLowerInfo.currentAddress = window.ethereum.selectedAddress
-        relationshipAddressInfor.preAddress !== ZeroAddress ? this.myLowerInfo.preAddress = relationshipAddressInfor.parent : this.myLowerInfo.preAddress = '无上级推荐地址'
+        relationshipAddressInfor.parent !== ZeroAddress ? this.myLowerInfo.preAddress = relationshipAddressInfor.parent : this.myLowerInfo.preAddress = '无上级推荐地址'
         this.recommendInfor.childNum = relationshipAddressInfor.child.length
-        relationshipAddressInfor.preAddress !== ZeroAddress ? this.recommendInfor.preAddress = relationshipAddressInfor.parent : this.recommendInfor.preAddress = '无上级推荐地址'
+        relationshipAddressInfor.parent !== ZeroAddress ? this.recommendInfor.preAddress = relationshipAddressInfor.parent : this.recommendInfor.preAddress = '无上级推荐地址'
         const toBeBoundList = await this.getToBeBoundList(window.ethereum.selectedAddress)
         const boundList = await this.getBoundList(window.ethereum.selectedAddress)
-
         this.toBeBoundList = toBeBoundList
         this.boundList = boundList
         this.showSkeleton = false
+        const hasEarningCards = await this.getUserCardsAndWealth(window.ethereum.selectedAddress)
+        if (hasEarningCards) {
+            this.shareUrl = `${window.location.href}?p=${window.ethereum.selectedAddress}`
+            this.canShare = true
+        } else {
+            this.shareUrl = '暂无卡片正在收益，无法作为上级邀请其它用户'
+            this.canShare = false
+        }
         console.log(this.toBeBoundList, toBeBoundList)
-
     },
 
     methods: {
+        //查询当前用户是否有正在出征的卡或者财神卡
+        async getUserCardsAndWealth(walletAddress) {
+            const result = await gameContractApi.userInfo(walletAddress)
+            const cards = result.cards
+            const deposits = result.deposits
+            if (deposits.length == 0 && cards.length == 0) {
+                return false
+            }
+            return true
+        },
         //被邀请过的用户通过别人的邀请链接进来起提示弹窗
-        showConfirmPopup() {
+        showConfirmPopup(content) {
             this.$confirm.show({
                 title: "提示",
-                content: "您已拥有上级用户，不可签名其它地址",
+                content: content,
                 showCancelButton: false,
                 onConfirm: () => {
                     this.$router.push({
@@ -197,9 +223,9 @@ export default {
             return list;
         },
         //查找某个地址的推荐关系
-        async getRelationshipAddress() {
+        async getRelationshipAddress(walletAddress) {
             // this.$loading.show()
-            const relationshipAddressInfor = await popularContractApi.relationshipAddress(window.ethereum.selectedAddress)
+            const relationshipAddressInfor = await popularContractApi.relationshipAddress(walletAddress)
             // this.$loading.hide()
             this.showSkeleton = false
             return relationshipAddressInfor

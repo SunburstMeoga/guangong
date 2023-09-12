@@ -24,8 +24,8 @@
 
             <div class="w-11/12 text-left mb-2">邀请链接</div>
             <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-6 ">
-                <div class="break-all mb-4 rounded bg-primary-black p-2 text-sm">
-                    {{ share }}
+                <div class="break-all mb-4 rounded p-2 text-sm">
+                    {{ shareUrl }}
                 </div>
                 <div class="buy-button text-primary-word py-2 rounded text-sm button-word" @click="copyAddress">
                     复制邀请链接
@@ -34,8 +34,8 @@
             <!-- <div class="w-11/12 buy-button text-primary-word text-lg py-2 button-word mb-10" @click="copyAddress">
                 复制邀请链接
             </div> -->
-            <div class="w-11/12 text-left mb-2" v-if="toBeBoundList.length !== 0">待绑定下级地址</div>
-            <template v-for="obj, key in toBeBoundList" :key="key">
+            <div class="w-11/12 text-left mb-2" v-if="childs0.length !== 0">待绑定下级地址</div>
+            <template v-for="obj, key in childs0" :key="key">
                 <div class="w-11/12 mb-4">
                     <van-cell-group inset>
                         <van-cell title="朋友地址:" :value="obj.c_addr">
@@ -81,7 +81,6 @@ export default {
         return {
             address: '',
             p_address: '',
-            share: `${window.location.href}?p=${ethereum.selectedAddress}`,
             childs0: [],
             childs1: [],
         }
@@ -94,11 +93,19 @@ export default {
         toBeBoundList: {
             type: Array,
             default: () => []
-        }
+        },
+        shareUrl: {
+            type: String,
+            default: ''
+        },
+        canShare: {
+            type: Boolean,
+            default: false
+        },
     },
     mounted() {
         // this.address = ethereum.selectedAddress
-        // this.load()
+        this.load()
         // popularContractApi.relationshipAddress(ethereum.selectedAddress)
         //     .then(res => {
         //         this.p_address = res[0]
@@ -109,6 +116,10 @@ export default {
     },
     methods: {
         copyAddress() {
+            if (!this.canShare) {
+                showToast('暂无卡片正在收益，无法作为上级邀请其它用户')
+                return
+            }
             if (navigator.clipboard && window.isSecureContext) {
                 console.log('aaa')
                 navigator.clipboard.writeText(this.share).then(() => {

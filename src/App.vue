@@ -18,7 +18,7 @@ export default {
   name: 'App',
   components: { TopBar, FooterBar, [showDialog.name]: showDialog },
   mounted() {
-    if (window.ethereum.selectedAddress) {
+    if (window.ethereum) {
       this.getUserIncome()
       this.accountHasChanged()
       this.getWgtBalance()
