@@ -101,7 +101,7 @@ export default {
                 })
                 this.showRight = false
                 this.$store.commit('updateUserInfor', { address: accounts[0] })
-
+                this.hasWalletAddress = true
             } catch (error) {
                 showToast('连接失败，请重新连接')
             }

@@ -169,6 +169,10 @@ export default {
             })
         },
         toMarketDetails(item) {
+            if (!window.ethereum.selectedAddress) {
+                showToast('请先连接钱包')
+                return
+            }
             this.$router.push({
                 path: '/market/' + item.tokenId
             })
