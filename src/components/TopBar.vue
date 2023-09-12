@@ -21,6 +21,7 @@
                     <div class="border-module">
                         <div class="mb-6" @click="viewAssets">{{ $t('menu.personal_center') }}</div>
                         <!-- <div class="mb-6" @click="toMap">{{ $t('menu.guangong_map') }}</div> -->
+                        <div class="mb-6" @click="toMyTeam">我的团队</div>
                         <div class="mb-6" @click="toRecommend">{{ $t('menu.recommend') }}</div>
                         <div class="mb-6" @click="viewGoods">{{ $t('menu.official_release') }}</div>
                         <div class="mb-6" @click="toWGTExchangeWGA">{{ $t('menu.wgt_exchange') }}</div>
@@ -107,6 +108,12 @@ export default {
         },
         async handleConnect() {
             this.login()
+        },
+        toMyTeam() {
+            this.$router.push({
+                path: '/team',
+            })
+            this.showRight = false
         },
         viewGoods() {
             this.$router.push({

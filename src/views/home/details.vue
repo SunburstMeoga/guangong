@@ -351,53 +351,49 @@ export default {
                     return false
                 }
             } else if (contributionValue >= 10000 && contributionValue < 50000) {
-                if (this.nftInfor.id === 13) {
+                if (this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 50000 && contributionValue < 100000) {
-                if (this.nftInfor.id === 14) {
+                if (this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 100000 && contributionValue < 300000) {
-                if (this.nftInfor.id === 15) {
+                if (this.nftInfor.id === 15 || this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 300000 && contributionValue < 500000) {
-                if (this.nftInfor.id === 16) {
+                if (this.nftInfor.id === 16 || this.nftInfor.id === 15 || this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 500000 && contributionValue < 1000000) {
-                if (this.nftInfor.id === 17) {
+                if (this.nftInfor.id === 17 || this.nftInfor.id === 16 || this.nftInfor.id === 15 || this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 1000000 && contributionValue < 3000000) {
-                if (this.nftInfor.id === 18) {
+                if (this.nftInfor.id === 18 || this.nftInfor.id === 17 || this.nftInfor.id === 16 || this.nftInfor.id === 15 || this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 3000000 && contributionValue < 70000000) {
-                if (this.nftInfor.id === 19 || this.nftInfor.id === 20 || this.nftInfor.id === 21) {
+                if (this.nftInfor.id === 19 || this.nftInfor.id === 20 || this.nftInfor.id === 21 || this.nftInfor.id === 18 || this.nftInfor.id === 17 || this.nftInfor.id === 16 || this.nftInfor.id === 15 || this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 70000000) {
-                if (this.nftInfor.id === 22) {
-                    return true
-                } else {
-                    return false
-                }
+                return true
             }
         },
 
