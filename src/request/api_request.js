@@ -94,3 +94,19 @@ export async function acountFromNFTType(walletAddress, nftType) {
   );
   return reslut;
 }
+
+//推荐关系邀请人待绑定的被邀请人列表
+export async function toBeBound(walletAddress) {
+  const result = await axios.get(
+    `${config.api}friends/childs/${walletAddress}/0`
+  );
+  return result;
+}
+
+// 推荐关系邀请人已绑定的被邀请人列表
+export async function boundList(walletAddress) {
+  const result = await axios.get(
+    `${config.api}friends/childs/${walletAddress}/1`
+  );
+  return result;
+}

@@ -9,17 +9,17 @@
         <div class="flex flex-col text-icon-gray justify-center items-center">
             <div class="w-11/12 text-left mb-2">当前地址</div>
             <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-3">
-                <div class="text-sm">{{ address }}</div>
+                <div class="text-sm">{{ recommendInfor.currentAddress }}</div>
             </div>
             <div class="w-11/12 text-icon-gray bg-card-introduce py-4 rounded-md px-2 mb-6">
                 <div class="flex justify-between items-center text-sm">
                     <div>已邀请</div>
-                    <div class="text-theme-primary">{{ childs1.length }}人</div>
+                    <div class="text-theme-primary">{{ recommendInfor.childNum }}人</div>
                 </div>
             </div>
             <div class="w-11/12 text-left mb-2">上级地址</div>
             <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-4 break-all ">
-                <div class="text-sm">{{ p_address }}</div>
+                <div class="text-sm">{{ recommendInfor.preAddress }}</div>
             </div>
 
             <div class="w-11/12 text-left mb-2">邀请链接</div>
@@ -34,8 +34,8 @@
             <!-- <div class="w-11/12 buy-button text-primary-word text-lg py-2 button-word mb-10" @click="copyAddress">
                 复制邀请链接
             </div> -->
-
-            <template v-for="obj, key in childs0" :key="key">
+            <div class="w-11/12 text-left mb-2" v-if="toBeBoundList.length !== 0">待绑定下级地址</div>
+            <template v-for="obj, key in toBeBoundList" :key="key">
                 <div class="w-11/12 mb-4">
                     <van-cell-group inset>
                         <van-cell title="朋友地址:" :value="obj.c_addr">
@@ -73,6 +73,7 @@ import axios from 'axios'
 import { Cell, CellGroup, showSuccessToast, showToast } from 'vant'
 import moment from 'moment'
 import popularContractApi from '@/request/ether_request/popularized'
+import recommend from "@/router/recommend"
 
 export default {
     components: { [Cell.name]: Cell, [CellGroup.name]: CellGroup, },
@@ -80,21 +81,31 @@ export default {
         return {
             address: '',
             p_address: '',
-            share: `${window.location.origin}/#/recommend?p=${ethereum.selectedAddress}`,
+            share: `${window.location.href}?p=${ethereum.selectedAddress}`,
             childs0: [],
             childs1: [],
         }
     },
+    props: {
+        recommendInfor: {
+            type: Object,
+            default: () => { }
+        },
+        toBeBoundList: {
+            type: Array,
+            default: () => []
+        }
+    },
     mounted() {
-        this.address = ethereum.selectedAddress
-        this.load()
-        popularContractApi.relationshipAddress(ethereum.selectedAddress)
-            .then(res => {
-                this.p_address = res[0]
-            })
-            .catch(err => {
-                console.log('err', err)
-            })
+        // this.address = ethereum.selectedAddress
+        // this.load()
+        // popularContractApi.relationshipAddress(ethereum.selectedAddress)
+        //     .then(res => {
+        //         this.p_address = res[0]
+        //     })
+        //     .catch(err => {
+        //         console.log('err', err)
+        //     })
     },
     methods: {
         copyAddress() {

@@ -8,32 +8,50 @@
                     <div class="">{{ title }}</div>
                 </div>
             </div>
-            <div v-show="!isLink" class="flex flex-col text-icon-gray justify-center items-center">
+            <!-- <div v-show="!isLink" class="flex flex-col text-icon-gray justify-center items-center">
                 <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
                     <div class="buy-button text-primary-word text-lg button-word" @click="linkWallet">
                         链接钱包
                     </div>
                     <br />
                 </div>
-            </div>
+            </div> -->
 
+        </div>
+        <div class="" v-if="showSkeleton">
+            <div class="mt-2 px-4">
+                <div class="animate-pulse flex space-x-4 mb-20">
+                    <div class="rounded-full bg-icon-undertone h-10 w-10"></div>
+                    <div class="flex-1 space-y-6 py-1">
+                        <div class="h-10 bg-icon-undertone rounded"></div>
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="h-10 bg-icon-undertone rounded col-span-2"></div>
+                                <div class="h-10 bg-icon-undertone rounded col-span-1"></div>
+                            </div>
+                            <div class="h-10 bg-icon-undertone rounded"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="animate-pulse flex space-x-4">
+                    <div class="flex-1 space-y-6 py-1">
+                        <div class="h-10 bg-icon-undertone rounded"></div>
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="h-10 bg-icon-undertone rounded col-span-2"></div>
+                                <div class="h-10 bg-icon-undertone rounded col-span-1"></div>
+                            </div>
+                            <div class="h-10 bg-icon-undertone rounded"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- <div v-if="isNewUser">
             新用户
         </div> -->
-        <div v-if="!isNewUser">
-            <div v-if="!isSign">
-                <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
-                    color="#E20F2A">
-                    <van-tab title="建立关系" class="pt-4">
-                        <HomeIn />
-                    </van-tab>
-                    <van-tab title="我的下级" class="pt-4">
-                        <HomeOut />
-                    </van-tab>
-                </van-tabs>
-            </div>
-            <div class="flex flex-col text-icon-gray justify-center items-center" v-else>
+        <div v-else>
+            <div v-if="isRecommended && isSign" class="flex flex-col text-icon-gray justify-center items-center">
                 <div class="w-11/12 text-left mb-2">上级地址</div>
                 <div class="w-11/12  bg-card-introduce py-4 rounded-md px-2 mb-10">
                     <div class="text-sm">{{ p_address }}</div>
@@ -43,6 +61,17 @@
                         签名
                     </div>
                 </div>
+            </div>
+            <div v-if="!isRecommended && !isSign">
+                <van-tabs v-model:active="active" swipeable sticky title-active-color="#E20F2A" background="#121212"
+                    color="#E20F2A">
+                    <van-tab title="建立关系" class="pt-4">
+                        <HomeIn :recommendInfor="recommendInfor" :toBeBoundList="toBeBoundList" />
+                    </van-tab>
+                    <van-tab title="我的下级" class="pt-4">
+                        <HomeOut :myLowerInfo="myLowerInfo" />
+                    </van-tab>
+                </van-tabs>
             </div>
         </div>
 
@@ -59,6 +88,7 @@ import axios from 'axios'
 import HomeIn from './inHome.vue'
 import HomeOut from './outHome.vue'
 import popularContractApi from '@/request/ether_request/popularized'
+import { toBeBound, boundList } from '@/request/api_request'
 
 export default {
     components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs, [showDialog.name]: showDialog },
@@ -70,61 +100,122 @@ export default {
             title: '推荐关系',
             isSign: false,
             p_address: '',
-            isNewUser: false
+            isRecommended: false, //当前用户是被被推广过
+            recommendInfor: {
+                currentAddress: '',
+                recommendInfor: 0,
+                preAddress: ''
+            },
+            showSkeleton: true,
+            toBeBoundList: [],
+            boundList: [],
+            myLowerInfo: {
+                currentAddress: '',
+                preAddress: ''
+            }
         }
     },
     async created() {
-        if (this.$route.query.p && this.$route.query.p !== ZeroAddress) {
+        // this.getRelationshipAddress()
+        // if (this.$route.query.p && this.$route.query.p !== ZeroAddress) { //没被推广过
+        //     this.title = '推荐关系'
+        //     this.getRelationshipAddress()
+        //     this.isRecommended = false
+        //     this.isSign = false
+        // } else {
+        //     // 被推广过的
+        //     this.isRecommended = true
+        //     this.title = '签名'
+        //     this.isSign = true
+        //     this.p_address = this.$route.query.p
+        //     // if ((this.$route.query.p).toUpperCase() === (window.ethereum.selectedAddress).toUpperCase()) {
+        //     //     this.isSign = false
+        //     //     this.title = '推荐关系'
+        //     // }
+        // }
+        // console.log(ethereum.selectedAddress)
+        // if (ethereum.selectedAddress == null) {
+        //     this.linkWallet()
+        // } else {
+        //     this.isLink = true
+        //     this.load()
+        // }
+    },
 
-            this.title = '签名'
-            this.isSign = true
-            this.p_address = this.$route.query.p
-            if ((this.$route.query.p).toUpperCase() === (window.ethereum.selectedAddress).toUpperCase()) {
-                this.isSign = false
-                this.title = '推荐关系'
+    async mounted() {
+        // this.getRelationshipAddress()
+        // return
+        const relationshipAddressInfor = await this.getRelationshipAddress()
+        if (this.$route.query.p && this.$route.query.p !== ZeroAddress) {
+            if (relationshipAddressInfor.parent !== ZeroAddress) {
+                this.showConfirmPopup()
             }
-        } else {
-            this.title = '推荐关系'
-            this.getRelationshipAddress()
-            this.isSign = false
+            this.isSign = true //通过别人的邀请链接进来的
+            // return
         }
-        console.log(ethereum.selectedAddress)
-        if (ethereum.selectedAddress == null) {
-            this.linkWallet()
-        } else {
-            this.isLink = true
-            this.load()
-        }
+        console.log(relationshipAddressInfor.parent, relationshipAddressInfor.child)
+        // relationshipAddressInfor.parent == ZeroAddress ? this.isRecommended = false : this.isRecommended = true
+        this.recommendInfor.currentAddress = window.ethereum.selectedAddress
+        this.myLowerInfo.currentAddress = window.ethereum.selectedAddress
+        relationshipAddressInfor.preAddress !== ZeroAddress ? this.myLowerInfo.preAddress = relationshipAddressInfor.parent : this.myLowerInfo.preAddress = '无上级推荐地址'
+        this.recommendInfor.childNum = relationshipAddressInfor.child.length
+        relationshipAddressInfor.preAddress !== ZeroAddress ? this.recommendInfor.preAddress = relationshipAddressInfor.parent : this.recommendInfor.preAddress = '无上级推荐地址'
+        const toBeBoundList = await this.getToBeBoundList(window.ethereum.selectedAddress)
+        const boundList = await this.getBoundList(window.ethereum.selectedAddress)
+
+        this.toBeBoundList = toBeBoundList
+        this.boundList = boundList
+        this.showSkeleton = false
+        console.log(this.toBeBoundList, toBeBoundList)
+
     },
 
     methods: {
-        //查找当前用户上级地址
-        getRelationshipAddress() {
-            this.$loading.show()
-            popularContractApi.relationshipAddress(window.ethereum.selectedAddress)
-                .then(res => {
-                    console.log('当前用户上级地址', res)
-                    this.$loading.hide()
-                    // if (res[0] === ZeroAddress) {
-                    //     this.isNewUser = true
-                    //     // showToast('当前地址暂无上级，请前往社区寻找上级推荐人')
-                    //     this.$confirm.show({
-                    //         title: "提示",
-                    //         content: "当前地址暂无上级，请前往社区寻找上级推荐人",
-                    //         showCancelButton: false,
-                    //         onConfirm: () => {
+        //被邀请过的用户通过别人的邀请链接进来起提示弹窗
+        showConfirmPopup() {
+            this.$confirm.show({
+                title: "提示",
+                content: "您已拥有上级用户，不可签名其它地址",
+                showCancelButton: false,
+                onConfirm: () => {
+                    this.$router.push({
+                        path: '/'
+                    })
+                },
+            });
+        },
+        //获取邀请人待绑定的被邀请人地址列表
+        async getToBeBoundList(wallettAddress) {
+            const result = await toBeBound(wallettAddress)
+            const list = result.data
+            return list;
+        },
+        //获取邀请人已绑定的被邀请人地址列表
+        async getBoundList(wallettAddress) {
+            const result = await boundList(wallettAddress)
+            const list = result.data
+            return list;
+        },
+        //查找某个地址的推荐关系
+        async getRelationshipAddress() {
+            // this.$loading.show()
+            const relationshipAddressInfor = await popularContractApi.relationshipAddress(window.ethereum.selectedAddress)
+            // this.$loading.hide()
+            this.showSkeleton = false
+            return relationshipAddressInfor
+            // popularContractApi.relationshipAddress(window.ethereum.selectedAddress)
+            //     .then(res => {
+            //         console.log('当前用户上下级地址', res)
+            //         console.log('上级地址', res.parent)
+            //         console.log('下级地址', res.child)
+            //         res.parent == ZeroAddress ? this.isRecommended = false : this.isRecommended = true
+            //         this.$loading.hide()
+            //     })
+            //     .catch(err => {
+            //         this.$loading.hide()
 
-                    //         },
-                    //     });
-                    // } else {
-                    //     this.isNewUser = false
-                    // }
-                })
-                .catch(err => {
-                    this.$loading.hide()
-
-                    console.log('err', err)
-                })
+            //         console.log('err', err)
+            //     })
         },
         async sign() {
             this.$loading.show()

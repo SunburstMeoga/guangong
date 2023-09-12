@@ -53,7 +53,7 @@
                     </div>
                 </div>
 
-                <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content" v-if="hasWalletAddress">
+                <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content" v-if="!hasWalletAddress">
                     <div class="buy-button text-primary-word font-medium text-lg py-4 rounded flex justify-center items-center"
                         @click="handleConnect">
                         連接錢包
@@ -86,9 +86,9 @@ export default {
     mounted() {
         window.addEventListener('scroll', this.handleScroll)
         if (window.ethereum && window.ethereum.selectedAddress) {
-            this.hasWalletAddress = false
-        } else {
             this.hasWalletAddress = true
+        } else {
+            this.hasWalletAddress = false
         }
     },
     methods: {
@@ -102,6 +102,7 @@ export default {
                 this.showRight = false
                 this.$store.commit('updateUserInfor', { address: accounts[0] })
                 this.hasWalletAddress = true
+
             } catch (error) {
                 showToast('连接失败，请重新连接')
             }
