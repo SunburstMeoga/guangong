@@ -114,11 +114,11 @@
                                 <div class="text-base text-card-content">{{ nftInfor.level }}</div>
                             </div>
                             <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">角色价值 等值 WGT）U</div>
+                                <div class="mb-2 text-xs text-icon-gray">角色价值（等值WGT）</div>
                                 <div class="text-base text-card-content">{{ nftInfor.circulation }}</div>
                             </div>
                             <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">财神奖励 等值 WGT）U</div>
+                                <div class="mb-2 text-xs text-icon-gray">财神奖励（等值WGT）</div>
                                 <div class="text-base text-card-content">{{ nftInfor.award }}</div>
                             </div>
                             <div class="mb-6">
@@ -150,7 +150,7 @@
                     <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
                         @click="handlePay">
                         <span>
-                            购买 {{ nftInfor.price }}U
+                            购买 {{ nftInfor.price }}WGT
                         </span>
                         <!-- <span class="text-sm font-light pl-2">
                             (WGT余额:{{ getFilterAmount($store.state.wgtBalance) }})
@@ -217,8 +217,11 @@ export default {
             payWayList: []
         }
     },
-    mounted() {
-        console.log('this.$route', this.$route)
+    async mounted() {
+        // console.log('this.$route', this.$route)
+        // const num = await this.getWGTFromUSDT('100')
+        // console.log(num)
+        // return
         this.goodType = this.$route.name
         if (this.$route.name === 'good') {
             console.log('good')
@@ -239,6 +242,13 @@ export default {
                 return
             }
             this.currentPayWay = index
+        },
+        async getWGTFromUSDT(value) {
+            let amount = value.toString()
+            helpContractApi.WGTFromUSDT(amount)
+            const result = await helpContractApi.WGTFromUSDT(amount)
+            console.log('换算完值', result)
+            return result
         },
         cancelPay() {
             window.history.back();
@@ -295,13 +305,13 @@ export default {
                 })
         },
         //本地匹配nft数据
-        matchNFTData(matchValue, amount) {
+        async matchNFTData(matchValue, amount) {
             const nftItem = nfts_list.filter(item => {
                 return matchValue === item.id
             })
             this.nftInfor = nftItem[0]
             if (this.$route.name === 'market') {
-                this.nftInfor.price = this.filterAmount(amount)
+                this.nftInfor.price = await this.getWGTFromUSDT(amount)
             }
             console.log('nftItem', nftItem)
         },

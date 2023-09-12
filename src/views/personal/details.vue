@@ -382,8 +382,6 @@ import nfts_list from '@/nft_datas/nfts_list'
 import gameContractApi from '@/request/ether_request/game'
 import wgtContractApi from '@/request/ether_request/wgt'
 import nftContractApi from '@/request/ether_request/nft'
-
-
 import marketContractApi from '@/request/ether_request/market'
 import { pendingOrderApi, cancelOrderApi, nftDetails, outboundTokens, acountFromNFTType } from '@/request/api_request'
 import { filterAmount, filterTime } from '@/utils/filterValue'
@@ -463,6 +461,7 @@ export default {
     },
     methods: {
         filterAmount, filterTime,
+
         handleChoiceAddressNFT() {
             if (this.lowerAddressList.lenght == 0) {
                 showToast('当前地址暂无出征卡片')

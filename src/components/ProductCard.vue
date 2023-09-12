@@ -30,7 +30,7 @@
                         </div>
                         <div>
                             <div class="text-card-title text-sm font-light mb-2">价格</div>
-                            <div class="text-card-content text-2xl font-semibold">US$ {{ price }}</div>
+                            <div class="text-card-content text-2xl font-semibold">{{ price }} WGT</div>
                         </div>
                     </div>
                 </div>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import helpContractApi from '@/request/ether_request/help'
+
 export default {
     props: {
         imageUrl: {

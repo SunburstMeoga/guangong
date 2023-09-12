@@ -83,6 +83,7 @@ import MarketCard from '@/components/MarketCard'
 import ShopsCard from '@/components/ShopsCard.vue'
 import { hotList, marketList } from '@/request/api_request'
 import { filterAddress, filterAmount } from '@/utils/filterValue'
+import helpContractApi from '@/request/ether_request/help'
 
 export default {
     components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
@@ -101,6 +102,13 @@ export default {
     },
     methods: {
         filterAddress, filterAmount,
+        async getWGTFromUSDT(value) {
+            let amount = value.toString()
+            helpContractApi.WGTFromUSDT(amount)
+            const result = await helpContractApi.WGTFromUSDT(amount)
+            console.log('换算完值', result)
+            return result
+        },
         getMarketList() {
             marketList()
                 .then(res => {
@@ -112,7 +120,6 @@ export default {
                         obj.tokenId = item.nft_id
                         obj.amount = item.amount
                         obj.owner = item.owner
-
                         typeList.push(obj)
                     })
                     let newArr = typeList.filter((v) => nfts_list.some((val) => val.id == v.typeID))
@@ -131,7 +138,7 @@ export default {
                     console.log('err', err)
                 })
         },
-        getHotList() {
+        async getHotList() {
             hotList()
                 .then(res => {
                     console.log('热卖', res)
