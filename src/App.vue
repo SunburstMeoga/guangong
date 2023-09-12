@@ -19,10 +19,15 @@ export default {
   components: { TopBar, FooterBar, [showDialog.name]: showDialog },
   mounted() {
     if (window.ethereum) {
-      this.getUserIncome()
+
       this.accountHasChanged()
-      this.getWgtBalance()
+
+    }
+    if (window.ethereum && window.ethereum.selectedAddress) {
       this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
+
+      this.getWgtBalance()
+      this.getUserIncome()
     }
   },
   methods: {

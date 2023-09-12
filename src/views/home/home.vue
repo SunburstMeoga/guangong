@@ -169,7 +169,7 @@ export default {
             })
         },
         toMarketDetails(item) {
-            if (!window.ethereum.selectedAddress) {
+            if (window.ethereum && !window.ethereum.selectedAddress) {
                 showToast('请先连接钱包')
                 return
             }
@@ -178,7 +178,8 @@ export default {
             })
         },
         toGoodDetails(item) {
-            if (!window.ethereum.selectedAddress) {
+            console.log('window.ethereum.selectedAddress', window)
+            if (window.ethereum && !window.ethereum.selectedAddress) {
                 showToast('请先连接钱包')
                 return
             }

@@ -4,7 +4,7 @@ import { config } from "@/const/config";
 let provider = {};
 let signer = {};
 let nftContractApi = {};
-if (window.ethereum || window.ethereum.selectedAddress) {
+if (window.ethereum && window.ethereum.selectedAddress) {
   provider = new ethers.BrowserProvider(window.ethereum);
   signer = await provider.getSigner();
   const NFT = new ethers.Contract(config.nft_addr, config.erc20_abi, provider);
