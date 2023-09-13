@@ -286,6 +286,7 @@ export default {
         },
         //用户领取财神卡收益
         userReceiveWealth(index) {
+            console.log(index)
             gameContractApi.wealthEarnings(index)
                 .then(res => {
                     console.log(res)

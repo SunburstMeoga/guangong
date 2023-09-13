@@ -20,11 +20,13 @@ if (window.ethereum && window.ethereum.selectedAddress) {
       const request = await WGT.allowance(walletAddress, contractAddress);
       return request;
     },
+
     //用户wgt资产
     wgtAssets: async function (walletAddress) {
       const result = await WGT.balanceOf(walletAddress);
       return result;
     },
+
     // erc20授权
     approve: async function (contractAddress) {
       const tx = await WGTTRADE.approve(contractAddress, ethers.MaxUint256);

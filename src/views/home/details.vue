@@ -272,12 +272,15 @@ export default {
         async wgtIsInsufficientBalance(usdt) {
             console.log(helpContractApi)
             const result = await helpContractApi.WGTFromUSDT(usdt)
+            // console.log(this.$store.state.wgtBalance)
             return this.$store.state.wgtBalance < result
         },
         async wgaIsInsufficientBalance(usdt) {
             console.log(helpContractApi)
             const result = await helpContractApi.WGAFromUSDT(usdt)
-            return this.$store.state.wgtBalance < result
+            // console.log(this.$store.state.wgaBalance)
+
+            return this.$store.state.wgaBalance < result
         },
         swipeChange(index) {
             console.log('change', index)
@@ -431,6 +434,7 @@ export default {
             this.$loading.show()
             const wgtIsInsufficientBalance = await this.wgtIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
             const wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
+            console.log(wgtIsInsufficientBalance, wgaIsInsufficientBalance)
             const wgtBalance = await this.getWGTBalance(window.ethereum.selectedAddress)
             const wgaBalance = await this.getWGABalance(window.ethereum.selectedAddress)
             if (wgtIsInsufficientBalance && !wgaIsInsufficientBalance) {
