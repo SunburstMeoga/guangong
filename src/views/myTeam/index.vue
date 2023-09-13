@@ -34,7 +34,7 @@
                 </div>
                 <div class="mb-3 w-11/12 bg-bottom-content rounded p-2">
                     <div class="py-2 w-11/12  rounded">
-                        业绩总和: <span class="text-red-600">{{ earningInfor }} USDT</span>
+                        业绩总和： <span class="text-red-600 font-semibold ">{{ earningInfor }} USDT</span>
                     </div>
                 </div>
             </div>
