@@ -156,13 +156,14 @@ export default {
             if (relationshipAddressInfor.child.length >= 36) {
                 this.showConfirmPopup("该地址已达到邀请上线，无法签名")
             }
+            relationshipAddressInfor = await this.getRelationshipAddress(window.ethereum.selectedAddress)
+            if (relationshipAddressInfor.parent !== ZeroAddress) {
+                this.showConfirmPopup("您已拥有上级用户，不可签名其它地址")
+            }
             this.isSign = true //通过别人的邀请链接进来的
             return
         }
         relationshipAddressInfor = await this.getRelationshipAddress(window.ethereum.selectedAddress)
-        if (relationshipAddressInfor.parent !== ZeroAddress) {
-            this.showConfirmPopup("您已拥有上级用户，不可签名其它地址")
-        }
         console.log(relationshipAddressInfor.parent, relationshipAddressInfor.child)
         relationshipAddressInfor.parent == ZeroAddress ? this.isRecommended = false : this.isRecommended = true
         this.recommendInfor.currentAddress = window.ethereum.selectedAddress
