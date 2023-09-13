@@ -125,6 +125,14 @@ export default {
             this.login()
         },
         toMyTeam() {
+            if (!window.ethereum) {
+                showToast('请使用钱包打开浏览器以获得更好的体验')
+                return
+            }
+            if (!window.ethereum.selectedAddress) {
+                showToast('请连接钱包')
+                return
+            }
             this.$router.push({
                 path: '/team',
             })

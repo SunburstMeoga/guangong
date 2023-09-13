@@ -20,6 +20,11 @@ if (window.ethereum && window.ethereum.selectedAddress) {
       const result = GAME.UserInfo(address);
       return result;
     },
+    //获取用户的星级
+    userStar: async function (walletAddress) {
+      const result = await GAME.getStar(walletAddress);
+      return result;
+    },
     //用户贡献值等级
     userLevel: async function (address) {
       const result = await GAME.getStar(address);
@@ -88,13 +93,13 @@ if (window.ethereum && window.ethereum.selectedAddress) {
       return result;
     },
     //用户领取出征卡收益
-    campaignEarnings: async function campaignEarnings(cardIndex) {
+    campaignEarnings: async function (cardIndex) {
       const tx = await GAMETRADE.income1(cardIndex);
       const result = await tx.wait();
       return result;
     },
     //用户购买财神卡
-    buyFortuneCard: async function buyFortuneCard(nftType) {
+    buyFortuneCard: async function (nftType) {
       const tx = await GAMETRADE.buy2(nftType);
       const result = await tx.wait();
       console.log(result);

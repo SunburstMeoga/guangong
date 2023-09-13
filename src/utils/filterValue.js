@@ -24,7 +24,7 @@ export function filterTime(value) {
 }
 
 export function filterAddress(value, startIndex = 6, endIndex = 7) {
-  console.log("value", value);
+  // console.log("value", value);
   if (value === undefined || value === null) return;
   let arr = value.split("");
   let targetStr;

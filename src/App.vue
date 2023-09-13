@@ -18,6 +18,11 @@ export default {
   name: 'App',
   components: { TopBar, FooterBar, [showDialog.name]: showDialog },
   mounted() {
+    this.accountHasChanged()
+    this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
+
+    this.getWgtBalance()
+    this.getUserIncome()
     if (window.ethereum) {
 
       this.accountHasChanged()
@@ -108,7 +113,7 @@ export default {
     getUserIncome() {
       userIncome(window.ethereum.selectedAddress)
         .then(res => {
-          // console.log(res)
+          console.log('res', res)
           const { income_card, income_deposit, income_personal, income_pool, income_sum, income_team, personal } = res.data
           let obj = {
             address: window.ethereum.selectedAddress,
