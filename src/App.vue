@@ -17,23 +17,30 @@ import { showDialog } from 'vant'
 export default {
   name: 'App',
   components: { TopBar, FooterBar, [showDialog.name]: showDialog },
+  data() {
+    return {
+      timer: null
+    }
+  },
   mounted() {
     // this.accountHasChanged()
     // this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
 
     // this.getWgtBalance()
     // this.getUserIncome()
-    if (window.ethereum) {
+    this.timer = setTimeout(() => {
+      if (window.ethereum) {
 
-      this.accountHasChanged()
+        this.accountHasChanged()
 
-    }
-    if (window.ethereum && window.ethereum.selectedAddress) {
-      this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
+      }
+      if (window.ethereum && window.ethereum.selectedAddress) {
+        this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
 
-      this.getWgtBalance()
-      this.getUserIncome()
-    }
+        this.getWgtBalance()
+        this.getUserIncome()
+      }
+    }, 2000);
   },
   methods: {
     //获取wgt余额
@@ -109,6 +116,9 @@ export default {
 
         }
       })
+    },
+    beforeDestroy() {
+      clearInterval(this.timer);
     },
     getUserIncome() {
       userIncome(window.ethereum.selectedAddress)

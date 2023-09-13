@@ -103,6 +103,7 @@ export default {
             if (childArr.length == 0) {
                 this.hasNoChild = true
                 showToast('当前地址暂无下级收益')
+                this.$loading.hide()
                 return
             }
             let childOne;
@@ -122,7 +123,7 @@ export default {
                 ]
                 this.earningInfor = earningInfor
                 this.childAddressList = childAddressList
-
+                this.$loading.hide()
                 return
             }
             childOne = childArr[0]

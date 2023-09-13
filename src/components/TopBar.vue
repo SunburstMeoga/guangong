@@ -24,7 +24,7 @@
                         <div class="mb-6" @click="toMyTeam">我的团队</div>
                         <div class="mb-6" @click="toRecommend">{{ $t('menu.recommend') }}</div>
                         <div class="mb-6" @click="viewGoods">{{ $t('menu.official_release') }}</div>
-                        <div class="mb-6" @click="toWGTExchangeWGA">{{ $t('menu.wgt_exchange') }}</div>
+                        <!-- <div class="mb-6" @click="toWGTExchangeWGA">{{ $t('menu.wgt_exchange') }}</div> -->
                         <div class="" @click="viewMarket">{{ $t('menu.nft_market') }}</div>
                     </div>
                     <div>
