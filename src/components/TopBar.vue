@@ -85,10 +85,24 @@ export default {
     },
     mounted() {
         window.addEventListener('scroll', this.handleScroll)
-        if (window.ethereum && window.ethereum.selectedAddress) {
-            this.hasWalletAddress = true
+        if (window.ethereum) {
+            if (window.ethereum.selectedAddress) {
+                this.hasWalletAddress = true
+            } else {
+                this.hasWalletAddress = false
+            }
+
         } else {
-            this.hasWalletAddress = false
+            this.$confirm.show({
+                title: "提示",
+                content: "请用钱包打开浏览器，以获得更好的体验",
+                showCancelButton: false,
+                onConfirm: () => {
+                    this.$router.push({
+                        path: '/'
+                    })
+                },
+            });
         }
     },
     methods: {
@@ -136,8 +150,12 @@ export default {
             this.showRight = false
         },
         toRecommend() {
+            if (!window.ethereum) {
+                showToast('请使用钱包打开浏览器以获得更好的体验')
+                return
+            }
             if (!window.ethereum.selectedAddress) {
-                showToast('请先连接钱包')
+                showToast('请连接钱包')
                 return
             }
             this.$router.push({
@@ -146,8 +164,12 @@ export default {
             this.showRight = false
         },
         viewAssets() {
+            if (!window.ethereum) {
+                showToast('请使用钱包打开浏览器以获得更好的体验')
+                return
+            }
             if (!window.ethereum.selectedAddress) {
-                showToast('请先连接钱包')
+                showToast('请连接钱包')
                 return
             }
             this.$router.push({
@@ -156,8 +178,12 @@ export default {
             this.showRight = false
         },
         toWGTExchangeWGA() {
+            if (!window.ethereum) {
+                showToast('请使用钱包打开浏览器以获得更好的体验')
+                return
+            }
             if (!window.ethereum.selectedAddress) {
-                showToast('请先连接钱包')
+                showToast('请连接钱包')
                 return
             }
             this.$router.push({

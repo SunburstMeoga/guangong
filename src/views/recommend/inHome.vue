@@ -122,7 +122,7 @@ export default {
             }
             if (navigator.clipboard && window.isSecureContext) {
                 console.log('aaa')
-                navigator.clipboard.writeText(this.share).then(() => {
+                navigator.clipboard.writeText(this.shareUrl).then(() => {
                     showSuccessToast('复制成功')
                 }, () => {
                     showToast('复制失败')
@@ -131,7 +131,7 @@ export default {
             } else {
                 console.log('bbb')
                 let textArea = document.createElement('textarea')
-                textArea.value = this.share
+                textArea.value = this.shareUrl
                 // 使text area不在viewport，同时设置不可见
                 textArea.style.position = 'absolute'
                 textArea.style.opacity = 0

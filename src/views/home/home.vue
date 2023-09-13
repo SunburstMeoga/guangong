@@ -169,8 +169,12 @@ export default {
             })
         },
         toMarketDetails(item) {
-            if (window.ethereum && !window.ethereum.selectedAddress) {
-                showToast('请先连接钱包')
+            if (!window.ethereum) {
+                showToast('请使用钱包打开浏览器以获得更好的体验')
+                return
+            }
+            if (!window.ethereum.selectedAddress) {
+                showToast('请连接钱包')
                 return
             }
             this.$router.push({
@@ -178,11 +182,19 @@ export default {
             })
         },
         toGoodDetails(item) {
-            console.log('window.ethereum.selectedAddress', window)
-            if (window.ethereum && !window.ethereum.selectedAddress) {
-                showToast('请先连接钱包')
+            if (!window.ethereum) {
+                showToast('请使用钱包打开浏览器以获得更好的体验')
                 return
             }
+            if (!window.ethereum.selectedAddress) {
+                showToast('请连接钱包')
+                return
+            }
+            console.log('window.ethereum.selectedAddress', window)
+            // if (!window.ethereum && !window.ethereum.selectedAddress) {
+            //     showToast('请使用钱包打开浏览器以获得更好的体验')
+            //     return
+            // }
             this.$router.push({
                 path: '/good/' + item.id
             })
