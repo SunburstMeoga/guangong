@@ -18,11 +18,11 @@ export default {
   name: 'App',
   components: { TopBar, FooterBar, [showDialog.name]: showDialog },
   mounted() {
-    this.accountHasChanged()
-    this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
+    // this.accountHasChanged()
+    // this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
 
-    this.getWgtBalance()
-    this.getUserIncome()
+    // this.getWgtBalance()
+    // this.getUserIncome()
     if (window.ethereum) {
 
       this.accountHasChanged()

@@ -125,7 +125,6 @@ export default {
 
                 return
             }
-
             childOne = childArr[0]
             childTwo = childArr[1]
             startOne = await this.getUserStar(childOne)
