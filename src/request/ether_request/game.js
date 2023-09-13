@@ -4,7 +4,7 @@ import { config } from "@/const/config";
 let provider = {};
 let signer = {};
 let gameContractApi = {};
-if (window.ethereum && window.ethereum.selectedAddress) {
+if (window.ethereum) {
   provider = new ethers.BrowserProvider(window.ethereum);
   signer = await provider.getSigner();
   const GAME = new ethers.Contract(config.game_addr, config.game_abi, provider);

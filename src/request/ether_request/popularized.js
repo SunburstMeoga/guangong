@@ -4,7 +4,7 @@ import { config } from "@/const/config";
 let provider = {};
 let signer = {};
 let popularContractApi = {};
-if (window.ethereum && window.ethereum.selectedAddress) {
+if (window.ethereum) {
   provider = new ethers.BrowserProvider(window.ethereum);
   signer = await provider.getSigner();
   const POPULARIZED = new ethers.Contract(

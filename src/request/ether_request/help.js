@@ -4,7 +4,7 @@ import { config } from "@/const/config";
 let provider = {};
 let helpContractApi = {};
 
-if (window.ethereum && window.ethereum.selectedAddress) {
+if (window.ethereum) {
   provider = new ethers.BrowserProvider(window.ethereum);
   const HELP = new ethers.Contract(config.help_addr, config.help_abi, provider);
 
