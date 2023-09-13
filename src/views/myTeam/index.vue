@@ -96,6 +96,7 @@ export default {
         },
         //下级地址信息
         async getAddressInfor(walletAddress) {
+            this.$loading.show()
             let childArr = await this.getChildAddress(walletAddress)
             // let addrInforItem = {}
             console.log(walletAddress, childArr)
@@ -140,6 +141,7 @@ export default {
             this.earningInfor = earningInfor
             this.childAddressList = childAddressList
 
+            this.$loading.hide()
 
             console.log(this.childAddressList)
             console.log(this.earningInfor)
