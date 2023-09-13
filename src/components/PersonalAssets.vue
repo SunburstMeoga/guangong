@@ -119,7 +119,12 @@ export default {
     },
     mounted() {
         this.address = window.ethereum.selectedAddress
-        if (window.ethereum.selectedAddress) {
+
+        if (window.ethereum) {
+
+
+        }
+        if (window.ethereum && window.ethereum.selectedAddress) {
             this.getUserInfo()
             this.getUserIncome()
             this.getUserTotalAssets()
