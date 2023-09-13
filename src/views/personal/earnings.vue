@@ -7,34 +7,37 @@
                     <div class="">{{ getEarningsTypeWord(earningsType) }}</div>
                 </div>
             </div>
-            <!-- <div class="bg-bottom-content rounded w-11/12 ml-auto mr-auto p-4 text-white mt-4 mb-8">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <div class="">已领取：99.99</div>
-                        <div class="flex justify-start items-baseline">
-                            <span>{{ earningsType === 'wealth_card' || earningsType === 'role_card' || earningsType ===
-                                'individual' ? '待领取' : '待发放' }}：</span>
-                            <span class="text-theme-primary font-semibold text-2xl">100.00</span>
+            <div class="" v-if="showSkeleton">
+                <div class="mt-2 px-4">
+                    <div class="animate-pulse flex mb-20">
+                        <!-- <div class="rounded-full bg-icon-undertone h-10 w-10"></div> -->
+                        <div class="flex-1 space-y-6 py-1">
+                            <div class="h-12 bg-icon-undertone rounded mb-4" v-for="(item, index) in 6" :key="index"></div>
                         </div>
                     </div>
-                    <div class="campaign px-2 py-1 rounded" v-if="earningsType === 'individual'">
-                        领取奖励
-                    </div>
-                </div>
-            </div> -->
-            <div class="text-white w-11/12 mr-auto ml-auto flex justify-between items-center py-2">
-                <div class="font-medium text-xl">收益记录</div>
-                <div @click="showBottom = true" class="py-2 px-4 text-center text-white rounded bg-bottom-content">
-                    时间 <span class="icon iconfont icon-time"></span>
                 </div>
             </div>
-            <!-- <div class="pt-4">
-               
-            </div> -->
-            <div class="w-11/12 ml-auto mr-auto">
-                <div class="mb-2 bg-bottom-content rounded" v-for="(item, index) in 20" :key="index">
-                    <earnings-card :isEarings="index % 2 == 0 ? true : false" />
+
+            <div v-if="!showSkeleton && earningsList.length !== 0">
+                <div class="text-white w-11/12 mr-auto ml-auto flex justify-between items-center py-2">
+                    <div class="font-medium text-xl">收益记录</div>
+                    <div @click="showBottom = true" class="py-2 px-4 text-center text-white rounded bg-bottom-content">
+                        时间 <span class="icon iconfont icon-time"></span>
+                    </div>
                 </div>
+                <!-- <div class="pt-4">
+                   
+                </div> -->
+                <div class="w-11/12 ml-auto mr-auto">
+                    <div class="mb-2 bg-bottom-content rounded" v-for="(item, index) in earningsList" :key="index">
+                        <earnings-card :time="filterTime(item.utc)" :earning="item.add" />
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="!showSkeleton && earningsList.length === 0"
+                class="w-full text-center font-semibold text-xl pt-20 text-white">
+                暂无收益
             </div>
         </div>
         <van-popup v-model:show="showBottom" position="bottom" :style="{ height: '30%' }">
@@ -44,7 +47,9 @@
 
 <script>
 import EarningsCard from '@/components/EarningsCard'
+import { earningList } from '@/request/api_request'
 import { DatePicker, Popup } from 'vant';
+import { filterTime } from '@/utils/filterValue'
 export default {
     components: { EarningsCard, [DatePicker.name]: DatePicker, [Popup.name]: Popup },
     data() {
@@ -53,10 +58,32 @@ export default {
             minDate: new Date(2020, 0, 1),
             maxDate: new Date(2025, 5, 1),
             currentDate: ['2023', '01', '01'],
-            showBottom: false
+            showBottom: false,
+            showSkeleton: true,
+            earningsList: []
         }
     },
+    mounted() {
+        this.earningsType = this.$route.params.type
+        console.log('this.$route.params', this.$route.params)
+        this.getEarningsList(window.ethereum.selectedAddress, this.earningsType == 'team' ? 6 : 10)
+    },
     methods: {
+        filterTime,
+        //获取收益列表
+        getEarningsList(walletAddress, earningType) {
+            earningList(walletAddress, earningType)
+                .then(res => {
+                    console.log('收益列表', res)
+                    this.earningsList = res.data
+                    this.showSkeleton = false
+                })
+                .catch(err => {
+                    console.log('err', err)
+                    this.showSkeleton = false
+
+                })
+        },
         //获取收益类型标题
         getEarningsTypeWord(type) {
             switch (type) {
@@ -70,10 +97,6 @@ export default {
             window.history.back();
         }
     },
-    mounted() {
-        this.earningsType = this.$route.params.type
-        console.log('this.$route.params', this.$route.params)
-    }
 }
 </script>
 
