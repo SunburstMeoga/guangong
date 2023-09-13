@@ -119,38 +119,12 @@ export default {
             canShare: false
         }
     },
-    async created() {
-        // this.getRelationshipAddress()
-        // if (this.$route.query.p && this.$route.query.p !== ZeroAddress) { //没被推广过
-        //     this.title = '推荐关系'
-        //     this.getRelationshipAddress()
-        //     this.isRecommended = false
-        //     this.isSign = false
-        // } else {
-        //     // 被推广过的
-        //     this.isRecommended = true
-        //     this.title = '签名'
-        //     this.isSign = true
-        //     this.p_address = this.$route.query.p
-        //     // if ((this.$route.query.p).toUpperCase() === (window.ethereum.selectedAddress).toUpperCase()) {
-        //     //     this.isSign = false
-        //     //     this.title = '推荐关系'
-        //     // }
-        // }
-        // console.log(ethereum.selectedAddress)
-        // if (ethereum.selectedAddress == null) {
-        //     this.linkWallet()
-        // } else {
-        //     this.isLink = true
-        //     this.load()
-        // }
-    },
 
     async mounted() {
         // this.getRelationshipAddress()
         // return
         let relationshipAddressInfor;
-        if (this.$route.query.p && this.$route.query.p !== ZeroAddress) {
+        if (this.$route.query.p && this.$route.query.p !== ZeroAddress) { //是否进入被邀请人页面
             this.p_address = this.$route.query.p
             relationshipAddressInfor = await this.getRelationshipAddress(this.$route.query.p)
             if (relationshipAddressInfor.child.length >= 36) {
@@ -163,9 +137,10 @@ export default {
             this.isSign = true //通过别人的邀请链接进来的
             return
         }
+        this.isSign = false
         relationshipAddressInfor = await this.getRelationshipAddress(window.ethereum.selectedAddress)
         console.log(relationshipAddressInfor.parent, relationshipAddressInfor.child)
-        relationshipAddressInfor.parent == ZeroAddress ? this.isRecommended = false : this.isRecommended = true
+        // relationshipAddressInfor.parent == ZeroAddress ? this.isRecommended = false : this.isRecommended = true
         this.recommendInfor.currentAddress = window.ethereum.selectedAddress
         this.myLowerInfo.currentAddress = window.ethereum.selectedAddress
         relationshipAddressInfor.parent !== ZeroAddress ? this.myLowerInfo.preAddress = relationshipAddressInfor.parent : this.myLowerInfo.preAddress = '无上级推荐地址'
