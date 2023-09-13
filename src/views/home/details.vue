@@ -150,7 +150,7 @@
                     <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
                         @click="handlePay">
                         <span>
-                            购买 {{ nftInfor.price }}WGT
+                            <span class="pr-2">购买 </span> {{ nftInfor.price }} WGT
                         </span>
                         <!-- <span class="text-sm font-light pl-2">
                             (WGT余额:{{ getFilterAmount($store.state.wgtBalance) }})
