@@ -525,6 +525,7 @@ const nfts_list = [
   //财神卡
   {
     id: 10,
+    tag: "财神卡",
     name: "贤人武财神",
     level: "忠字传播大使",
     imageUrl: `${config.api}/wealth/10_3.png`,
@@ -537,6 +538,8 @@ const nfts_list = [
 
   {
     id: 11,
+    tag: "财神卡",
+
     name: "真人武财神",
     level: "忠字传播大使",
     imageUrl: `${config.api}/wealth/11_3.png`,
@@ -549,6 +552,8 @@ const nfts_list = [
   {
     id: 12,
     name: "仙人武财神",
+    tag: "财神卡",
+
     level: "忠字传播大使",
     imageUrl: `${config.api}/wealth/12_3.png`,
     card_type: "fortune_card",
@@ -560,6 +565,8 @@ const nfts_list = [
   {
     id: 13,
     name: "道人武财神",
+    tag: "财神卡",
+
     level: "义字传播大使",
     imageUrl: `${config.api}/wealth/13_3.png`,
     card_type: "fortune_card",
@@ -571,6 +578,8 @@ const nfts_list = [
   {
     id: 14,
     name: "圣人武财神",
+    tag: "财神卡",
+
     level: "仁字传播大使",
     imageUrl: `${config.api}/wealth/14_3.png`,
     card_type: "fortune_card",
@@ -582,6 +591,8 @@ const nfts_list = [
   {
     id: 15,
     name: "神人武财神",
+    tag: "财神卡",
+
     level: "勇字传播大使",
     imageUrl: `${config.api}/wealth/15_3.png`,
     card_type: "fortune_card",
@@ -593,6 +604,8 @@ const nfts_list = [
   {
     id: 16,
     name: "灶王武财神",
+    tag: "财神卡",
+
     level: "礼字传播大使",
     imageUrl: `${config.api}/wealth/16_3.png`,
     card_type: "fortune_card",
@@ -604,6 +617,8 @@ const nfts_list = [
   {
     id: 17,
     name: "门神武财神",
+    tag: "财神卡",
+
     level: "智字传播大使",
     imageUrl: `${config.api}/wealth/17_3.png`,
     card_type: "fortune_card",
@@ -615,6 +630,8 @@ const nfts_list = [
   {
     id: 18,
     name: "地界武财神",
+    tag: "财神卡",
+
     level: "信字传播大使",
     imageUrl: `${config.api}/wealth/18_3.png`,
     card_type: "fortune_card",
@@ -626,6 +643,8 @@ const nfts_list = [
   {
     id: 19,
     name: "天界武财神",
+    tag: "财神卡",
+
     level: "财字传播大使",
     imageUrl: `${config.api}/wealth/19_3.png`,
     card_type: "fortune_card",
@@ -637,6 +656,8 @@ const nfts_list = [
   {
     id: 20,
     name: "水界武财神",
+    tag: "财神卡",
+
     level: "财字传播大使",
     imageUrl: `${config.api}/wealth/20_3.png`,
     card_type: "fortune_card",
@@ -648,6 +669,8 @@ const nfts_list = [
   {
     id: 21,
     name: "神界武财神",
+    tag: "财神卡",
+
     level: "财字传播大使",
     imageUrl: `${config.api}/wealth/21_3.png`,
     card_type: "fortune_card",
@@ -659,6 +682,8 @@ const nfts_list = [
   {
     id: 22,
     name: "至尊武财神",
+    tag: "财神卡",
+
     level: "富字传播大使",
     imageUrl: `${config.api}/wealth/22_3.png`,
     card_type: "fortune_card",
