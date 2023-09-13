@@ -140,7 +140,8 @@ export default {
             outTokenList: [],
             showOutToken: false,
             currentOutToken: 0,
-            nftInfor: {}
+            nftInfor: {},
+            cardIndex: 0
             // assetsList: []
         }
     },
@@ -156,6 +157,10 @@ export default {
     methods: {
         filterTime,
         filterAmount,
+        //点击出征令选项
+        clickOutToken(index) {
+            this.currentOutToken = index
+        },
         //检查erc721授权状态
         async erc721ApppprovalState(contractAddress) {
             return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)
@@ -182,6 +187,8 @@ export default {
         //再次出征
         async handleCampaignAgain(item, index) {
             this.nftInfor = item.infor
+            this.cardIndex = index
+            console.log(item.outbound_tokens_id)
             if (item.count >= item.infor.loss_period) {
                 showToast('当前卡已到达最大出征次数')
                 return
@@ -195,7 +202,7 @@ export default {
                 return
             }
             this.$loading.show()
-            const tokensAcount = await this.campaignNeededOutboundTokens()
+            const tokensAcount = await this.campaignNeededOutboundTokens(item.infor.outbound_tokens_id)
             if (tokensAcount == 0) {
                 this.$loading.hide()
                 showToast(`请先购买${item.infor.outbound_tokens}`)
@@ -214,18 +221,23 @@ export default {
         async erc721ApppprovalState(contractAddress) {
             return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)
         },
-        //出征
-        async userCampaign() {
-            console.log(parseInt(this.nftInfor.tokenId), this.outTokenList[this.currentOutToken].tokenId)
-            gameContractApi.setOff(parseInt(this.nftInfor.tokenId), this.outTokenList[this.currentOutToken].tokenId)
+        //再次出征
+        async userCampaignAgain() {
+            console.log(this.cardIndex, this.outTokenList[this.currentOutToken].tokenId)
+            gameContractApi.userCampaignAgain(this.cardIndex, this.outTokenList[this.currentOutToken].tokenId)
                 .then((res) => {
                     console.log('出征成功', res)
                     this.$loading.hide()
-                    window.history.back();
+
+                    showToast('出征成功')
+                    // window.history.back();
                 })
                 .catch(err => {
                     console.log('出征失败', err)
+
                     this.$loading.hide()
+                    showToast('出征失败')
+
                 })
         },
         //点击出征令牌弹窗的确认按钮
@@ -261,13 +273,14 @@ export default {
                 });
                 return
             } else {
-                this.userCampaign()
+                this.userCampaignAgain()
             }
         },
         //用户领取出征卡收益
         userReceiveCampaign(item, index) {
             if (item.income) {
                 showToast('本次出征收益已领取，不可重复领取')
+                this.$loading.hide()
                 return
             }
             console.log(index)
@@ -395,7 +408,7 @@ export default {
         getUserInfo() {
             gameContractApi.userInfo(window.ethereum.selectedAddress)
                 .then(res => {
-                    console.log('出征和财神卡', res.deposits)
+                    console.log('出征和财神卡', res.cards)
                     //出征
                     let typeListCampaign = []
                     res.cards.map(item => {
@@ -407,6 +420,8 @@ export default {
                         obj.nft_token = item.nft_token
                         obj.cammaignAttribute = item.zhangJiao
                         obj.count = item.count
+                        obj.income = item.income
+                        obj.outbound_tokens_id = item.outbound_tokens_id
                         typeListCampaign.push(obj)
                     })
                     let newArrCampaign = typeListCampaign.filter((v) => nfts_list.some((val) => val.id == v.typeID))

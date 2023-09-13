@@ -55,6 +55,15 @@ if (window.ethereum) {
       console.log(result);
       return result;
     },
+    //再次出征
+    userCampaignAgain: async function (cardIndex, expeditionOrder) {
+      const tx = await GAMETRADE.nextGame(cardIndex, expeditionOrder, {
+        gasLimit: 9999999,
+      });
+      const result = await tx.wait();
+      console.log(result);
+      return result;
+    },
     //使用华佗道具卡
     huatuoProps: async function (walletAddress, nftIndex, tokenId) {
       const result = await GAMETRADE.huaTuo(walletAddress, nftIndex, tokenId);
