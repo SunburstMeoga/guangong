@@ -432,11 +432,27 @@ export default {
                 return
             }
             this.$loading.show()
-            const wgtIsInsufficientBalance = await this.wgtIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
-            const wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
-            console.log(wgtIsInsufficientBalance, wgaIsInsufficientBalance)
-            const wgtBalance = await this.getWGTBalance(window.ethereum.selectedAddress)
-            const wgaBalance = await this.getWGABalance(window.ethereum.selectedAddress)
+            let wgtIsInsufficientBalance
+            let wgaIsInsufficientBalance
+            let wgtBalance
+            let wgaBalance
+            try {
+                // 判断是否余额不足
+                wgtIsInsufficientBalance = await this.wgtIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
+                wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
+            } catch (error) {
+                showToast('错误，请重试')
+            }
+
+            try {
+                // 判断是否余额不足
+                wgtBalance = await this.getWGTBalance(window.ethereum.selectedAddress)
+                wgaBalance = await this.getWGABalance(window.ethereum.selectedAddress)
+            } catch (error) {
+                showToast('错误，请重试')
+            }
+
+
             if (wgtIsInsufficientBalance && !wgaIsInsufficientBalance) {
                 this.currentPayWay = 1
             } else if (wgtIsInsufficientBalance && wgaIsInsufficientBalance) {
@@ -457,8 +473,6 @@ export default {
             this.showPayWay = false
             this.$loading.show()
             let currentPayWayAllowanState; //当前支付方式合约授权状态
-            // const hasWGTAllowance = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
-            // const hasWGAAllowance = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
             if (this.currentPayWay == 0) {
                 console.log('wgt支付')
                 currentPayWayAllowanState = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
@@ -467,8 +481,6 @@ export default {
                 console.log('wga支付')
 
             }
-            console.log('currentPayWayAllowanState', `当前支付方式${this.currentPayWay}`, `当前支付方式是否授权${currentPayWayAllowanState}`)
-            // return
 
             if (currentPayWayAllowanState == 0) {
                 this.$loading.hide()
