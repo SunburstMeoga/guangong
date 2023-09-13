@@ -324,7 +324,7 @@ export default {
                 .then(res => {
                     console.log('资产详情', res)
                     this.nftAmount = res.data.amount
-                    this.matchNFTData(res.data.nft_id > 100 ? res.data.nft_id % 100 : res.data.nft_id, res.data.amount)
+                    this.matchNFTData(res.data.nft_id > 100 ? res.data.nft_id % 100 : res.data.nft_id, (Number(res.data.amount).toFixed()).toString())
                 })
                 .catch(err => {
                     console.log('err', err)
