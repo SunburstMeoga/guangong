@@ -21,9 +21,9 @@
             <div v-if="!showSkeleton && earningsList.length !== 0">
                 <div class="text-white w-11/12 mr-auto ml-auto flex justify-between items-center py-2">
                     <div class="font-medium text-xl">收益记录</div>
-                    <div @click="showBottom = true" class="py-2 px-4 text-center text-white rounded bg-bottom-content">
+                    <!-- <div @click="showBottom = true" class="py-2 px-4 text-center text-white rounded bg-bottom-content">
                         时间 <span class="icon iconfont icon-time"></span>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- <div class="pt-4">
                    
