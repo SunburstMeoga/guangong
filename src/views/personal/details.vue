@@ -901,7 +901,7 @@ export default {
         },
         //检查erc20授权状态
         async erc20ApppprovalState() {
-            return await wgtContractApi.isAllowance(window.ethereum.selectedAddress, config.market_addr)
+            return await wgtContractApi.isAllowance(window.ethereum.selectedAddress, contractAddress)
         },
         //检查erc721授权状态
         async erc721ApppprovalState(contractAddress) {
