@@ -141,6 +141,24 @@
 				"internalType": "address",
 				"name": "addr",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "usdt",
+				"type": "uint256"
+			}
+		],
+		"name": "PaddTeamUsdt",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
 			}
 		],
 		"name": "UserInfo",
@@ -284,7 +302,7 @@
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
+		"stateMutability": "pure",
 		"type": "function"
 	},
 	{
@@ -306,11 +324,6 @@
 				"internalType": "uint256",
 				"name": "t",
 				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "wgt",
-				"type": "bool"
 			}
 		],
 		"name": "buy",
@@ -444,7 +457,7 @@
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
+		"stateMutability": "pure",
 		"type": "function"
 	},
 	{
@@ -724,7 +737,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "shang",
+		"name": "test",
 		"outputs": [
 			{
 				"internalType": "uint256",

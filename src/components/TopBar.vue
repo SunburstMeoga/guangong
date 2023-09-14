@@ -20,11 +20,11 @@
                 <div class="pt-10 text-white w-11/12 ml-auto mr-auto">
                     <div class="border-module">
                         <div class="mb-6" @click="viewAssets">{{ $t('menu.personal_center') }}</div>
-                        <!-- <div class="mb-6" @click="toMap">{{ $t('menu.guangong_map') }}</div> -->
+                        <div class="mb-6" @click="toMap">{{ $t('menu.guangong_map') }} (暂未开放，敬请期待)</div>
                         <div class="mb-6" @click="toMyTeam">我的团队</div>
                         <div class="mb-6" @click="toRecommend">{{ $t('menu.recommend') }}</div>
                         <div class="mb-6" @click="viewGoods">{{ $t('menu.official_release') }}</div>
-                        <!-- <div class="mb-6" @click="toWGTExchangeWGA">{{ $t('menu.wgt_exchange') }}</div> -->
+                        <div class="mb-6" @click="toWGTExchangeWGA">{{ $t('menu.wgt_exchange') }} (暂未开放，敬请期待)</div>
                         <div class="" @click="viewMarket">{{ $t('menu.nft_market') }}</div>
                     </div>
                     <div>
@@ -53,10 +53,10 @@
                     </div>
                 </div>
 
-                <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content" v-if="!hasWalletAddress">
+                <div class="absolute left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
                     <div class="buy-button text-primary-word font-medium text-lg py-4 rounded flex justify-center items-center"
                         @click="handleConnect">
-                        連接錢包
+                        {{ hasWalletAddress ? '断开连接' : '連接錢包' }}
                     </div>
                 </div>
             </div>
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import { ethers } from "ethers";
 import { Popup, showToast } from 'vant'
 export default {
     components: { [Popup.name]: Popup },
@@ -85,13 +86,13 @@ export default {
     },
     mounted() {
         window.addEventListener('scroll', this.handleScroll)
+
         if (window.ethereum) {
             if (window.ethereum.selectedAddress) {
                 this.hasWalletAddress = true
             } else {
                 this.hasWalletAddress = false
             }
-
         } else {
             this.$confirm.show({
                 title: "提示",
@@ -106,6 +107,11 @@ export default {
         }
     },
     methods: {
+        //断开连接
+        async loginOut() {
+            this.hasWalletAddress = false
+            showToast('已断开连接')
+        },
         //点击链接钱包按钮
         async login() {
             console.log('Login')
@@ -113,16 +119,21 @@ export default {
                 const accounts = await ethereum.request({
                     method: 'eth_requestAccounts',
                 })
-                this.showRight = false
+                // this.showRight = false
                 this.$store.commit('updateUserInfor', { address: accounts[0] })
                 this.hasWalletAddress = true
+                showToast('已连接至钱包')
 
             } catch (error) {
                 showToast('连接失败，请重新连接')
             }
         },
         async handleConnect() {
-            this.login()
+            if (this.hasWalletAddress === true) {
+                this.loginOut()
+            } else {
+                this.login()
+            }
         },
         toMyTeam() {
             if (!window.ethereum) {
@@ -145,6 +156,8 @@ export default {
             this.showRight = false
         },
         toMap() {
+            showToast('该功能暂未开放')
+            return
             this.$router.push({
                 path: '/map',
             })
@@ -186,6 +199,8 @@ export default {
             this.showRight = false
         },
         toWGTExchangeWGA() {
+            showToast('该功能暂未开放')
+            return
             if (!window.ethereum) {
                 showToast('请使用钱包打开浏览器以获得更好的体验')
                 return
