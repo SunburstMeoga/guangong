@@ -242,7 +242,7 @@
                 </div>
                 <div
                     class="mb-8 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
-                    # {{ opendingOrderNFTDetails.nft_id }}
+                    No.{{ opendingOrderNFTDetails.nft_id }}
                 </div>
                 <div class="w-11/12 text-sm mb-1">
                     NFT挂单金额
@@ -278,7 +278,7 @@
                 <div @click="clickOutToken(index)" v-for="(item, index) in outTokenList" :key="index"
                     class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded"
                     :class="currentOutToken === index ? 'buy-button text-white' : ''">
-                    {{ nftInfor.outbound_tokens }} #{{ item.tokenId }}
+                    {{ nftInfor.outbound_tokens }} No.{{ item.tokenId }}
                 </div>
                 <div class="flex w-11/12 justify-between items-center mt-6">
 
@@ -463,7 +463,8 @@ export default {
         filterAmount, filterTime,
 
         handleChoiceAddressNFT() {
-            if (this.lowerAddressList.lenght == 0) {
+            console.log(this.expeditionCards)
+            if (this.expeditionCards.length == 0) {
                 showToast('当前地址暂无出征卡片')
                 return
             }
@@ -484,7 +485,7 @@ export default {
                     console.log('res', res.cards)
                     res.cards.map((item, index) => {
                         let obj = {}
-                        obj.text = '#' + item.nft_role
+                        obj.text = 'No.' + item.nft_role
                         obj.value = index
                         this.expeditionCards.push(obj)
                     })
@@ -583,7 +584,14 @@ export default {
             // console.log('testIndex', testIndex)
             // return
 
-            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            let erc721ApppprovalState;
+            try {
+                erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
+            }
             console.log('erc721ApppprovalState', erc721ApppprovalState)
             if (erc721ApppprovalState !== true) {
                 this.$loading.hide()
@@ -806,8 +814,14 @@ export default {
             }
             this.$loading.show()
             // const erc20ApppprovalState = await this.erc20ApppprovalState()
-
-            const erc721ApppprovalState = await this.erc721ApppprovalState(config.market_addr)
+            let erc721ApppprovalState;
+            try {
+                erc721ApppprovalState = await this.erc721ApppprovalState(config.market_addr)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
+            }
             console.log('erc721ApppprovalState', erc721ApppprovalState)
             if (erc721ApppprovalState !== true) {
                 this.$loading.hide()
@@ -928,7 +942,14 @@ export default {
         },
         //合成nft
         async updataNFT(syntheticMaterials) {
-            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            let erc721ApppprovalState
+            try {
+                erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
+            }
             if (erc721ApppprovalState !== true) {
                 this.$loading.hide()
                 this.showOutToken = false
@@ -1011,7 +1032,15 @@ export default {
         //点击出征令牌弹窗的确认按钮
         async confirmCampaign() {
             this.$loading.show()
-            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            // const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            let erc721ApppprovalState;
+            try {
+                erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
+            }
             console.log('erc721ApppprovalState', erc721ApppprovalState)
             if (erc721ApppprovalState !== true) {
                 this.$loading.hide()
