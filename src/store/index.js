@@ -16,11 +16,15 @@ const store = createStore({
         income_team: 0,
         personal: 0,
       },
+      userStar: "暂无星级",
       wgtBalance: 0,
       realoadLowAddress: false,
     };
   },
   mutations: {
+    getUserStarLevle(state, value) {
+      state.userStar = value;
+    },
     setLanguage(state, value) {
       state.language = value;
     },

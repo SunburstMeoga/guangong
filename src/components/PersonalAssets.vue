@@ -14,8 +14,17 @@
             <div class="">总资产： </div>
             <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
             <div class="text-theme-primary flex justify-start items-baseline">
+                <div class="font-bold text-4xl">{{ totalAssets }}</div>
+                <!-- <div class="font-bold text-sm">({{ wgtBalance }}WGT | {{ wgaBalance }}WGA)</div> -->
+            </div>
+
+        </div>
+        <div class="mb-2 flex justify-start items-baseline">
+            <div class="">总资产构成： </div>
+            <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
+            <div class="text-theme-primary flex justify-start items-baseline">
                 <!-- <div class="font-bold text-4xl">{{ totalAssets }}</div> -->
-                <div class="font-bold">{{ wgtBalance }}WGT | {{ wgaBalance }}WGA</div>
+                <div class="font-bold text-sm">{{ wgtBalance }}WGT + {{ wgaBalance }}WGA</div>
             </div>
 
         </div>
@@ -26,7 +35,15 @@
                 <span class="font-bold text-theme-primary"> {{ $store.state.userInfor.income_sum }} WGT
                 </span>
             </div>
+        </div>
 
+        <div class="mb-2">
+            <div class="flex justify-start items-center">
+                <span>团队星级：</span>
+                <!-- <span class="font-bold text-theme-primary">{{  earningsInfo.usdt + earningsInfo.selfUsdt }} WGT </span> -->
+                <span class="font-bold text-theme-primary"> {{ $store.state.userStar }}
+                </span>
+            </div>
         </div>
         <div class="mb-2">
             <div class="flex justify-start items-center">
@@ -35,9 +52,7 @@
                     <span>{{ contributionLevel($store.state.userInfor.personal) }} </span> <span
                         class="text-xs font-normal pl-1">(贡献值：{{ $store.state.userInfor.personal }})</span>
                 </span>
-
             </div>
-
         </div>
         <div class="mb-4 pb-4 border-b border-card-border">
             <div class="flex justify-between items-center">
@@ -144,6 +159,7 @@ export default {
 
     },
     methods: {
+
         getFilterAmount(amount) {
             const WEB3 = new Web3(window.ethereum);
             // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
@@ -200,7 +216,9 @@ export default {
             console.log(WEB3.utils.fromWei(wgt + wga, 'ether'))
             this.wgtBalance = WEB3.utils.fromWei(wgt, 'ether')
             this.wgaBalance = WEB3.utils.fromWei(wga, 'ether')
-
+            console.log(wgt, wga, this.wgtBalance, this.wgaBalance)
+            this.totalAssets = WEB3.utils.fromWei(wgt + wga, 'ether')
+            console.log('totalAssets', this.totalAssets)
         },
         getUserIncome() {
             userIncome(window.ethereum.selectedAddress)

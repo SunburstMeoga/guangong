@@ -11,6 +11,7 @@ import TopBar from '@/components/TopBar'
 import FooterBar from '@/components/FooterBar'
 import { userIncome } from '@/request/api_request'
 import wgtContractApi from '@/request/ether_request/wgt'
+import gameContractApi from '@/request/ether_request/game'
 import { config } from "@/const/config";
 import { showDialog } from 'vant'
 
@@ -36,13 +37,37 @@ export default {
       }
       if (window.ethereum && window.ethereum.selectedAddress) {
         this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
-
         this.getWgtBalance()
         this.getUserIncome()
+        this.getUserStar(window.ethereum.selectedAddress)
       }
     }, 2000);
   },
   methods: {
+    //获取星级
+    getStarWord(star) {
+      if (star == 0) {
+        return '暂无星级'
+      } else if (star == 5) {
+        return '一星';
+      } else if (star == 10) {
+        return '二星';
+      } else if (star == 15) {
+        return '三星';
+      } else if (star == 20) {
+        return '四星';
+      } else if (star == 25) {
+        return '五星';
+      } else if (star == 30) {
+        return '六星';
+      }
+    },
+    //获取用户星级
+    async getUserStar(walletAddress) {
+      const result = await gameContractApi.userStar(walletAddress)
+      console.log('星级', result)
+      this.$store.commit('getUserStarLevle', this.getStarWord(result))
+    },
     //获取wgt余额
     async getWgtBalance() {
       const wgt = await wgtContractApi.wgtAssets(window.ethereum.selectedAddress)

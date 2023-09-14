@@ -83,16 +83,6 @@ export default {
             } else if (star == 30) {
                 return '六星';
             }
-            // switch (star) {
-            //     case 0: return '暂无星级';
-            //     case 5: return '一星';
-            //     case 10: return '二星';
-            //     case 15: return '三星';
-            //     case 20: return '四星';
-            //     case 25: return '五星';
-            //     case 30: return '六星';
-
-            // }
         },
         //下级地址信息
         async getAddressInfor(walletAddress) {
