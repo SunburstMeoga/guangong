@@ -215,7 +215,7 @@ export default {
             // console.log(WEB3.utils.fromWei(wgt + wga, 'ether'))
             this.wgtBalance = WEB3.utils.fromWei(wgt, 'ether')
             this.wgaBalance = WEB3.utils.fromWei(wga, 'ether')
-            let totalAssets = Number(this.wgtBalance) + (Number(this.wgaBalance) / 500)
+            let totalAssets = Number(this.wgtBalance) + (Number(this.wgaBalance) * 20)
 
             this.totalAssets = totalAssets
             console.log('totalAssets', this.totalAssets)

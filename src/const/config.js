@@ -7,7 +7,7 @@ import popularized_abi from "./popularized.json";
 import help_abi from "./help.json";
 
 const config = {
-  chainId: "46655",
+  chainId: "0x19c2e0",
   rpc_url: "http://47.115.211.205/rpc",
   chainName: "WGT MainNet",
   blockExplorerUrls: "",
@@ -18,17 +18,17 @@ const config = {
   map_abi: map_abi,
   popularized_abi: popularized_abi,
   help_abi: help_abi,
-  usdt_addr: "0xc0cf857BdC00c6eF5544aD5E920edd9848CCb9C8",
-  wgt_addr: "0x2f0D258388b9d2945b66b111BF9159bFf39f7847",
+  usdt_addr: "0xA24F46528936011E853213A22e761Eb5FF1De4f5",
+  wgt_addr: "0x18adcf54b0959d1d8E5CcB6f9f6df1197D1b0eC3",
   wga_addr: "0xce6D840Cf15a89a231ef00aE1418E37ce43d5e1f",
-  popularized_addr: "0xf0338105141d964A93305c750428dE0a5899b75A",
-  nft_addr: "0xEFDBe94717E7361ac8A6c46564afd789E481b1e3",
+  popularized_addr: "0xaA96B499801Dabc538FF281d885Ae0E8bbc0A700",
+  nft_addr: "0x8a6dbe0328Dd98FCfA70a6d182A05B3cBBaB3b07",
 
-  map_addr: "0xbF795cCB82EE957417c55E6064ABEd00a3AD4B27",
-  market_addr: "0x4De647B1F752D22B4087c7B0A850946d106aD1b5",
+  map_addr: "0x2b4974789BfE1CD367B8C5b353361243227Bf108",
+  market_addr: "0xb0eE6A561fcef516b4B8E7BCBf0743F3fbAF1B61",
 
-  game_addr: "0x7E895049884d42ffc40B0dD6F2082d344904C105",
-  help_addr: "0xCAdA86b40C973bA14293c4A37A894937261c593A",
+  game_addr: "0xa9c1aD8CeE9F54B151014a35d1ff5fFD1A60A6aa",
+  help_addr: "0xE31f52540197A8092c9022D6306C1534D0d5aF01",
   // A 0x52974912707C5cBB1C2d25C66307942901c1d2A3
   // B 0x40972d311BC09e2b57A47E81D854CF4905A57e24
   api: "http://47.115.211.205/api/",
