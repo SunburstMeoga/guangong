@@ -20,12 +20,15 @@
                 <div class="pt-10 text-white w-11/12 ml-auto mr-auto">
                     <div class="border-module">
                         <div class="mb-6" @click="viewAssets">{{ $t('menu.personal_center') }}</div>
-                        <div class="mb-6" @click="toMap">{{ $t('menu.guangong_map') }} (暂未开放，敬请期待)</div>
+
                         <div class="mb-6" @click="toMyTeam">我的团队</div>
                         <div class="mb-6" @click="toRecommend">{{ $t('menu.recommend') }}</div>
                         <div class="mb-6" @click="viewGoods">{{ $t('menu.official_release') }}</div>
-                        <div class="mb-6" @click="toWGTExchangeWGA">{{ $t('menu.wgt_exchange') }} (暂未开放，敬请期待)</div>
-                        <div class="" @click="viewMarket">{{ $t('menu.nft_market') }}</div>
+
+                        <div class="mb-6" @click="viewMarket">{{ $t('menu.nft_market') }}</div>
+                        <div class="mb-6 text-icon-gray" @click="toMap">{{ $t('menu.guangong_map') }} (暂未开放，敬请期待)</div>
+                        <div class=" text-icon-gray" @click="toWGTExchangeWGA">{{ $t('menu.wgt_exchange') }}
+                            (暂未开放，敬请期待)</div>
                     </div>
                     <div>
                         <div class="mb-6">FAQ</div>

@@ -594,7 +594,7 @@ export default {
                 const WEB3 = new Web3(window.ethereum);
                 allowanceState = WEB3.utils.fromWei(allowanceState, 'ether')
                 allowanceState = Number(allowanceState)
-                console.log('allowanceState', allowanceState,)
+                console.log('allowanceState', allowanceState, allowanceState < (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))))
                 if (allowanceState == 0) {
                     this.$loading.hide()
                     this.$confirm.show({

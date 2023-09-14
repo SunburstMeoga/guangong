@@ -13,21 +13,19 @@
         <div class="mb-2 flex justify-start items-baseline">
             <div class="">总资产： </div>
             <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
-            <div class="text-theme-primary flex justify-start items-baseline">
-                <div class="font-bold text-4xl">{{ totalAssets }}</div>
-                <!-- <div class="font-bold text-sm">({{ wgtBalance }}WGT | {{ wgaBalance }}WGA)</div> -->
+            <div class="text-theme-primary flex justify-start items-baseline text-xs">
+                <div class="">{{ wgtBalance }}WGT + {{ wgaBalance }}WGA </div>
+                <div class="text-xs">≈{{ totalAssets }}</div>
             </div>
 
         </div>
-        <div class="mb-2 flex justify-start items-baseline">
+        <!-- <div class="mb-2 flex justify-start items-baseline">
             <div class="">总资产构成： </div>
-            <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
             <div class="text-theme-primary flex justify-start items-baseline">
-                <!-- <div class="font-bold text-4xl">{{ totalAssets }}</div> -->
                 <div class="font-bold text-sm">{{ wgtBalance }}WGT + {{ wgaBalance }}WGA</div>
             </div>
 
-        </div>
+        </div> -->
         <div class="mb-2">
             <div class="flex justify-start items-center">
                 <span>总收益：</span>
@@ -62,14 +60,14 @@
                 </div>
             </div>
         </div>
-        <div class="mb-4 pb-4 border-b border-card-border">
+        <!-- <div class="mb-4 pb-4 border-b border-card-border">
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center">
                     <span>奖金池总金额：</span>
                     <span class="font-bold">{{ poolInfor.a }} WGT</span>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="mb-4 pb-4 border-b border-card-border">
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center">
@@ -266,7 +264,10 @@ export default {
                 .then(res => {
                     // console.log('用户收益详情', res)
                     // this.earningsInfo.poolTeam = this.getFilterAmount(res.poolTeam)
+                    const WEB3 = new Web3(window.ethereum);
+
                     this.earningsInfo.poolTeam = res.poolTeam
+                    this.earningsInfo.poolTeam = WEB3.utils.fromWei(res.poolTeam, 'ether')
 
                 })
                 .catch(err => {
