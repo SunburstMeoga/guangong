@@ -151,7 +151,7 @@
                         @click="handlePay">
                         <span>
                             <span class="pr-2">购买 </span> {{ nftInfor.price }} {{ nftInfor.card_type == 'nft_role' ? 'U' :
-                                'WGT' }}
+                                (nftInfor.card_type == 'fortune_card' ? 'WGA' : 'WGT') }}
                         </span>
                         <!-- <span class="text-sm font-light pl-2">
                             (WGT余额:{{ getFilterAmount($store.state.wgtBalance) }})

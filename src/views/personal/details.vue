@@ -29,7 +29,9 @@
                             No. {{ tokenId }}
                         </div>
                         <div class="text-icon-gray text-base mt-2" v-if="assetState === 'pending-order'">
-                            挂单价格：{{ filterAmount(opendingOrderNFTDetails.amount) }}
+                            挂单价格：{{ filterAmount(opendingOrderNFTDetails.amount) }} {{ nftInfor.card_type == 'nft_role' ?
+                                'U' :
+                                (nftInfor.card_type == 'fortune_card' ? 'WGA' : '') }}
                         </div>
                     </div>
                     <div class="w-11/12 flex justify-between items-center border-module" v-if="assetState === 'assets'">

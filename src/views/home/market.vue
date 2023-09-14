@@ -25,7 +25,7 @@
               <div class="w-11/12 mr-auto ml-auto">
                 <div v-for="(item, index) in nftRoleCards" :key="index" @click="toMarketDetails(item)">
                   <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
-                    card_type="nft_role" :amount="filterAmount(item.amount)" />
+                    :card_type="item.infor.card_type" :amount="filterAmount(item.amount)" />
                 </div>
               </div>
             </van-tab>
@@ -37,7 +37,7 @@
               <div class="w-11/12 mr-auto ml-auto">
                 <div v-for="(item, index) in synthesisPropsCards" :key="index" @click="toMarketDetails(item)">
                   <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
-                    :amount="filterAmount(item.amount)" />
+                    :amount="filterAmount(item.amount)" :card_type="item.infor.card_type" />
                 </div>
               </div>
             </van-tab>
@@ -49,7 +49,7 @@
               <div class="w-11/12 mr-auto ml-auto">
                 <div v-for="(item, index) in tacticsPropCards" :key="index" @click="toMarketDetails(item)">
                   <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
-                    :amount="filterAmount(item.amount)" />
+                    :amount="filterAmount(item.amount)" :card_type="item.infor.card_type" />
                 </div>
               </div>
             </van-tab>
@@ -61,7 +61,7 @@
               <div class="w-11/12 mr-auto ml-auto">
                 <div v-for="(item, index) in campaignProps" :key="index" @click="toMarketDetails(item)">
                   <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
-                    :amount="filterAmount(item.amount)" />
+                    :amount="filterAmount(item.amount)" :card_type="item.infor.card_type" />
                 </div>
               </div>
             </van-tab>

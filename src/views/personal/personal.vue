@@ -19,7 +19,7 @@
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                     <assets-card :imageUrl="_item.infor.imageUrl" :price="_item.infor.price"
                                         :name="_item.infor.name" :cardType="getCardType(_item.infor.card_type)"
-                                        :token="_item.tokenId" />
+                                        :token="_item.tokenId" :currency="_item.infor.card_type" />
                                 </div>
                             </div>
                         </div>
@@ -37,7 +37,8 @@
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                     <assets-card type="pending" :imageUrl="_item.infor.imageUrl"
                                         :price="filterAmount(_item.amount)" :name="_item.infor.name"
-                                        :cardType="getCardType(_item.infor.card_type)" :nftID="_item.tokenId" />
+                                        :currency="_item.infor.card_type" :cardType="getCardType(_item.infor.card_type)"
+                                        :nftID="_item.tokenId" />
                                 </div>
                             </div>
                         </div>
@@ -411,13 +412,13 @@ export default {
         },
         //卡片类型
         getCardType(card_type) {
-            if (card_type === 'nft_role') {
+            if (card_type == 'nft_role') {
                 return 'NFT角色卡'
-            } else if (card_type === 'synthesis_props') {
+            } else if (card_type == 'synthesis_props') {
                 return '合成道具卡'
-            } else if (card_type === 'tactics_props') {
+            } else if (card_type == 'tactics_props') {
                 return '战法道具卡'
-            } else if (card_type === 'expedition_order') {
+            } else if (card_type == 'expedition_order') {
                 return '出征令牌'
             }
         },

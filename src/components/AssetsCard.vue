@@ -15,7 +15,9 @@
             <!-- <div class="text-icon-gray"> 正在出征 </div> -->
             <div v-if="type === 'pending'" class="text-icon-gray">No. {{ nftID }}</div>
             <div v-else class="text-icon-gray">No. {{ token }}</div>
-            <div class="text-icon-gray text-right pr-2 font-bold">{{ price }} WGT</div>
+            <div class="text-icon-gray text-right pr-2 font-bold">{{ price }} {{ currency == 'nft_role' ? 'U'
+                :
+                (currency == 'fortune_card' ? 'WGA' : 'WGT') }}</div>
 
         </div>
     </div>
@@ -51,6 +53,10 @@ export default {
         nftID: {
             type: Number,
             default: 0
+        },
+        currency: {
+            type: String,
+            default: ''
         }
     }
 }

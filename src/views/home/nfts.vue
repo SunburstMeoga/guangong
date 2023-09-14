@@ -18,7 +18,7 @@
                                     @click="toGoodDetails(item)">
                                     <div>
                                         <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
-                                            card_type="U" />
+                                            :card_type="item.card_type" />
                                     </div>
                                 </div>
                             </div>
@@ -29,7 +29,7 @@
                                     @click="toGoodDetails(item)">
                                     <div>
                                         <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
-                                            card_type="WGT" />
+                                            :card_type="item.card_type" />
                                     </div>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                                     @click="toGoodDetails(item)">
                                     <div>
                                         <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
-                                            card_type="WGT" />
+                                            :card_type="item.card_type" />
                                     </div>
                                 </div>
                             </div>
@@ -51,9 +51,7 @@
                                     @click="toGoodDetails(item)">
                                     <div>
                                         <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
-                                            :card_type="item.card_type ==
-                                                'nft_role' ? 'U' :
-                                                'WGT'" />
+                                            :card_type="item.card_type" />
                                     </div>
                                 </div>
                             </div>
@@ -64,9 +62,7 @@
                                     @click="toGoodDetails(item)">
                                     <div>
                                         <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
-                                            :card_type="item.card_type ==
-                                                'nft_role' ? 'U' :
-                                                'WGT'" />
+                                            :card_type="item.card_type" />
                                     </div>
                                 </div>
                             </div>

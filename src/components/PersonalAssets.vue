@@ -238,7 +238,7 @@ export default {
         },
         //用户贡献值对应大使
         contributionLevel(contributionValue) {
-            if (contributionValue > 0 && contributionValue < 10000) {
+            if (contributionValue >= 0 && contributionValue < 10000) {
                 return '忠字传播大使'
             } else if (contributionValue >= 10000 && contributionValue < 50000) {
                 return '义字传播大使'
