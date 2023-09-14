@@ -17,7 +17,8 @@
                                 <div class="mb-6" v-for="(item, index ) in nftCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
-                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
+                                            card_type="U" />
                                     </div>
                                 </div>
                             </div>
@@ -27,7 +28,8 @@
                                 <div class="mb-6" v-for="(item, index ) in synthesisPropCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
-                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
+                                            card_type="WGT" />
                                     </div>
                                 </div>
                             </div>
@@ -37,7 +39,8 @@
                                 <div class="mb-6" v-for="(item, index ) in racticsPropCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
-                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
+                                            card_type="WGT" />
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +50,10 @@
                                 <div class="mb-6" v-for="(item, index ) in campaignTokens " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
-                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
+                                            :card_type="item.card_type ==
+                                                'nft_role' ? 'U' :
+                                                'WGT'" />
                                     </div>
                                 </div>
                             </div>
@@ -57,7 +63,10 @@
                                 <div class="mb-6" v-for="(item, index ) in wealthCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
-                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price" />
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
+                                            :card_type="item.card_type ==
+                                                'nft_role' ? 'U' :
+                                                'WGT'" />
                                     </div>
                                 </div>
                             </div>
