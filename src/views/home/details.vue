@@ -526,6 +526,7 @@ export default {
                 let allowanceState = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType == 'good' ? config.game_addr : config.market_addr)
                 const WEB3 = new Web3(window.ethereum);
                 allowanceState = WEB3.utils.fromWei(allowanceState, 'ether')
+                allowanceState = Number(allowanceState)
                 console.log('allowanceState', allowanceState,)
                 console.log('s授权金额不够', allowanceState, (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))), Number(allowanceState) < Number((this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))))
 
@@ -592,6 +593,7 @@ export default {
                 console.log('allowanceState', allowanceState)
                 const WEB3 = new Web3(window.ethereum);
                 allowanceState = WEB3.utils.fromWei(allowanceState, 'ether')
+                allowanceState = Number(allowanceState)
                 console.log('allowanceState', allowanceState,)
                 if (allowanceState == 0) {
                     this.$loading.hide()
