@@ -544,7 +544,7 @@ export default {
         payFromMall() {
             console.log(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
             // return
-            gameContractApi.buy(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
+            gameContractApi.buy(this.nftInfor.id)
                 .then((res) => {
                     this.$loading.hide()
                     showToast('购买成功')

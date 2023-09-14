@@ -31,8 +31,8 @@ if (window.ethereum) {
       return result;
     },
     //购买nft
-    buy: async function (nftType, isWGT) {
-      const tx = await GAMETRADE.buy(nftType, isWGT);
+    buy: async function (nftType) {
+      const tx = await GAMETRADE.buy(nftType);
       const result = await tx.wait();
       console.log(result);
       return result;
