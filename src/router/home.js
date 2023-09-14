@@ -12,7 +12,7 @@ const home = [
     name: "market",
     component: () => import("@/views/home/details"),
     meta: {
-      showTopBar: true,
+      showTopBar: false,
     },
   },
   {
