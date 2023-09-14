@@ -496,6 +496,20 @@ export default {
         async payFromWGA() {
             this.$loading.show()
             try {
+                let wealthAcount = await this.hasTwoWealthCard()
+                if (wealthAcount >= 2) {
+                    this.$loading.hide()
+
+                    showToast('当前已拥有2张财神卡，不可继续购买')
+                    return
+                }
+            } catch {
+                this.$loading.hide()
+
+                showToast('错误，请重试')
+                return
+            }
+            try {
                 let wgaIsInsufficientBalance;
                 try {
                     wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
@@ -504,6 +518,8 @@ export default {
                         return
                     }
                 } catch {
+                    this.$loading.hide()
+
                     showToast('获取余额失败，请重试')
                     return
                 }
@@ -549,6 +565,12 @@ export default {
             }
         },
 
+        //是否已经有2张的财神卡
+        async hasTwoWealthCard() {
+            const result = await gameContractApi.userInfo(window.ethereum.selectedAddress)
+            return result.deposits.length
+        },
+
         //用WGT付款
         async payFromWGT() {
             this.$loading.show()
@@ -561,6 +583,8 @@ export default {
                         return
                     }
                 } catch {
+                    this.$loading.hide()
+
                     showToast('获取余额失败，请重试')
                     return
                 }
@@ -601,8 +625,9 @@ export default {
                     }
                 }
             } catch {
-                showToast('错误，请重试')
                 this.$loading.hide()
+
+                showToast('错误，请重试')
                 return
             }
         },
@@ -619,6 +644,8 @@ export default {
                     console.log('usdtBalance', usdtBalance)
 
                 } catch {
+                    this.$loading.hide()
+
                     showToast('获取余额失败，请重试')
                     return
                 }
@@ -663,13 +690,14 @@ export default {
                         this.buyFromMall()
                         // console.log('good', this.goodType)
                     } else {
-                        // this.buyFromMarket()
+                        this.buyFromMarket()
 
                     }
                 }
             } catch {
-                showToast('错误，请重试')
                 this.$loading.hide()
+
+                showToast('错误，请重试')
                 return
             }
 
