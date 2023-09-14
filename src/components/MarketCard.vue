@@ -11,7 +11,7 @@
             <div class="text-tips-word text-xs">持有者</div>
             <div class="text-card-content text-sm mb-4"> {{ owner }} </div>
             <div class="text-tips-word text-xs">當前價格</div>
-            <div class="text-card-content text-xl font-semibold"> {{ card_type == 'fortune_card' ? Number(amount) / 500 :
+            <div class="text-card-content text-xl font-semibold"> {{ card_type == 'fortune_card' ? Number(amount) * 20 :
                 amount }} {{ card_type == 'nft_role' ? 'U'
         :
         (card_type == 'fortune_card' ? 'WGA' : 'WGT') }}</div>

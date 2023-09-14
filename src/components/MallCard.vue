@@ -9,7 +9,7 @@
             <!-- <div class="text-card-content text-sm mb-2"> Jack Zhang </div> -->
             <div class="text-theme-primary text-xl font-bold mb-6">{{ name }}</div>
             <div class="text-tips-word text-xs">價格</div>
-            <div class="text-card-content text-xl mb-6 font-semibold"> {{ card_type == 'fortune_card' ? Number(price) / 500
+            <div class="text-card-content text-xl mb-6 font-semibold"> {{ card_type == 'fortune_card' ? Number(price) * 20
                 :
                 price }} {{ card_type == 'nft_role' ? 'U'
         :

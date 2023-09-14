@@ -31,7 +31,7 @@
                         <div>
                             <div class="text-card-title text-sm font-light mb-2">价格</div>
                             <div class="text-card-content text-2xl font-semibold">{{ card_type == 'fortune_card' ?
-                                Number(price) / 500 : price }} {{ card_type
+                                Number(price) * 20 : price }} {{ card_type
         == 'nft_role' ? 'U' :
         (card_type == 'fortune_card' ? 'WGA' : 'WGT') }}</div>
                         </div>
