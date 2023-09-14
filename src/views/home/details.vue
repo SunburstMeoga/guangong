@@ -662,7 +662,8 @@ export default {
                 let allowanceState = await this.checkUSDTAllowanceState(window.ethereum.selectedAddress, this.goodType == 'good' ? config.game_addr : config.market_addr)
                 console.log('allowanceState', allowanceState)
                 allowanceState = WEB3.utils.fromWei(allowanceState, 'ether')
-                console.log('allowanceState', allowanceState)
+                allowanceState = Number(allowanceState)
+                console.log('allowanceState', allowanceState, allowanceState < (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))))
                 if (allowanceState == 0) {
                     this.$loading.hide()
                     this.$confirm.show({
@@ -675,6 +676,7 @@ export default {
                     })
                     return
                 } else if (allowanceState < (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))) {
+                    this.$loading.hide()
                     this.$confirm.show({
                         title: "提示",
                         content: "授权金额不足，请重新授权",
