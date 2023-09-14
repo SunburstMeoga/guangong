@@ -202,7 +202,14 @@ export default {
                 return
             }
             this.$loading.show()
-            const tokensAcount = await this.campaignNeededOutboundTokens(item.infor.outbound_tokens_id)
+            let tokensAcount
+            try {
+                tokensAcount = await this.campaignNeededOutboundTokens(item.infor.outbound_tokens_id)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
+            }
             if (tokensAcount == 0) {
                 this.$loading.hide()
                 showToast(`请先购买${item.infor.outbound_tokens}`)
@@ -317,9 +324,23 @@ export default {
         //点击领取出征卡收益
         async handleReceiveCampaignProceeds(item, index) {
             this.$loading.show()
-            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            let erc721ApppprovalState
+            try {
+                erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
+            }
             if (erc721ApppprovalState !== true) {
-                const erc721Result = await this.erc721ContractApppproval(config.game_addr)
+                let erc721Result
+                try {
+                    erc721Result = await this.erc721ContractApppproval(config.game_addr)
+                } catch {
+                    this.$loading.hide()
+                    showToast('错误，请重试')
+                    return
+                }
                 console.log('erc721Result', erc721Result)
                 if (erc721Result.status == 1) {
                     this.userReceiveCampaign(item, index)
@@ -335,14 +356,27 @@ export default {
         //点击领取财神卡收益
         async handleReceiveWealthProceeds(index) {
             this.$loading.show()
-
-            const wealthAmount = await this.getCampaignReceiveAmount(index)
+            let wealthAmount;
+            try {
+                wealthAmount = await this.getCampaignReceiveAmount(index)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
+            }
             if (wealthAmount == 0) {
                 showToast('当前NFT可领取金额为0')
                 this.$loading.hide()
                 return
             }
-            const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            let erc721ApppprovalState
+            try {
+                erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
+            }
             if (erc721ApppprovalState !== true) {
                 this.$loading.hide()
                 this.$confirm.show({
