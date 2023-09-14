@@ -52,6 +52,8 @@ import popularContractApi from '@/request/ether_request/popularized'
 import { userIncome } from '@/request/api_request'
 import { showToast } from 'vant'
 import { filterAddress } from '@/utils/filterValue'
+import Web3 from "web3";
+
 
 export default {
     data() {
@@ -63,6 +65,7 @@ export default {
     },
     mounted() {
         this.getAddressInfor(window.ethereum.selectedAddress)
+        this.getChildPerformance()
     },
     methods: {
         filterAddress,
@@ -111,7 +114,7 @@ export default {
                 childAddressList = childAddressList = [
                     { address: childOne, star: startOne }
                 ]
-                this.earningInfor = earningInfor
+                // this.earningInfor = earningInfor
                 this.childAddressList = childAddressList
                 this.$loading.hide()
                 return
@@ -128,13 +131,25 @@ export default {
                 { address: childOne, star: startOne },
                 { address: childTwo, star: startTwo }
             ]
-            this.earningInfor = earningInfor
+            // this.earningInfor = earningInfor
             this.childAddressList = childAddressList
 
             this.$loading.hide()
 
             console.log(this.childAddressList)
             console.log(this.earningInfor)
+        },
+        //获取属下业绩
+        getChildPerformance() {
+            const WEB3 = new Web3(window.ethereum);
+            gameContractApi.childPerformance(window.ethereum.selectedAddress)
+                .then(res => {
+                    // console.log('下属业绩', res)
+                    this.earningInfor = WEB3.utils.fromWei(res.toString(), 'ether')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         },
         //获取地址的收益卡收益
         async getAddrEarning(walletAddress) {

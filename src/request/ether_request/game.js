@@ -30,6 +30,10 @@ if (window.ethereum) {
       const result = await GAME.getStar(address);
       return result;
     },
+    childPerformance: async function (walletAddress) {
+      const result = await GAME.getChildSum(walletAddress);
+      return result;
+    },
     //购买nft
     buy: async function (nftType) {
       const tx = await GAMETRADE.buy(nftType);
