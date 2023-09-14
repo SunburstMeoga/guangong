@@ -40,7 +40,7 @@
                 <van-swipe class="my-swipe mt-4" :autoplay="3000" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails(item)">
                         <product-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
-                            :cardTag="item.card_type === 'nft_role' ? item.stage : item.tag" />
+                            :card_type="item.card_type" :cardTag="item.card_type === 'nft_role' ? item.stage : item.tag" />
                     </van-swipe-item>
                 </van-swipe>
                 <div class="w-full px-4 absolute flex justify-between items-center top-60 left-0 text-icon-gray">
@@ -66,7 +66,7 @@
             <div class="w-full px-4">
                 <div class="mb-4" v-for="(item, index) in marketListData" :key="index" @click="toMarketDetails(item)">
                     <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
-                        :amount="filterAmount(item.amount)" />
+                        :card_type="item.infor.card_type" :amount="filterAmount(item.amount)" />
                 </div>
             </div>
 

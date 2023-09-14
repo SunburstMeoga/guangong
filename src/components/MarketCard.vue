@@ -11,7 +11,9 @@
             <div class="text-tips-word text-xs">持有者</div>
             <div class="text-card-content text-sm mb-4"> {{ owner }} </div>
             <div class="text-tips-word text-xs">當前價格</div>
-            <div class="text-card-content text-xl font-semibold"> {{ amount }} WGT</div>
+            <div class="text-card-content text-xl font-semibold"> {{ amount }} {{ card_type ==
+                'nft_role' ? 'U' :
+                'WGT' }}</div>
             <!-- <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center">
                     <div class="w-6 h-6 rounded-full overflow-hidden mr-1.5">
@@ -47,6 +49,10 @@ export default {
             default: ''
         },
         amount: {
+            type: String,
+            default: ''
+        },
+        card_type: {
             type: String,
             default: ''
         }

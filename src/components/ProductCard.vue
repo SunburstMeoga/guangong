@@ -30,7 +30,9 @@
                         </div>
                         <div>
                             <div class="text-card-title text-sm font-light mb-2">价格</div>
-                            <div class="text-card-content text-2xl font-semibold">{{ price || '-' }} WGT</div>
+                            <div class="text-card-content text-2xl font-semibold">{{ price || '-' }} {{ card_type ==
+                                'nft_role' ? 'U' :
+                                'WGT' }}</div>
                         </div>
                     </div>
                 </div>
@@ -63,6 +65,10 @@ export default {
             default: ''
         },
         cardTag: {
+            type: String,
+            default: ''
+        },
+        card_type: {
             type: String,
             default: ''
         }

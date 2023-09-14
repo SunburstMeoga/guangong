@@ -13,9 +13,9 @@
         <div class="mb-2 flex justify-start items-baseline">
             <div class="">总资产： </div>
             <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
-            <div class="text-theme-primary">
-                <div class="">{{ wgtBalance }}WGT + {{ wgaBalance }}WGA </div>
-                <div class="text-xs">≈{{ totalAssets }}</div>
+            <div class="text-theme-primary font-bold">
+                <div class="font-bold">{{ wgtBalance }} WGT + {{ wgaBalance }} WGA </div>
+                <div class="text-xs">≈{{ totalAssets }} U</div>
             </div>
 
         </div>
