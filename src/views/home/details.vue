@@ -150,8 +150,9 @@
                     <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
                         @click="handlePay">
                         <span>
-                            <span class="pr-2">购买 </span> {{ nftInfor.price }} {{ nftInfor.card_type == 'nft_role' ? 'U' :
-                                (nftInfor.card_type == 'fortune_card' ? 'WGA' : 'WGT') }}
+                            <span class="pr-2">购买 </span> {{ nftInfor.card_type == 'fortune_card' ? Number(nftInfor.price) /
+                                500 : nftInfor.price }} {{ nftInfor.card_type == 'nft_role' ? 'U' :
+        (nftInfor.card_type == 'fortune_card' ? 'WGA' : 'WGT') }}
                         </span>
                         <!-- <span class="text-sm font-light pl-2">
                             (WGT余额:{{ getFilterAmount($store.state.wgtBalance) }})
