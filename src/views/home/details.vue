@@ -113,10 +113,10 @@
                                 <div class="mb-2 text-xs text-icon-gray">阶段</div>
                                 <div class="text-base text-card-content">{{ nftInfor.level }}</div>
                             </div>
-                            <div class="mb-6">
+                            <!-- <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">角色价值</div>
                                 <div class="text-base text-card-content">{{ nftInfor.circulation }}</div>
-                            </div>
+                            </div> -->
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">财神奖励</div>
                                 <div class="text-base text-card-content">{{ nftInfor.award }}</div>
@@ -313,7 +313,7 @@ export default {
                 showToast('错误，请重试')
                 return
             }
-            gameContractApi.buyFortuneCard(this.nftInfor.id)
+            gameContractApi.buyFortuneCard(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
                 .then(res => {
                     this.$loading.hide()
                     showToast('购买成功')
@@ -735,7 +735,10 @@ export default {
                 wgtIsInsufficientBalance = await this.wgtIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
                 wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
             } catch (error) {
+                this.$loading.hide()
+
                 showToast('错误，请重试')
+                return
             }
 
             try {
@@ -743,7 +746,10 @@ export default {
                 wgtBalance = await this.getWGTBalance(window.ethereum.selectedAddress)
                 wgaBalance = await this.getWGABalance(window.ethereum.selectedAddress)
             } catch (error) {
+                this.$loading.hide()
                 showToast('错误，请重试')
+                return
+
             }
 
             if (wgtIsInsufficientBalance && !wgaIsInsufficientBalance) {
@@ -781,6 +787,7 @@ export default {
 
                 currentPayWayAllowanState = WEB3.utils.fromWei(currentPayWayAllowanState, 'ether')
                 currentPayWayAllowanState = Number(currentPayWayAllowanState)
+                console.log('授权状态: ', this.currentPayWay, currentPayWayAllowanState)
             } catch {
                 this.$loading.hide()
                 showToast('错误，请重试')
@@ -797,32 +804,8 @@ export default {
                         this.$loading.show()
                         if (this.currentPayWay === 0) {
                             this.WGTContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
-                                .then(res => {
-                                    console.log(res)
-                                    this.$confirm.hide()
-                                    this.$loading.hide()
-                                    showToast('授权成功')
-                                })
-                                .catch(err => {
-                                    this.$confirm.hide()
-                                    this.$loading.hide()
-
-                                    showToast('授权失败')
-                                })
                         } else {
                             this.WGAContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
-                                .then(res => {
-                                    console.log(res)
-                                    this.$confirm.hide()
-                                    this.$loading.hide()
-                                    showToast('授权成功')
-                                })
-                                .catch(err => {
-                                    this.$confirm.hide()
-                                    this.$loading.hide()
-
-                                    showToast('授权失败')
-                                })
                         }
                     },
                     onCancel: () => {
@@ -834,32 +817,8 @@ export default {
                 this.$loading.hide()
                 if (this.currentPayWay === 0) {
                     this.WGTContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
-                        .then(res => {
-                            console.log(res)
-                            this.$confirm.hide()
-                            this.$loading.hide()
-                            showToast('授权成功')
-                        })
-                        .catch(err => {
-                            this.$confirm.hide()
-                            this.$loading.hide()
-
-                            showToast('授权失败')
-                        })
                 } else {
                     this.WGAContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
-                        .then(res => {
-                            console.log(res)
-                            this.$confirm.hide()
-                            this.$loading.hide()
-                            showToast('授权成功')
-                        })
-                        .catch(err => {
-                            this.$confirm.hide()
-                            this.$loading.hide()
-
-                            showToast('授权失败')
-                        })
                 }
                 return
             }

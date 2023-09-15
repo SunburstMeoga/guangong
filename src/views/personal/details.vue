@@ -1008,7 +1008,15 @@ export default {
 
         //获取当前出征的角色卡需要的出征令牌存货
         async campaignNeededOutboundTokens() {
-            const result = await outboundTokens(window.ethereum.selectedAddress, this.nftInfor.outbound_tokens_id)
+            let result;
+            try {
+                result = await outboundTokens(window.ethereum.selectedAddress, this.nftInfor.outbound_tokens_id)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
+            }
+
             if (result.data.length !== 0) {
                 this.outTokenList = result.data
                 return this.outTokenList
@@ -1083,7 +1091,13 @@ export default {
                 return
             }
             this.$loading.show()
-            const tokensAcount = await this.campaignNeededOutboundTokens()
+            let tokensAcount
+            try {
+                tokensAcount = await this.campaignNeededOutboundTokens()
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+            }
             if (tokensAcount == 0) {
                 this.$loading.hide()
                 showToast(`请先购买${this.nftInfor.outbound_tokens}`)
