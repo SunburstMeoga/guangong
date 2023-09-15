@@ -133,12 +133,16 @@ export default {
     },
     mounted() {
         this.timer = setTimeout(() => {
+            this.$loading.show()
             if (window.ethereum && window.ethereum.selectedAddress) {
                 this.address = window.ethereum.selectedAddress
                 this.getUserInfo()
                 this.getUserIncome()
                 this.getUserTotalAssets()
                 this.getPoolInfor()
+                this.$loading.hide()
+            } else {
+                this.$loading.show()
             }
         }, 2000);
     },

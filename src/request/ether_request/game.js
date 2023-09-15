@@ -112,8 +112,8 @@ if (window.ethereum) {
       return result;
     },
     //用户购买财神卡
-    buyFortuneCard: async function (nftType) {
-      const tx = await GAMETRADE.buy2(nftType);
+    buyFortuneCard: async function (nftType, isWgt) {
+      const tx = await GAMETRADE.buy2(nftType, isWgt);
       const result = await tx.wait();
       console.log(result);
       return result;

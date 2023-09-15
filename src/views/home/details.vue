@@ -35,11 +35,11 @@
                                 <div class="text-base text-card-content">{{ nftInfor.stage }}</div>
 
                             </div>
-                            <div class="mb-6">
+                            <!-- <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">發行量</div>
                                 <div class="text-base text-card-content">不限量</div>
 
-                            </div>
+                            </div> -->
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">出征令牌</div>
                                 <div class="text-base text-card-content">{{ nftInfor.outbound_tokens }}</div>

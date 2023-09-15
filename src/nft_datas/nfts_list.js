@@ -577,7 +577,7 @@ const nfts_list = [
     card_type: "fortune_card",
     award: 104.6666667,
     cycle: 7,
-    price: "100",
+    price: "150",
     circulation: -1,
   },
 

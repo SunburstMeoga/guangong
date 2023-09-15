@@ -350,6 +350,11 @@
 				"internalType": "uint256",
 				"name": "t",
 				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "is_wgt",
+				"type": "bool"
 			}
 		],
 		"name": "buy2",
