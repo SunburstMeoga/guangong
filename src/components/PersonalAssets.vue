@@ -8,13 +8,13 @@
             <div>
                 <span>{{ addressFilter(address) }}</span>
             </div>
-            <div class="buy-button py-1 px-2 text-sm text-primary-word rounded" @click="copyAddress">复制地址</div>
+            <div class="buy-button px-3 py-1 text-sm text-primary-word rounded" @click="copyAddress">复制地址</div>
         </div>
-        <div class="mb-2 flex justify-start items-baseline">
+        <div class="mb-2 flex justify-start items-baseline font-bold">
             <div class="">总资产： </div>
             <!-- 下面有行灰色的值。分别显示wgt和wga的余额 -->
-            <div class="text-theme-primary font-bold">
-                <div class="font-bold">{{ wgtBalance }} WGT + {{ wgaBalance }} WGA </div>
+            <div class="text-theme-primary ">
+                <div class="">{{ wgtBalance }} WGT + {{ wgaBalance }} WGA </div>
                 <div class="text-xs">≈{{ totalAssets }} U</div>
             </div>
 
@@ -27,36 +27,36 @@
 
         </div> -->
         <div class="mb-2">
-            <div class="flex justify-start items-center">
+            <div class="flex justify-start items-center font-bold">
                 <span>总收益：</span>
                 <!-- <span class="font-bold text-theme-primary">{{  earningsInfo.usdt + earningsInfo.selfUsdt }} WGT </span> -->
-                <span class="font-bold text-theme-primary"> {{ $store.state.userInfor.income_sum }} WGT
+                <span class="text-theme-primary"> {{ $store.state.userInfor.income_sum }} WGT
                 </span>
             </div>
         </div>
 
         <div class="mb-2">
-            <div class="flex justify-start items-center">
+            <div class="flex justify-start items-center font-bold">
                 <span>团队星级：</span>
                 <!-- <span class="font-bold text-theme-primary">{{  earningsInfo.usdt + earningsInfo.selfUsdt }} WGT </span> -->
-                <span class="font-bold text-theme-primary"> {{ $store.state.userStar }}
+                <span class="text-theme-primary"> {{ $store.state.userStar }}
                 </span>
             </div>
         </div>
         <div class="mb-2">
-            <div class="flex justify-start items-center">
+            <div class="flex justify-start items-center font-bold">
                 <span>个人贡献值级别：</span>
-                <span class="font-bold flex justify-start items-baseline">
-                    <span>{{ contributionLevel($store.state.userInfor.personal) }} </span> <span
-                        class="text-xs font-normal pl-1">(贡献值：{{ $store.state.userInfor.personal }})</span>
+                <span class="text-theme-primary flex justify-start items-baseline">
+                    <span class="">{{ contributionLevel($store.state.userInfor.personal) }} </span> <span
+                        class="text-xs pl-1">(贡献值：{{ $store.state.userInfor.personal }})</span>
                 </span>
             </div>
         </div>
-        <div class="mb-4 pb-4 border-b border-card-border">
+        <div class="mb-2">
             <div class="flex justify-between items-center">
-                <div class="flex justify-start items-center">
+                <div class="flex justify-start items-center font-bold">
                     <span>个人收益池金额：</span>
-                    <span class="font-bold">{{ earningsInfo.poolTeam }} WGT</span>
+                    <span class="text-theme-primary">{{ earningsInfo.poolTeam }} WGT</span>
                 </div>
             </div>
         </div>
@@ -68,11 +68,11 @@
                 </div>
             </div>
         </div> -->
-        <div class="mb-4 pb-4 border-b border-card-border">
+        <div class="mb-6">
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center">
-                    <span>可领取金额：</span>
-                    <span class="font-bold ">{{ poolInfor.b }} WGT</span>
+                    <span class="font-bold">可领取金额：</span>
+                    <span class="font-bold text-theme-primary">{{ poolInfor.b }} WGT</span>
                     <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded"
                         @click="userReceivePoolEarnings">领取收益</span>
                 </div>
@@ -132,8 +132,9 @@ export default {
         }
     },
     mounted() {
+        this.$loading.show()
+
         this.timer = setTimeout(() => {
-            this.$loading.show()
             if (window.ethereum && window.ethereum.selectedAddress) {
                 this.address = window.ethereum.selectedAddress
                 this.getUserInfo()
@@ -211,7 +212,7 @@ export default {
             let totalAssets = Number(this.wgtBalance) + (Number(this.wgaBalance) * 20)
 
             this.totalAssets = totalAssets
-            console.log('totalAssets', this.totalAssets)
+            console.log('wgaBalance', wga)
         },
         getUserIncome() {
             userIncome(window.ethereum.selectedAddress)
