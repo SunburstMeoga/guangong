@@ -127,34 +127,23 @@ export default {
             totalAssets: '0',
             poolInfor: {},
             wgtBalance: '0',
-            wgaBalance: '0'
+            wgaBalance: '0',
+            timer: null
         }
     },
     mounted() {
-        this.address = window.ethereum.selectedAddress
-
-        if (window.ethereum) {
-
-
-        }
-        if (window.ethereum && window.ethereum.selectedAddress) {
-            this.getUserInfo()
-            this.getUserIncome()
-            this.getUserTotalAssets()
-            this.getPoolInfor()
-        } else {
-            this.$confirm.show({
-                title: "提示",
-                content: "请先连接钱包",
-                showCancelButton: false,
-                onConfirm: () => {
-                    this.$router.push({
-                        path: '/'
-                    })
-                },
-            });
-        }
-
+        this.timer = setTimeout(() => {
+            if (window.ethereum && window.ethereum.selectedAddress) {
+                this.address = window.ethereum.selectedAddress
+                this.getUserInfo()
+                this.getUserIncome()
+                this.getUserTotalAssets()
+                this.getPoolInfor()
+            }
+        }, 2000);
+    },
+    beforeDestroy() {
+        clearInterval(this.timer);
     },
     methods: {
 
