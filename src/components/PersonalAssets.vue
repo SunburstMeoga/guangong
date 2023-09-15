@@ -80,14 +80,12 @@
         </div>
         <div>
             <div class="flex justify-between items-center font-normal text-xs">
-                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1"
-                    @click="viewEarnings('role_card')">
+                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1">
                     <!-- 不知道是哪个字段 -->
                     <div>角色卡收益</div>
                     <div class="">{{ $store.state.userInfor.income_card }}</div>
                 </div>
-                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1"
-                    @click="viewEarnings('wealth_card')">
+                <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1">
                     <div>财神卡收益</div>
                     <div>{{ $store.state.userInfor.income_deposit }}</div>
                 </div>

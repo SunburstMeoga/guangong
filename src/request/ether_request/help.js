@@ -9,7 +9,7 @@ if (window.ethereum) {
   const HELP = new ethers.Contract(config.help_addr, config.help_abi, provider);
 
   helpContractApi = {
-    //财神卡领取收益信息
+    //出征卡领取收益信息
     wealthEarningsInfor: async function (address, nftIndex) {
       const result = HELP.GetIncome2(address, nftIndex);
       return result;

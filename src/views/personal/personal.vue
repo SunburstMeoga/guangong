@@ -171,8 +171,9 @@ export default {
             const result = await nftContractApi.apppprovalForAll(contractAddress)
             return result
         },
-        //获取当前财神卡能领取的金额
+        //获取当前出征卡能领取的金额
         async getCampaignReceiveAmount(nftIndex) {
+            console.log(nftIndex)
             const result = await helpContractApi.wealthEarningsInfor(window.ethereum.selectedAddress, nftIndex)
             return result
         },
@@ -356,20 +357,22 @@ export default {
         },
         //点击领取财神卡收益
         async handleReceiveWealthProceeds(index) {
+            console.log(index)
             this.$loading.show()
             let wealthAmount;
-            try {
-                wealthAmount = await this.getCampaignReceiveAmount(index)
-            } catch {
-                this.$loading.hide()
-                showToast('错误，请重试')
-                return
-            }
-            if (wealthAmount == 0) {
-                showToast('当前NFT可领取金额为0')
-                this.$loading.hide()
-                return
-            }
+            // try {
+            //     wealthAmount = await this.getCampaignReceiveAmount(index)
+            // } catch (e) {
+            //     this.$loading.hide()
+            //     showToast('请重试', e)
+            //     console.log(e)
+            //     return
+            // }
+            // if (wealthAmount == 0) {
+            //     showToast('当前NFT可领取金额为0')
+            //     this.$loading.hide()
+            //     return
+            // }
             let erc721ApppprovalState
             try {
                 erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
