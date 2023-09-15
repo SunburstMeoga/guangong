@@ -26,7 +26,7 @@
                     <div class="flex justify-start items-center w-11/12">
                         <div class="pr-10">
                             <div class="text-card-title text-sm font-light mb-2">数量</div>
-                            <div class="text-card-content text-2xl font-semibold">不限量</div>
+                            <div class="text-card-content text-2xl font-semibold">{{ circulation }}</div>
                         </div>
                         <div>
                             <div class="text-card-title text-sm font-light mb-2">价格</div>
@@ -72,6 +72,10 @@ export default {
         card_type: {
             type: String,
             default: ''
+        },
+        circulation: {
+            type: Number,
+            default: 0
         }
     }
 }

@@ -80,10 +80,10 @@
                                 <div class="mb-2 text-xs text-icon-gray">限制</div>
                                 <div class="text-base text-card-content">{{ nftInfor.target }}</div>
                             </div>
-                            <div class="mb-6">
+                            <!-- <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">发行量</div>
                                 <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
-                            </div>
+                            </div> -->
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">注意事项</div>
                                 <div class="text-base text-theme-primary font-semibold">{{ nftInfor.tips }}</div>
@@ -106,7 +106,7 @@
                     <!-- 财神卡介绍 -->
                     <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'fortune_card'">
                         <div class="flex justify-between items-center">
-                            <div class="text-2xl ">{{ nftInfor.name }}财神卡详情</div>
+                            <div class="text-2xl ">{{ nftInfor.name }}详情</div>
                         </div>
                         <div class="mt-8">
                             <div class="mb-6">
@@ -302,9 +302,15 @@ export default {
         //购买财神卡
         userBuyFortuneCard() {
             console.log(this.canBuyWealthCard())
-            if (!this.canBuyWealthCard()) {
-                showToast(`当前等级不可购买${this.nftInfor.name}`)
+            try {
+                if (!this.canBuyWealthCard()) {
+                    showToast(`当前等级不可购买${this.nftInfor.name}`)
+                    this.$loading.hide()
+                    return
+                }
+            } catch {
                 this.$loading.hide()
+                showToast('错误，请重试')
                 return
             }
             gameContractApi.buyFortuneCard(this.nftInfor.id)
@@ -519,7 +525,8 @@ export default {
                         showToast('WGA余额不足')
                         return
                     }
-                } catch {
+                } catch (e) {
+                    console.log('e', e)
                     this.$loading.hide()
 
                     showToast('获取余额失败，请重试')
@@ -717,7 +724,6 @@ export default {
                 return
             }
             console.log(this.nftInfor)
-            let nftCardType = this.nftInfor.card_type
 
             this.$loading.show()
             let wgtIsInsufficientBalance
@@ -740,7 +746,6 @@ export default {
                 showToast('错误，请重试')
             }
 
-
             if (wgtIsInsufficientBalance && !wgaIsInsufficientBalance) {
                 this.currentPayWay = 1
             } else if (wgtIsInsufficientBalance && wgaIsInsufficientBalance) {
@@ -748,6 +753,7 @@ export default {
                 showToast('购买NFT所需的WGT或WGA不足')
                 return
             }
+
             this.payWayList[0] = { name: 'WGT支付', amount: this.getFilterAmount(wgtBalance), isWgt: true, isInsufficientBalance: wgtIsInsufficientBalance }
             this.payWayList[1] = { name: 'WGA支付', amount: this.getFilterAmount(wgaBalance), isWgt: false, isInsufficientBalance: wgaIsInsufficientBalance }
             this.$loading.hide()
@@ -760,16 +766,28 @@ export default {
             console.log('财神卡？', this.isWealthCard(this.nftInfor.id)) //当前购买的卡片是否为财神卡
             this.showPayWay = false
             this.$loading.show()
-            let currentPayWayAllowanState; //当前支付方式合约授权状态
-            if (this.currentPayWay == 0) {
-                console.log('wgt支付')
-                currentPayWayAllowanState = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
-            } else {
-                currentPayWayAllowanState = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
-                console.log('wga支付')
 
+            const WEB3 = new Web3(window.ethereum);
+
+            let currentPayWayAllowanState; //当前支付方式合约授权状态
+            try {
+                if (this.currentPayWay == 0) {
+                    console.log('wgt支付')
+                    currentPayWayAllowanState = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
+                } else {
+                    currentPayWayAllowanState = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
+                    console.log('wga支付')
+                }
+
+                currentPayWayAllowanState = WEB3.utils.fromWei(currentPayWayAllowanState, 'ether')
+                currentPayWayAllowanState = Number(currentPayWayAllowanState)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
             }
 
+            //未授权
             if (currentPayWayAllowanState == 0) {
                 this.$loading.hide()
                 this.$confirm.show({
@@ -812,30 +830,76 @@ export default {
                     }
                 });
                 return
-            }
+            } else if (currentPayWayAllowanState < (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))) { //授权金额不足
+                this.$loading.hide()
+                if (this.currentPayWay === 0) {
+                    this.WGTContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                        .then(res => {
+                            console.log(res)
+                            this.$confirm.hide()
+                            this.$loading.hide()
+                            showToast('授权成功')
+                        })
+                        .catch(err => {
+                            this.$confirm.hide()
+                            this.$loading.hide()
 
-            if (this.isWealthCard(this.nftInfor.id) === -1) {
-                if (this.goodType === 'good') {
-                    this.buyFromMall()
-                } else if (this.goodType === 'market') {
-                    this.buyFromMarket()
+                            showToast('授权失败')
+                        })
+                } else {
+                    this.WGAContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                        .then(res => {
+                            console.log(res)
+                            this.$confirm.hide()
+                            this.$loading.hide()
+                            showToast('授权成功')
+                        })
+                        .catch(err => {
+                            this.$confirm.hide()
+                            this.$loading.hide()
+
+                            showToast('授权失败')
+                        })
                 }
-            } else {
-                this.userBuyFortuneCard()
+                return
             }
+            this.userBuyFortuneCard()
         },
 
         //点击购买按钮进行购买
         async handlePay() {
-            // 判断当前购买nft的类型
-            //角色卡只能用USDT购买
-            if (this.nftInfor.card_type == 'nft_role') {
+            console.log(this.nftInfor)
+            if (this.nftInfor.circulation == 0) {
+                showToast('该角色卡暂未开放购买')
+                return
+            }
+
+            //财神卡用wgt或者wga 唤起支付类型弹窗
+            if (this.nftInfor.card_type == 'fortune_card') {
+                try {
+                    let wealthAcount = await this.hasTwoWealthCard()
+                    if (wealthAcount >= 2) {
+                        this.$loading.hide()
+
+                        showToast('当前已拥有2张财神卡，不可继续购买')
+                        return
+                    }
+                } catch {
+                    this.$loading.hide()
+
+                    showToast('错误，请重试')
+                    return
+                }
+                this.showPayWayPopup()
+                return
+            }
+            // 直接使用购买卡片类型所需的币种进行购买
+            // 合成道具卡、角色卡只能用USDT购买 
+            // 战法道具卡、出征令牌只能wgt
+            if (this.nftInfor.card_type == 'nft_role' || this.nftInfor.card_type == 'synthesis_props') {
                 this.payFromUSDT()
-            } else if (this.nftInfor.card_type == 'fortune_card') {
-                this.payFromWGA()
             } else {
                 this.payFromWGT()
-
             }
         },
         buyFromMall() {

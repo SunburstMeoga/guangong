@@ -40,7 +40,8 @@
                 <van-swipe class="my-swipe mt-4" :autoplay="3000" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails(item)">
                         <product-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
-                            :card_type="item.card_type" :cardTag="item.card_type === 'nft_role' ? item.stage : item.tag" />
+                            :circulation="item.circulation == -1 ? '不限量' : item.circulation" :card_type="item.card_type"
+                            :cardTag="item.card_type === 'nft_role' ? item.stage : item.tag" />
                     </van-swipe-item>
                 </van-swipe>
                 <div class="w-full px-4 absolute flex justify-between items-center top-60 left-0 text-icon-gray">
@@ -60,10 +61,10 @@
             <div class="mb-10 w-full overflow-hidden">
                 <shops-card :shopsList="shopsList" />
             </div> -->
-            <div class="w-full px-4 mb-10" @click="viewMarket">
+            <div class="w-full px-4 mb-10" @click="viewMarket" v-if="marketListData.length !== 0">
                 <module-title titleWord="NFT市場" hasMore />
             </div>
-            <div class="w-full px-4">
+            <div class="w-full px-4" v-if="marketListData.length !== 0">
                 <div class="mb-4" v-for="(item, index) in marketListData" :key="index" @click="toMarketDetails(item)">
                     <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
                         :card_type="item.infor.card_type" :amount="filterAmount(item.amount)" />
@@ -97,7 +98,11 @@ export default {
     },
     mounted() {
         // console.log(nfts_list)
-        this.getHotList()
+        nfts_list.map(item => {
+            this.productList.push(item)
+        })
+
+        // this.getHotList()
         this.getMarketList()
     },
     methods: {
@@ -133,8 +138,10 @@ export default {
                     })
                     this.marketListData = newArr
                     console.log('marketListData', this.marketListData)
+                    this.showSkeleton = false
                 })
                 .catch(err => {
+                    this.showSkeleton = false
                     console.log('err', err)
                 })
         },
