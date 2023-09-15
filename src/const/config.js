@@ -7,7 +7,7 @@ import popularized_abi from "./popularized.json";
 import help_abi from "./help.json";
 
 const config = {
-  chainId: "46655",
+  chainId: "0x19c2e0",
   rpc_url: "http://47.115.211.205/rpc",
   chainName: "WGT MainNet",
   blockExplorerUrls: "",
