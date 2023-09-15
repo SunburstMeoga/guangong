@@ -243,6 +243,7 @@ export default {
         accountBalance, filterAmount,
         clickPayWay(item, index) {
             if (item.isInsufficientBalance) {
+                this.$loading.hide()
                 showToast(`${item.name}余额不足`)
                 return
             }
@@ -313,6 +314,7 @@ export default {
             } catch {
                 this.$loading.hide()
                 showToast('错误，请重试')
+                this.$loading.hide()
                 return
             }
             gameContractApi.buyFortuneCard(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
@@ -357,7 +359,9 @@ export default {
             try {
                 return await usdtContractApi.isAllowance(walletAddress, contractAddress)
             } catch {
+                this.$loading.hide()
                 showToast('检查授权状态失败，请重试');
+                return
             }
         },
         //检查WGT合约授权状态
@@ -365,7 +369,9 @@ export default {
             try {
                 return await wgtContractApi.isAllowance(walletAddress, contractAddress)
             } catch {
+                this.$loading.hide()
                 showToast('检查授权状态失败，请重试');
+                return
             }
 
         },
@@ -374,7 +380,9 @@ export default {
             try {
                 return await wgaContractApi.isAllowance(walletAddress, contractAddress)
             } catch {
+                this.$loading.hide()
                 showToast('检查授权状态失败，请重试');
+                return
             }
 
         },
@@ -524,6 +532,7 @@ export default {
                 try {
                     wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
                     if (wgaIsInsufficientBalance) {
+                        this.$loading.hide()
                         showToast('WGA余额不足')
                         return
                     }
@@ -591,6 +600,7 @@ export default {
                 try {
                     wgtIsInsufficientBalance = await this.wgtIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
                     if (wgtIsInsufficientBalance) {
+                        this.$loading.hide()
                         showToast('WGT余额不足')
                         return
                     }
@@ -669,6 +679,7 @@ export default {
 
                 console.log(usdtBalance, nftAmount, usdtBalance < nftAmount)
                 if (usdtBalance < nftAmount) {
+                    this.$loading.hide()
                     showToast('USDT余额不足')
                     return
                 }
@@ -722,6 +733,8 @@ export default {
         async showPayWayPopup() {
 
             if (!window.ethereum.selectedAddress) {
+                this.$loading.hide()
+
                 showToast('请先连接钱包')
                 return
             }
@@ -831,6 +844,7 @@ export default {
         async handlePay() {
             console.log(this.nftInfor)
             if (this.nftInfor.circulation == 0) {
+                this.$loading.hide()
                 showToast('该角色卡暂未开放购买')
                 return
             }
