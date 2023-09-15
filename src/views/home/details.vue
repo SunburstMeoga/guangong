@@ -151,7 +151,9 @@
                         @click="handlePay">
                         <span>
                             <span class="pr-2">购买 </span> {{ nftInfor.card_type == 'fortune_card' ? Number(nftInfor.price) *
-                                20 : nftInfor.price }} {{ nftInfor.card_type == 'nft_role' ? 'U' :
+                                20 : nftInfor.price }} {{ (nftInfor.card_type
+        == 'nft_role' || nftInfor.card_type
+        == 'synthesis_props') ? 'U' :
         (nftInfor.card_type == 'fortune_card' ? 'WGA' : 'WGT') }}
                         </span>
                         <!-- <span class="text-sm font-light pl-2">

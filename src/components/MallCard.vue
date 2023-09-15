@@ -11,7 +11,9 @@
             <div class="text-tips-word text-xs">價格</div>
             <div class="text-card-content text-xl mb-6 font-semibold"> {{ card_type == 'fortune_card' ? Number(price) * 20
                 :
-                price }} {{ card_type == 'nft_role' ? 'U'
+                price }} {{ (card_type
+        == 'nft_role' || card_type
+        == 'synthesis_props') ? 'U'
         :
         (card_type == 'fortune_card' ? 'WGA' : 'WGT') }}</div>
             <!-- <div class="flex justify-between items-center">
