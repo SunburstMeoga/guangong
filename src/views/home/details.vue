@@ -845,7 +845,7 @@ export default {
             console.log(this.nftInfor)
             if (this.nftInfor.circulation == 0) {
                 this.$loading.hide()
-                showToast('该角色卡暂未开放购买')
+                showToast('该NFT暂未开放购买')
                 return
             }
 
