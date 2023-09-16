@@ -67,7 +67,7 @@
                     color="#E20F2A">
                     <van-tab title="建立关系" class="pt-4">
                         <HomeIn :recommendInfor="recommendInfor" :toBeBoundList="toBeBoundList" :shareUrl="shareUrl"
-                            :canShare="canShare" />
+                            :canShare="canShare" @handleCode="handleCode" />
                     </van-tab>
                     <van-tab title="我的下级" class="pt-4">
                         <HomeOut :myLowerInfo="myLowerInfo" />
@@ -75,14 +75,21 @@
                 </van-tabs>
             </div>
         </div>
-
+        <van-popup v-model:show="showCode">
+            <div class="p-4  bg-black">
+                <qrcode-vue :value="shareUrl" size="300"></qrcode-vue>
+                <!-- <div class="buy-button text-primary-word rounded text-sm button-word mt-10" @click="saveCode">
+                    保存至手机
+                </div> -->
+            </div>
+        </van-popup>
         <!-- <HomeIn v-if="inHome" />
         <HomeOut v-else /> -->
     </div>
 </template>
 
 <script>
-import { Tab, Tabs, showSuccessToast, showFailToast, showDialog, showToast } from 'vant';
+import { Tab, Tabs, showSuccessToast, showFailToast, showDialog, showToast, Popup } from 'vant';
 import { ethers, ZeroAddress, isAddress } from "ethers"
 import { config } from '@/const/config'
 import axios from 'axios'
@@ -91,9 +98,10 @@ import HomeOut from './outHome.vue'
 import popularContractApi from '@/request/ether_request/popularized'
 import gameContractApi from '@/request/ether_request/game'
 import { toBeBound, boundList } from '@/request/api_request'
+import QrcodeVue from 'qrcode.vue'
 
 export default {
-    components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs, [showDialog.name]: showDialog },
+    components: { HomeIn, HomeOut, [Tab.name]: Tab, [Tabs.name]: Tabs, [showDialog.name]: showDialog, [Popup.name]: Popup, QrcodeVue },
     data() {
         return {
             inHome: false,
@@ -116,7 +124,8 @@ export default {
                 preAddress: ''
             },
             shareUrl: '',
-            canShare: false
+            canShare: false,
+            showCode: false
         }
     },
 
@@ -159,6 +168,18 @@ export default {
     },
 
     methods: {
+        //保存到手机
+        saveCode() {
+
+        },
+        //二维码弹窗
+        handleCode() {
+            if (!this.canShare) {
+                showToast(this.shareUrl)
+                return
+            }
+            this.showCode = true
+        },
         //查询当前用户是否有正在出征的卡或者财神卡
         async getUserCardsAndWealth(walletAddress) {
             const result = await gameContractApi.userInfo(walletAddress)

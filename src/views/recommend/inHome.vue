@@ -27,8 +27,8 @@
                 <div class="break-all mb-4 rounded p-2 text-sm">
                     {{ shareUrl }}
                 </div>
-                <div class="buy-button text-primary-word py-2 rounded text-sm button-word" @click="copyAddress">
-                    复制邀请链接
+                <div class="buy-button text-primary-word py-2 rounded text-sm button-word" @click="handleCode">
+                    生成邀请链接二维码
                 </div>
             </div>
             <!-- <div class="w-11/12 buy-button text-primary-word text-lg py-2 button-word mb-10" @click="copyAddress">
@@ -115,6 +115,9 @@ export default {
         //     })
     },
     methods: {
+        handleCode() {
+            this.$emit('handleCode')
+        },
         copyAddress() {
             if (!this.canShare) {
                 showToast('暂无卡片正在收益，无法作为上级邀请其它用户')
