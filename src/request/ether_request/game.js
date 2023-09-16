@@ -17,7 +17,7 @@ if (window.ethereum) {
   gameContractApi = {
     //用户收益查询
     userInfo: async function (address) {
-      const result = GAME.UserInfo(address);
+      const result = await GAME.UserInfo(address);
       return result;
     },
     //获取用户的星级
