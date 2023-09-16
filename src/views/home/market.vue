@@ -76,7 +76,7 @@
 import ModuleTitle from '@/components/ModuleTitle'
 import MarketCard from '@/components/MarketCard'
 import nfts_list from '@/nft_datas/nfts_list'
-import { Tab, Tabs, Popover } from 'vant';
+import { Tab, Tabs, Popover, showToast } from 'vant';
 import { marketList } from '@/request/api_request'
 import { filterAmount } from '@/utils/filterValue';
 
@@ -182,6 +182,14 @@ export default {
     },
     toMarketDetails(item) {
       console.log('item', item)
+      if (!window.ethereum) {
+        showToast('请使用钱包打开浏览器以获得更好的体验')
+        return
+      }
+      if (!window.ethereum.selectedAddress) {
+        showToast('请连接钱包')
+        return
+      }
       // return
       this.$router.push({
         path: '/market/' + item.tokenId

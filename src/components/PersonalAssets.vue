@@ -280,7 +280,7 @@ export default {
                 });
             } else {
                 console.log('bbb')
-                let textArea = document.createElement('textarea')
+                let textArea = document.createElement('input')
                 textArea.value = this.address
                 // 使text area不在viewport，同时设置不可见
                 textArea.style.position = 'absolute'

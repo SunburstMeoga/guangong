@@ -78,7 +78,7 @@
 import ModuleTitle from '@/components/ModuleTitle'
 import MallCard from '@/components/MallCard.vue'
 import nfts_list from '@/nft_datas/nfts_list'
-import { Tab, Tabs, Popover } from 'vant';
+import { Tab, Tabs, Popover, showToast } from 'vant';
 
 export default {
     components: { ModuleTitle, MallCard, [Tab.name]: Tab, [Tabs.name]: Tabs, [Popover.name]: Popover },
@@ -143,6 +143,14 @@ export default {
             }
         },
         toGoodDetails(item) {
+            if (!window.ethereum) {
+                showToast('请使用钱包打开浏览器以获得更好的体验')
+                return
+            }
+            if (!window.ethereum.selectedAddress) {
+                showToast('请连接钱包')
+                return
+            }
             this.$router.push({
                 path: '/good/' + item.id
             })
