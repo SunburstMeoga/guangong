@@ -146,10 +146,7 @@ export default {
         relationshipAddressInfor.parent !== ZeroAddress ? this.myLowerInfo.preAddress = relationshipAddressInfor.parent : this.myLowerInfo.preAddress = '无上级推荐地址'
         this.recommendInfor.childNum = relationshipAddressInfor.child.length
         relationshipAddressInfor.parent !== ZeroAddress ? this.recommendInfor.preAddress = relationshipAddressInfor.parent : this.recommendInfor.preAddress = '无上级推荐地址'
-        const toBeBoundList = await this.getToBeBoundList(window.ethereum.selectedAddress)
-        const boundList = await this.getBoundList(window.ethereum.selectedAddress)
-        this.toBeBoundList = toBeBoundList
-        this.boundList = boundList
+
         this.showSkeleton = false
         const hasEarningCards = await this.getUserCardsAndWealth(window.ethereum.selectedAddress)
         if (hasEarningCards) {
@@ -159,7 +156,6 @@ export default {
             this.shareUrl = '暂无卡片正在收益，无法作为上级邀请其它用户'
             this.canShare = false
         }
-        console.log(this.toBeBoundList, toBeBoundList)
     },
 
     methods: {
