@@ -280,6 +280,12 @@ export default {
             showSuccessToast('签名成功')
         },
         cancelPay() {
+            if (this.$route.query.p) {
+                this.$router.push({
+                    path: '/'
+                })
+                return
+            }
             window.history.back();
         },
         async linkWallet() {
