@@ -588,8 +588,16 @@ export default {
 
         //是否已经有2张的财神卡
         async hasTwoWealthCard() {
-            const result = await gameContractApi.userInfo(window.ethereum.selectedAddress)
-            return result.deposits.length
+            let timeStamp = Date.now() / 1000
+            let result = await gameContractApi.userInfo(window.ethereum.selectedAddress)
+            // result.deposits.length.map(item => {
+
+            // })
+            let more24H = result.deposits.filter(item => {
+                return timeStamp - item.utc < 60 * 60 * 24
+            })
+
+            return more24H.length
         },
 
         //用WGT付款
