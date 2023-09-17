@@ -119,7 +119,7 @@
                             </div> -->
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">财神奖励</div>
-                                <div class="text-base text-card-content">{{ nftInfor.award }}</div>
+                                <div class="text-base text-card-content">{{ nftInfor.award }} U</div>
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">周期（天）</div>
