@@ -184,24 +184,33 @@ export default {
 
         async bind(key) {
             this.$loading.show()
-            const sign = this.childs0[key].sign
-            const c_addr = this.childs0[key].c_addr
-            const id = this.childs0[key].id
-            const provider = new ethers.BrowserProvider(window.ethereum)
-            const signer = await provider.getSigner()
-            const GAME = new ethers.Contract(config.popularized_addr, config.popularized_abi, signer)
-            const v = '0x' + sign.substring(130)
-            const r = sign.substring(0, 66)
-            const s = '0x' + sign.substring(66, 130)
-            const tx = await GAME.popularize1(c_addr, v, r, s)
-            const result = await tx.wait()
-            console.log(result)
-            const ret = await axios.put(`${config.api}friends/${id}`)
-            console.log(ret.data)
-            this.load()
-            this.$loading.hide()
-            showSuccessToast('绑定成功')
-            this.$store.commit('changeRealoadLowAddress', true)
+            try {
+                const sign = this.childs0[key].sign
+                const c_addr = this.childs0[key].c_addr
+                const id = this.childs0[key].id
+                const provider = new ethers.BrowserProvider(window.ethereum)
+                const signer = await provider.getSigner()
+                const GAME = new ethers.Contract(config.popularized_addr, config.popularized_abi, signer)
+                const v = '0x' + sign.substring(130)
+                const r = sign.substring(0, 66)
+                const s = '0x' + sign.substring(66, 130)
+                const tx = await GAME.popularize1(c_addr, v, r, s)
+                const result = await tx.wait()
+                console.log(result)
+                const ret = await axios.put(`${config.api}friends/${id}`)
+                console.log(ret.data)
+                this.load()
+                this.$loading.hide()
+                this.$store.commit('changeRealoadLowAddress', true)
+                showToast('绑定成功')
+                return
+            } catch {
+                this.$loading.hide()
+
+                showToast('错误，请重试')
+                return
+            }
+
         },
         cancelPay() {
             window.history.back();
