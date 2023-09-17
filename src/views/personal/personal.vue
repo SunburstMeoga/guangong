@@ -544,8 +544,10 @@ export default {
                             }
                         })
                     })
-                    this.assetsList = newArr
-                    // console.log(this.assetsList)
+                    const resArr = new Map()
+                    // newArr = new Set([...newArr])
+                    this.assetsList = newArr.filter((item) => !resArr.has(item.tokenId) && resArr.set(item.tokenId, 1))
+                    console.log(this.assetsList)
                 })
                 .catch(err => {
                     console.log('err', err)
