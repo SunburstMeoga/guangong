@@ -30,7 +30,7 @@
 
             <div class="pt-4 w-full flex flex-col justify-start items-center text-white" v-if="!hasNoChild">
                 <div class="text-white w-11/12 mr-auto ml-auto flex justify-between items-center py-2">
-                    <div class="font-medium text-xl">属下业绩</div>
+                    <div class="font-medium text-xl">第一代邀请人业绩总和</div>
                 </div>
                 <div class="mb-3 w-11/12 bg-bottom-content rounded p-2">
                     <div class="py-2 w-11/12  rounded">

@@ -33,6 +33,7 @@ const config = {
   // A 0x52974912707C5cBB1C2d25C66307942901c1d2A3
   // B 0x40972d311BC09e2b57A47E81D854CF4905A57e24
   api: "https://api.wgtone.live/",
+  imageBaseURL: "https://app.wgtone.live/api/",
   // chainId: "0xb63f",
   // 1 设置NFTbaseURL
   // 2
