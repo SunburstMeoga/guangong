@@ -76,7 +76,7 @@
             </div>
         </div>
         <van-popup v-model:show="showCode">
-            <div class="p-4  bg-black">
+            <div class="p-4  bg-white">
                 <qrcode-vue :value="shareUrl" size="300"></qrcode-vue>
                 <!-- <div class="buy-button text-primary-word rounded text-sm button-word mt-10" @click="saveCode">
                     保存至手机
