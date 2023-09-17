@@ -24,8 +24,7 @@
                         {{ nftInfor.name }}
                     </div>
                     <!-- nft角色卡信息 -->
-                    <div class="border-module w-11/12 text-card-content font-light"
-                        v-if="nftInfor.card_type === 'nft_role'">
+                    <div class="border-module w-11/12 text-card-content font-light" v-if="nftInfor.card_type == 'nft_role'">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">詳細資料</div>
                         </div>
@@ -67,7 +66,7 @@
                     </div>
                     <!-- 战法道具卡信息 -->
                     <div class="border-module w-11/12 text-card-content font-light"
-                        v-if="nftInfor.card_type === 'tactics_props'">
+                        v-if="nftInfor.card_type == 'tactics_props'">
                         <div class="flex justify-between items-center">
                             <div class="text-2xl ">{{ nftInfor.name }}道具卡详情</div>
                         </div>
@@ -169,7 +168,7 @@
                 <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择支付方式</div>
                 <div @click="clickPayWay(item, index)" v-for="(item, index) in payWayList" :key="index"
                     class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-between items-center py-3.5 px-2 text-essentials-white text-sm rounded"
-                    :class="currentPayWay === index ? 'buy-button text-white' : ''">
+                    :class="currentPayWay == index ? 'buy-button text-white' : ''">
                     <span>{{ item.name }}</span>
                     <span>余额：{{ item.amount }}</span>
                 </div>
@@ -228,11 +227,11 @@ export default {
         // console.log(num)
         // return
         this.goodType = this.$route.name
-        if (this.$route.name === 'good') {
+        if (this.$route.name == 'good') {
             console.log('good')
             console.log(this.$route.params.id)
             this.matchNFTData(parseInt(this.$route.params.id))
-        } else if (this.$route.name === 'market') {
+        } else if (this.$route.name == 'market') {
             console.log('market')
 
             this.tokenId = this.$route.params.tokenId
@@ -333,10 +332,10 @@ export default {
         //本地匹配nft数据
         async matchNFTData(matchValue, amount) {
             const nftItem = nfts_list.filter(item => {
-                return matchValue === item.id
+                return matchValue == item.id
             })
             this.nftInfor = nftItem[0]
-            if (this.$route.name === 'market') {
+            if (this.$route.name == 'market') {
                 this.nftInfor.price = await this.getWGTFromUSDT(amount)
             }
             console.log('nftItem', nftItem)
@@ -438,49 +437,49 @@ export default {
             console.log(this.$store.state.userInfor.personal, this.nftInfor.id)
             const contributionValue = this.$store.state.userInfor.personal
             if (contributionValue >= 0 && contributionValue < 10000) {
-                if (this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
+                if (this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 10000 && contributionValue < 50000) {
-                if (this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
+                if (this.nftInfor.id == 13 || this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 50000 && contributionValue < 100000) {
-                if (this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
+                if (this.nftInfor.id == 14 || this.nftInfor.id == 13 || this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 100000 && contributionValue < 300000) {
-                if (this.nftInfor.id === 15 || this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
+                if (this.nftInfor.id == 15 || this.nftInfor.id == 14 || this.nftInfor.id == 13 || this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 300000 && contributionValue < 500000) {
-                if (this.nftInfor.id === 16 || this.nftInfor.id === 15 || this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
+                if (this.nftInfor.id == 16 || this.nftInfor.id == 15 || this.nftInfor.id == 14 || this.nftInfor.id == 13 || this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 500000 && contributionValue < 1000000) {
-                if (this.nftInfor.id === 17 || this.nftInfor.id === 16 || this.nftInfor.id === 15 || this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
+                if (this.nftInfor.id == 17 || this.nftInfor.id == 16 || this.nftInfor.id == 15 || this.nftInfor.id == 14 || this.nftInfor.id == 13 || this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 1000000 && contributionValue < 3000000) {
-                if (this.nftInfor.id === 18 || this.nftInfor.id === 17 || this.nftInfor.id === 16 || this.nftInfor.id === 15 || this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
+                if (this.nftInfor.id == 18 || this.nftInfor.id == 17 || this.nftInfor.id == 16 || this.nftInfor.id == 15 || this.nftInfor.id == 14 || this.nftInfor.id == 13 || this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
                     return true
                 } else {
                     return false
                 }
             } else if (contributionValue >= 3000000 && contributionValue < 70000000) {
-                if (this.nftInfor.id === 19 || this.nftInfor.id === 20 || this.nftInfor.id === 21 || this.nftInfor.id === 18 || this.nftInfor.id === 17 || this.nftInfor.id === 16 || this.nftInfor.id === 15 || this.nftInfor.id === 14 || this.nftInfor.id === 13 || this.nftInfor.id === 10 || this.nftInfor.id === 11 || this.nftInfor.id === 12) {
+                if (this.nftInfor.id == 19 || this.nftInfor.id == 20 || this.nftInfor.id == 21 || this.nftInfor.id == 18 || this.nftInfor.id == 17 || this.nftInfor.id == 16 || this.nftInfor.id == 15 || this.nftInfor.id == 14 || this.nftInfor.id == 13 || this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
                     return true
                 } else {
                     return false
@@ -530,7 +529,7 @@ export default {
             try {
                 let wgaIsInsufficientBalance;
                 try {
-                    wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
+                    wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
                     if (wgaIsInsufficientBalance) {
                         this.$loading.hide()
                         showToast('WGA余额不足')
@@ -548,7 +547,7 @@ export default {
                 allowanceState = WEB3.utils.fromWei(allowanceState, 'ether')
                 allowanceState = Number(allowanceState)
                 console.log('allowanceState', allowanceState,)
-                console.log('s授权金额不够', allowanceState, (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))), Number(allowanceState) < Number((this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))))
+                console.log('s授权金额不够', allowanceState, (this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))), Number(allowanceState) < Number((this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))))
 
 
                 if (allowanceState == 0) {
@@ -558,18 +557,18 @@ export default {
                         content: "未授权，请完成授权",
                         showCancelButton: false,
                         onConfirm: () => {
-                            this.WGAContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                            this.WGAContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
                         },
                     })
                     return
-                } else if (Number(allowanceState) < Number((this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))))) {
+                } else if (Number(allowanceState) < Number((this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))))) {
                     this.$loading.hide()
                     this.$confirm.show({
                         title: "提示",
                         content: "授权金额不足，请重新授权",
                         showCancelButton: false,
                         onConfirm: () => {
-                            this.WGAContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                            this.WGAContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
                         },
                     })
                     return
@@ -593,11 +592,12 @@ export default {
             // result.deposits.length.map(item => {
 
             // })
-            let more24H = result.deposits.filter(item => {
+            let within24Hours = result.deposits.filter(item => { //购买时间距离现在在24h内的财神卡
                 return timeStamp - item.utc < 60 * 60 * 24
             })
+            console.log('more24H', within24Hours)
 
-            return more24H.length
+            return within24Hours.length
         },
 
         //用WGT付款
@@ -606,7 +606,7 @@ export default {
             try {
                 let wgtIsInsufficientBalance;
                 try {
-                    wgtIsInsufficientBalance = await this.wgtIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
+                    wgtIsInsufficientBalance = await this.wgtIsInsufficientBalance(this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
                     if (wgtIsInsufficientBalance) {
                         this.$loading.hide()
                         showToast('WGT余额不足')
@@ -623,7 +623,7 @@ export default {
                 const WEB3 = new Web3(window.ethereum);
                 allowanceState = WEB3.utils.fromWei(allowanceState, 'ether')
                 allowanceState = Number(allowanceState)
-                console.log('allowanceState', allowanceState, allowanceState < (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))))
+                console.log('allowanceState', allowanceState, allowanceState < (this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))))
                 if (allowanceState == 0) {
                     this.$loading.hide()
                     this.$confirm.show({
@@ -631,18 +631,18 @@ export default {
                         content: "未授权，请完成授权",
                         showCancelButton: false,
                         onConfirm: () => {
-                            this.WGTContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                            this.WGTContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
                         },
                     })
                     return
-                } else if (allowanceState < (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))) {
+                } else if (allowanceState < (this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))) {
                     this.$loading.hide()
                     this.$confirm.show({
                         title: "提示",
                         content: "授权金额不足，请重新授权",
                         showCancelButton: false,
                         onConfirm: () => {
-                            this.WGTContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                            this.WGTContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
                         },
                     })
                     return
@@ -680,7 +680,7 @@ export default {
                     showToast('获取余额失败，请重试')
                     return
                 }
-                let nftAmount = this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))//商品价格
+                let nftAmount = this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))//商品价格
                 usdtBalance = WEB3.utils.fromWei(usdtBalance, 'ether')
                 nftAmount = Number(nftAmount)
                 usdtBalance = Number(usdtBalance)
@@ -695,7 +695,7 @@ export default {
                 console.log('allowanceState', allowanceState)
                 allowanceState = WEB3.utils.fromWei(allowanceState, 'ether')
                 allowanceState = Number(allowanceState)
-                console.log('allowanceState', allowanceState, allowanceState < (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))))
+                console.log('allowanceState', allowanceState, allowanceState < (this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))))
                 if (allowanceState == 0) {
                     this.$loading.hide()
                     this.$confirm.show({
@@ -703,18 +703,18 @@ export default {
                         content: "未授权，请完成授权",
                         showCancelButton: false,
                         onConfirm: () => {
-                            this.USDTContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                            this.USDTContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
                         },
                     })
                     return
-                } else if (allowanceState < (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))) {
+                } else if (allowanceState < (this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))) {
                     this.$loading.hide()
                     this.$confirm.show({
                         title: "提示",
                         content: "授权金额不足，请重新授权",
                         showCancelButton: false,
                         onConfirm: () => {
-                            this.USDTContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                            this.USDTContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
                         },
                     })
                 } else {
@@ -746,7 +746,7 @@ export default {
                 showToast('请先连接钱包')
                 return
             }
-            console.log(this.nftInfor)
+            // console.log(this.nftInfor)
 
             this.$loading.show()
             let wgtIsInsufficientBalance
@@ -755,8 +755,8 @@ export default {
             let wgaBalance
             try {
                 // 判断是否余额不足
-                wgtIsInsufficientBalance = await this.wgtIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
-                wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
+                wgtIsInsufficientBalance = await this.wgtIsInsufficientBalance(this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
+                wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
             } catch (error) {
                 this.$loading.hide()
 
@@ -778,6 +778,7 @@ export default {
             if (wgtIsInsufficientBalance && !wgaIsInsufficientBalance) {
                 this.currentPayWay = 1
             } else if (wgtIsInsufficientBalance && wgaIsInsufficientBalance) {
+                this.currentPayWay = null
                 this.$loading.hide()
                 showToast('购买NFT所需的WGT或WGA不足')
                 return
@@ -802,9 +803,9 @@ export default {
             try {
                 if (this.currentPayWay == 0) {
                     console.log('wgt支付')
-                    currentPayWayAllowanState = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
+                    currentPayWayAllowanState = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType == 'good' ? config.game_addr : config.market_addr)
                 } else {
-                    currentPayWayAllowanState = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType === 'good' ? config.game_addr : config.market_addr)
+                    currentPayWayAllowanState = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType == 'good' ? config.game_addr : config.market_addr)
                     console.log('wga支付')
                 }
 
@@ -825,10 +826,10 @@ export default {
                     content: "当前用户未授权，请先完成授权",
                     onConfirm: () => {
                         this.$loading.show()
-                        if (this.currentPayWay === 0) {
-                            this.WGTContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                        if (this.currentPayWay == 0) {
+                            this.WGTContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
                         } else {
-                            this.WGAContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                            this.WGAContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
                         }
                     },
                     onCancel: () => {
@@ -836,12 +837,12 @@ export default {
                     }
                 });
                 return
-            } else if (currentPayWayAllowanState < (this.goodType === 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))) { //授权金额不足
+            } else if (currentPayWayAllowanState < (this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))) { //授权金额不足
                 this.$loading.hide()
-                if (this.currentPayWay === 0) {
-                    this.WGTContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                if (this.currentPayWay == 0) {
+                    this.WGTContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
                 } else {
-                    this.WGAContractApprove(this.goodType === 'good' ? config.game_addr : config.market_addr)
+                    this.WGAContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
                 }
                 return
             }
@@ -850,7 +851,7 @@ export default {
 
         //点击购买按钮进行购买
         async handlePay() {
-            console.log(this.nftInfor)
+            // console.log(this.nftInfor)
             if (this.nftInfor.circulation == 0) {
                 this.$loading.hide()
                 showToast('该NFT暂未开放购买')

@@ -18,6 +18,7 @@ const store = createStore({
       },
       userStar: "暂无星级",
       wgtBalance: 0,
+      wgaBalance: 0,
       realoadLowAddress: false,
     };
   },
@@ -40,6 +41,9 @@ const store = createStore({
     },
     updatWgtBalance(state, value) {
       state.wgtBalance = value;
+    },
+    updatWgaBalance(state, value) {
+      state.wgaBalance = value;
     },
     changeRealoadLowAddress(state, value) {
       state.realoadLowAddress = value;

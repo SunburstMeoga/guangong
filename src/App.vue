@@ -11,6 +11,7 @@ import TopBar from '@/components/TopBar'
 import FooterBar from '@/components/FooterBar'
 import { userIncome } from '@/request/api_request'
 import wgtContractApi from '@/request/ether_request/wgt'
+import wgaContractApi from '@/request/ether_request/wga'
 import gameContractApi from '@/request/ether_request/game'
 import { config } from "@/const/config";
 import { showDialog } from 'vant'
@@ -38,6 +39,7 @@ export default {
       if (window.ethereum && window.ethereum.selectedAddress) {
         this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
         this.getWgtBalance()
+        this.getWgaBalance()
         this.getUserIncome()
         this.getUserStar(window.ethereum.selectedAddress)
       }
@@ -72,6 +74,11 @@ export default {
     async getWgtBalance() {
       const wgt = await wgtContractApi.wgtAssets(window.ethereum.selectedAddress)
       this.$store.commit('updatWgtBalance', wgt)
+      console.log(this.$store.state)
+    },
+    async getWgaBalance() {
+      const wga = await wgaContractApi.wgaAssets(window.ethereum.selectedAddress)
+      this.$store.commit('updatWgaBalance', wga)
       console.log(this.$store.state)
     },
     //账户状态发生变化
