@@ -198,6 +198,13 @@ export default {
                     console.log('err', err)
                 })
         },
+        async getWGTFromUSDT(value) {
+            let amount = value.toString()
+            gameContractApi.WGTFromUSDT(amount)
+            const result = await gameContractApi.WGTFromUSDT(amount)
+            console.log('换算完值', result)
+            return result
+        },
         async getUserTotalAssets() {
             const WEB3 = new Web3(window.ethereum);
             // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
@@ -207,10 +214,11 @@ export default {
             // console.log(WEB3.utils.fromWei(wgt + wga, 'ether'))
             this.wgtBalance = WEB3.utils.fromWei(wgt, 'ether')
             this.wgaBalance = WEB3.utils.fromWei(wga, 'ether')
+            this.wgtBalance = await this.getWGTFromUSDT(Number(this.wgtBalance))
             let totalAssets = Number(this.wgtBalance) + (Number(this.wgaBalance) / 20)
 
             this.totalAssets = totalAssets
-            console.log('wgaBalance', wga)
+            console.log('wgtBalance', this.wgtBalance)
         },
         getUserIncome() {
             userIncome(window.ethereum.selectedAddress)
