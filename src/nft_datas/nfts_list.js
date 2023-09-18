@@ -575,7 +575,7 @@ const nfts_list = [
     level: "忠字传播大使",
     imageUrl: `${config.imageBaseURL}wealth/10.png`,
     card_type: "fortune_card",
-    award: 159,
+    award: 157,
     cycle: 7,
     price: "150",
     circulation: -1,
