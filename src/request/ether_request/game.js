@@ -15,6 +15,11 @@ if (window.ethereum) {
   );
 
   gameContractApi = {
+    //获取商品价格usdt所需的wgt
+    WGTFromUSDT: async function (usdt) {
+      const result = await GAME.getWGT(usdt);
+      return result;
+    },
     //用户收益查询
     userInfo: async function (address) {
       const result = await GAME.UserInfo(address);

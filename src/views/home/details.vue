@@ -335,10 +335,16 @@ export default {
                 return matchValue == item.id
             })
             this.nftInfor = nftItem[0]
-            if (this.$route.name == 'market') {
-                this.nftInfor.price = await this.getWGTFromUSDT(amount)
-            }
             console.log('nftItem', nftItem)
+
+            if (this.$route.name == 'market') {
+                if (this.nftInfor.card_type == 'tactics_props' || this.nftInfor.card_type == 'expedition_order')
+                    this.nftInfor.price = await this.getWGTFromUSDT(amount)
+            }
+            if (this.$route.name == 'good') {
+                if (this.nftInfor.card_type == 'tactics_props' || this.nftInfor.card_type == 'expedition_order')
+                    this.nftInfor.price = await this.getWGTFromUSDT(this.nftInfor.price)
+            }
         },
         //挂单的nft详情
         getNFTDetails() {

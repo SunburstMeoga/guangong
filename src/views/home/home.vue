@@ -84,7 +84,7 @@ import MarketCard from '@/components/MarketCard'
 import ShopsCard from '@/components/ShopsCard.vue'
 import { hotList, marketList } from '@/request/api_request'
 import { filterAddress, filterAmount } from '@/utils/filterValue'
-import helpContractApi from '@/request/ether_request/help'
+import gameContractApi from '@/request/ether_request/game'
 
 export default {
     components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
@@ -98,9 +98,32 @@ export default {
     },
     mounted() {
         // console.log(nfts_list)
-        nfts_list.map(item => {
-            this.productList.push(item)
-        })
+        this.$loading.show()
+        try {
+            nfts_list.map(item => {
+                this.productList.push(item)
+            })
+            this.productList.map(item => {
+                gameContractApi.WGTFromUSDT(item.price)
+                    .then(res => {
+                        if (item.card_type == 'tactics_props' || item.card_type == 'expedition_order') {
+                            console.log(`${item.name}的U：${item.price}, 换算为WGT：${res}  `)
+                            item.price = res
+                        }
+                        this.$loading.hide()
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        this.$loading.hide()
+                        item.price = '-'
+                    })
+            })
+        } catch {
+            console.log('NFT价格获取错误，请刷新页面')
+            this.$loading.hide()
+
+        }
+        // console.log(this.productList)
 
         // this.getHotList()
         this.getMarketList()
@@ -109,8 +132,8 @@ export default {
         filterAddress, filterAmount,
         async getWGTFromUSDT(value) {
             let amount = value.toString()
-            helpContractApi.WGTFromUSDT(amount)
-            const result = await helpContractApi.WGTFromUSDT(amount)
+            gameContractApi.WGTFromUSDT(amount)
+            const result = await gameContractApi.WGTFromUSDT(amount)
             console.log('换算完值', result)
             return result
         },
@@ -137,6 +160,19 @@ export default {
                         })
                     })
                     this.marketListData = newArr
+                    // this.marketListData.map(item => {
+                    //     gameContractApi.WGTFromUSDT(item.amount)
+                    //         .then(res => {
+                    //             if (item.infor.card_type == 'tactics_props' || item.infor.card_type == 'expedition_order') {
+                    //                 console.log(`${item.infor.name}的U：${item.amount}, 的WGT：${res}  `)
+                    //                 item.amount = res
+                    //             }
+
+                    //         })
+                    //         .catch(err => {
+                    //             item.amount = '-'
+                    //         })
+                    // })
                     console.log('marketListData', this.marketListData)
                     this.showSkeleton = false
                 })
@@ -156,7 +192,20 @@ export default {
                             }
                         })
                     })
-                    // console.log(this.productList)
+                    this.productList.map(item => {
+                        gameContractApi.WGTFromUSDT(item.price)
+                            .then(res => {
+                                if (item.card_type == 'tactics_props' || item.card_type == 'expedition_order') {
+                                    console.log(`${item.name}的U：${item.amount}, 的WGT：${res}  `)
+                                    item.price = res
+                                }
+
+                            })
+                            .catch(err => {
+                                item.price = '-'
+                            })
+                    })
+                    console.log(this.productList)
                     this.showSkeleton = false
                 })
                 .catch(err => {
@@ -207,11 +256,11 @@ export default {
             })
         },
         prevProduct() {
-            console.log(this.$refs)
+            // console.log(this.$refs)
             this.$refs.productSwipe.prev()
         },
         nextProduct() {
-            console.log(this.$refs)
+            // console.log(this.$refs)
 
             this.$refs.productSwipe.next()
 
