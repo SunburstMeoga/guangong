@@ -145,6 +145,7 @@ export default {
                         })
                     },
                 });
+                return
             }
             this.p_address = this.$route.query.p
             relationshipAddressInfor = await this.getRelationshipAddress(this.$route.query.p)
