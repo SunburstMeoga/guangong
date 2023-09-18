@@ -134,6 +134,18 @@ export default {
         // return
         let relationshipAddressInfor;
         if (this.$route.query.p && this.$route.query.p !== ZeroAddress) { //是否进入被邀请人页面
+            if (this.$route.query.p.toUpperCase() == window.ethereum.selectedAddress.toUpperCase()) {
+                this.$confirm.show({
+                    title: "提示",
+                    content: "同一地址不能成为上下级关系",
+                    showCancelButton: false,
+                    onConfirm: () => {
+                        this.$router.push({
+                            path: '/'
+                        })
+                    },
+                });
+            }
             this.p_address = this.$route.query.p
             relationshipAddressInfor = await this.getRelationshipAddress(this.$route.query.p)
             if (relationshipAddressInfor.child.length >= 36) {
