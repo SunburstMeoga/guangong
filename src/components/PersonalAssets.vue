@@ -207,18 +207,17 @@ export default {
         },
         async getUserTotalAssets() {
             const WEB3 = new Web3(window.ethereum);
-            // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
             let wgt = await wgtContractApi.wgtAssets(window.ethereum.selectedAddress)
             let wga = await wgaContractApi.wgaAssets(window.ethereum.selectedAddress)
-            // wga = Number(wga) / 500
-            // console.log(WEB3.utils.fromWei(wgt + wga, 'ether'))
             this.wgtBalance = WEB3.utils.fromWei(wgt, 'ether')
             this.wgaBalance = WEB3.utils.fromWei(wga, 'ether')
-            this.wgtBalance = await this.getWGTFromUSDT(Number(this.wgtBalance))
-            let totalAssets = Number(this.wgtBalance) + (Number(this.wgaBalance) / 20)
-
+            let WGTPoint = await this.getWGTFromUSDT(100)
+            WGTPoint = Number(WGTPoint) / 100
+            let totalAssets = Number(this.wgtBalance) * WGTPoint + (Number(this.wgaBalance) / 20)
             this.totalAssets = totalAssets
-            console.log('wgtBalance', this.wgtBalance)
+            console.log('wgtBalance', wgt, this.wgtBalance * WGTPoint, wga, Number(this.wgaBalance) / 20)
+            console.log('WGTPoint', WGTPoint)
+
         },
         getUserIncome() {
             userIncome(window.ethereum.selectedAddress)
