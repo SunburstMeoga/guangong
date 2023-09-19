@@ -874,7 +874,7 @@ export default {
         //点击购买按钮进行购买
         async handlePay() {
             console.log(this.nftInfor)
-            if (this.nftInfor.circulation == 0 || this.nftInfor.card_type == 'expedition_order' || this.nftInfor.card_type == 'tactics_props') {
+            if (this.nftInfor.circulation == 0) {
                 this.$loading.hide()
                 showToast('该NFT暂未开放购买')
                 return
