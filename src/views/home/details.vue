@@ -97,7 +97,7 @@
                         </div>
                         <div class="mt-8">
                             <div class="mb-6">
-                                <!-- <div class="mb-2 text-xs text-icon-gray">可用于以下NFT卡片出征</div> -->
+                                <div class="mb-2 text-xs text-icon-gray">可用于以下NFT卡片出征</div>
                                 <div class="text-2xl  text-card-content">{{ nftInfor.can_be_used.join("，") }}</div>
                             </div>
                             <div class="mb-6">
@@ -163,6 +163,8 @@
         == 'nft_role' || nftInfor.card_type
         == 'synthesis_props') ? 'U' :
         (nftInfor.card_type == 'fortune_card' ? 'WGA' : 'WGT') }}
+                            <span v-if="nftInfor.card_type == 'fortune_card'">或 {{ Math.ceil(Number(nftInfor.price *
+                                WGTPoint).toFixed(4)) }} WGT</span>
                         </span>
                         <!-- <span class="text-sm font-light pl-2">
                             (WGT余额:{{ getFilterAmount($store.state.wgtBalance) }})
