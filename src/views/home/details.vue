@@ -318,15 +318,20 @@ export default {
         //wgt是否余额不足
         async wgtIsInsufficientBalance(usdt) {
             console.log(helpContractApi)
-            const result = await helpContractApi.WGTFromUSDT(usdt)
-            // console.log(this.$store.state.wgtBalance)
+            const WEB3 = new Web3(window.ethereum);
+            let result = await helpContractApi.WGTFromUSDT(usdt)
+            result = Number(WEB3.utils.toWei(result, 'ether'))
+            console.log(this.$store.state.wgtBalance, result)
             return this.$store.state.wgtBalance < result
         },
         //wga是否余额不足
         async wgaIsInsufficientBalance(usdt) {
             console.log(helpContractApi)
-            const result = await helpContractApi.WGAFromUSDT(usdt)
-            // console.log(this.$store.state.wgaBalance)
+            const WEB3 = new Web3(window.ethereum);
+            let result = await helpContractApi.WGAFromUSDT(usdt)
+            result = Number(WEB3.utils.toWei(result, 'ether'))
+            console.log(this.$store.state.wgtBalance, result)
+
             return this.$store.state.wgaBalance < result
         },
 
