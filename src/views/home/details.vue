@@ -79,10 +79,11 @@
                                 <div class="mb-2 text-xs text-icon-gray">限制</div>
                                 <div class="text-base text-card-content">{{ nftInfor.target }}</div>
                             </div>
-                            <!-- <div class="mb-6">
-                                <div class="mb-2 text-xs text-icon-gray">发行量</div>
-                                <div class="text-base text-card-content">{{ nftInfor.number_of_issues }}</div>
-                            </div> -->
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">WGT价格</div>
+                                <div class="text-base text-card-content">{{ Math.ceil(Number(nftInfor.price *
+                                    WGTPoint).toFixed(4)) }}</div>
+                            </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">注意事项</div>
                                 <div class="text-base text-theme-primary font-semibold">{{ nftInfor.tips }}</div>
@@ -92,12 +93,17 @@
                     <!-- 出征令牌介绍 -->
                     <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'expedition_order'">
                         <div class="flex justify-between items-center">
-                            <div class="text-base ">可用于以下NFT卡片出征</div>
+                            <div class="text-base ">出征令牌</div>
                         </div>
                         <div class="mt-8">
                             <div class="mb-6">
                                 <!-- <div class="mb-2 text-xs text-icon-gray">可用于以下NFT卡片出征</div> -->
                                 <div class="text-2xl  text-card-content">{{ nftInfor.can_be_used.join("，") }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">WGT价格</div>
+                                <div class="text-base text-card-content">{{ Math.ceil(Number(nftInfor.price *
+                                    WGTPoint).toFixed(4)) }}</div>
                             </div>
                         </div>
                     </div>
@@ -149,8 +155,11 @@
                     <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
                         @click="handlePay">
                         <span>
-                            <span class="pr-2">购买 </span> {{ nftInfor.card_type == 'fortune_card' ? Number(nftInfor.price) *
-                                20 : nftInfor.price }} {{ (nftInfor.card_type
+                            <span class="pr-2">购买 </span> {{ (nftInfor.card_type == 'tactics_props' || nftInfor.card_type ==
+                                'expedition_order') ? Math.ceil(Number(nftInfor.price * WGTPoint).toFixed(4)) :
+                                (nftInfor.card_type
+                                    == 'fortune_card' ? Number(nftInfor.price) *
+                                20 : nftInfor.price) }} {{ (nftInfor.card_type
         == 'nft_role' || nftInfor.card_type
         == 'synthesis_props') ? 'U' :
         (nftInfor.card_type == 'fortune_card' ? 'WGA' : 'WGT') }}
@@ -218,7 +227,8 @@ export default {
             nftAmount: '',
             showPayWay: false,
             currentPayWay: 0,
-            payWayList: []
+            payWayList: [],
+            WGTPoint: 0
         }
     },
     async mounted() {
@@ -226,6 +236,19 @@ export default {
         // const num = await this.getWGTFromUSDT('100')
         // console.log(num)
         // return
+        this.$loading.show()
+
+        try {
+            let WGTPoint = await this.getWGTFromUSDT(100)
+            this.WGTPoint = Number(WGTPoint) / 100
+            console.log('WGTPoint', this.WGTPoint)
+            this.$loading.hide()
+
+        } catch {
+            this.$loading.hide()
+
+            showToast('NFT价格获取错误，请刷新页面')
+        }
         this.goodType = this.$route.name
         if (this.$route.name == 'good') {
             console.log('good')
@@ -250,9 +273,9 @@ export default {
         },
         async getWGTFromUSDT(value) {
             let amount = value.toString()
-            helpContractApi.WGTFromUSDT(amount)
-            const result = await helpContractApi.WGTFromUSDT(amount)
-            console.log('换算完值 = ', result, 'WGT')
+            // gameContractApi.WGTFromUSDT(amount)
+            const result = await gameContractApi.WGTFromUSDT(amount)
+            console.log('换算完值', result)
             return result
         },
         cancelPay() {
@@ -336,15 +359,6 @@ export default {
             })
             this.nftInfor = nftItem[0]
             console.log('nftItem', nftItem)
-
-            if (this.$route.name == 'market') {
-                if (this.nftInfor.card_type == 'tactics_props' || this.nftInfor.card_type == 'expedition_order')
-                    this.nftInfor.price = await this.getWGTFromUSDT(amount)
-            }
-            if (this.$route.name == 'good') {
-                if (this.nftInfor.card_type == 'tactics_props' || this.nftInfor.card_type == 'expedition_order')
-                    this.nftInfor.price = await this.getWGTFromUSDT(this.nftInfor.price)
-            }
         },
         //挂单的nft详情
         getNFTDetails() {

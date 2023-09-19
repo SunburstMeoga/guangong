@@ -39,7 +39,8 @@
             <div class="market w-full relative mb-20">
                 <van-swipe class="my-swipe mt-4" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails(item)">
-                        <product-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
+                        <product-card :imageUrl="item.imageUrl" :name="item.name"
+                            :price="item.card_type == 'tactics_props' || item.card_type == 'expedition_order' ? Math.ceil(Number(item.price * WGTPoint).toFixed(4)) : item.price"
                             :circulation="item.circulation == -1 ? '不限量' : item.circulation" :card_type="item.card_type"
                             :cardTag="item.card_type === 'nft_role' ? item.stage : item.tag" />
                     </van-swipe-item>
@@ -93,43 +94,29 @@ export default {
             showSkeleton: true,
             ret: [],
             productList: [],
-            marketListData: []
+            marketListData: [],
+            WGTPoint: 0
         }
     },
     async mounted() {
         // console.log(nfts_list)
 
         this.$loading.show()
+        nfts_list.map(item => {
+            this.productList.push(item)
+        })
         try {
             let WGTPoint = await this.getWGTFromUSDT(100)
-            WGTPoint = Number(WGTPoint) / 100
-            console.log('WGTPoint', WGTPoint)
-            nfts_list.map(item => {
-                this.productList.push(item)
-            })
-            this.productList.map(item => {
-                if (item.card_type == 'tactics_props') {
-                    console.log(`${item.name}的U：${item.price}, 换算为WGT：${item.price * WGTPoint}  `)
-                    item.price = Math.ceil(Number(item.price * WGTPoint).toFixed(4))
-                }
-                this.$loading.hide()
-            })
-            this.productList.map(item => {
-                if (item.card_type == 'expedition_order') {
-                    console.log(`${item.name}的U：${item.price}, 换算为WGT：${item.price * WGTPoint}  `)
-                    item.price = Math.ceil(Number(item.price * WGTPoint).toFixed(4))
-                }
-                this.$loading.hide()
-            })
-            // || item.card_type == 'expedition_order'
-        } catch {
-            console.log('NFT价格获取错误，请刷新页面')
+            this.WGTPoint = Number(WGTPoint) / 100
+            console.log('WGTPoint', this.WGTPoint)
             this.$loading.hide()
 
-        }
-        // console.log(this.productList)
+        } catch {
+            this.$loading.hide()
 
-        // this.getHotList()
+            showToast('NFT价格获取错误，请刷新页面')
+        }
+
         this.getMarketList()
     },
     methods: {

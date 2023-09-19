@@ -39,7 +39,8 @@
                                 <div class="mb-6" v-for="(item, index ) in racticsPropCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
-                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name"
+                                            :price="Math.ceil(Number(item.price * WGTPoint).toFixed(4))"
                                             :card_type="item.card_type" />
                                     </div>
                                 </div>
@@ -50,7 +51,8 @@
                                 <div class="mb-6" v-for="(item, index ) in campaignTokens " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
-                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="item.price"
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name"
+                                            :price="Math.ceil(Number(item.price * WGTPoint).toFixed(4))"
                                             :card_type="item.card_type" />
                                     </div>
                                 </div>
@@ -78,6 +80,7 @@
 import ModuleTitle from '@/components/ModuleTitle'
 import MallCard from '@/components/MallCard.vue'
 import nfts_list from '@/nft_datas/nfts_list'
+import gameContractApi from '@/request/ether_request/game'
 import { Tab, Tabs, Popover, showToast } from 'vant';
 
 export default {
@@ -106,14 +109,35 @@ export default {
             racticsPropCards: [],
             campaignTokens: [],
             wealthCards: [],
+            WGTPoint: 0
         }
     },
-    mounted() {
+    async mounted() {
         this.nftCards = nfts_list.filter(item => {
             return item.id === 1
         })
+        this.$loading.show()
+
+        try {
+            let WGTPoint = await this.getWGTFromUSDT(100)
+            this.WGTPoint = Number(WGTPoint) / 100
+            console.log('WGTPoint', this.WGTPoint)
+            this.$loading.hide()
+
+        } catch {
+            this.$loading.hide()
+
+            showToast('NFT价格获取错误，请刷新页面')
+        }
     },
     methods: {
+        async getWGTFromUSDT(value) {
+            let amount = value.toString()
+            // gameContractApi.WGTFromUSDT(amount)
+            const result = await gameContractApi.WGTFromUSDT(amount)
+            console.log('换算完值', result)
+            return result
+        },
         onClickTab(item) {
             console.log(item.name)
             // this.cardList = []

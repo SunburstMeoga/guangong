@@ -544,7 +544,7 @@ export default {
                             }
                         })
                     })
-                    const resArr = new Map()
+                    const resArr = new Map() //去重
                     // newArr = new Set([...newArr])
                     this.assetsList = newArr.filter((item) => !resArr.has(item.tokenId) && resArr.set(item.tokenId, 1))
                     console.log(this.assetsList)
