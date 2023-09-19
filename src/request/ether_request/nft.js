@@ -25,6 +25,7 @@ if (window.ethereum) {
     apppprovalForAll: async function (contractAddress) {
       const tx = await NFTTRADE.setApprovalForAll(contractAddress, true);
       const result = await tx.wait();
+      // cnsole.log(result, "发起erc721授权");
       return result;
     },
     //erc721是否授权

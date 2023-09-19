@@ -604,7 +604,7 @@ export default {
                     content: "当前用户未进行erc721授权，请先完成授权",
                     onConfirm: () => {
                         this.$loading.show()
-                        this.erc721ContractApppproval(config.game_addr)
+                        nftContractApi.apppprovalForAll(config.game_addr)
                             .then(res => {
                                 console.log(res)
                                 this.$confirm.hide()
@@ -835,7 +835,7 @@ export default {
                     content: "当前用户未进行erc721授权，请先完成授权",
                     onConfirm: () => {
                         this.$loading.show()
-                        this.erc721ContractApppproval(config.market_addr)
+                        nftContractApi.apppprovalForAll(config.market_addr)
                             .then(res => {
                                 console.log(res)
                                 this.$confirm.hide()
@@ -962,7 +962,7 @@ export default {
                     content: "当前用户未进行erc721授权，请先完成授权",
                     onConfirm: () => {
                         this.$loading.show()
-                        this.erc721ContractApppproval(config.game_addr)
+                        nftContractApi.apppprovalForAll(config.game_addr)
                             .then(res => {
                                 console.log(res)
                                 this.$confirm.hide()
@@ -1062,7 +1062,7 @@ export default {
                     content: "当前用户未进行erc721授权，请先完成授权",
                     onConfirm: () => {
                         this.$loading.show()
-                        this.erc721ContractApppproval(config.game_addr)
+                        nftContractApi.apppprovalForAll(config.game_addr)
                             .then(res => {
                                 console.log(res)
                                 this.$confirm.hide()
@@ -1072,7 +1072,7 @@ export default {
                             .catch(err => {
                                 this.$confirm.hide()
                                 this.$loading.hide()
-
+                                console.log('点击了取消按钮', err)
                                 showToast('授权失败')
                             })
                     },
