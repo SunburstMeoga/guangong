@@ -162,9 +162,10 @@
                 <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
                     <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
                         @click="handlePay">
-                        <span>
+                        <span v-if="!isFetchingPoint">
                             <span class="pr-2">购买 </span> {{ (nftInfor.card_type == 'tactics_props' || nftInfor.card_type ==
-                                'expedition_order') ? Math.ceil(Number(nftInfor.price * WGTPoint).toFixed(4)) :
+                                'expedition_order') ? Math.ceil(Number(nftInfor.price * ($store.state.WGTPoint +
+                                    0.03)).toFixed(4)) :
                                 (nftInfor.card_type
                                     == 'fortune_card' ? Number(nftInfor.price) *
                                 20 : nftInfor.price) }} {{ (nftInfor.card_type
@@ -172,7 +173,14 @@
         == 'synthesis_props') ? 'U' :
         (nftInfor.card_type == 'fortune_card' ? 'WGA' : 'WGT') }}
                             <span v-if="nftInfor.card_type == 'fortune_card'">或 {{ Math.ceil(Number(nftInfor.price *
-                                WGTPoint).toFixed(4)) }} WGT</span>
+                                ($store.state.WGTPoint +
+                                    0.03)).toFixed(4)) }} WGT</span>
+                        </span>
+                        <span v-if="isFetchingPoint" class="flex justify-center items-center">
+                            <span class="w-8">
+                                <img src="../../assets/loading.gif" />
+                            </span>
+                            <span class="pl-4">正在获取WGT价格...</span>
                         </span>
                         <!-- <span class="text-sm font-light pl-2">
                             (WGT余额:{{ getFilterAmount($store.state.wgtBalance) }})
@@ -238,36 +246,11 @@ export default {
             showPayWay: false,
             currentPayWay: 0,
             payWayList: [],
-            WGTPoint: 0
+            WGTPoint: 0,
+            isFetchingPoint: true
         }
     },
     async mounted() {
-        // console.log('this.$route', this.$route)
-        // const num = await this.getWGTFromUSDT('100')
-        // console.log(num)
-        // return
-        this.$loading.show()
-
-        try {
-            let WGTPoint = await this.getWGTFromUSDT(100)
-            this.WGTPoint = Number(WGTPoint) / 100
-            console.log('WGTPoint', this.WGTPoint)
-            this.$loading.hide()
-
-        } catch {
-            this.$loading.hide()
-
-            this.$confirm.show({
-                title: "提示",
-                content: "NFT价格获取错误，请刷新页面",
-                showCancelButton: false,
-                onConfirm: () => {
-                    this.$router.go(0)
-                },
-            });
-            return
-        }
-        this.goodType = this.$route.name
         if (this.$route.name == 'good') {
             console.log('good')
             console.log(this.$route.params.id)
@@ -288,13 +271,6 @@ export default {
                 return
             }
             this.currentPayWay = index
-        },
-        async getWGTFromUSDT(value) {
-            let amount = value.toString()
-            // gameContractApi.WGTFromUSDT(amount)
-            const result = await gameContractApi.WGTFromUSDT(amount)
-            console.log('换算完值', result)
-            return result
         },
         cancelPay() {
             window.history.back();
@@ -885,6 +861,34 @@ export default {
         async handlePay() {
             console.log(this.nftInfor)
             console.log(this.canBuyWealthCard())
+            if (this.isFetchingPoint) {
+                showToast('正在计算WGT价格，请稍候')
+                return
+            }
+            try {
+                this.isFetchingPoint = true
+                gameContractApi.WGTFromUSDT(100)
+                    .then(res => {
+                        let WGTPoint = Number(res) / 100
+                        if (this.$store.state.WGTPoint !== WGTPoint) {
+                            this.$store.commit('updataWGTPoint', WGTPoint)
+                            showToast('WGT价格发生变化，请重新购买')
+                            this.isFetchingPoint = false
+                            return
+                        }
+                    })
+                    .catch(err => {
+                        showToast('获取价格失败')
+                        this.isFetchingPoint = false
+
+                        return
+                    })
+            } catch {
+                showToast('获取价格失败')
+                this.isFetchingPoint = false
+
+                return
+            }
             // return
             if (this.nftInfor.circulation == 0) {
                 this.$loading.hide()

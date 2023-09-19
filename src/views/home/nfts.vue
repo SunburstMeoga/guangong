@@ -116,35 +116,8 @@ export default {
         this.nftCards = nfts_list.filter(item => {
             return item.id === 1
         })
-        this.$loading.show()
-
-        try {
-            let WGTPoint = await this.getWGTFromUSDT(100)
-            this.WGTPoint = Number(WGTPoint) / 100
-            console.log('WGTPoint', this.WGTPoint)
-            this.$loading.hide()
-
-        } catch {
-            this.$loading.hide()
-            this.$confirm.show({
-                title: "提示",
-                content: "NFT价格获取错误，请刷新页面",
-                showCancelButton: false,
-                onConfirm: () => {
-                    this.$router.go(0)
-                },
-            });
-
-        }
     },
     methods: {
-        async getWGTFromUSDT(value) {
-            let amount = value.toString()
-            // gameContractApi.WGTFromUSDT(amount)
-            const result = await gameContractApi.WGTFromUSDT(amount)
-            console.log('换算完值', result)
-            return result
-        },
         onClickTab(item) {
             console.log(item.name)
             // this.cardList = []

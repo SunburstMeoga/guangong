@@ -39,8 +39,8 @@
             <div class="market w-full relative mb-20">
                 <van-swipe class="my-swipe mt-4" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails(item)">
-                        <product-card :imageUrl="item.imageUrl" :name="item.name"
-                            :price="item.card_type == 'tactics_props' || item.card_type == 'expedition_order' ? Math.ceil(Number(item.price * WGTPoint).toFixed(4)) : item.price"
+                        <product-card :imageUrl="item.imageUrl" :name="item.name" :price="item.card_type == 'tactics_props' || item.card_type == 'expedition_order' ? Math.ceil(Number(item.price * ($store.state.WGTPoint +
+                            0.03)).toFixed(4)) : item.price"
                             :circulation="item.circulation == -1 ? '不限量' : item.circulation" :card_type="item.card_type"
                             :cardTag="item.card_type === 'nft_role' ? item.stage : item.tag" />
                     </van-swipe-item>
@@ -99,43 +99,14 @@ export default {
         }
     },
     async mounted() {
-        // console.log(nfts_list)
-
-        this.$loading.show()
         nfts_list.map(item => {
             this.productList.push(item)
         })
-        try {
-            let WGTPoint = await this.getWGTFromUSDT(100)
-            this.WGTPoint = Number(WGTPoint) / 100
-            console.log('WGTPoint', this.WGTPoint)
-            this.$loading.hide()
-
-        } catch {
-            this.$loading.hide()
-
-            this.$confirm.show({
-                title: "提示",
-                content: "NFT价格获取错误，请刷新页面",
-                showCancelButton: false,
-                onConfirm: () => {
-                    this.$router.go(0)
-                },
-            });
-            return
-        }
-
         this.getMarketList()
     },
     methods: {
         filterAddress, filterAmount,
-        async getWGTFromUSDT(value) {
-            let amount = value.toString()
-            // gameContractApi.WGTFromUSDT(amount)
-            const result = await gameContractApi.WGTFromUSDT(amount)
-            console.log('换算完值', result)
-            return result
-        },
+
         getMarketList() {
             marketList()
                 .then(res => {

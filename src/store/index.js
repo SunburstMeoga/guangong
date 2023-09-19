@@ -20,9 +20,13 @@ const store = createStore({
       wgtBalance: 0,
       wgaBalance: 0,
       realoadLowAddress: false,
+      WGTPoint: 0,
     };
   },
   mutations: {
+    updataWGTPoint(state, value) {
+      state.WGTPoint = value;
+    },
     getUserStarLevle(state, value) {
       state.userStar = value;
     },

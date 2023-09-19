@@ -99,7 +99,7 @@
 
         <van-popup v-model:show="showWorship" :close-on-click-overlay="false">
             <div class="text-card-content bg-cover-content flex w-80 flex-col justify-start items-center">
-                <img src="@/assets/worship.gif" alt="">
+                <!-- <img src="@/assets/worship.gif" alt=""> -->
             </div>
         </van-popup>
     </div>

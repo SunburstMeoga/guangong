@@ -14,27 +14,43 @@ import wgtContractApi from '@/request/ether_request/wgt'
 import wgaContractApi from '@/request/ether_request/wga'
 import gameContractApi from '@/request/ether_request/game'
 import { config } from "@/const/config";
-import { showDialog } from 'vant'
+import { showDialog, showToast } from 'vant'
 
 export default {
   name: 'App',
   components: { TopBar, FooterBar, [showDialog.name]: showDialog },
   data() {
     return {
-      timer: null
+      timer: null,
+      timerWGTFromUSDT: null
     }
   },
-  mounted() {
+  async mounted() {
     // this.accountHasChanged()
     // this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
 
     // this.getWgtBalance()
     // this.getUserIncome()
+    this.timerWGTFromUSDT = setInterval(() => {
+      try {
+        gameContractApi.WGTFromUSDT(100)
+          .then(res => {
+            let WGTPoint = Number(res) / 100
+            this.$store.commit('updataWGTPoint', WGTPoint)
+            // console.log(this.$store.state)
+            console.log('updataWGTPoint', this.$store.state.WGTPoint)
+          })
+          .catch(err => {
+            showToast('获取价格失败')
+          })
+      } catch {
+        showToast('获取价格失败')
+      }
+    }, 2000)
+
     this.timer = setTimeout(() => {
       if (window.ethereum) {
-
         this.accountHasChanged()
-
       }
       if (window.ethereum && window.ethereum.selectedAddress) {
         this.$store.commit('updateUserInfor', { address: window.ethereum.selectedAddress })
@@ -46,6 +62,13 @@ export default {
     }, 2000);
   },
   methods: {
+    async getWGTFromUSDT(value) {
+      let amount = value.toString()
+      // gameContractApi.WGTFromUSDT(amount)
+      const result = await gameContractApi.WGTFromUSDT(amount)
+      console.log('换算完值', result)
+      return result
+    },
     //获取星级
     getStarWord(star) {
       if (star == 0) {
@@ -67,14 +90,14 @@ export default {
     //获取用户星级
     async getUserStar(walletAddress) {
       const result = await gameContractApi.userStar(walletAddress)
-      console.log('星级', result)
+      // console.log('星级', result)
       this.$store.commit('getUserStarLevle', this.getStarWord(result))
     },
     //获取wgt余额
     async getWgtBalance() {
       const wgt = await wgtContractApi.wgtAssets(window.ethereum.selectedAddress)
       this.$store.commit('updatWgtBalance', wgt)
-      console.log(this.$store.state)
+      // console.log(this.$store.state)
     },
     async getWgaBalance() {
       const wga = await wgaContractApi.wgaAssets(window.ethereum.selectedAddress)
@@ -151,6 +174,7 @@ export default {
     },
     beforeDestroy() {
       clearInterval(this.timer);
+      clearInterval(this.timerWGTFromUSDT)
     },
     getUserIncome() {
       userIncome(window.ethereum.selectedAddress)
