@@ -150,7 +150,7 @@ export default {
             this.p_address = this.$route.query.p
             relationshipAddressInfor = await this.getRelationshipAddress(this.$route.query.p)
             if (relationshipAddressInfor.child.length >= 36) {
-                this.showConfirmPopup("该地址已达到邀请上线，无法签名")
+                this.showConfirmPopup("该地址已达到邀请上限，无法签名")
             }
             relationshipAddressInfor = await this.getRelationshipAddress(window.ethereum.selectedAddress)
             if (relationshipAddressInfor.parent !== ZeroAddress) {
