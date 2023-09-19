@@ -49,7 +49,7 @@ if (window.ethereum) {
     //合成nft
     synthesisNFT: async function (nftsType, targetType) {
       const tx = await GAMETRADE.upgradeRole(nftsType, targetType, {
-        gasLimit: 9999999,
+        gasLimit: 7999999,
       });
       const result = await tx.wait();
       console.log(result);
@@ -58,7 +58,7 @@ if (window.ethereum) {
     //出征
     setOff: async function (nftId, expeditionOrder) {
       const tx = await GAMETRADE.create(nftId, expeditionOrder, {
-        gasLimit: 9999999,
+        gasLimit: 7999999,
       });
       const result = await tx.wait();
       console.log(result);
@@ -67,7 +67,7 @@ if (window.ethereum) {
     //再次出征
     userCampaignAgain: async function (cardIndex, expeditionOrder) {
       const tx = await GAMETRADE.nextGame(cardIndex, expeditionOrder, {
-        gasLimit: 9999999,
+        gasLimit: 7999999,
       });
       const result = await tx.wait();
       console.log(result);

@@ -114,7 +114,15 @@ export default {
         } catch {
             this.$loading.hide()
 
-            showToast('NFT价格获取错误，请刷新页面')
+            this.$confirm.show({
+                title: "提示",
+                content: "NFT价格获取错误，请刷新页面",
+                showCancelButton: false,
+                onConfirm: () => {
+                    this.$router.go(0)
+                },
+            });
+            return
         }
 
         this.getMarketList()

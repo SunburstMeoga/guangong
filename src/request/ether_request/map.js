@@ -22,7 +22,7 @@ export async function userMarkedDetials(address, mapIndex) {
 //上传地图到合约
 export async function updataMap(locationID) {
   const tx = await MAPTRADE.update(locationID, {
-    gasLimit: 9999999,
+    gasLimit: 7999999,
   });
   const result = await tx.wait();
   console.log(result);
@@ -32,7 +32,7 @@ export async function updataMap(locationID) {
 //申请认证关公地图
 export async function markMap(mapIndex) {
   const tx = await MAPTRADE.mark(mapIndex, {
-    gasLimit: 9999999,
+    gasLimit: 7999999,
   });
   const result = await tx.wait();
   console.log(result);
@@ -43,7 +43,7 @@ export async function markMap(mapIndex) {
 //撤销已认证的关公地图
 export async function cancelMarkMap(mapIndex) {
   const tx = await MAPTRADE.cancelMark(mapIndex, {
-    gasLimit: 9999999,
+    gasLimit: 7999999,
   });
   const result = await tx.wait();
   console.log(result);
@@ -53,7 +53,7 @@ export async function cancelMarkMap(mapIndex) {
 //被邀请玩家确认关公地图数据
 export async function confirmMapInfo(uploaderAddress, mapIndex) {
   const tx = await MAPTRADE.confirm(uploaderAddress, mapIndex, {
-    gasLimit: 9999999,
+    gasLimit: 7999999,
   });
   const result = await tx.wait();
   console.log(result);

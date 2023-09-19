@@ -257,7 +257,15 @@ export default {
         } catch {
             this.$loading.hide()
 
-            showToast('NFT价格获取错误，请刷新页面')
+            this.$confirm.show({
+                title: "提示",
+                content: "NFT价格获取错误，请刷新页面",
+                showCancelButton: false,
+                onConfirm: () => {
+                    this.$router.go(0)
+                },
+            });
+            return
         }
         this.goodType = this.$route.name
         if (this.$route.name == 'good') {
@@ -337,15 +345,8 @@ export default {
         //购买财神卡
         userBuyFortuneCard() {
             console.log(this.canBuyWealthCard())
-            try {
-                if (!this.canBuyWealthCard()) {
-                    showToast(`当前等级不可购买${this.nftInfor.name}`)
-                    this.$loading.hide()
-                    return
-                }
-            } catch {
-                this.$loading.hide()
-                showToast('错误，请重试')
+            if (!this.canBuyWealthCard()) {
+                showToast(`当前等级不可购买${this.nftInfor.name}`)
                 this.$loading.hide()
                 return
             }
@@ -466,12 +467,8 @@ export default {
         canBuyWealthCard() {
             console.log(this.$store.state.userInfor.personal, this.nftInfor.id)
             const contributionValue = this.$store.state.userInfor.personal
-            if (contributionValue >= 0 && contributionValue < 10000) {
-                if (this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
-                    return true
-                } else {
-                    return false
-                }
+            if (this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
+                return true
             } else if (contributionValue >= 10000 && contributionValue < 50000) {
                 if (this.nftInfor.id == 13 || this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
                     return true
@@ -882,6 +879,8 @@ export default {
         //点击购买按钮进行购买
         async handlePay() {
             console.log(this.nftInfor)
+            console.log(this.canBuyWealthCard())
+            // return
             if (this.nftInfor.circulation == 0) {
                 this.$loading.hide()
                 showToast('该NFT暂未开放购买')
