@@ -85,6 +85,10 @@
                                     WGTPoint).toFixed(4)) }}</div>
                             </div>
                             <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">价值</div>
+                                <div class="text-base text-card-content">{{ nftInfor.price }} U</div>
+                            </div>
+                            <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">注意事项</div>
                                 <div class="text-base text-theme-primary font-semibold">{{ nftInfor.tips }}</div>
                             </div>
@@ -104,6 +108,10 @@
                                 <div class="mb-2 text-xs text-icon-gray">WGT价格</div>
                                 <div class="text-base text-card-content">{{ Math.ceil(Number(nftInfor.price *
                                     WGTPoint).toFixed(4)) }}</div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="mb-2 text-xs text-icon-gray">价值</div>
+                                <div class="text-base text-card-content">{{ nftInfor.price }} U</div>
                             </div>
                         </div>
                     </div>
