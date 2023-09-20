@@ -41,10 +41,10 @@ export default {
             console.log('updataWGTPoint', this.$store.state.WGTPoint)
           })
           .catch(err => {
-            showToast('获取价格失败')
+            // showToast('获取价格失败')
           })
       } catch {
-        showToast('获取价格失败')
+        // showToast('获取价格失败')
       }
     }, 2000)
 
