@@ -320,9 +320,9 @@ export default {
         },
         //wga是否余额不足
         async wgaIsInsufficientBalance(usdt) {
-            console.log(gameContractApi)
+            // console.log(gameContractApi)
             const WEB3 = new Web3(window.ethereum);
-            let result = await gameContractApi.WGAFromUSDT(usdt)
+            let result = await helpContractApi.WGAFromUSDT(usdt)
             result = Number(WEB3.utils.toWei(result, 'ether'))
             console.log(this.$store.state.wgtBalance, result)
 
@@ -546,8 +546,9 @@ export default {
                     showToast('当前已拥有2张财神卡，不可继续购买')
                     return
                 }
-            } catch {
+            } catch (error) {
                 this.$loading.hide()
+                console.log(error)
 
                 showToast('错误，请重试')
                 return
@@ -604,8 +605,10 @@ export default {
 
                     this.userBuyFortuneCard()
                 }
-            } catch {
+            } catch (error) {
                 showToast('错误，请重试')
+                console.log(error)
+
                 this.$loading.hide()
                 return
             }
@@ -683,8 +686,9 @@ export default {
                         this.buyFromMarket()
                     }
                 }
-            } catch {
+            } catch (error) {
                 this.$loading.hide()
+                console.log(error)
 
                 showToast('错误，请重试')
                 return
@@ -756,8 +760,9 @@ export default {
 
                     }
                 }
-            } catch {
+            } catch (error) {
                 this.$loading.hide()
+                console.log(error)
 
                 showToast('错误，请重试')
                 return
@@ -787,7 +792,7 @@ export default {
                 wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
             } catch (error) {
                 this.$loading.hide()
-
+                console.log(error)
                 showToast('错误，请重试')
                 return
             }
@@ -798,6 +803,8 @@ export default {
                 wgaBalance = await this.getWGABalance(window.ethereum.selectedAddress)
             } catch (error) {
                 this.$loading.hide()
+                console.log(error)
+
                 showToast('错误，请重试')
                 return
 
@@ -926,14 +933,15 @@ export default {
             if (this.nftInfor.card_type == 'fortune_card') {
                 try {
                     let wealthAcount = await this.hasTwoWealthCard()
+                    console.log('财神卡数量', wealthAcount)
                     if (wealthAcount >= 2) {
                         this.$loading.hide()
                         showToast('当前已拥有2张财神卡，不可继续购买')
                         return
                     }
-                } catch {
+                } catch (e) {
                     this.$loading.hide()
-
+                    console.log(e)
                     showToast('错误，请重试')
                     return
                 }
