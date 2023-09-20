@@ -81,8 +81,9 @@
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">WGT价格</div>
-                                <div class="text-base text-card-content">{{ Math.ceil(Number(nftInfor.price *
-                                    WGTPoint).toFixed(4)) }}</div>
+                                <div class="text-base text-card-content">{{ Math.ceil(Number((goodType == 'good' ?
+                                    nftInfor.price : nftAmount) *
+                                    ($store.state.WGTPoint * 1.03)).toFixed(4)) }}</div>
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">价值</div>
@@ -97,17 +98,18 @@
                     <!-- 出征令牌介绍 -->
                     <div class="border-module w-11/12 text-card-content" v-if="nftInfor.card_type == 'expedition_order'">
                         <div class="flex justify-between items-center">
-                            <div class="text-base ">出征令牌</div>
+                            <div class="text-2xl">出征令牌详情</div>
                         </div>
                         <div class="mt-8">
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">可用于以下NFT卡片出征</div>
-                                <div class="text-2xl  text-card-content">{{ nftInfor.can_be_used.join("，") }}</div>
+                                <div class="text-base text-card-content">{{ nftInfor.can_be_used.join("，") }}</div>
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">WGT价格</div>
-                                <div class="text-base text-card-content">{{ Math.ceil(Number(nftInfor.price *
-                                    WGTPoint).toFixed(4)) }}</div>
+                                <div class="text-base text-card-content">{{ Math.ceil(Number((goodType == 'good' ?
+                                    nftInfor.price : nftAmount) *
+                                    ($store.state.WGTPoint * 1.03)).toFixed(4)) }}</div>
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">价值</div>
@@ -162,22 +164,16 @@
                 <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
                     <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
                         @click="handlePay">
-                        <span v-if="!isFetchingPoint">
-                            <span class="pr-2">购买 </span> {{ (nftInfor.card_type == 'tactics_props' || nftInfor.card_type ==
-                                'expedition_order') ? Math.ceil(Number(nftInfor.price * ($store.state.WGTPoint +
-                                    0.03)).toFixed(4)) :
-                                (nftInfor.card_type
-                                    == 'fortune_card' ? Number(nftInfor.price) *
-                                20 : nftInfor.price) }} {{ (nftInfor.card_type
-        == 'nft_role' || nftInfor.card_type
-        == 'synthesis_props') ? 'U' :
-        (nftInfor.card_type == 'fortune_card' ? 'WGA' : 'WGT') }}
+                        <span v-show="!isFetchingPoint">
+                            <span class="pr-2">购买 </span> {{ nftCurrencyPrice(nftInfor.card_type, goodType == 'good' ?
+                                nftInfor.price : nftAmount) }} {{
+        nftCurrencyWord(nftInfor.card_type) }}
                             <span v-if="nftInfor.card_type == 'fortune_card'">或 {{ Math.ceil(Number(nftInfor.price *
-                                ($store.state.WGTPoint +
-                                    0.03)).toFixed(4)) }} WGT</span>
+                                ($store.state.WGTPoint * 1.03
+                                )).toFixed(4)) }} WGT</span>
                         </span>
-                        <span v-if="isFetchingPoint" class="flex justify-center items-center">
-                            <span class="w-8">
+                        <span v-show="isFetchingPoint" class="flex justify-center items-center">
+                            <span class="w-6">
                                 <img src="../../assets/loading.gif" />
                             </span>
                             <span class="pl-4">正在获取WGT价格...</span>
@@ -247,10 +243,11 @@ export default {
             currentPayWay: 0,
             payWayList: [],
             WGTPoint: 0,
-            isFetchingPoint: true
+            isFetchingPoint: false
         }
     },
     async mounted() {
+        this.goodType = this.$route.name
         if (this.$route.name == 'good') {
             console.log('good')
             console.log(this.$route.params.id)
@@ -264,6 +261,27 @@ export default {
     },
     methods: {
         accountBalance, filterAmount,
+        nftCurrencyPrice(type, price) {
+
+            if (type == 'tactics_props' || type == 'expedition_order') {
+                return Math.ceil(Number(price * (this.$store.state.WGTPoint * 1.03)).toFixed(4))
+            } else if (type == 'fortune_card') {
+                return Number(price) * 20
+            } else {
+                return price
+            }
+        },
+        nftCurrencyWord(type) {
+
+            if (type == 'nft_role' || type == 'synthesis_props') {
+                return 'U'
+            } else if (type == 'fortune_card') {
+                return 'WGA'
+            } else {
+                return 'WGT'
+            }
+
+        },
         clickPayWay(item, index) {
             if (item.isInsufficientBalance) {
                 this.$loading.hide()
@@ -293,18 +311,18 @@ export default {
         },
         //wgt是否余额不足
         async wgtIsInsufficientBalance(usdt) {
-            console.log(helpContractApi)
+            console.log(gameContractApi)
             const WEB3 = new Web3(window.ethereum);
-            let result = await helpContractApi.WGTFromUSDT(usdt)
+            let result = await gameContractApi.WGTFromUSDT(usdt)
             result = Number(WEB3.utils.toWei(result, 'ether'))
             console.log(this.$store.state.wgtBalance, result)
             return this.$store.state.wgtBalance < result
         },
         //wga是否余额不足
         async wgaIsInsufficientBalance(usdt) {
-            console.log(helpContractApi)
+            console.log(gameContractApi)
             const WEB3 = new Web3(window.ethereum);
-            let result = await helpContractApi.WGAFromUSDT(usdt)
+            let result = await gameContractApi.WGAFromUSDT(usdt)
             result = Number(WEB3.utils.toWei(result, 'ether'))
             console.log(this.$store.state.wgtBalance, result)
 
@@ -356,7 +374,7 @@ export default {
         getNFTDetails() {
             nftDetails(this.tokenId)
                 .then(res => {
-                    console.log('资产详情', res)
+                    console.log('二手NFT详情', res)
                     this.nftAmount = res.data.amount
                     this.matchNFTData(res.data.nft_id > 100 ? res.data.nft_id % 100 : res.data.nft_id, (Number(res.data.amount).toFixed()).toString())
                 })
@@ -611,6 +629,8 @@ export default {
         //用WGT付款
         async payFromWGT() {
             this.$loading.show()
+            console.log(this.nftInfor.price)
+            // return
             try {
                 let wgtIsInsufficientBalance;
                 try {
@@ -857,43 +877,49 @@ export default {
             this.userBuyFortuneCard()
         },
 
-        //点击购买按钮进行购买
-        async handlePay() {
-            console.log(this.nftInfor)
-            console.log(this.canBuyWealthCard())
+        //判断当前WGT价格是否有变化
+        async haveChangeOfWGT() {
             if (this.isFetchingPoint) {
                 showToast('正在计算WGT价格，请稍候')
                 return
             }
             try {
                 this.isFetchingPoint = true
-                gameContractApi.WGTFromUSDT(100)
-                    .then(res => {
-                        let WGTPoint = Number(res) / 100
-                        if (this.$store.state.WGTPoint !== WGTPoint) {
-                            this.$store.commit('updataWGTPoint', WGTPoint)
-                            showToast('WGT价格发生变化，请重新购买')
-                            this.isFetchingPoint = false
-                            return
-                        }
-                    })
-                    .catch(err => {
-                        showToast('获取价格失败')
-                        this.isFetchingPoint = false
-
-                        return
-                    })
+                let WGTPoint = await gameContractApi.WGTFromUSDT(100)
+                WGTPoint = Number(WGTPoint) / 100
+                console.log('WGTPoint', WGTPoint)
+                if (this.$store.state.WGTPoint !== WGTPoint) {
+                    this.$store.commit('updataWGTPoint', WGTPoint)
+                    showToast('WGT价格发生变化，请重新购买')
+                    this.isFetchingPoint = false
+                    console.log('this.$store.state.WGTPoint', this.$store.state.WGTPoint)
+                    return true
+                } else {
+                    this.isFetchingPoint = false
+                    return false
+                }
             } catch {
                 showToast('获取价格失败')
                 this.isFetchingPoint = false
-
                 return
             }
-            // return
+        },
+
+        //点击购买按钮进行购买
+        async handlePay() {
+            console.log(this.nftInfor)
+            // await this.haveChangeOfWGT()
             if (this.nftInfor.circulation == 0) {
                 this.$loading.hide()
                 showToast('该NFT暂未开放购买')
                 return
+            }
+
+            //如果购买卡片币种是WGT，则需要获取当前WGT和U的最新换算价格
+            if (this.nftInfor.card_type == 'fortune_card' || this.nftInfor.card_type == 'expedition_order' || this.nftInfor.card_type == 'tactics_props') {
+                if (await this.haveChangeOfWGT()) {
+                    return
+                }
             }
 
             //财神卡用wgt或者wga 唤起支付类型弹窗
@@ -902,7 +928,6 @@ export default {
                     let wealthAcount = await this.hasTwoWealthCard()
                     if (wealthAcount >= 2) {
                         this.$loading.hide()
-
                         showToast('当前已拥有2张财神卡，不可继续购买')
                         return
                     }

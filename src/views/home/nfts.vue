@@ -39,9 +39,8 @@
                                 <div class="mb-6" v-for="(item, index ) in racticsPropCards " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
-                                        <mall-card :imageUrl="item.imageUrl" :name="item.name"
-                                            :price="Math.ceil(Number(item.price * WGTPoint).toFixed(4))"
-                                            :card_type="item.card_type" />
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="Math.ceil(Number(item.price * ($store.state.WGTPoint *
+                                            1.03)).toFixed(4))" :card_type="item.card_type" />
                                     </div>
                                 </div>
                             </div>
@@ -51,9 +50,8 @@
                                 <div class="mb-6" v-for="(item, index ) in campaignTokens " :key="index"
                                     @click="toGoodDetails(item)">
                                     <div>
-                                        <mall-card :imageUrl="item.imageUrl" :name="item.name"
-                                            :price="Math.ceil(Number(item.price * WGTPoint).toFixed(4))"
-                                            :card_type="item.card_type" />
+                                        <mall-card :imageUrl="item.imageUrl" :name="item.name" :price="Math.ceil(Number(item.price * ($store.state.WGTPoint *
+                                            1.03)).toFixed(4))" :card_type="item.card_type" />
                                     </div>
                                 </div>
                             </div>

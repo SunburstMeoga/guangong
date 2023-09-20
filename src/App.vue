@@ -137,7 +137,7 @@ export default {
                 {
                   chainId: config.chainId,
                   chainName: config.chainName,
-                  rpcUrls: [config.rpcUrls,],
+                  rpcUrls: [config.rpcUrls],
                   blockExplorerUrls: [config.blockExplorerUrls],
                   nativeCurrency: {
                     name: 'WGT',

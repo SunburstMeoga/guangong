@@ -39,8 +39,8 @@
             <div class="market w-full relative mb-20">
                 <van-swipe class="my-swipe mt-4" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails(item)">
-                        <product-card :imageUrl="item.imageUrl" :name="item.name" :price="item.card_type == 'tactics_props' || item.card_type == 'expedition_order' ? Math.ceil(Number(item.price * ($store.state.WGTPoint +
-                            0.03)).toFixed(4)) : item.price"
+                        <product-card :imageUrl="item.imageUrl" :name="item.name" :price="item.card_type == 'tactics_props' || item.card_type == 'expedition_order' ? Math.ceil(Number(item.price * ($store.state.WGTPoint *
+                            1.03)).toFixed(4)) : item.price"
                             :circulation="item.circulation == -1 ? '不限量' : item.circulation" :card_type="item.card_type"
                             :cardTag="item.card_type === 'nft_role' ? item.stage : item.tag" />
                     </van-swipe-item>
@@ -62,15 +62,17 @@
             <div class="mb-10 w-full overflow-hidden">
                 <shops-card :shopsList="shopsList" />
             </div> -->
-            <div class="w-full px-4 mb-10" @click="viewMarket" v-if="marketListData.length !== 0">
+
+            <!-- <div class="w-full px-4 mb-10" @click="viewMarket" v-if="marketListData.length !== 0">
                 <module-title titleWord="NFT市場" hasMore />
             </div>
             <div class="w-full px-4" v-if="marketListData.length !== 0">
                 <div class="mb-4" v-for="(item, index) in marketListData" :key="index" @click="toMarketDetails(item)">
                     <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
-                        :card_type="item.infor.card_type" :amount="filterAmount(item.amount)" />
+                        :card_type="item.infor.card_type" :amount="Math.ceil(Number(item.amount * ($store.state.WGTPoint +
+                            0.03)).toFixed(4))" />
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>
