@@ -56,7 +56,8 @@
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center font-bold">
                     <span>个人收益池金额：</span>
-                    <span class="text-theme-primary">{{ earningsInfo.poolTeam }} WGT</span>
+                    <span class="text-theme-primary">{{ Number(earningsInfo.poolTeam * $store.state.WGTPoint).toFixed(4) }}
+                        WGT</span>
                 </div>
             </div>
         </div>
@@ -70,9 +71,13 @@
         </div> -->
         <div class="mb-6">
             <div class="flex justify-between items-center">
-                <div class="flex justify-start items-center">
+                <div class="flex justify-start items-baseline">
                     <span class="font-bold">可领取金额：</span>
-                    <span class="font-bold text-theme-primary">{{ poolInfor.b }} WGT</span>
+                    <span class="font-bold text-theme-primary">{{ Number(poolInfor.b).toFixed(4) }} U</span>
+                    <span class="text-xs font-bold text-theme-primary"> ≈ {{ Number(poolInfor.b *
+                        $store.state.WGTPoint).toFixed(4) }}
+                        WGT</span>
+
                     <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded"
                         @click="userReceivePoolEarnings">领取收益</span>
                 </div>
@@ -149,7 +154,6 @@ export default {
         clearInterval(this.timer);
     },
     methods: {
-
         getFilterAmount(amount) {
             const WEB3 = new Web3(window.ethereum);
             // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
@@ -188,10 +192,11 @@ export default {
                 .then(res => {
                     console.log('奖池信息', res)
                     // this.poolInfor = res
-                    // this.poolInfor.a = this.getFilterAmount(res.a)
-                    // this.poolInfor.b = this.getFilterAmount(res.b)
-                    this.poolInfor.a = res.a
-                    this.poolInfor.b = res.b
+
+                    // this.poolInfor.a = res.a
+                    // this.poolInfor.b = res.b
+                    this.poolInfor.a = this.getFilterAmount(res.a)
+                    this.poolInfor.b = this.getFilterAmount(res.b)
 
                 })
                 .catch(err => {
