@@ -44,7 +44,7 @@
                         </div>
                     </van-tab>
                     <van-tab title="正在出征" class="pt-4">
-                        <div>
+                        <div :class="pendingList.length !== 0 ? 'columns-2 gap-x-3' : ''">
                             <div v-if="campaignList.length === 0">
                                 <div class="text-icon-gray text-xl text-center">
                                     暂无数据
@@ -65,7 +65,7 @@
                         </div>
                     </van-tab>
                     <van-tab title="财神卡" class="pt-4">
-                        <div>
+                        <div :class="pendingList.length !== 0 ? 'columns-2 gap-x-3' : ''">
                             <div v-if="wealthList.length === 0">
                                 <div class="text-icon-gray text-xl text-center">
                                     暂无数据

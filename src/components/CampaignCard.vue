@@ -9,16 +9,18 @@
                 出征中
             </div> -->
         </div>
-        <div class="backdrop-blur-3xl text-sm text-assets-word bg-module-card px-2 py-1">
+        <div class="backdrop-blur-3xl text-xs text-assets-word bg-module-card px-2 py-1">
             <div class="text-theme-primary text-2xl font-semibold">{{ name }}</div>
             <div class="text-icon-gray">No.{{ nftRole }}</div>
             <div class="text-icon-gray">出征时间：{{ time }}</div>
             <div class="text-icon-gray">出征令牌：{{ nftToken }}</div>
             <div class="text-icon-gray">当前出征次数：{{ count }}</div>
             <div class="text-icon-gray">本次出征是否领取过收益：{{ income ? '是' : '否' }}</div>
-            <div class="text-icon-gray">出征属性：{{ cammaignAttribute }}</div>
-            <div class="campaign mt-4 text-whites text-center py-2 mb-2 rounded" @click="receiveProceeds">领取收益</div>
-            <div class="buy-button mt-4 text-whites text-center py-2 mb-2 rounded" @click="campaignAgain">再次出征</div>
+            <div class="text-icon-gray mb-2">出征属性：{{ cammaignAttribute }}</div>
+            <div class="flex justify-between items-center mb-2">
+                <div class="campaign text-whites text-center p-2 rounded" @click="receiveProceeds">领取收益</div>
+                <div class="buy-button text-whites text-center p-2 rounded" @click="campaignAgain">再次出征</div>
+            </div>
         </div>
     </div>
 </template>
