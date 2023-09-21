@@ -21,9 +21,10 @@
             <div v-if="!showSkeleton && earningsList.length !== 0">
                 <div class="text-white w-11/12 mr-auto ml-auto flex justify-between items-center py-2">
                     <div class="font-medium text-xl">收益记录</div>
-                    <!-- <div @click="showBottom = true" class="py-2 px-4 text-center text-white rounded bg-bottom-content">
-                        时间 <span class="icon iconfont icon-time"></span>
-                    </div> -->
+
+                </div>
+                <div class="w-11/12 mr-auto ml-auto text-theme-primary text-xs pb-4">
+                    *所有发放的奖励收益均已发放时USDT和WGT的转换关系为准
                 </div>
                 <!-- <div class="pt-4">
                    

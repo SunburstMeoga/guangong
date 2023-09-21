@@ -56,8 +56,8 @@
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center font-bold">
                     <span>个人收益池金额：</span>
-                    <span class="text-theme-primary">{{ Number(earningsInfo.poolTeam * $store.state.WGTPoint).toFixed(4) }}
-                        WGT</span>
+                    <span class="text-theme-primary">{{ Number(earningsInfo.poolTeam).toFixed(4) }}
+                        U</span>
                 </div>
             </div>
         </div>
@@ -73,10 +73,10 @@
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-baseline">
                     <span class="font-bold">可领取金额：</span>
-                    <span class="font-bold text-theme-primary">{{ Number(poolInfor.b).toFixed(4) }} U</span>
-                    <span class="text-xs font-bold text-theme-primary"> ≈ {{ Number(poolInfor.b *
+                    <span class="font-bold text-theme-primary">{{ Number(poolInfor.b *
                         $store.state.WGTPoint).toFixed(4) }}
                         WGT</span>
+                    <span class="text-xs font-bold text-theme-primary"> ≈ {{ Number(poolInfor.b).toFixed(4) }} U</span>
 
                     <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded"
                         @click="userReceivePoolEarnings">领取收益</span>
@@ -88,20 +88,20 @@
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1">
                     <!-- 不知道是哪个字段 -->
                     <div>角色卡收益</div>
-                    <div class="">{{ $store.state.userInfor.income_card }}</div>
+                    <div class="">{{ $store.state.userInfor.income_card }} U</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1">
                     <div>财神卡收益</div>
-                    <div>{{ $store.state.userInfor.income_deposit }}</div>
+                    <div>{{ $store.state.userInfor.income_deposit }} U</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 border-r border-card-introduce py-1"
                     @click="viewEarnings('individual')">
                     <div>个人收益</div>
-                    <div>{{ $store.state.userInfor.income_personal }}</div>
+                    <div>{{ $store.state.userInfor.income_personal }} U</div>
                 </div>
                 <div class="flex flex-col justify-center items-center w-3/12 py-1" @click="viewEarnings('team')">
                     <div>团队收益</div>
-                    <div>{{ $store.state.userInfor.income_team }}</div>
+                    <div>{{ $store.state.userInfor.income_team }} U</div>
                 </div>
             </div>
         </div>
