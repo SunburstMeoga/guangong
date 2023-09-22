@@ -8,7 +8,7 @@
             <div>
                 <span>{{ addressFilter(address) }}</span>
             </div>
-            <div class="buy-button px-3 py-1 text-sm text-primary-word rounded" @click="copyAddress">复制地址</div>
+            <!-- <div class="buy-button px-3 py-1 text-sm text-primary-word rounded" @click="copyAddress">复制地址</div> -->
         </div>
         <div class="mb-2 flex justify-start items-baseline font-bold">
             <div class="">总资产： </div>
@@ -112,11 +112,15 @@
 import { RollingText, showSuccessToast, showToast } from 'vant';
 // import { userInfo, receivePoolEarnings } from '@/request/ether_request/game'
 import gameContractApi from '@/request/ether_request/game'
+import { ZeroAddress } from "ethers"
 
 import { userIncome } from '@/request/api_request'
 import wgtContractApi from '@/request/ether_request/wgt'
 import wgaContractApi from '@/request/ether_request/wga'
 import helpContractApi from '@/request/ether_request/help'
+import nftContractApi from '@/request/ether_request/nft'
+import popularContractApi from '@/request/ether_request/popularized'
+import { config } from '@/const/config'
 
 import Web3 from "web3";
 
@@ -162,10 +166,32 @@ export default {
 
             return reslut
         },
+        //erc721合约授权操作
+        async erc721ContractApppproval(contractAddress) {
+            const result = await nftContractApi.apppprovalForAll(contractAddress)
+            return result
+        },
+        //检查erc721授权状态
+        async erc721ApppprovalState(contractAddress) {
+            return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)
+        },
+        async isBeenPromoted(walletAddress) {
+            let result = await popularContractApi.relationshipAddress(walletAddress)
+            console.log(result)
+            let havePreAddr
+            if (result.parent !== ZeroAddress) {
+                havePreAddr = true
+            } else {
+                havePreAddr = false
+            }
+            return havePreAddr
+
+        },
         //领取总奖池收益
-        userReceivePoolEarnings() {
+        async userReceivePoolEarnings() {
             if (!window.ethereum.selectedAddress) {
                 showToast('请先登录')
+                return
             }
             this.$loading.show()
             if (this.poolInfor.b == 0) {
@@ -173,7 +199,49 @@ export default {
                 this.$loading.hide()
                 return
             }
-            gameContractApi.receivePoolEarnings(this.poolInfor.b)
+            let gameApproveFromNFT = await this.erc721ApppprovalState(config.game_addr) //nft是否已对game进行授权
+            if (gameApproveFromNFT !== true) { //未授权，引导用户授权
+                this.$loading.hide()
+                this.$confirm.show({
+                    title: "提示",
+                    content: "当前用户未进行erc721授权，请先完成授权",
+                    onConfirm: () => {
+                        this.$loading.show()
+                        nftContractApi.apppprovalForAll(config.game_addr)
+                            .then(res => {
+                                console.log(res)
+                                this.$confirm.hide()
+                                this.$loading.hide()
+                                showToast('授权成功')
+                            })
+                            .catch(err => {
+                                this.$confirm.hide()
+                                this.$loading.hide()
+
+                                showToast('授权失败')
+                            })
+                    },
+                    onCancel: () => {
+                        this.$confirm.hide()
+                    }
+                });
+                return
+            }
+
+
+            let havePreAddr = await this.isBeenPromoted(window.ethereum.selectedAddress)
+            if (!havePreAddr) {
+                this.$loading.hide()
+                showToast('当前地址无上级地址，不可领取')
+                return
+            }
+            console.log('是否授权', gameApproveFromNFT)
+            console.log('是否有上级地址', havePreAddr)
+            const WEB3 = new Web3(window.ethereum);
+            const earning = WEB3.utils.toWei(this.poolInfor.b, 'ether')
+            console.log(earning)
+            // return
+            gameContractApi.receivePoolEarnings(earning)
                 .then(res => {
                     showToast('领取成功')
                     this.this.getPoolInfor()
@@ -325,11 +393,11 @@ export default {
             let targetStr
             let targetArr = []
             arr.map((item, index) => {
-                if (index <= 6 || index >= arr.length - 7) {
+                if (index <= 10 || index >= arr.length - 11) {
                     targetArr.push(item)
                 }
             })
-            targetArr.splice(7, 0, '...')
+            targetArr.splice(11, 0, '...')
             targetStr = targetArr.join('')
             return targetStr
         },

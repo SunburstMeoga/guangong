@@ -121,9 +121,12 @@ import gameContractApi from '@/request/ether_request/game'
 import nfts_list from '@/nft_datas/nfts_list'
 import { filterTime, filterAmount } from '@/utils/filterValue'
 import nftContractApi from '@/request/ether_request/nft'
+import { ZeroAddress } from "ethers"
 
 import { config } from '@/const/config'
 import helpContractApi from '@/request/ether_request/help'
+import popularContractApi from '@/request/ether_request/popularized'
+
 
 
 
@@ -335,25 +338,40 @@ export default {
                 return
             }
             if (erc721ApppprovalState !== true) {
-                let erc721Result
-                try {
-                    erc721Result = await this.erc721ContractApppproval(config.game_addr)
-                } catch {
-                    this.$loading.hide()
-                    showToast('错误，请重试')
-                    return
-                }
-                console.log('erc721Result', erc721Result)
-                if (erc721Result.status == 1) {
-                    this.userReceiveCampaign(item, index)
-                } else {
-                    this.$loading.hide()
-                    showToast('授权失败')
-                }
-            } else {
-                this.userReceiveCampaign(item, index)
+                this.$loading.hide()
+                this.$confirm.show({
+                    title: "提示",
+                    content: "当前用户未进行erc721授权，请先完成授权",
+                    onConfirm: () => {
+                        this.$loading.show()
+                        this.erc721ContractApppproval(config.game_addr)
+                            .then(res => {
+                                console.log(res)
+                                this.$confirm.hide()
+                                this.$loading.hide()
+                                showToast('授权成功')
+                            })
+                            .catch(err => {
+                                this.$confirm.hide()
+                                this.$loading.hide()
+
+                                showToast('授权失败')
+                            })
+                    },
+                    onCancel: () => {
+                        this.$confirm.hide()
+                    }
+                });
+                return
             }
 
+            let havePreAddr = await this.isBeenPromoted(window.ethereum.selectedAddress)
+            if (!havePreAddr) {
+                this.$loading.hide()
+                showToast('当前地址无上级地址，不可领取')
+                return
+            }
+            this.userReceiveCampaign(item, index)
         },
         //点击领取财神卡收益
         async handleReceiveWealthProceeds(index) {
@@ -407,10 +425,25 @@ export default {
                     }
                 });
                 return
-            } else {
-                this.userReceiveWealth(index)
             }
-
+            let havePreAddr = await this.isBeenPromoted(window.ethereum.selectedAddress)
+            if (!havePreAddr) {
+                this.$loading.hide()
+                showToast('当前地址无上级地址，不可领取')
+                return
+            }
+            this.userReceiveWealth(index)
+        },
+        async isBeenPromoted(walletAddress) {
+            let result = await popularContractApi.relationshipAddress(walletAddress)
+            console.log(result)
+            let havePreAddr
+            if (result.parent !== ZeroAddress) {
+                havePreAddr = true
+            } else {
+                havePreAddr = false
+            }
+            return havePreAddr
 
         },
         //卡片类型
