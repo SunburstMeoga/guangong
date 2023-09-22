@@ -20,9 +20,12 @@
                     </div>
                 </div>
                 <div class="flex flex-col justify-start items-center mb-10">
-                    <div class="w-11/12 text-3xl border-module text-card-content font-medium">
+                    <div class="w-11/12 text-3xl mb-2 border-module text-card-content font-medium">
                         {{ nftInfor.name }}
+                        <!-- <div class="pt-2 w-11/12 text-xs text-theme-primary">当前1U ≈ {{ $store.state.WGTPoint }} WGT</div> -->
                     </div>
+
+
                     <!-- nft角色卡信息 -->
                     <div class="border-module w-11/12 text-card-content font-light" v-if="nftInfor.card_type == 'nft_role'">
                         <div class="flex justify-between items-center">
@@ -161,13 +164,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content">
+                <!-- 购买官方发售的商品按钮 -->
+                <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content" v-if="goodType == 'good'">
                     <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
                         @click="handlePay">
                         <span v-show="!isFetchingPoint">
-                            <span class="pr-2">购买 </span> {{ nftCurrencyPrice(nftInfor.card_type, goodType == 'good' ?
-                                nftInfor.price : nftAmount) }} {{
-        nftCurrencyWord(nftInfor.card_type) }}
+                            <span class="pr-2">购买 </span> {{ nftInfor.price }} {{ nftCurrencyWord(nftInfor.card_type) }}
                             <span v-if="nftInfor.card_type == 'fortune_card'">或 {{ Math.ceil(Number(nftInfor.price *
                                 ($store.state.WGTPoint * 1.03
                                 )).toFixed(4)) }} WGT</span>
@@ -183,6 +185,21 @@
                         </span> -->
                     </div>
                 </div>
+                <!-- 购买nft市场的商品按钮 -->
+                <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content" v-else>
+                    <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
+                        @click="handlePay">
+                        <span>
+                            <span class="pr-1">购买</span> {{ Math.ceil(Number((nftAmount) *
+                                ($store.state.WGTPoint * 1.03)).toFixed(4)) }} WGT
+                        </span>
+
+                        <span class="text-xs pl-2">
+                            (当前1U ≈ {{ $store.state.WGTPoint }} WGT)
+                        </span>
+                    </div>
+                </div>
+
             </div>
         </div>
         <!-- 支付方式弹窗 -->
@@ -535,84 +552,6 @@ export default {
 
         },
 
-        //用WGA付款
-        async payFromWGA() {
-            this.$loading.show()
-            try {
-                let wealthAcount = await this.hasTwoWealthCard()
-                if (wealthAcount >= 2) {
-                    this.$loading.hide()
-
-                    showToast('当前已拥有2张财神卡，不可继续购买')
-                    return
-                }
-            } catch (error) {
-                this.$loading.hide()
-                console.log(error)
-
-                showToast('错误，请重试')
-                return
-            }
-            try {
-                let wgaIsInsufficientBalance;
-                try {
-                    wgaIsInsufficientBalance = await this.wgaIsInsufficientBalance(this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))
-                    if (wgaIsInsufficientBalance) {
-                        this.$loading.hide()
-                        showToast('WGA余额不足')
-                        return
-                    }
-                } catch (e) {
-                    console.log('e', e)
-                    this.$loading.hide()
-
-                    showToast('获取余额失败，请重试')
-                    return
-                }
-                let allowanceState = await this.checkWGAAllowanceState(window.ethereum.selectedAddress, this.goodType == 'good' ? config.game_addr : config.market_addr)
-                const WEB3 = new Web3(window.ethereum);
-                allowanceState = WEB3.utils.fromWei(allowanceState, 'ether')
-                allowanceState = Number(allowanceState)
-                console.log('allowanceState', allowanceState,)
-                console.log('s授权金额不够', allowanceState, (this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))), Number(allowanceState) < Number((this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price)))))
-
-
-                if (allowanceState == 0) {
-                    this.$loading.hide()
-                    this.$confirm.show({
-                        title: "提示",
-                        content: "未授权，请完成授权",
-                        showCancelButton: false,
-                        onConfirm: () => {
-                            this.WGAContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
-                        },
-                    })
-                    return
-                } else if (Number(allowanceState) < Number((this.goodType == 'good' ? this.nftInfor.price : Math.ceil(Number(this.nftInfor.price))))) {
-                    this.$loading.hide()
-                    this.$confirm.show({
-                        title: "提示",
-                        content: "授权金额不足，请重新授权",
-                        showCancelButton: false,
-                        onConfirm: () => {
-                            this.WGAContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
-                        },
-                    })
-                    return
-                }
-                else {
-                    console.log('授权了', allowanceState)
-
-                    this.userBuyFortuneCard()
-                }
-            } catch (error) {
-                showToast('错误，请重试')
-                console.log(error)
-
-                this.$loading.hide()
-                return
-            }
-        },
 
         //是否已经有2张的财神卡
         async hasTwoWealthCard() {
@@ -679,12 +618,7 @@ export default {
                     return
                 } else {
                     console.log('授权了', allowanceState)
-
-                    if (this.goodType == 'good') {
-                        this.buyFromMall()
-                    } else {
-                        this.buyFromMarket()
-                    }
+                    this.buyFromMall()
                 }
             } catch (error) {
                 this.$loading.hide()
@@ -751,36 +685,24 @@ export default {
                     })
                 } else {
                     console.log('授权了', allowanceState)
-
-                    if (this.goodType == 'good') {
-                        this.buyFromMall()
-                        // console.log('good', this.goodType)
-                    } else {
-                        this.buyFromMarket()
-
-                    }
+                    this.buyFromMall()
                 }
             } catch (error) {
                 this.$loading.hide()
                 console.log(error)
-
                 showToast('错误，请重试')
                 return
             }
 
         },
 
-        //唤起支付方式弹窗
+        //购买财神卡需要唤起支付方式弹窗询问用户购买方式 wgt or wga
         async showPayWayPopup() {
-
             if (!window.ethereum.selectedAddress) {
                 this.$loading.hide()
-
                 showToast('请先连接钱包')
                 return
             }
-            // console.log(this.nftInfor)
-
             this.$loading.show()
             let wgtIsInsufficientBalance
             let wgaIsInsufficientBalance
@@ -796,20 +718,17 @@ export default {
                 showToast('错误，请重试')
                 return
             }
-
             try {
-                // 判断是否余额不足
+                // wgt和wga余额
                 wgtBalance = await this.getWGTBalance(window.ethereum.selectedAddress)
                 wgaBalance = await this.getWGABalance(window.ethereum.selectedAddress)
             } catch (error) {
                 this.$loading.hide()
                 console.log(error)
-
                 showToast('错误，请重试')
                 return
 
             }
-
             if (wgtIsInsufficientBalance && !wgaIsInsufficientBalance) {
                 this.currentPayWay = 1
             } else if (wgtIsInsufficientBalance && wgaIsInsufficientBalance) {
@@ -818,22 +737,19 @@ export default {
                 showToast('购买NFT所需的WGT或WGA不足')
                 return
             }
-
             this.payWayList[0] = { name: 'WGT支付', amount: this.getFilterAmount(wgtBalance), isWgt: true, isInsufficientBalance: wgtIsInsufficientBalance }
             this.payWayList[1] = { name: 'WGA支付', amount: this.getFilterAmount(wgaBalance), isWgt: false, isInsufficientBalance: wgaIsInsufficientBalance }
             this.$loading.hide()
             this.showPayWay = true
         },
 
-        //点击支付弹窗确认支付按钮
+        //点击支付弹窗按钮购买财神卡
         async handleConfirmPay() {
             console.log(Number(this.nftInfor.price).toFixed(0))
             console.log('财神卡？', this.isWealthCard(this.nftInfor.id)) //当前购买的卡片是否为财神卡
             this.showPayWay = false
             this.$loading.show()
-
             const WEB3 = new Web3(window.ethereum);
-
             let currentPayWayAllowanState; //当前支付方式合约授权状态
             try {
                 if (this.currentPayWay == 0) {
@@ -852,7 +768,6 @@ export default {
                 showToast('错误，请重试')
                 return
             }
-
             //未授权
             if (currentPayWayAllowanState == 0) {
                 this.$loading.hide()
@@ -914,25 +829,67 @@ export default {
 
         //点击购买按钮进行购买
         async handlePay() {
+            this.$loading.show()
             console.log(this.nftInfor)
-            // await this.haveChangeOfWGT()
+            //购买二手nft
+            if (this.goodType == 'market') {
+                let marketNftPrice = Math.ceil(Number((this.nftAmount) * (this.$store.state.WGTPoint * 1.03)).toFixed(4))
+                if (this.$store.state.wgtBalance < marketNftPrice) {
+                    showToast('WGT余额不足')
+                    this.$loading.hide()
+                    return
+                }
+
+                let allowanceState = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType == 'good' ? config.game_addr : config.market_addr)
+                console.log('allowanceState', allowanceState)
+                const WEB3 = new Web3(window.ethereum);
+                allowanceState = WEB3.utils.fromWei(allowanceState, 'ether')
+                allowanceState = Number(allowanceState)
+                console.log('allowanceState', allowanceState, allowanceState < Number(this.nftAmount))
+                if (allowanceState == 0) {
+                    this.$loading.hide()
+                    this.$confirm.show({
+                        title: "提示",
+                        content: "未授权，请完成授权",
+                        showCancelButton: false,
+                        onConfirm: () => {
+                            this.WGTContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
+                        },
+                    })
+                    return
+                } else if (allowanceState < Number(this.$store.state.wgtBalance)) {
+                    this.$loading.hide()
+                    this.$confirm.show({
+                        title: "提示",
+                        content: "授权金额不足，请重新授权",
+                        showCancelButton: false,
+                        onConfirm: () => {
+                            this.WGTContractApprove(this.goodType == 'good' ? config.game_addr : config.market_addr)
+                        },
+                    })
+                    return
+                }
+
+                this.buyFromMarket()
+                return
+            }
+
+            //购买一手nft
             if (this.nftInfor.circulation == 0) {
                 this.$loading.hide()
                 showToast('该NFT暂未开放购买')
                 return
             }
-
             //如果购买卡片币种是WGT，则需要获取当前WGT和U的最新换算价格
             if (this.nftInfor.card_type == 'fortune_card' || this.nftInfor.card_type == 'expedition_order' || this.nftInfor.card_type == 'tactics_props') {
                 if (await this.haveChangeOfWGT()) {
                     return
                 }
             }
-
             //财神卡用wgt或者wga 唤起支付类型弹窗
             if (this.nftInfor.card_type == 'fortune_card') {
                 try {
-                    let wealthAcount = await this.hasTwoWealthCard()
+                    let wealthAcount = await this.hasTwoWealthCard()//24小时内购买过2张财神卡则不可在购买
                     console.log('财神卡数量', wealthAcount)
                     if (wealthAcount >= 2) {
                         this.$loading.hide()
@@ -957,11 +914,11 @@ export default {
                 this.payFromWGT()
             }
         },
+        //购买一手nft函数
         buyFromMall() {
             console.log(this.nftInfor.id)
             console.log('good', this.goodType)
             this.$loading.show()
-
             gameContractApi.buy(this.nftInfor.id)
                 .then((res) => {
                     this.$loading.hide()
@@ -976,12 +933,14 @@ export default {
                     console.log(err)
                 })
         },
+        //购买二手nft函数
         buyFromMarket() {
-            console.log(this.tokenId, Math.ceil(Number(this.nftAmount)))
+            console.log(this.tokenId, Math.ceil(Number(this.nftAmount) * this.$store.state.WGTPoint))
             // return
-            marketContractApi.dealNFT(this.tokenId, (Math.ceil(Number(this.nftAmount))).toString())
+            marketContractApi.dealNFT(this.tokenId, (Math.ceil(Number(this.nftAmount) * this.$store.state.WGTPoint)).toString())
                 .then((res) => {
                     this.updataMarketNFTApi()
+                    this.$loading.hide()
                 })
                 .catch((err) => {
                     this.$loading.hide()

@@ -63,7 +63,7 @@
                 <shops-card :shopsList="shopsList" />
             </div> -->
 
-            <!-- <div class="w-full px-4 mb-10" @click="viewMarket" v-if="marketListData.length !== 0">
+            <div class="w-full px-4 mb-10" @click="viewMarket" v-if="marketListData.length !== 0">
                 <module-title titleWord="NFT市場" hasMore />
             </div>
             <div class="w-full px-4" v-if="marketListData.length !== 0">
@@ -72,7 +72,7 @@
                         :card_type="item.infor.card_type" :amount="Math.ceil(Number(item.amount * ($store.state.WGTPoint +
                             0.03)).toFixed(4))" />
                 </div>
-            </div> -->
+            </div>
 
         </div>
     </div>

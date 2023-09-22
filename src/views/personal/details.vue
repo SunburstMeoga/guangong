@@ -891,8 +891,8 @@ export default {
         },
         //点击挂单按钮,弹起挂单弹窗
         async handlePendingOrder() {
-            showToast('该功能暂未开放')
-            return
+            // showToast('该功能暂未开放')
+            // return
             this.showPendingOrder = true
         },
         //erc20合约授权操作

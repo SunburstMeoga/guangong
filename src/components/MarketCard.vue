@@ -11,10 +11,11 @@
             <div class="text-tips-word text-xs">持有者</div>
             <div class="text-card-content text-sm mb-4"> {{ owner }} </div>
             <div class="text-tips-word text-xs">當前價格</div>
-            <div class="text-card-content text-xl font-semibold"> {{ card_type == 'fortune_card' ? Number(amount) * 20 :
-                amount }} {{ card_type == 'nft_role' ? 'U'
-        :
-        (card_type == 'fortune_card' ? 'WGA' : 'WGT') }}</div>
+            <div class="text-card-content text-xl font-semibold flex"> {{ Math.ceil(Number(amount *
+                ($store.state.WGTPoint *
+                    1.03)).toFixed(4)) + 'WGT' }} · {{ Number(amount) + 'U' }}</div>
+            <!-- <div class="text-card-content text-sm font-semibold"> </div> -->
+
             <!-- <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center">
                     <div class="w-6 h-6 rounded-full overflow-hidden mr-1.5">
