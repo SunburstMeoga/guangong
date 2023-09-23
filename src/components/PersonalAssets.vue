@@ -286,9 +286,9 @@ export default {
             this.wgaBalance = WEB3.utils.fromWei(wga, 'ether')
             let WGTPoint = await this.getWGTFromUSDT(100)
             WGTPoint = Number(WGTPoint) / 100
-            let totalAssets = Number(this.wgtBalance) * WGTPoint + (Number(this.wgaBalance) / 20)
+            let totalAssets = Number(this.wgtBalance) / WGTPoint + (Number(this.wgaBalance) / 20)
             this.totalAssets = totalAssets
-            console.log('wgtBalance', wgt, this.wgtBalance * WGTPoint, wga, Number(this.wgaBalance) / 20)
+            console.log('wgtBalance', wgt, this.wgtBalance / WGTPoint, wga, Number(this.wgaBalance) / 20)
             console.log('WGTPoint', WGTPoint)
 
         },
