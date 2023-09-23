@@ -238,7 +238,7 @@ export default {
             console.log('是否授权', gameApproveFromNFT)
             console.log('是否有上级地址', havePreAddr)
             const WEB3 = new Web3(window.ethereum);
-            const earning = WEB3.utils.toWei(this.poolInfor.b, 'ether')
+            const earning = BigInt(WEB3.utils.toWei(this.poolInfor.b, 'ether'))
             console.log(earning)
             // return
             gameContractApi.receivePoolEarnings(earning)

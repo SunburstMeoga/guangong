@@ -100,7 +100,9 @@ if (window.ethereum) {
     },
     //用户领取奖金池收益
     receivePoolEarnings: async function (receiveAmount) {
+      console.log("receiveAmount", receiveAmount);
       const tx = await GAMETRADE.income3(receiveAmount);
+
       const result = await tx.wait();
       return result;
     },

@@ -188,7 +188,7 @@ export default {
           }
 
           this.$store.commit('updateUserInfor', obj)
-          // console.log(this.$store.state.userInfor)
+          console.log(this.$store.state.userInfor)
         })
         .catch(err => {
           console.log('err', err)
