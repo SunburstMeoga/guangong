@@ -69,8 +69,7 @@
             <div class="w-full px-4" v-if="marketListData.length !== 0">
                 <div class="mb-4" v-for="(item, index) in marketListData" :key="index" @click="toMarketDetails(item)">
                     <market-card :imageUrl="item.infor.imageUrl" :name="item.infor.name" :owner="item.owner"
-                        :card_type="item.infor.card_type" :amount="Math.ceil(Number(item.amount * ($store.state.WGTPoint +
-                            0.03)).toFixed(4))" />
+                        :card_type="item.infor.card_type" :amount="item.amount" />
                 </div>
             </div>
 

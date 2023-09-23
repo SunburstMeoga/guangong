@@ -30,7 +30,7 @@
             <div class="flex justify-start items-center font-bold">
                 <span>总收益：</span>
                 <!-- <span class="font-bold text-theme-primary">{{  earningsInfo.usdt + earningsInfo.selfUsdt }} WGT </span> -->
-                <span class="text-theme-primary"> {{ $store.state.userInfor.income_sum }} WGT
+                <span class="text-theme-primary"> {{ $store.state.userInfor.income_sum }} U
                 </span>
             </div>
         </div>
@@ -286,9 +286,9 @@ export default {
             this.wgaBalance = WEB3.utils.fromWei(wga, 'ether')
             let WGTPoint = await this.getWGTFromUSDT(100)
             WGTPoint = Number(WGTPoint) / 100
-            let totalAssets = Number(this.wgtBalance) / WGTPoint + (Number(this.wgaBalance) / 20)
+            let totalAssets = Number(this.wgtBalance) * WGTPoint + (Number(this.wgaBalance) / 20)
             this.totalAssets = totalAssets
-            console.log('wgtBalance', wgt, this.wgtBalance / WGTPoint, wga, Number(this.wgaBalance) / 20)
+            console.log('wgtBalance', wgt, this.wgtBalance * WGTPoint, wga, Number(this.wgaBalance) / 20)
             console.log('WGTPoint', WGTPoint)
 
         },

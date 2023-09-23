@@ -833,7 +833,10 @@ export default {
             console.log(this.nftInfor)
             //购买二手nft
             if (this.goodType == 'market') {
+                const WEB3 = new Web3(window.ethereum);
+                console.log('购买二手nft')
                 let marketNftPrice = Math.ceil(Number((this.nftAmount) * (this.$store.state.WGTPoint * 1.03)).toFixed(4))
+                marketNftPrice = WEB3.utils.toWei(marketNftPrice, 'ether')
                 if (this.$store.state.wgtBalance < marketNftPrice) {
                     showToast('WGT余额不足')
                     this.$loading.hide()
@@ -842,7 +845,8 @@ export default {
 
                 let allowanceState = await this.checkWGTAllowanceState(window.ethereum.selectedAddress, this.goodType == 'good' ? config.game_addr : config.market_addr)
                 console.log('allowanceState', allowanceState)
-                const WEB3 = new Web3(window.ethereum);
+
+                console.log(WEB3.utils.fromWei(this.$store.state.wgtBalance, 'ether'), marketNftPrice, this.$store.state.wgtBalance < marketNftPrice)
                 allowanceState = WEB3.utils.fromWei(allowanceState, 'ether')
                 allowanceState = Number(allowanceState)
                 console.log('allowanceState', allowanceState, allowanceState < Number(this.nftAmount))
@@ -939,6 +943,7 @@ export default {
             // return
             marketContractApi.dealNFT(this.tokenId, (Math.ceil(Number(this.nftAmount) * this.$store.state.WGTPoint)).toString())
                 .then((res) => {
+                    console.log(res)
                     this.updataMarketNFTApi()
                     this.$loading.hide()
                 })
