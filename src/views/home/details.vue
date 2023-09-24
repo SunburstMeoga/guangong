@@ -169,7 +169,8 @@
                     <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
                         @click="handlePay">
                         <span v-show="!isFetchingPoint">
-                            <span class="pr-2">购买 </span> {{ nftInfor.price }} {{ nftCurrencyWord(nftInfor.card_type) }}
+                            <span class="pr-2">购买 </span> {{ nftCurrencyPrice(nftInfor.card_type, nftInfor.price) }} {{
+                                nftCurrencyWord(nftInfor.card_type) }}
                             <span v-if="nftInfor.card_type == 'fortune_card'">或 {{ Math.ceil(Number(nftInfor.price *
                                 ($store.state.WGTPoint * 1.03
                                 )).toFixed(4)) }} WGT</span>
