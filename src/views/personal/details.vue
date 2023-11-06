@@ -33,7 +33,7 @@
                                 == 'nft_role' || nftInfor.card_type
                                 == 'synthesis_props') ?
                                 'U' :
-                                (nftInfor.card_type == 'fortune_card' ? 'WGA' : '') }}
+                                (nftInfor.card_type == 'fortune_card' ? 'WGT-A' : '') }}
                         </div>
                     </div>
                     <div class="w-11/12 flex justify-between items-center border-module" v-if="assetState === 'assets'">

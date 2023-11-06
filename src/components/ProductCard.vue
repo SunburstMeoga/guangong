@@ -34,7 +34,7 @@
                                 Number(price) * 20 : price }} {{ (card_type
         == 'nft_role' || card_type
         == 'synthesis_props') ? 'U' :
-        (card_type == 'fortune_card' ? 'WGA' : 'WGT') }}</div>
+        (card_type == 'fortune_card' ? 'WGT-A' : 'WGT') }}</div>
                         </div>
                     </div>
                 </div>

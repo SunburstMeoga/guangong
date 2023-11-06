@@ -294,7 +294,7 @@ export default {
             if (type == 'nft_role' || type == 'synthesis_props') {
                 return 'U'
             } else if (type == 'fortune_card') {
-                return 'WGA'
+                return 'WGT-A'
             } else {
                 return 'WGT'
             }
@@ -735,10 +735,10 @@ export default {
             } else if (wgtIsInsufficientBalance && wgaIsInsufficientBalance) {
                 this.currentPayWay = null
                 this.$loading.hide()
-                showToast('购买NFT所需的WGT或WGA不足')
+                showToast('购买NFT所需的WGT或WGT-A不足')
                 return
             }
-            this.payWayList[0] = { name: 'WGT支付', amount: this.getFilterAmount(wgtBalance), isWgt: true, isInsufficientBalance: wgtIsInsufficientBalance }
+            this.payWayList[0] = { name: 'WGT-A支付', amount: this.getFilterAmount(wgtBalance), isWgt: true, isInsufficientBalance: wgtIsInsufficientBalance }
             this.payWayList[1] = { name: 'WGA支付', amount: this.getFilterAmount(wgaBalance), isWgt: false, isInsufficientBalance: wgaIsInsufficientBalance }
             this.$loading.hide()
             this.showPayWay = true

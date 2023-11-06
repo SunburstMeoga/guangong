@@ -3,7 +3,7 @@
         <div class="py-8">
             <div class="w-11/12 ml-auto mr-auto relative flex justify-center items-center text-card-content mb-4">
                 <div class="icon iconfont icon-left absolute left-1" style="font-size: 24px;" @click="cancelPay()"></div>
-                <div class="">WGA兑换WGT</div>
+                <div class="">WGT-A兑换WGT</div>
             </div>
         </div>
         <div class="text-white">
@@ -14,7 +14,7 @@
                 <div class="leading-6 font-helvetica-neue-bold text-base py-6">兑换</div>
 
                 <div class="w-11/12 text-sm mb-1">
-                    WGA余额
+                    WGT-A余额
                 </div>
                 <div
                     class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">

@@ -18,21 +18,19 @@ const config = {
   map_abi: map_abi,
   popularized_abi: popularized_abi,
   help_abi: help_abi,
-  usdt_addr: "0xA24F46528936011E853213A22e761Eb5FF1De4f5",
-  wgt_addr: "0xbD35645dB55388a34059a2dB30aCd63D1550a79a",
-  wga_addr: "0xe66004588f33a562268B5977BF2a5316d442a5D5",
-  popularized_addr: "0x1eB0FDf166F63135e26CC6F917Bf90c4cF7BBf91",
-  nft_addr: "0x512631Fc2c8a3038795451d7B23c5E705782eE8a",
-
-  map_addr: "0xa3A55EeF5B339F3a36830b56955A6f50E89dE22B",
-  market_addr: "0x03812bCe4935Bd6e2B6fb6BD8647921B2f73aD9d",
-
-  game_addr: "0xa891f52e8e43B7Ca1EA2e505acD05312fDa0CA4C",
-  help_addr: "0xF018B4690E5627EC8230B575a4c59935437Bef81",
+  usdt_addr: "0xAd6902607fb95559efb8F1349e265254d53e525D",
+  wgt_addr: "0x365CB7Fea69efb321d1aCF6f03D3F10dAD71395A",
+  wga_addr: "0x6DAE86606ef4Fa20eC317261bf8c7A2252840595",
+  popularized_addr: "0x3C1014b8C5710780341111bfA0b5691B2daf38D1",
+  nft_addr: "0xC89e619Bf93262446B507aa4aAC8981bC8B70Cc1",
+  map_addr: "0xa2aa267EDeF688326193953a8c7aF6e747173421",
+  market_addr: "0xA76905eaCaf8eD4981bB64A20b512298b910453F",
+  game_addr: "0xfBD05538374fdE3520376297c4000125B87Bd558",
+  help_addr: "0xd4B0D23be6CBC2A6E8De6421Cf1A7c321A6E2fda",
 
   // A 0x52974912707C5cBB1C2d25C66307942901c1d2A3
   // B 0x40972d311BC09e2b57A47E81D854CF4905A57e24
-  api: "https://api.wgtone.live/",
+  api: "https://app.dexduel.com/api/",
   imageBaseURL: "https://app.wgtone.live/api/",
   // chainId: "0xb63f",
   // 1 设置NFTbaseURL

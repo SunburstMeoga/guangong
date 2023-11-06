@@ -15,7 +15,7 @@
         == 'nft_role' || card_type
         == 'synthesis_props') ? 'U'
         :
-        (card_type == 'fortune_card' ? 'WGA' : 'WGT') }}</div>
+        (card_type == 'fortune_card' ? 'WGT-A' : 'WGT') }}</div>
             <!-- <div class="flex justify-between items-center">
                 <div class="flex justify-start items-center">
                     <div class="w-6 h-6 rounded-full overflow-hidden mr-1.5">

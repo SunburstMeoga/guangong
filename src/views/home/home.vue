@@ -103,6 +103,7 @@ export default {
         nfts_list.map(item => {
             this.productList.push(item)
         })
+        // this.showSkeleton = false
         this.getMarketList()
     },
     methods: {
@@ -131,19 +132,7 @@ export default {
                         })
                     })
                     this.marketListData = newArr
-                    // this.marketListData.map(item => {
-                    //     gameContractApi.WGTFromUSDT(item.amount)
-                    //         .then(res => {
-                    //             if (item.infor.card_type == 'tactics_props' || item.infor.card_type == 'expedition_order') {
-                    //                 console.log(`${item.infor.name}的U：${item.amount}, 的WGT：${res}  `)
-                    //                 item.amount = res
-                    //             }
 
-                    //         })
-                    //         .catch(err => {
-                    //             item.amount = '-'
-                    //         })
-                    // })
                     console.log('marketListData', this.marketListData)
                     this.showSkeleton = false
                 })

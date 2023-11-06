@@ -27,7 +27,12 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "index",
+				"name": "index1",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "index2",
 				"type": "uint256"
 			}
 		],
@@ -85,25 +90,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "wga",
-				"type": "uint256"
-			}
-		],
-		"name": "Wga2Wgt",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "game_addr",
 		"outputs": [
@@ -114,44 +100,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "usdt",
-				"type": "uint256"
-			}
-		],
-		"name": "getWGA",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "usdt",
-				"type": "uint256"
-			}
-		],
-		"name": "getWGT",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "pure",
 		"type": "function"
 	},
 	{
