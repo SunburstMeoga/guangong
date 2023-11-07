@@ -15,6 +15,21 @@ if (window.ethereum) {
   );
 
   gameContractApi = {
+    //查询当前收益领取方式 wgt或者wgt-a
+    incomeMethod: async function () {
+      const result = await GAME.is_A_wga();
+      return result;
+    },
+    //获取商品价格usdt所需的wgt
+    WGTFromUSDT: async function (usdt) {
+      const result = await GAME.getWGT(usdt);
+      return result;
+    },
+    //获取商品价格usdt所需的wga
+    WGAFromUSDT: async function (usdt) {
+      const result = await GAME.getWGA(usdt);
+      return result;
+    },
     //获取商品价格usdt所需的wgt
     WGTFromUSDT: async function (usdt) {
       const result = await GAME.getWGT(usdt);
@@ -107,8 +122,9 @@ if (window.ethereum) {
       return result;
     },
     //用户领取财神卡收益
-    wealthEarnings: async function (cardIndex) {
-      const tx = await GAMETRADE.income2(cardIndex);
+    wealthEarnings: async function (walletAddress, cardIndex, isWga) {
+      console.log(walletAddress, cardIndex, isWga);
+      const tx = await GAMETRADE.income2(walletAddress, cardIndex, isWga);
       const result = await tx.wait();
       return result;
     },

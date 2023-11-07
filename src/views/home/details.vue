@@ -240,7 +240,6 @@ import wgaContractApi from '@/request/ether_request/wga'
 import marketContractApi from '@/request/ether_request/market'
 import { nftDetails, buyMarketNFTApi } from '@/request/api_request'
 import { filterAmount } from '@/utils/filterValue';
-import helpContractApi from '@/request/ether_request/help'
 import usdtContractApi from '@/request/ether_request/usdt'
 import Web3 from "web3";
 
@@ -340,7 +339,7 @@ export default {
         async wgaIsInsufficientBalance(usdt) {
             // console.log(gameContractApi)
             const WEB3 = new Web3(window.ethereum);
-            let result = await helpContractApi.WGAFromUSDT(usdt)
+            let result = await gameContractApi.WGAFromUSDT(usdt)
             result = Number(WEB3.utils.toWei(result, 'ether'))
             console.log(this.$store.state.wgtBalance, result)
 
@@ -362,6 +361,7 @@ export default {
         //购买财神卡
         userBuyFortuneCard() {
             console.log(this.canBuyWealthCard())
+            console.log(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
             if (!this.canBuyWealthCard()) {
                 showToast(`当前等级不可购买${this.nftInfor.name}`)
                 this.$loading.hide()
@@ -553,14 +553,11 @@ export default {
 
         },
 
-
         //是否已经有2张的财神卡
         async hasTwoWealthCard() {
             let timeStamp = Date.now() / 1000
             let result = await gameContractApi.userInfo(window.ethereum.selectedAddress)
-            // result.deposits.length.map(item => {
-
-            // })
+            console.log('财神卡数量', result)
             let within24Hours = result.deposits.filter(item => { //购买时间距离现在在24h内的财神卡
                 return timeStamp - item.utc < 60 * 60 * 24
             })
@@ -738,8 +735,8 @@ export default {
                 showToast('购买NFT所需的WGT或WGT-A不足')
                 return
             }
-            this.payWayList[0] = { name: 'WGT-A支付', amount: this.getFilterAmount(wgtBalance), isWgt: true, isInsufficientBalance: wgtIsInsufficientBalance }
-            this.payWayList[1] = { name: 'WGA支付', amount: this.getFilterAmount(wgaBalance), isWgt: false, isInsufficientBalance: wgaIsInsufficientBalance }
+            this.payWayList[0] = { name: 'WGT支付', amount: this.getFilterAmount(wgtBalance), isWgt: 0, isInsufficientBalance: wgtIsInsufficientBalance }
+            this.payWayList[1] = { name: 'WGT-A支付', amount: this.getFilterAmount(wgaBalance), isWgt: 1, isInsufficientBalance: wgaIsInsufficientBalance }
             this.$loading.hide()
             this.showPayWay = true
         },

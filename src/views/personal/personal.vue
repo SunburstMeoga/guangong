@@ -76,7 +76,7 @@
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                     <wealth-card @receiveProceeds="handleReceiveWealthProceeds(_index)" type="pending"
                                         :time="filterTime(_item.time)" :imageUrl="_item.infor.imageUrl"
-                                        :name="_item.infor.name" />
+                                        :incomeMethod="isWGAIncome ? '领取WGT-A收益' : '领取收益'" :name="_item.infor.name" />
                                 </div>
                             </div>
                         </div>
@@ -102,6 +102,28 @@
                     <div class="w-7/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
                         @click="confirmCampaign">
                         确认使用并出征
+                    </div>
+                </div>
+            </div>
+        </van-popup>
+        <van-popup v-model:show="showIncomeMethod" position="bottom">
+            <div class="text-card-content bg-cover-content flex w-full pb-6 flex-col justify-start items-center">
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择收益领取方式</div>
+                <div @click="clickIncomeMethod(item, index)" v-for="(item, index) in incomeMethods" :key="index"
+                    class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-between items-center py-3.5 px-2 text-essentials-white text-sm rounded"
+                    :class="currentIncome == index ? 'buy-button text-white' : ''">
+                    <span>{{ item.title }}</span>
+
+                </div>
+                <div class="flex w-11/12 justify-between items-center mt-6">
+
+                    <div class="w-5/12  border border-language-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="showIncomeMethod = false">
+                        取消
+                    </div>
+                    <div class="w-5/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded"
+                        @click="handleConfirmGetIncome">
+                        领取
                     </div>
                 </div>
             </div>
@@ -145,7 +167,12 @@ export default {
             showOutToken: false,
             currentOutToken: 0,
             nftInfor: {},
-            cardIndex: 0
+            cardIndex: 0,
+            isWGAIncome: false,
+            showIncomeMethod: false,
+            incomeMethods: [{ title: '领取到WGT余额', isWGA: false }, { title: '领取到WGA-T余额', isWGA: true }],
+            currentIncome: 0,
+            wealthCardIndex: null
             // assetsList: []
         }
     },
@@ -154,6 +181,7 @@ export default {
             this.getPersonNfts()
             this.getPendingOrderList()
             this.getUserInfo()
+            this.viewIncomeMethod()
         }
         // console.log('ethereum.selectedAddress', ethereum.selectedAddress)
         // console.log(this.getCammaignAttribute([false, false, true, true]))
@@ -161,6 +189,56 @@ export default {
     methods: {
         filterTime,
         filterAmount,
+        //确认领取收益 
+        async handleConfirmGetIncome() {
+            this.showIncomeMethod = false
+            let erc721ApppprovalState
+            try {
+                erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
+            } catch {
+                this.$loading.hide()
+                showToast('错误，请重试')
+                return
+            }
+            if (erc721ApppprovalState !== true) {
+                this.$loading.hide()
+                this.$confirm.show({
+                    title: "提示",
+                    content: "当前用户未进行erc721授权，请先完成授权",
+                    onConfirm: () => {
+                        this.$loading.show()
+                        this.erc721ContractApppproval(config.game_addr)
+                            .then(res => {
+                                console.log(res)
+                                this.$confirm.hide()
+                                this.$loading.hide()
+                                showToast('授权成功')
+                            })
+                            .catch(err => {
+                                this.$confirm.hide()
+                                this.$loading.hide()
+
+                                showToast('授权失败')
+                            })
+                    },
+                    onCancel: () => {
+                        this.$confirm.hide()
+                    }
+                });
+                return
+            }
+            let havePreAddr = await this.isBeenPromoted(window.ethereum.selectedAddress)
+            if (!havePreAddr) {
+                this.$loading.hide()
+                showToast('当前地址无上级地址，不可领取')
+                return
+            }
+            this.userReceiveWealth(window.ethereum.selectedAddress, this.wealthCardIndex, this.incomeMethods[this.currentIncome].isWGA)
+        },
+        //选择收益方式
+        clickIncomeMethod(item, index) {
+            this.currentIncome = index
+        },
         //点击出征令选项
         clickOutToken(index) {
             this.currentOutToken = index
@@ -310,9 +388,9 @@ export default {
                 })
         },
         //用户领取财神卡收益
-        userReceiveWealth(index) {
-            console.log(index)
-            gameContractApi.wealthEarnings(index)
+        userReceiveWealth(walletAddress, index, isWGA) {
+            console.log(walletAddress, index, isWGA)
+            gameContractApi.wealthEarnings(walletAddress, index, isWGA)
                 .then(res => {
                     console.log(res)
                     showToast('领取成功')
@@ -373,24 +451,28 @@ export default {
             }
             this.userReceiveCampaign(item, index)
         },
+        //查询收益方式
+        viewIncomeMethod() {
+            gameContractApi.incomeMethod()
+                .then(res => {
+                    this.isWGAIncome = res
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
+
         //点击领取财神卡收益
         async handleReceiveWealthProceeds(index) {
-            console.log(index)
+            this.wealthCardIndex = index
+            if (!this.showIncomeMethod) {
+                if (!this.isWGAIncome) {
+                    this.showIncomeMethod = true
+                    return
+                }
+            }
             this.$loading.show()
-            let wealthAmount;
-            // try {
-            //     wealthAmount = await this.getCampaignReceiveAmount(index)
-            // } catch (e) {
-            //     this.$loading.hide()
-            //     showToast('请重试', e)
-            //     console.log(e)
-            //     return
-            // }
-            // if (wealthAmount == 0) {
-            //     showToast('当前NFT可领取金额为0')
-            //     this.$loading.hide()
-            //     return
-            // }
+
             let erc721ApppprovalState
             try {
                 erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
@@ -432,7 +514,7 @@ export default {
                 showToast('当前地址无上级地址，不可领取')
                 return
             }
-            this.userReceiveWealth(index)
+            this.userReceiveWealth(window.ethereum.selectedAddress, this.wealthCardIndex, this.incomeMethods[this.currentIncome].isWGA)
         },
         async isBeenPromoted(walletAddress) {
             let result = await popularContractApi.relationshipAddress(walletAddress)
@@ -621,5 +703,9 @@ img {
 
 .van-tabs__wrap {
     height: 80px;
+}
+
+.buy-button {
+    background: linear-gradient(90deg, rgba(250, 52, 168, 1) 9%, rgba(255, 150, 62, 1) 100%);
 }
 </style>

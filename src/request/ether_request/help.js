@@ -16,6 +16,7 @@ if (window.ethereum) {
     },
     //总奖金池收益信息
     poolEarningsInfor: async function poolEarningsInfor(address) {
+      console.log(address);
       const result = await HELP.GetIncome3(address);
       return result;
     },
