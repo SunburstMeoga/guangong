@@ -38,7 +38,7 @@ export default {
             let WGTPoint = Number(res) / 100
             this.$store.commit('updataWGTPoint', WGTPoint)
             // console.log(this.$store.state)
-            console.log('updataWGTPoint', this.$store.state.WGTPoint)
+            // console.log('updataWGTPoint', this.$store.state.WGTPoint)
           })
           .catch(err => {
             // showToast('获取价格失败')
@@ -90,19 +90,19 @@ export default {
     //获取用户星级
     async getUserStar(walletAddress) {
       const result = await gameContractApi.userStar(walletAddress)
-      // console.log('星级', result)
+      console.log('星级', result)
       this.$store.commit('getUserStarLevle', this.getStarWord(result))
     },
     //获取wgt余额
     async getWgtBalance() {
       const wgt = await wgtContractApi.wgtAssets(window.ethereum.selectedAddress)
       this.$store.commit('updatWgtBalance', wgt)
-      // console.log(this.$store.state)
+      console.log('wgt', wgt)
     },
     async getWgaBalance() {
       const wga = await wgaContractApi.wgaAssets(window.ethereum.selectedAddress)
       this.$store.commit('updatWgaBalance', wga)
-      console.log(this.$store.state)
+      console.log('wga', wga)
     },
     //账户状态发生变化
     async accountHasChanged() {

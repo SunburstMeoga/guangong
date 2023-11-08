@@ -78,8 +78,7 @@
                         WGT</span>
                     <span class="text-xs font-bold text-theme-primary"> ≈ {{ Number(poolInfor.b).toFixed(4) }} U</span>
 
-                    <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded"
-                        @click="userReceivePoolEarnings">领取收益</span>
+                    <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded" @click="handlePoolEarnings">领取收益</span>
                 </div>
             </div>
         </div>
@@ -105,6 +104,29 @@
                 </div>
             </div>
         </div>
+        <van-popup v-model:show="showIncomeMethod" position="bottom">
+            <div class="text-card-content bg-cover-content flex w-full pb-6 flex-col justify-start items-center">
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择{{ cardType == 0 ? '出征卡' : '财神卡' }}收益领取方式
+                </div>
+                <div @click="clickIncomeMethod(item, index)" v-for="(item, index) in incomeMethods" :key="index"
+                    class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-between items-center py-3.5 px-2 text-essentials-white text-sm rounded"
+                    :class="currentIncome == index ? 'buy-button text-white' : ''">
+                    <span>{{ item.title }}</span>
+
+                </div>
+                <div class="flex w-11/12 justify-between items-center mt-6">
+
+                    <div class="w-5/12  border border-language-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="showIncomeMethod = false">
+                        取消
+                    </div>
+                    <div class="w-5/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded"
+                        @click="handleConfirmGetIncome">
+                        领取
+                    </div>
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 
@@ -135,7 +157,10 @@ export default {
             poolInfor: {},
             wgtBalance: '0',
             wgaBalance: '0',
-            timer: null
+            timer: null,
+            showIncomeMethod: false,
+            incomeMethods: [{ title: '领取到WGT余额', isWGA: false }, { title: '领取到WGA-T余额', isWGA: true }],
+            currentIncome: 0,
         }
     },
     mounted() {
@@ -187,6 +212,32 @@ export default {
             return havePreAddr
 
         },
+        //选择收益方式
+        clickIncomeMethod(item, index) {
+            this.currentIncome = index
+        },
+        //查询收益方式
+        async viewIncomeMethod() {
+            let result = await gameContractApi.incomeMethod()
+            return result
+            // .then(res => {
+            //     this.isWGAIncome = res
+            // })
+            // .catch(err => {
+            //     console.log('err', err)
+            // })
+        },
+        async handlePoolEarnings() {
+            this.$loading.show()
+            let isReceiveWGA = await this.viewIncomeMethod()
+            this.$loading.hide()
+            if (isReceiveWGA) {
+                this.userReceivePoolEarnings()
+            } else {
+                this.showIncomeMethod = true
+                this.$loading.hide()
+            }
+        },
         //领取总奖池收益
         async userReceivePoolEarnings() {
             if (!window.ethereum.selectedAddress) {
@@ -237,11 +288,11 @@ export default {
             }
             console.log('是否授权', gameApproveFromNFT)
             console.log('是否有上级地址', havePreAddr)
-            const WEB3 = new Web3(window.ethereum);
-            const earning = BigInt(WEB3.utils.toWei(this.poolInfor.b, 'ether'))
-            console.log(earning)
+            // const WEB3 = new Web3(window.ethereum);
+            // const earning = BigInt(WEB3.utils.toWei(this.poolInfor.b, 'ether'))
+            // console.log(earning)
             // return
-            gameContractApi.receivePoolEarnings(earning)
+            gameContractApi.receivePoolEarnings(window.ethereum.selectedAddress)
                 .then(res => {
                     showToast('领取成功')
                     this.this.getPoolInfor()

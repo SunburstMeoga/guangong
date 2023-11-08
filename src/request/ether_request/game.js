@@ -114,9 +114,9 @@ if (window.ethereum) {
       return result;
     },
     //用户领取奖金池收益
-    receivePoolEarnings: async function (receiveAmount) {
-      console.log("receiveAmount", receiveAmount);
-      const tx = await GAMETRADE.income3(receiveAmount);
+    receivePoolEarnings: async function (walletAddress) {
+      console.log("walletAddress", walletAddress);
+      const tx = await GAMETRADE.income3(walletAddress);
 
       const result = await tx.wait();
       return result;
@@ -129,14 +129,42 @@ if (window.ethereum) {
       return result;
     },
     //用户领取出征卡收益
-    campaignEarnings: async function (cardIndex) {
-      const tx = await GAMETRADE.income1(cardIndex);
+    campaignEarnings: async function (
+      walletAddress,
+      cardIndex,
+      cardJsIndex,
+      isWga
+    ) {
+      const tx = await GAMETRADE.income1(
+        walletAddress,
+        cardIndex,
+        cardJsIndex,
+        isWga
+      );
       const result = await tx.wait();
       return result;
     },
     //用户购买财神卡
     buyFortuneCard: async function (nftType, isWgt) {
       const tx = await GAMETRADE.buy2(nftType, isWgt);
+      const result = await tx.wait();
+      console.log(result);
+      return result;
+    },
+    //旧版本wgt更换新wga
+    wgt2wga: async function (exchangeAmount) {
+      const tx = await GAMETRADE.wgt2wga(ethers.parseEther(exchangeAmount));
+      const result = await tx.wait();
+      console.log(result);
+      return result;
+
+      // console.log(ethers.parseEther(exchangeAmount));
+      // const result = await GAME.wgt2wga(ethers.parseEther(exchangeAmount));
+      // return result;
+    },
+    // 旧版本wga更换新wga
+    wga2wga: async function (exchangeAmount) {
+      const tx = await GAMETRADE.wga2wga(ethers.parseEther(exchangeAmount));
       const result = await tx.wait();
       console.log(result);
       return result;

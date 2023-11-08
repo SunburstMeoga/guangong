@@ -255,42 +255,53 @@ export default {
                 showFailToast('上级地址错误')
                 return
             }
-            const msgParams = {
-                domain: {
-                    chainId: config.chainId,
-                    name: 'GWT NFT Game',
-                    verifyingContract: config.popularized_addr,
-                    version: '1'
-                },
-                message: { addr_p: this.p_address, addr_c: ethereum.selectedAddress, index: 0 },
-                primaryType: 'popularize',
-                types: {
-                    EIP712Domain: [
-                        { name: 'name', type: 'string' },
-                        { name: 'version', type: 'string' },
-                        { name: 'chainId', type: 'uint256' },
-                        { name: 'verifyingContract', type: 'address' },
-                    ],
-                    popularize: [
-                        { name: 'addr_p', type: 'address' },
-                        { name: 'addr_c', type: 'address' },
-                        { name: 'index', type: 'uint256' },
-                    ],
-                },
-            }
+            popularContractApi.addressSign(this.p_address)
+                .then(res => {
+                    console.log(res)
+                    this.$loading.hide()
+                    showSuccessToast('签名成功')
+                })
+                .catch(err => {
+                    this.$loading.hide()
+                    console.log(err)
 
-            const sign_data = await ethereum.request({
-                method: 'eth_signTypedData_v4',
-                params: [ethereum.selectedAddress, JSON.stringify(msgParams)],
-            })
-            const obj = {
-                p_addr: this.p_address,
-                sign: sign_data
-            }
-            const ret = await axios.post(`${config.api}friends/${ethereum.selectedAddress}`, obj)
-            console.log(ret.data)
-            this.$loading.hide()
-            showSuccessToast('签名成功')
+                    showFailToast('签名失败')
+                })
+            // const msgParams = {
+            //     domain: {
+            //         chainId: config.chainId,
+            //         name: 'WGT NFT Game',
+            //         verifyingContract: config.popularized_addr,
+            //         version: '1'
+            //     },
+            //     message: { addr_p: this.p_address, addr_c: ethereum.selectedAddress, index: 0 },
+            //     primaryType: 'popularize',
+            //     types: {
+            //         EIP712Domain: [
+            //             { name: 'name', type: 'string' },
+            //             { name: 'version', type: 'string' },
+            //             { name: 'chainId', type: 'uint256' },
+            //             { name: 'verifyingContract', type: 'address' },
+            //         ],
+            //         popularize: [
+            //             { name: 'addr_p', type: 'address' },
+            //             { name: 'addr_c', type: 'address' },
+            //             { name: 'index', type: 'uint256' },
+            //         ],
+            //     },
+            // }
+
+            // const sign_data = await ethereum.request({
+            //     method: 'eth_signTypedData_v4',
+            //     params: [ethereum.selectedAddress, JSON.stringify(msgParams)],
+            // })
+            // const obj = {
+            //     p_addr: this.p_address,
+            //     sign: sign_data
+            // }
+            // const ret = await axios.post(`${config.api}friends/${ethereum.selectedAddress}`, obj)
+            // console.log(ret.data)
+
         },
         cancelPay() {
             if (this.$route.query.p) {

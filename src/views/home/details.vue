@@ -341,7 +341,7 @@ export default {
             const WEB3 = new Web3(window.ethereum);
             let result = await gameContractApi.WGAFromUSDT(usdt)
             result = Number(WEB3.utils.toWei(result, 'ether'))
-            console.log(this.$store.state.wgtBalance, result)
+            console.log(this.$store.state.wgaBalance, result)
 
             return this.$store.state.wgaBalance < result
         },

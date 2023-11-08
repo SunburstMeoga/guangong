@@ -108,7 +108,8 @@
         </van-popup>
         <van-popup v-model:show="showIncomeMethod" position="bottom">
             <div class="text-card-content bg-cover-content flex w-full pb-6 flex-col justify-start items-center">
-                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择收益领取方式</div>
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择{{ cardType == 0 ? '出征卡' : '财神卡' }}收益领取方式
+                </div>
                 <div @click="clickIncomeMethod(item, index)" v-for="(item, index) in incomeMethods" :key="index"
                     class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-between items-center py-3.5 px-2 text-essentials-white text-sm rounded"
                     :class="currentIncome == index ? 'buy-button text-white' : ''">
@@ -171,8 +172,10 @@ export default {
             isWGAIncome: false,
             showIncomeMethod: false,
             incomeMethods: [{ title: '领取到WGT余额', isWGA: false }, { title: '领取到WGA-T余额', isWGA: true }],
-            currentIncome: 0,
-            wealthCardIndex: null
+            currentIncome: 1,
+            incomeCardIndex: null,
+            incomeCardType: null, //当前领取收益的卡片类型，0出征卡，1财神卡
+            cardJsIndex: null,
             // assetsList: []
         }
     },
@@ -233,7 +236,14 @@ export default {
                 showToast('当前地址无上级地址，不可领取')
                 return
             }
-            this.userReceiveWealth(window.ethereum.selectedAddress, this.wealthCardIndex, this.incomeMethods[this.currentIncome].isWGA)
+            if (this.incomeCardType == 0) {
+                this.userReceiveWealth(window.ethereum.selectedAddress, this.incomeCardIndex, this.incomeMethods[this.currentIncome].isWGA)
+            } else if (this.incomeCardType == 1) {
+                this.userReceiveCampaign(window.ethereum.selectedAddress, this.incomeCardIndex, this.cardJsIndex, this.incomeMethods[this.currentIncome].isWGA)
+            } else {
+                this.$loading.hide()
+                showToast('领取失败，请重试')
+            }
         },
         //选择收益方式
         clickIncomeMethod(item, index) {
@@ -367,14 +377,14 @@ export default {
             }
         },
         //用户领取出征卡收益
-        userReceiveCampaign(item, index) {
+        userReceiveCampaign(walletAddress, index, cardJsIndex, isWGA) {
             if (item.income) {
                 showToast('本次出征收益已领取，不可重复领取')
                 this.$loading.hide()
                 return
             }
             console.log(index)
-            gameContractApi.campaignEarnings(index)
+            gameContractApi.campaignEarnings(walletAddress, index, cardJsIndex, isWGA)
                 .then(res => {
                     console.log(res)
                     showToast('领取成功')
@@ -406,6 +416,15 @@ export default {
         },
         //点击领取出征卡收益
         async handleReceiveCampaignProceeds(item, index) {
+            this.incomeCardType = 0
+            this.cardJsIndex = item.cardJsIndex
+            this.incomeCardIndex = index
+            if (!this.showIncomeMethod) {
+                if (!this.isWGAIncome) {
+                    this.showIncomeMethod = true
+                    return
+                }
+            }
             this.$loading.show()
             let erc721ApppprovalState
             try {
@@ -449,7 +468,7 @@ export default {
                 showToast('当前地址无上级地址，不可领取')
                 return
             }
-            this.userReceiveCampaign(item, index)
+            this.userReceiveCampaign(window.ethereum.selectedAddress, this.incomeCardIndex, this.cardJsIndex, this.incomeMethods[this.currentIncome].isWGA)
         },
         //查询收益方式
         viewIncomeMethod() {
@@ -464,7 +483,8 @@ export default {
 
         //点击领取财神卡收益
         async handleReceiveWealthProceeds(index) {
-            this.wealthCardIndex = index
+            this.incomeCardType = 1
+            this.incomeCardIndex = index
             if (!this.showIncomeMethod) {
                 if (!this.isWGAIncome) {
                     this.showIncomeMethod = true
@@ -514,7 +534,7 @@ export default {
                 showToast('当前地址无上级地址，不可领取')
                 return
             }
-            this.userReceiveWealth(window.ethereum.selectedAddress, this.wealthCardIndex, this.incomeMethods[this.currentIncome].isWGA)
+            this.userReceiveWealth(window.ethereum.selectedAddress, this.incomeCardIndex, this.incomeMethods[this.currentIncome].isWGA)
         },
         async isBeenPromoted(walletAddress) {
             let result = await popularContractApi.relationshipAddress(walletAddress)
@@ -575,6 +595,7 @@ export default {
                         obj.count = item.count
                         obj.income = item.income
                         obj.outbound_tokens_id = item.outbound_tokens_id
+                        obj.cardJsIndex = item.cardJsIndex
                         typeListCampaign.push(obj)
                     })
                     let newArrCampaign = typeListCampaign.filter((v) => nfts_list.some((val) => val.id == v.typeID))
