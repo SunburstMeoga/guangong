@@ -339,6 +339,9 @@ export default {
             WGTPoint = Number(WGTPoint) / 100
             let totalAssets = Number(this.wgtBalance) / WGTPoint + (Number(this.wgaBalance) / 20)
             this.totalAssets = totalAssets
+            this.wgtBalance = Number(this.wgtBalance).toFixed(4)
+            this.wgaBalance = Number(this.wgaBalance).toFixed(4)
+
             console.log('wgtBalance', wgt, this.wgtBalance / WGTPoint, wga, Number(this.wgaBalance) / 20)
             console.log('WGTPoint', WGTPoint)
 

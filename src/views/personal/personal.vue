@@ -75,8 +75,8 @@
                                 <div v-for="( _item, _index ) in wealthList" :key="index"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                     <wealth-card @receiveProceeds="handleReceiveWealthProceeds(_index)" type="pending"
-                                        :time="filterTime(_item.time)" :imageUrl="_item.infor.imageUrl"
-                                        :incomeMethod="isWGAIncome ? '领取WGT-A收益' : '领取收益'" :name="_item.infor.name" />
+                                        :time="filterTime(_item.time)" :imageUrl="_item.infor.imageUrl" incomeMethod="领取收益"
+                                        :name="_item.infor.name" />
                                 </div>
                             </div>
                         </div>
@@ -106,11 +106,20 @@
                 </div>
             </div>
         </van-popup>
+        <!-- 收益方式弹窗 -->
         <van-popup v-model:show="showIncomeMethod" position="bottom">
             <div class="text-card-content bg-cover-content flex w-full pb-6 flex-col justify-start items-center">
                 <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择{{ cardType == 0 ? '出征卡' : '财神卡' }}收益领取方式
                 </div>
-                <div @click="clickIncomeMethod(item, index)" v-for="(item, index) in incomeMethods" :key="index"
+                <div v-show="incomeCardType == 0" @click="clickIncomeMethod(item, index)"
+                    v-for="(item, index) in campaignIncomeMethods" :key="index"
+                    class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-between items-center py-3.5 px-2 text-essentials-white text-sm rounded"
+                    :class="currentIncome == index ? 'buy-button text-white' : ''">
+                    <span>{{ item.title }}</span>
+
+                </div>
+                <div v-show="incomeCardType == 1" @click="clickIncomeMethod(item, index)"
+                    v-for="(item, index) in wealthIncomeMethods" :key="index"
                     class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-between items-center py-3.5 px-2 text-essentials-white text-sm rounded"
                     :class="currentIncome == index ? 'buy-button text-white' : ''">
                     <span>{{ item.title }}</span>
@@ -169,9 +178,11 @@ export default {
             currentOutToken: 0,
             nftInfor: {},
             cardIndex: 0,
-            isWGAIncome: false,
+            campaignIsWGAIncome: false,
+            wealthIsWGAIncome: false,
             showIncomeMethod: false,
-            incomeMethods: [{ title: '领取到WGT余额', isWGA: false }, { title: '领取到WGA-T余额', isWGA: true }],
+            campaignIncomeMethods: [{ title: '领取到WGT余额', isWGA: 0 }, { title: '领取到WGA-T余额', isWGA: 1 }],
+            wealthIncomeMethods: [{ title: '领取到WGT余额', isWGA: 0 }, { title: '领取到WGA-T余额', isWGA: 1 }],
             currentIncome: 1,
             incomeCardIndex: null,
             incomeCardType: null, //当前领取收益的卡片类型，0出征卡，1财神卡
@@ -184,7 +195,9 @@ export default {
             this.getPersonNfts()
             this.getPendingOrderList()
             this.getUserInfo()
-            this.viewIncomeMethod()
+            this.viewCampaignIncomeMethod()
+            this.viewWealthIncomeMethod()
+
         }
         // console.log('ethereum.selectedAddress', ethereum.selectedAddress)
         // console.log(this.getCammaignAttribute([false, false, true, true]))
@@ -192,9 +205,12 @@ export default {
     methods: {
         filterTime,
         filterAmount,
-        //确认领取收益 
+        //点击领取方式弹窗确认按钮
         async handleConfirmGetIncome() {
             this.showIncomeMethod = false
+            console.log(this.incomeCardType)
+            this.$loading.show()
+            // return
             let erc721ApppprovalState
             try {
                 erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
@@ -236,10 +252,11 @@ export default {
                 showToast('当前地址无上级地址，不可领取')
                 return
             }
-            if (this.incomeCardType == 0) {
-                this.userReceiveWealth(window.ethereum.selectedAddress, this.incomeCardIndex, this.incomeMethods[this.currentIncome].isWGA)
-            } else if (this.incomeCardType == 1) {
-                this.userReceiveCampaign(window.ethereum.selectedAddress, this.incomeCardIndex, this.cardJsIndex, this.incomeMethods[this.currentIncome].isWGA)
+            console.log(this.incomeCardType)
+            if (this.incomeCardType == 1) {
+                this.userReceiveWealth(window.ethereum.selectedAddress, this.incomeCardIndex, this.wealthIncomeMethods[this.currentIncome].isWGA)
+            } else if (this.incomeCardType == 0) {
+                this.userReceiveCampaign(window.ethereum.selectedAddress, this.incomeCardIndex, this.cardJsIndex, this.campaignIncomeMethods[this.currentIncome].isWGA)
             } else {
                 this.$loading.hide()
                 showToast('领取失败，请重试')
@@ -277,19 +294,26 @@ export default {
             }
             return result.data.length
         },
-        //再次出征
+        //点击再次出征按钮
         async handleCampaignAgain(item, index) {
             this.nftInfor = item.infor
             this.cardIndex = index
-            console.log(item.outbound_tokens_id)
+            let canCampaignAgain = await this.getCardInfor(window.ethereum.selectedAddress, index)
+            if (canCampaignAgain) {
+
+                showToast(`请在${this.resultFormat(canCampaignAgain)}后再次出征`)
+                return
+            }
+
+
             if (item.count >= item.infor.loss_period) {
                 showToast('当前卡已到达最大出征次数')
                 return
             }
-            if (!item.income) {
-                showToast('本次出征收益未领取')
-                return
-            }
+            // if (!item.income) {
+            //     showToast('请在xx小时后进行出征')
+            //     return
+            // }
             if (!window.ethereum.selectedAddress) {
                 showToast('请先连接钱包')
                 return
@@ -378,11 +402,12 @@ export default {
         },
         //用户领取出征卡收益
         userReceiveCampaign(walletAddress, index, cardJsIndex, isWGA) {
-            if (item.income) {
-                showToast('本次出征收益已领取，不可重复领取')
-                this.$loading.hide()
-                return
-            }
+            console.log(walletAddress, index, cardJsIndex, isWGA)
+            // if (item.income) {
+            //     showToast('本次出征收益已领取，不可重复领取')
+            //     this.$loading.hide()
+            //     return
+            // }
             console.log(index)
             gameContractApi.campaignEarnings(walletAddress, index, cardJsIndex, isWGA)
                 .then(res => {
@@ -416,125 +441,70 @@ export default {
         },
         //点击领取出征卡收益
         async handleReceiveCampaignProceeds(item, index) {
+            console.log(item)
             this.incomeCardType = 0
             this.cardJsIndex = item.cardJsIndex
             this.incomeCardIndex = index
-            if (!this.showIncomeMethod) {
-                if (!this.isWGAIncome) {
-                    this.showIncomeMethod = true
-                    return
-                }
-            }
-            this.$loading.show()
-            let erc721ApppprovalState
-            try {
-                erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
-            } catch {
-                this.$loading.hide()
-                showToast('错误，请重试')
-                return
-            }
-            if (erc721ApppprovalState !== true) {
-                this.$loading.hide()
-                this.$confirm.show({
-                    title: "提示",
-                    content: "当前用户未进行erc721授权，请先完成授权",
-                    onConfirm: () => {
-                        this.$loading.show()
-                        this.erc721ContractApppproval(config.game_addr)
-                            .then(res => {
-                                console.log(res)
-                                this.$confirm.hide()
-                                this.$loading.hide()
-                                showToast('授权成功')
-                            })
-                            .catch(err => {
-                                this.$confirm.hide()
-                                this.$loading.hide()
-
-                                showToast('授权失败')
-                            })
-                    },
-                    onCancel: () => {
-                        this.$confirm.hide()
-                    }
-                });
-                return
-            }
-
-            let havePreAddr = await this.isBeenPromoted(window.ethereum.selectedAddress)
-            if (!havePreAddr) {
-                this.$loading.hide()
-                showToast('当前地址无上级地址，不可领取')
-                return
-            }
-            this.userReceiveCampaign(window.ethereum.selectedAddress, this.incomeCardIndex, this.cardJsIndex, this.incomeMethods[this.currentIncome].isWGA)
+            this.showIncomeMethod = true
         },
-        //查询收益方式
-        viewIncomeMethod() {
-            gameContractApi.incomeMethod()
+        //查询财神卡收益方式
+        viewWealthIncomeMethod() {
+            gameContractApi.wealthIncomeMethod()
                 .then(res => {
-                    this.isWGAIncome = res
+                    this.wealthIsWGAIncome = res
+                    if (!this.wealthIsWGAIncome) {
+                        this.wealthIncomeMethods = [{ title: '领取到WGT余额', isWGA: 0 }, { title: '领取到WGA-T余额', isWGA: 1 }]
+                    } else if (this.wealthIsWGAIncome) {
+                        this.wealthIncomeMethods = [{ title: '领取到WGA-T余额', isWGA: 1 }]
+                    }
                 })
                 .catch(err => {
                     console.log('err', err)
                 })
         },
-
+        //查询出征卡收益方式
+        viewCampaignIncomeMethod() {
+            gameContractApi.campaignIncomeMethod()
+                .then(res => {
+                    this.campaignIsWGAIncome = res
+                    if (!this.campaignIsWGAIncome) {
+                        this.campaignIncomeMethods = [{ title: '领取到WGT余额', isWGA: 0 }, { title: '领取到WGA-T余额', isWGA: 1 }]
+                    } else if (this.campaignIsWGAIncome) {
+                        this.campaignIncomeMethods = [{ title: '领取到WGA-T余额', isWGA: 1 }]
+                    }
+                })
+                .catch(err => {
+                    console.log('err', err)
+                })
+        },
+        resultFormat(result) {
+            var h = Math.floor(result / 3600 % 24);
+            var m = Math.floor(result / 60 % 60);
+            if (h < 1) {
+                return result = m + "分钟";
+            } else {
+                return result = h + "小时" + m + "分钟";
+            }
+        },
+        //判断当前卡片是否到了可再次出征的时间
+        async getCardInfor(walletAddress, cardIndex) {
+            let timeStamp = Date.now() / 1000
+            let result = await gameContractApi.cardInfo(walletAddress, cardIndex);
+            let within24Hours = timeStamp - Number(result.nft_tokens[0].utc) < 60 * 10
+            // console.log(timeStamp - (Number(result.nft_tokens[0].utc) * 60 * 10))
+            console.log(within24Hours, timeStamp - Number(result.nft_tokens[0].utc))
+            if (within24Hours) {
+                return 10 * 60 - Number(result.nft_tokens[0].utc)
+            } else {
+                return false
+            }
+        },
         //点击领取财神卡收益
         async handleReceiveWealthProceeds(index) {
             this.incomeCardType = 1
             this.incomeCardIndex = index
-            if (!this.showIncomeMethod) {
-                if (!this.isWGAIncome) {
-                    this.showIncomeMethod = true
-                    return
-                }
-            }
-            this.$loading.show()
-
-            let erc721ApppprovalState
-            try {
-                erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
-            } catch {
-                this.$loading.hide()
-                showToast('错误，请重试')
-                return
-            }
-            if (erc721ApppprovalState !== true) {
-                this.$loading.hide()
-                this.$confirm.show({
-                    title: "提示",
-                    content: "当前用户未进行erc721授权，请先完成授权",
-                    onConfirm: () => {
-                        this.$loading.show()
-                        this.erc721ContractApppproval(config.game_addr)
-                            .then(res => {
-                                console.log(res)
-                                this.$confirm.hide()
-                                this.$loading.hide()
-                                showToast('授权成功')
-                            })
-                            .catch(err => {
-                                this.$confirm.hide()
-                                this.$loading.hide()
-
-                                showToast('授权失败')
-                            })
-                    },
-                    onCancel: () => {
-                        this.$confirm.hide()
-                    }
-                });
-                return
-            }
-            let havePreAddr = await this.isBeenPromoted(window.ethereum.selectedAddress)
-            if (!havePreAddr) {
-                this.$loading.hide()
-                showToast('当前地址无上级地址，不可领取')
-                return
-            }
-            this.userReceiveWealth(window.ethereum.selectedAddress, this.incomeCardIndex, this.incomeMethods[this.currentIncome].isWGA)
+            this.cardJsIndex = null
+            this.showIncomeMethod = true
         },
         async isBeenPromoted(walletAddress) {
             let result = await popularContractApi.relationshipAddress(walletAddress)
@@ -597,6 +567,7 @@ export default {
                         obj.outbound_tokens_id = item.outbound_tokens_id
                         obj.cardJsIndex = item.cardJsIndex
                         typeListCampaign.push(obj)
+                        console.log(item.nft_role)
                     })
                     let newArrCampaign = typeListCampaign.filter((v) => nfts_list.some((val) => val.id == v.typeID))
                     newArrCampaign.map(item => {
@@ -606,6 +577,7 @@ export default {
                             }
                         })
                     })
+
                     this.campaignList = newArrCampaign
 
                     //财神卡
