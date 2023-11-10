@@ -338,7 +338,7 @@ export default {
             let WGTPoint = await this.getWGTFromUSDT(100)
             WGTPoint = Number(WGTPoint) / 100
             let totalAssets = Number(this.wgtBalance) / WGTPoint + (Number(this.wgaBalance) / 20)
-            this.totalAssets = totalAssets
+            this.totalAssets = Number(totalAssets).toFixed(4)
             this.wgtBalance = Number(this.wgtBalance).toFixed(4)
             this.wgaBalance = Number(this.wgaBalance).toFixed(4)
 
@@ -354,7 +354,7 @@ export default {
                     let obj = {
                         address: window.ethereum.selectedAddress,
                         income_card: Number(income_card).toFixed(4),
-                        income_deposit: Number(income_deposit).toFixed(4), income_personal: Number(income_personal).toFixed(4), income_pool: income_pool, income_sum: income_sum, income_team: Number(income_team).toFixed(4), personal: personal
+                        income_deposit: Number(income_deposit).toFixed(4), income_personal: Number(income_personal).toFixed(4), income_pool: income_pool, income_sum: Number(income_sum).toFixed(4), income_team: Number(income_team).toFixed(4), personal: personal
                     }
 
                     this.$store.commit('updateUserInfor', obj)
