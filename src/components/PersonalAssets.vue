@@ -353,8 +353,8 @@ export default {
                     const { income_card, income_deposit, income_personal, income_pool, income_sum, income_team, personal } = res.data
                     let obj = {
                         address: window.ethereum.selectedAddress,
-                        income_card: income_card,
-                        income_deposit: income_deposit, income_personal: income_personal, income_pool: income_pool, income_sum: income_sum, income_team: income_team, personal: personal
+                        income_card: Number(income_card).toFixed(4),
+                        income_deposit: Number(income_deposit).toFixed(4), income_personal: Number(income_personal).toFixed(4), income_pool: income_pool, income_sum: income_sum, income_team: Number(income_team).toFixed(4), personal: personal
                     }
 
                     this.$store.commit('updateUserInfor', obj)

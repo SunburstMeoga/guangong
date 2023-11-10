@@ -300,18 +300,18 @@ export default {
             console.log(item.typeID)
             this.nftInfor = item.infor
             this.cardIndex = index
-            let cycle_num;
-            if (item.typeID == 1 || item.typeId == 2 || item.typeId == 3) {
-                cycle_num = 60 * 60 * 24 * 7
-            } else if (item.typeID == 4 || item.typeId == 5 || item.typeId == 6 || item.typeId == 7 || item.typeId == 8) {
-                cycle_num = 60 * 60 * 24 * 30
-            } else if (item.typeID == 9) {
-                cycle_num = 60 * 60 * 24 * 60
-            }
+            let cycle_num = 60 * 10;
+            // if (item.typeID == 1 || item.typeId == 2 || item.typeId == 3) {
+            //     cycle_num = 60 * 60 * 24 * 7
+            // } else if (item.typeID == 4 || item.typeId == 5 || item.typeId == 6 || item.typeId == 7 || item.typeId == 8) {
+            //     cycle_num = 60 * 60 * 24 * 30
+            // } else if (item.typeID == 9) {
+            //     cycle_num = 60 * 60 * 24 * 60
+            // }
             if (item.time !== 0) {
                 let timeStamp = Date.now() / 1000
-                let canCampaignAgain = timeStamp - Number(item.time) >
-                    console.log('canCampaignAgain', Number(item.time) + cycle_num)
+                let canCampaignAgain = timeStamp - Number(item.time) > cycle_num
+                console.log('canCampaignAgain', Number(item.time) + cycle_num)
                 if (!canCampaignAgain) {
 
                     showToast(`请在${this.resultFormat(Number(item.time) + cycle_num - timeStamp)}后再次出征`)
@@ -369,6 +369,7 @@ export default {
 
                     showToast('出征成功')
                     this.getUserInfo()
+                    this.getPersonNfts()
                     // window.history.back();
                 })
                 .catch(err => {
