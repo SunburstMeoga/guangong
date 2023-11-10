@@ -16,10 +16,10 @@
                             tokenId: {{ item.nft_tokens }}
                         </div>
                         <div class="mb-2">
-                            出征时间: 2023-12-12 23:23:23
+                            出征时间: {{ filterTime(item.utc) }}
                         </div>
                         <div class="">
-                            收益可领取时间: 2023-12-12 23:23:23
+                            收益可领取时间: {{ filterTime(Number(item.utc) + cycle_num) }}
                         </div>
                     </div>
                     <div class="buy-button text-sm rounded px-2 py-1" @click="showIncomeMethod = true; cardJsIndex = index">
@@ -63,6 +63,8 @@ import nftContractApi from '@/request/ether_request/nft'
 import popularContractApi from '@/request/ether_request/popularized'
 import { config } from '@/const/config'
 import { ZeroAddress } from "ethers"
+import { filterTime } from '@/utils/filterValue'
+
 
 
 import { Popup, showToast } from 'vant'
@@ -75,7 +77,9 @@ export default {
             cardIndex: null,
             showIncomeMethod: false,
             cardJsIndex: null,
-            currentIncome: 0
+            currentIncome: 0,
+            typeID: null,
+            cycle_num: 0
         }
     },
     mounted() {
@@ -85,6 +89,7 @@ export default {
         this.getCardInfor(window.ethereum.selectedAddress, this.cardIndex)
     },
     methods: {
+        filterTime,
         cancelPay() {
             window.history.back();
         },
@@ -185,7 +190,18 @@ export default {
             gameContractApi.cardInfo(walletAddress, cardIndex)
                 .then(res => {
                     this.dataList = res.nft_tokens
+                    this.typeID = Number(res[1]) % 100
                     console.log(res, this.dataList)
+                    console.log(this.typeID)
+
+                    if (this.typeID == 1 || this.typeID == 2 || this.typeID == 3) {
+                        this.cycle_num = 60 * 60 * 24 * 7
+                    } else if (this.typeID == 4 || this.typeID == 5 || this.typeID == 6 || this.typeID == 7 || this.typeID == 8) {
+                        this.cycle_num = 60 * 60 * 24 * 30
+                    } else if (this.typeID == 9) {
+                        this.cycle_num = 60 * 60 * 24 * 60
+                    }
+
                     this.$loading.hide()
                 })
                 .catch(err => {
