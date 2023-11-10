@@ -8,7 +8,7 @@
                     <div class="">领取出征收益</div>
                 </div>
             </div>
-            <div class="flex flex-col justify-start items-center">
+            <div class="flex flex-col justify-start items-center" v-show="dataList.length !== 0">
                 <div class="w-11/12 rounded bg-bottom-content mb-4 p-2 flex justify-between items-center"
                     v-for="(item, index) in dataList" :key="index">
                     <div class="text-xs text-gray-200">
@@ -26,6 +26,9 @@
                         领取收益
                     </div>
                 </div>
+            </div>
+            <div v-show="dataList.length == 0" class="w-full text-center font-bold text-xl text-white">
+                该角色卡暂无出征收益可领取
             </div>
         </div>
         <van-popup v-model:show="showIncomeMethod" position="bottom">
@@ -82,6 +85,9 @@ export default {
         this.getCardInfor(window.ethereum.selectedAddress, this.cardIndex)
     },
     methods: {
+        cancelPay() {
+            window.history.back();
+        },
         //检查erc721授权状态
         async erc721ApppprovalState(contractAddress) {
             return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)

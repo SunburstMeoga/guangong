@@ -12,7 +12,7 @@
         <div class="backdrop-blur-3xl text-xs text-assets-word bg-module-card px-2 py-1">
             <div class="text-theme-primary text-2xl font-semibold">{{ name }}</div>
             <div class="text-icon-gray">No.{{ nftRole }}</div>
-            <div class="text-icon-gray">出征时间：{{ time }}</div>
+            <div class="text-icon-gray" v-if="time !== 0">出征时间：{{ time }}</div>
             <div class="text-icon-gray">出征令牌：{{ nftToken }}</div>
             <div class="text-icon-gray">当前出征次数：{{ count }}</div>
             <div class="text-icon-gray">本次出征是否领取过收益：{{ income ? '是' : '否' }}</div>

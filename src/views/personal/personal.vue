@@ -53,7 +53,8 @@
                             <div v-else>
                                 <div v-for="( _item, _index ) in campaignList" :key="index"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
-                                    <campaign-card type="pending" :nftRole="_item.nft_role" :time="filterTime(_item.time)"
+                                    <campaign-card type="pending" :nftRole="_item.nft_role"
+                                        :time="_item.time == 0 ? 0 : filterTime(_item.time)"
                                         @campaignAgain="handleCampaignAgain(_item, _index)"
                                         @receiveProceeds="handleReceiveCampaignProceeds(_item, _index)"
                                         :imageUrl="_item.infor.imageUrl" :nftToken="_item.nft_token" :count="_item.count"
@@ -296,13 +297,26 @@ export default {
         },
         //点击再次出征按钮
         async handleCampaignAgain(item, index) {
+            console.log(item.typeID)
             this.nftInfor = item.infor
             this.cardIndex = index
-            let canCampaignAgain = await this.getCardInfor(window.ethereum.selectedAddress, index)
-            if (canCampaignAgain) {
+            let cycle_num;
+            if (item.typeID == 1 || item.typeId == 2 || item.typeId == 3) {
+                cycle_num = 60 * 60 * 24 * 7
+            } else if (item.typeID == 4 || item.typeId == 5 || item.typeId == 6 || item.typeId == 7 || item.typeId == 8) {
+                cycle_num = 60 * 60 * 24 * 30
+            } else if (item.typeID == 9) {
+                cycle_num = 60 * 60 * 24 * 60
+            }
+            if (item.time !== 0) {
+                let timeStamp = Date.now() / 1000
+                let canCampaignAgain = timeStamp - Number(item.time) >
+                    console.log('canCampaignAgain', Number(item.time) + cycle_num)
+                if (!canCampaignAgain) {
 
-                showToast(`请在${this.resultFormat(canCampaignAgain)}后再次出征`)
-                return
+                    showToast(`请在${this.resultFormat(Number(item.time) + cycle_num - timeStamp)}后再次出征`)
+                    return
+                }
             }
 
 
@@ -354,6 +368,7 @@ export default {
                     this.$loading.hide()
 
                     showToast('出征成功')
+                    this.getUserInfo()
                     // window.history.back();
                 })
                 .catch(err => {
@@ -367,6 +382,7 @@ export default {
         //点击出征令牌弹窗的确认按钮
         async confirmCampaign() {
             this.$loading.show()
+            this.showOutToken = false
             const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
             console.log('erc721ApppprovalState', erc721ApppprovalState)
             if (erc721ApppprovalState !== true) {
@@ -481,19 +497,23 @@ export default {
                     console.log('err', err)
                 })
         },
-        resultFormat(result) {
-            var h = Math.floor(result / 3600 % 24);
-            var m = Math.floor(result / 60 % 60);
-            if (h < 1) {
-                return result = m + "分钟";
-            } else {
-                return result = h + "小时" + m + "分钟";
-            }
+        resultFormat(timestamp) {
+            let d = parseInt(timestamp / (24 * 60 * 60))
+            d = d < 10 ? "0" + d : d
+            let h = parseInt(timestamp / (60 * 60) % 24);
+            h = h < 10 ? "0" + h : h
+            let m = parseInt(timestamp / 60 % 60);
+            m = m < 10 ? "0" + m : m
+            let s = parseInt(timestamp % 60);
+            s = s < 10 ? "0" + s : s
+            let count = d + '天' + h + '时' + m + '分' + s + '秒'
+            return count
         },
         //判断当前卡片是否到了可再次出征的时间
         async getCardInfor(walletAddress, cardIndex) {
             let timeStamp = Date.now() / 1000
             let result = await gameContractApi.cardInfo(walletAddress, cardIndex);
+            console.log()
             let within24Hours = timeStamp - Number(result.nft_tokens[0].utc) < 60 * 10
             // console.log(timeStamp - (Number(result.nft_tokens[0].utc) * 60 * 10))
             console.log(within24Hours, timeStamp - Number(result.nft_tokens[0].utc))
@@ -553,36 +573,55 @@ export default {
         },
         //获取用户信息
         getUserInfo() {
+
             gameContractApi.userInfo(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('出征和财神卡', res.cards)
                     //出征
                     let typeListCampaign = []
-                    res.cards.map(item => {
-                        let obj = {}
-                        obj.typeID = item.nft_role > 100 ? parseInt(item.nft_role) % 100 : item.nft_role
-                        obj.tokenId = item.nft_role
-                        obj.nft_role = item.nft_role
-                        obj.time = item.time
-                        obj.nft_token = item.nft_token
-                        obj.cammaignAttribute = item.zhangJiao
-                        obj.count = item.count
-                        obj.income = item.income
-                        obj.outbound_tokens_id = item.outbound_tokens_id
-                        obj.cardJsIndex = item.cardJsIndex
-                        typeListCampaign.push(obj)
-                        console.log(item.nft_role)
-                    })
-                    let newArrCampaign = typeListCampaign.filter((v) => nfts_list.some((val) => val.id == v.typeID))
-                    newArrCampaign.map(item => {
-                        nfts_list.map(_item => {
-                            if (item.typeID == _item.id) {
-                                item.infor = _item
-                            }
-                        })
+                    console.log()
+
+                    res.cards.map((item, index) => {
+                        gameContractApi.cardInfo(window.ethereum.selectedAddress, index)
+                            .then(time => {
+                                console.log('time----', index, time.nft_tokens.length)
+                                let obj = {}
+                                obj.typeID = item.nft_role > 100 ? parseInt(item.nft_role) % 100 : item.nft_role
+                                obj.tokenId = item.nft_role
+                                obj.nft_role = item.nft_role
+
+                                obj.nft_tokens = item.nft_tokens
+                                obj.cammaignAttribute = item.zhangJiao
+                                obj.count = item.count
+                                obj.income = item.income
+                                obj.outbound_tokens_id = item.outbound_tokens_id
+                                obj.cardJsIndex = item.cardJsIndex
+
+                                console.log(item.nft_tokens)
+                                if (time.nft_tokens.length !== 0) {
+                                    console.log('time----', time.nft_tokens[0].utc)
+                                    obj.time = time.nft_tokens[0].utc
+                                } else {
+                                    obj.time = 0
+                                }
+                                typeListCampaign.push(obj)
+                                let newArrCampaign = typeListCampaign.filter((v) => nfts_list.some((val) => val.id == v.typeID))
+                                newArrCampaign.map(item => {
+                                    nfts_list.map(_item => {
+                                        if (item.typeID == _item.id) {
+                                            item.infor = _item
+                                        }
+                                    })
+                                })
+
+                                this.campaignList = newArrCampaign
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            })
+
                     })
 
-                    this.campaignList = newArrCampaign
 
                     //财神卡
                     let typeListWealth = []
