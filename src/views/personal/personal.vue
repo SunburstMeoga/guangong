@@ -441,11 +441,15 @@ export default {
         },
         //点击领取出征卡收益
         async handleReceiveCampaignProceeds(item, index) {
-            console.log(item)
-            this.incomeCardType = 0
-            this.cardJsIndex = item.cardJsIndex
-            this.incomeCardIndex = index
-            this.showIncomeMethod = true
+            // console.log(item)
+            // this.incomeCardType = 0
+            // this.cardJsIndex = item.cardJsIndex
+            // this.incomeCardIndex = index
+            // this.showIncomeMethod = true
+
+            this.$router.push({
+                path: '/campaign-earning/' + index,
+            })
         },
         //查询财神卡收益方式
         viewWealthIncomeMethod() {

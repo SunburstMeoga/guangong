@@ -39,6 +39,14 @@ const personal = [
       showTopBar: false,
     },
   },
+  {
+    path: "/campaign-earning/:cardIndex",
+    name: "campaign-earning",
+    component: () => import("@/views/personal//campaignEarning"),
+    meta: {
+      showTopBar: false,
+    },
+  },
 ];
 
 export default personal;
