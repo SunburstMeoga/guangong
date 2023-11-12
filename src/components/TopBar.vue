@@ -34,6 +34,7 @@
                         <div class="mb-6">FAQ</div>
                         <div class="mb-6">{{ $t('menu.help') }}</div>
                         <div class="mb-6">{{ $t('menu.about_us') }}</div>
+                        <div class="mb-6">版本 1.0.0</div>
                         <div class="flex justify-start items-center mb-6">
                             <div class="icon iconfont icon-twitter-fill mr-4" style="font-size: 22px;"></div>
                             <div class="icon iconfont icon-facebook-fill mr-4" style="font-size: 22px;"></div>
