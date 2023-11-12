@@ -76,8 +76,8 @@
                                 <div v-for="( _item, _index ) in wealthList" :key="index"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
                                     <wealth-card @receiveProceeds="handleReceiveWealthProceeds(_index)" type="pending"
-                                        :time="filterTime(_item.time)" :imageUrl="_item.infor.imageUrl" incomeMethod="领取收益"
-                                        :name="_item.infor.name" />
+                                        :isWGA="_item.is_wga" :time="filterTime(_item.time)"
+                                        :imageUrl="_item.infor.imageUrl" incomeMethod="领取收益" :name="_item.infor.name" />
                                 </div>
                             </div>
                         </div>
@@ -300,7 +300,7 @@ export default {
             console.log(item.typeID)
             this.nftInfor = item.infor
             this.cardIndex = index
-            let cycle_num = 60 * 10;
+            let cycle_num = 60 * 5;
             // if (item.typeID == 1 || item.typeId == 2 || item.typeId == 3) {
             //     cycle_num = 60 * 60 * 24 * 7
             // } else if (item.typeID == 4 || item.typeId == 5 || item.typeId == 6 || item.typeId == 7 || item.typeId == 8) {
@@ -366,7 +366,6 @@ export default {
                 .then((res) => {
                     console.log('出征成功', res)
                     this.$loading.hide()
-
                     showToast('出征成功')
                     this.getUserInfo()
                     this.getPersonNfts()
@@ -374,10 +373,8 @@ export default {
                 })
                 .catch(err => {
                     console.log('出征失败', err)
-
                     this.$loading.hide()
                     showToast('出征失败')
-
                 })
         },
         //点击出征令牌弹窗的确认按钮
@@ -631,6 +628,7 @@ export default {
                         obj.typeID = item.token_id > 100 ? parseInt(item.token_id) % 100 : item.token_id
                         obj.tokenId = item.token_id
                         obj.time = item.time
+                        obj.is_wga = item.is_wga
                         typeListWealth.push(obj)
                     })
                     let newArrWealth = typeListWealth.filter((v) => nfts_list.some((val) => val.id == v.typeID))

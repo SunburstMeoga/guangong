@@ -12,6 +12,9 @@
         <div class="backdrop-blur-3xl text-xs text-assets-word bg-module-card px-2 py-1">
             <div class="text-theme-primary text-2xl font-semibold mb-3">{{ name }}</div>
             <div class="text-icon-gray">收益开始时间：{{ time }}</div>
+            <div class="text-icon-gray">支付方式：{{ isWGA ? 'WGT-A支付' : 'WGT支付' }}</div>
+
+
             <div class="campaign mt-4 text-whites text-center py-2 mb-2 rounded" @click="receiveProceeds">{{ incomeMethod }}
             </div>
         </div>
@@ -37,6 +40,10 @@ export default {
         incomeMethod: {
             type: String,
             default: ''
+        },
+        isWGA: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {

@@ -165,11 +165,24 @@ export default {
         //用户领取出征卡收益
         userReceiveCampaign(walletAddress, index, cardJsIndex, isWGA) {
             console.log(walletAddress, index, cardJsIndex, isWGA)
-            // if (item.income) {
-            //     showToast('本次出征收益已领取，不可重复领取')
-            //     this.$loading.hide()
-            //     return
+            let cycle_num = 60 * 10;
+            // if (item.typeID == 1 || item.typeId == 2 || item.typeId == 3) {
+            //     cycle_num = 60 * 60 * 24 * 7
+            // } else if (item.typeID == 4 || item.typeId == 5 || item.typeId == 6 || item.typeId == 7 || item.typeId == 8) {
+            //     cycle_num = 60 * 60 * 24 * 30
+            // } else if (item.typeID == 9) {
+            //     cycle_num = 60 * 60 * 24 * 60
             // }
+            if (item.time !== 0) {
+                let timeStamp = Date.now() / 1000
+                let canCampaignAgain = timeStamp - Number(item.time) > cycle_num
+                console.log('canCampaignAgain', Number(item.time) + cycle_num)
+                if (!canCampaignAgain) {
+
+                    showToast(`请在${this.resultFormat(Number(item.time) + cycle_num - timeStamp)}后再次出征`)
+                    return
+                }
+            }
             console.log(index)
             gameContractApi.campaignEarnings(walletAddress, index, cardJsIndex, isWGA)
                 .then(res => {
@@ -183,6 +196,19 @@ export default {
                     this.$loading.hide()
                     console.log('err', err)
                 })
+        },
+
+        resultFormat(timestamp) {
+            let d = parseInt(timestamp / (24 * 60 * 60))
+            d = d < 10 ? "0" + d : d
+            let h = parseInt(timestamp / (60 * 60) % 24);
+            h = h < 10 ? "0" + h : h
+            let m = parseInt(timestamp / 60 % 60);
+            m = m < 10 ? "0" + m : m
+            let s = parseInt(timestamp % 60);
+            s = s < 10 ? "0" + s : s
+            let count = d + '天' + h + '时' + m + '分' + s + '秒'
+            return count
         },
         //获取角色卡的出征令信息
         async getCardInfor(walletAddress, cardIndex) {
