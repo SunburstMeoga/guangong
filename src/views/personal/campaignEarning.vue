@@ -22,7 +22,7 @@
                             收益可领取时间: {{ filterTime(Number(item.utc) + cycle_num) }}
                         </div>
                     </div>
-                    <div class="buy-button text-sm rounded px-2 py-1" @click="showIncomeMethod = true; cardJsIndex = index">
+                    <div class="buy-button text-sm rounded px-2 py-1" @click="handleGetEarning(item, index)">
                         领取收益
                     </div>
                 </div>
@@ -79,12 +79,14 @@ export default {
             cardJsIndex: null,
             currentIncome: 0,
             typeID: null,
-            cycle_num: 10 * 60
+            cycle_num: 10 * 60,
+            typeID: null
         }
     },
     mounted() {
         console.log(this.$route.params.cardIndex)
         this.cardIndex = this.$route.params.cardIndex
+        this.typeID = this.$route.query.typeID
         this.viewCampaignIncomeMethod()
         this.getCardInfor(window.ethereum.selectedAddress, this.cardIndex)
     },
@@ -92,6 +94,32 @@ export default {
         filterTime,
         cancelPay() {
             window.history.back();
+        },
+        handleGetEarning(item, index) {
+
+            // item.utc = item.utc
+            let cycle_num = 60 * 10;
+            // if (this.typeID == 1 || this.typeID == 2 || this.typeID == 3) {
+            //     cycle_num = 60 * 60 * 24 * 7
+            // } else if (this.typeID == 4 || this.typeID == 5 || this.typeID == 6 || this.typeID == 7 || this.typeID == 8) {
+            //     cycle_num = 60 * 60 * 24 * 30
+            // } else if (this.typeID == 9) {
+            //     cycle_num = 60 * 60 * 24 * 60
+            // }
+            if (item.utc !== 0) {
+                let timeStamp = Date.now() / 1000
+                let canCampaignAgain = timeStamp - Number(item.utc) > cycle_num
+                console.log('canCampaignAgain', Number(item.utc) + cycle_num)
+                if (!canCampaignAgain) {
+
+                    showToast(`请在${this.resultFormat(Number(item.utc) + cycle_num - timeStamp)}后再次出征`)
+                    return
+                }
+            }
+            this.showIncomeMethod = true; this.cardJsIndex = index;
+            console.log(index)
+            console.log(item, index)
+            // return
         },
         //检查erc721授权状态
         async erc721ApppprovalState(contractAddress) {
@@ -165,25 +193,7 @@ export default {
         //用户领取出征卡收益
         userReceiveCampaign(walletAddress, index, cardJsIndex, isWGA) {
             console.log(walletAddress, index, cardJsIndex, isWGA)
-            let cycle_num = 60 * 10;
-            // if (item.typeID == 1 || item.typeId == 2 || item.typeId == 3) {
-            //     cycle_num = 60 * 60 * 24 * 7
-            // } else if (item.typeID == 4 || item.typeId == 5 || item.typeId == 6 || item.typeId == 7 || item.typeId == 8) {
-            //     cycle_num = 60 * 60 * 24 * 30
-            // } else if (item.typeID == 9) {
-            //     cycle_num = 60 * 60 * 24 * 60
-            // }
-            if (item.time !== 0) {
-                let timeStamp = Date.now() / 1000
-                let canCampaignAgain = timeStamp - Number(item.time) > cycle_num
-                console.log('canCampaignAgain', Number(item.time) + cycle_num)
-                if (!canCampaignAgain) {
 
-                    showToast(`请在${this.resultFormat(Number(item.time) + cycle_num - timeStamp)}后再次出征`)
-                    return
-                }
-            }
-            console.log(index)
             gameContractApi.campaignEarnings(walletAddress, index, cardJsIndex, isWGA)
                 .then(res => {
                     console.log(res)

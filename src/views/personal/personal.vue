@@ -75,8 +75,8 @@
                             <div v-else>
                                 <div v-for="( _item, _index ) in wealthList" :key="index"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
-                                    <wealth-card @receiveProceeds="handleReceiveWealthProceeds(_index)" type="pending"
-                                        :isWGA="_item.is_wga" :time="filterTime(_item.time)"
+                                    <wealth-card @receiveProceeds="handleReceiveWealthProceeds(_item, _index)"
+                                        type="pending" :isWGA="_item.is_wga" :time="filterTime(_item.time)"
                                         :imageUrl="_item.infor.imageUrl" incomeMethod="领取收益" :name="_item.infor.name" />
                                 </div>
                             </div>
@@ -188,6 +188,8 @@ export default {
             incomeCardIndex: null,
             incomeCardType: null, //当前领取收益的卡片类型，0出征卡，1财神卡
             cardJsIndex: null,
+            wealthCardNFTID: null,
+            wealthTime: null
             // assetsList: []
         }
     },
@@ -455,7 +457,8 @@ export default {
         },
         //点击领取出征卡收益
         async handleReceiveCampaignProceeds(item, index) {
-            // console.log(item)
+            console.log(item)
+            // return
             // this.incomeCardType = 0
             // this.cardJsIndex = item.cardJsIndex
             // this.incomeCardIndex = index
@@ -463,6 +466,7 @@ export default {
 
             this.$router.push({
                 path: '/campaign-earning/' + index,
+                query: { typeID: item.typeID }
             })
         },
         //查询财神卡收益方式
@@ -522,11 +526,42 @@ export default {
             }
         },
         //点击领取财神卡收益
-        async handleReceiveWealthProceeds(index) {
+        async handleReceiveWealthProceeds(item, index) {
+
+            let cycle_num = 60 * 10;
+            // if (item.typeID == 12 || item.typeId == 13|| item.typeId == 14|| item.typeId == 15|| item.typeId == 16|| item.typeId == 17|| item.typeId == 18) {
+            //     cycle_num = 60 * 60 * 24 * 30
+            // } else if (item.typeID == 19) {
+            //     cycle_num = 60 * 60 * 24 * 45
+            // } else if (item.typeID == 10) {
+            //     cycle_num = 60 * 60 * 24 * 7
+            // } else if (item.typeID == 11) {
+            //     cycle_num = 60 * 60 * 24 * 15
+            // } else if (item.typeID == 20) {
+            //     cycle_num = 60 * 60 * 24 * 60
+            // } else if (item.typeID == 21) {
+            //     cycle_num = 60 * 60 * 24 * 90
+            // } else if (item.typeID == 22) {
+            //     cycle_num = 60 * 60 * 24 * 180
+            // }
+
+            if (item.time !== 0) {
+                let timeStamp = Date.now() / 1000
+                let canCampaignAgain = timeStamp - Number(item.time) > cycle_num
+                console.log('canCampaignAgain', Number(item.time) + cycle_num)
+                if (!canCampaignAgain) {
+
+                    showToast(`请在${this.resultFormat(Number(item.time) + cycle_num - timeStamp)}后再次出征`)
+                    return
+                }
+            }
             this.incomeCardType = 1
             this.incomeCardIndex = index
             this.cardJsIndex = null
             this.showIncomeMethod = true
+            this.wealthCardNFTID = item.typeID
+            this.wealthTime = item.time
+            console.log(item, index)
         },
         async isBeenPromoted(walletAddress) {
             let result = await popularContractApi.relationshipAddress(walletAddress)
