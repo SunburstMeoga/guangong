@@ -3,7 +3,7 @@
         <div class="py-8">
             <div class="w-11/12 ml-auto mr-auto relative flex justify-center items-center text-card-content mb-4">
                 <div class="icon iconfont icon-left absolute left-1" style="font-size: 24px;" @click="cancelPay()"></div>
-                <div class="">新旧版本货币兑换</div>
+                <div class="">货币兑换</div>
             </div>
         </div>
         <div class="text-white">
@@ -28,7 +28,7 @@
                     </div>
                     <div class="w-11/12 text-sm mb-1 flex justify-between items-baseline">
                         <div>
-                            兑换WGT-A金额
+                            兑换WGT-A金额 <span class="text-xs text-red-500"> 40000 WGT = 1 WGT-A</span>
                         </div>
                         <div class="underline text-xs" @click="allExchange">
                             全部
@@ -37,7 +37,7 @@
                     <div
                         class="mb-12 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
                         <input class="w-full h-full bg-bottom-content" type="text" v-model="exchangeWGTAmount"
-                            placeholder="请输入兑换金额">
+                            placeholder="请输入旧版本WGT数量">
                     </div>
                 </div>
 
@@ -53,7 +53,7 @@
 
                     <div class="w-11/12 text-sm mb-1 flex justify-between items-baseline">
                         <div>
-                            兑换WGT-A金额
+                            兑换WGT-A金额 <span class="text-xs text-red-500"> 1 WGA = 1 WGT-A</span>
                         </div>
                         <div class="underline text-xs" @click="allExchange">
                             全部
@@ -62,7 +62,7 @@
                     <div
                         class="mb-12 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
                         <input class="w-full h-full bg-bottom-content" type="text" v-model="exchangeWGAAmount"
-                            placeholder="请输入兑换金额">
+                            placeholder="请输入旧版本WGA数量">
                     </div>
                 </div>
                 <div class="w-11/12 buy-button bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded"
