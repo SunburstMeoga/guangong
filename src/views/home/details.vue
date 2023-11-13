@@ -877,11 +877,11 @@ export default {
             }
 
             //购买一手nft
-            if (this.nftInfor.circulation == 0) {
-                this.$loading.hide()
-                showToast('该NFT暂未开放购买')
-                return
-            }
+            // if (this.nftInfor.circulation == 0) {
+            //     this.$loading.hide()
+            //     showToast('该NFT暂未开放购买')
+            //     return
+            // }
             //如果购买卡片币种是WGT，则需要获取当前WGT和U的最新换算价格
             if (this.nftInfor.card_type == 'fortune_card' || this.nftInfor.card_type == 'expedition_order' || this.nftInfor.card_type == 'tactics_props') {
                 if (await this.haveChangeOfWGT()) {
