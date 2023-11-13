@@ -28,7 +28,7 @@
                     </div>
                     <div class="w-11/12 text-sm mb-1 flex justify-between items-baseline">
                         <div>
-                            兑换金额
+                            兑换WGT-A金额
                         </div>
                         <div class="underline text-xs" @click="allExchange">
                             全部
@@ -43,7 +43,7 @@
 
                 <div v-show="currentCurrency == 1" class="w-full flex flex-col items-center">
                     <div class="w-11/12 text-sm mb-1">
-                        旧版本WGT-A余额
+                        旧版本WGA余额
                     </div>
                     <div
                         class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded ">
@@ -53,7 +53,7 @@
 
                     <div class="w-11/12 text-sm mb-1 flex justify-between items-baseline">
                         <div>
-                            兑换金额
+                            兑换WGT-A金额
                         </div>
                         <div class="underline text-xs" @click="allExchange">
                             全部
@@ -94,7 +94,7 @@ export default {
             exchangeWGTAmount: null,
             exchangeWGAAmount: null,
 
-            currencyList: [{ title: '兑换WGT' }, { title: '兑换WGT-A' }],
+            currencyList: [{ title: 'WGT兑换' }, { title: 'WGA兑换' }],
             currentCurrency: 0
         }
     },
