@@ -38,7 +38,7 @@ export default {
             let WGTPoint = Number(res) / 100
             this.$store.commit('updataWGTPoint', WGTPoint)
             // console.log(this.$store.state)
-            // console.log('updataWGTPoint', this.$store.state.WGTPoint)
+            console.log('updataWGTPoint', this.$store.state.WGTPoint)
           })
           .catch(err => {
             // showToast('获取价格失败')

@@ -33,7 +33,7 @@
         </div>
         <van-popup v-model:show="showIncomeMethod" position="bottom">
             <div class="text-card-content bg-cover-content flex w-full pb-6 flex-col justify-start items-center">
-                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择{{ cardType == 0 ? '出征卡' : '财神卡' }}收益领取方式
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择出征卡收益领取方式
                 </div>
                 <div @click="currentIncome = index" v-for="(item, index) in campaignIncomeMethods" :key="index"
                     class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-between items-center py-3.5 px-2 text-essentials-white text-sm rounded"
@@ -64,15 +64,14 @@ import popularContractApi from '@/request/ether_request/popularized'
 import { config } from '@/const/config'
 import { ZeroAddress } from "ethers"
 import { filterTime } from '@/utils/filterValue'
-
-
+import nfts_list from '@/nft_datas/nfts_list'
 
 import { Popup, showToast } from 'vant'
 export default {
     components: { [Popup.name]: Popup },
     data() {
         return {
-            campaignIncomeMethods: [{ title: '领取到WGT余额', isWGA: 0 }, { title: '领取到WGA-T余额', isWGA: 1 }],
+            campaignIncomeMethods: [{ title: '领取159WGT到钱包', isWGA: 0 }, { title: '领取159WGA-T到钱包', isWGA: 1 }],
             dataList: [],
             cardIndex: null,
             showIncomeMethod: false,
@@ -80,13 +79,18 @@ export default {
             currentIncome: 0,
             typeID: null,
             cycle_num: 10 * 60,
-            typeID: null
+            typeID: null,
+            campaignCardInfo: {}
         }
     },
     mounted() {
         console.log(this.$route.params.cardIndex)
         this.cardIndex = this.$route.params.cardIndex
         this.typeID = this.$route.query.typeID
+        const nftItem = nfts_list.filter(item => {
+            return item.id == parseInt(this.typeID)
+        })
+        this.campaignCardInfo = nftItem[0]
         this.viewCampaignIncomeMethod()
         this.getCardInfor(window.ethereum.selectedAddress, this.cardIndex)
     },
@@ -96,7 +100,6 @@ export default {
             window.history.back();
         },
         handleGetEarning(item, index) {
-
             // item.utc = item.utc
             let cycle_num = 60 * 10;
             // if (this.typeID == 1 || this.typeID == 2 || this.typeID == 3) {
@@ -261,9 +264,9 @@ export default {
                 .then(res => {
                     this.campaignIsWGAIncome = res
                     if (!this.campaignIsWGAIncome) {
-                        this.campaignIncomeMethods = [{ title: '领取到WGT余额', isWGA: 0 }, { title: '领取到WGA-T余额', isWGA: 1 }]
+                        this.campaignIncomeMethods = [{ title: `领取 ${campaignCardInfo.travel_reward * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 0 }, { title: `领取 ${campaignCardInfo.travel_reward * 20} WGT-A 到钱包`, isWGA: 1 }]
                     } else if (this.campaignIsWGAIncome) {
-                        this.campaignIncomeMethods = [{ title: '领取到WGA-T余额', isWGA: 1 }]
+                        this.campaignIncomeMethods = [{ title: `领取 ${campaignCardInfo.travel_reward * 20} WGT 到钱包`, isWGA: 1 }]
                     }
                 })
                 .catch(err => {

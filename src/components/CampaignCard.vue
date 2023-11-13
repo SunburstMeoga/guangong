@@ -12,7 +12,7 @@
         <div class="backdrop-blur-3xl text-xs text-assets-word bg-module-card px-2 py-1">
             <div class="text-theme-primary text-2xl font-semibold">{{ name }}</div>
             <div class="text-icon-gray">No.{{ nftRole }}</div>
-            <div class="text-icon-gray" v-if="time !== 0">出征时间：{{ time }}</div>
+            <div class="text-icon-gray" v-if="utc !== 0">出征时间：{{ utc == 0 ? 0 : filterTime(utc) }}</div>
             <div class="text-icon-gray">出征令牌：{{ nftToken }}</div>
             <div class="text-icon-gray">当前出征次数：{{ count }}</div>
             <div class="text-icon-gray">本次出征是否领取过收益：{{ income ? '是' : '否' }}</div>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { filterTime } from '@/utils/filterValue'
+
 export default {
     props: {
         name: {
@@ -40,7 +42,7 @@ export default {
             type: String,
             default: ''
         },
-        time: {
+        utc: {
             type: Number,
             default: 0
         },
@@ -49,8 +51,8 @@ export default {
             default: 0
         },
         count: {
-            type: String,
-            default: ''
+            type: Number,
+            default: 0
         },
         income: {
             type: Boolean,
@@ -62,6 +64,7 @@ export default {
         }
     },
     methods: {
+        filterTime,
         receiveProceeds() {
             this.$emit('receiveProceeds')
         },

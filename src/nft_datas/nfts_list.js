@@ -28,6 +28,7 @@ const nfts_list = [
     monthly_interest_rate: "24%",
     loss_period: 135,
     circulation: 800,
+    travel_reward: 159,
   },
   {
     id: 2,
@@ -47,6 +48,7 @@ const nfts_list = [
     monthly_interest_rate: "32%",
     loss_period: 150,
     circulation: 0,
+    travel_reward: 162,
   },
   {
     id: 3,
@@ -66,6 +68,7 @@ const nfts_list = [
     monthly_interest_rate: "44%",
     loss_period: 165,
     circulation: 0,
+    travel_reward: 166.5,
   },
   //nft角色卡百战封神阶段
   {
@@ -86,6 +89,7 @@ const nfts_list = [
     monthly_interest_rate: "28%",
     loss_period: 36,
     circulation: 0,
+    travel_reward: 768,
   },
   {
     id: 5,
@@ -105,6 +109,7 @@ const nfts_list = [
     monthly_interest_rate: "36%",
     loss_period: 34,
     circulation: 0,
+    travel_reward: 816,
   },
   {
     id: 6,
@@ -124,6 +129,7 @@ const nfts_list = [
     monthly_interest_rate: "40%",
     loss_period: 30,
     circulation: 0,
+    travel_reward: 980,
   },
   {
     id: 7,
@@ -143,6 +149,7 @@ const nfts_list = [
     monthly_interest_rate: "40%",
     loss_period: 27,
     circulation: 0,
+    travel_reward: 1120,
   },
   {
     id: 8,
@@ -162,6 +169,7 @@ const nfts_list = [
     monthly_interest_rate: "38%",
     loss_period: 32,
     circulation: 0,
+    travel_reward: 1380,
   },
   // nft角色卡 万世流芳阶段
   {
@@ -180,6 +188,7 @@ const nfts_list = [
     monthly_interest_rate: "60%",
     loss_period: 20,
     circulation: 0,
+    travel_reward: 3200,
   },
 
   //战法道具卡
@@ -584,7 +593,7 @@ const nfts_list = [
     level: "忠字传播大使",
     imageUrl: `${config.imageBaseURL}wealth/10.png`,
     card_type: "fortune_card",
-    award: 157,
+    award: 104.6667,
     cycle: 7,
     price: "150",
     circulation: -1,

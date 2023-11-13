@@ -53,8 +53,7 @@
                             <div v-else>
                                 <div v-for="( _item, _index ) in campaignList" :key="index"
                                     class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
-                                    <campaign-card type="pending" :nftRole="_item.nft_role"
-                                        :time="_item.time == 0 ? 0 : filterTime(_item.time)"
+                                    <campaign-card type="pending" :nftRole="_item.nft_role" :utc="_item.time"
                                         @campaignAgain="handleCampaignAgain(_item, _index)"
                                         @receiveProceeds="handleReceiveCampaignProceeds(_item, _index)"
                                         :imageUrl="_item.infor.imageUrl" :nftToken="_item.nft_token" :count="_item.count"
@@ -189,7 +188,8 @@ export default {
             incomeCardType: null, //当前领取收益的卡片类型，0出征卡，1财神卡
             cardJsIndex: null,
             wealthCardNFTID: null,
-            wealthTime: null
+            wealthTime: null,
+            wealthCardInfo: {}
             // assetsList: []
         }
     },
@@ -474,11 +474,7 @@ export default {
             gameContractApi.wealthIncomeMethod()
                 .then(res => {
                     this.wealthIsWGAIncome = res
-                    if (!this.wealthIsWGAIncome) {
-                        this.wealthIncomeMethods = [{ title: '领取到WGT余额', isWGA: 0 }, { title: '领取到WGA-T余额', isWGA: 1 }]
-                    } else if (this.wealthIsWGAIncome) {
-                        this.wealthIncomeMethods = [{ title: '领取到WGA-T余额', isWGA: 1 }]
-                    }
+
                 })
                 .catch(err => {
                     console.log('err', err)
@@ -555,12 +551,24 @@ export default {
                     return
                 }
             }
+            let nftItem = nfts_list.filter(_item => {
+                // console.log()
+                return _item.id == parseInt(item.typeID)
+            })
+            let wealthCardInfo = nftItem[0]
+            console.log('wealthCardInfo', wealthCardInfo, 'nftItem', nftItem)
+            if (!this.wealthIsWGAIncome) {
+                this.wealthIncomeMethods = [{ title: `领取 ${wealthCardInfo.award * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 0 }, { title: `领取 ${Number(wealthCardInfo.award * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
+            } else if (this.wealthIsWGAIncome) {
+                this.wealthIncomeMethods = [{ title: `领取 ${Number(wealthCardInfo.award * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
+            }
             this.incomeCardType = 1
             this.incomeCardIndex = index
             this.cardJsIndex = null
             this.showIncomeMethod = true
             this.wealthCardNFTID = item.typeID
             this.wealthTime = item.time
+
             console.log(item, index)
         },
         async isBeenPromoted(walletAddress) {
