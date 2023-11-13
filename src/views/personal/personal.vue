@@ -44,7 +44,9 @@
                         </div>
                     </van-tab>
                     <van-tab title="正在出征" class="pt-4">
-                        <div :class="pendingList.length !== 0 ? 'columns-2 gap-x-3' : ''">
+                        <!-- <div :class="pendingList.length !== 0 ? 'columns-2 gap-x-3' : ''"> -->
+                        <div>
+
                             <div v-if="campaignList.length === 0">
                                 <div class="text-icon-gray text-xl text-center">
                                     暂无数据
@@ -547,7 +549,7 @@ export default {
                 console.log('canCampaignAgain', Number(item.time) + cycle_num)
                 if (!canCampaignAgain) {
 
-                    showToast(`请在${this.resultFormat(Number(item.time) + cycle_num - timeStamp)}后再次出征`)
+                    showToast(`${this.resultFormat(Number(item.time) + cycle_num - timeStamp)}后可领取收益`)
                     return
                 }
             }
