@@ -17,11 +17,15 @@ if (window.ethereum) {
   gameContractApi = {
     //查询出征卡收益领取方式 wgt或者wgt-a
     campaignIncomeMethod: async function () {
-      const result = await GAME.is_A_wga();
+      const result = await GAME.wgt_A();
       return result;
     },
-    wealthIncomeMethod: async function () {
-      const result = await GAME.is_B_wga();
+    wgtWealthIncomeMethod: async function () {
+      const result = await GAME.wgt_B();
+      return result;
+    },
+    wgaWealthIncomeMethod: async function () {
+      const result = await GAME.wga_B();
       return result;
     },
     //获取商品价格usdt所需的wgt

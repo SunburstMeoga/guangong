@@ -112,12 +112,24 @@
             <div class="text-card-content bg-cover-content flex w-full pb-6 flex-col justify-start items-center">
                 <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择{{ cardType == 0 ? '出征卡' : '财神卡' }}收益领取方式
                 </div>
-                <div v-show="incomeCardType == 0" @click="clickIncomeMethod(item, index)"
+                <div v-show="isWGAWealth" class="w-11/12 text-left">
+                    <div class="mb-2">本金</div>
+                    <div class="buy-button text-white py-3.5 px-2 text-sm rounded mb-4">
+                        领取 222 WGT 到钱包
+                    </div>
+                </div>
+                <!-- <div v-show="isWGAWealth">
+                    ：222WGT 领取到钱包
+                </div> -->
+                <!-- <div v-show="incomeCardType == 0" @click="clickIncomeMethod(item, index)"
                     v-for="(item, index) in campaignIncomeMethods" :key="index"
                     class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-between items-center py-3.5 px-2 text-essentials-white text-sm rounded"
                     :class="currentIncome == index ? 'buy-button text-white' : ''">
                     <span>{{ item.title }}</span>
 
+                </div> -->
+                <div v-show="isWGAWealth" class="w-11/12 text-left mb-2">
+                    利润
                 </div>
                 <div v-show="incomeCardType == 1" @click="clickIncomeMethod(item, index)"
                     v-for="(item, index) in wealthIncomeMethods" :key="index"
@@ -180,7 +192,7 @@ export default {
             nftInfor: {},
             cardIndex: 0,
             campaignIsWGAIncome: false,
-            wealthIsWGAIncome: false,
+            wealthIncomePay: null,
             showIncomeMethod: false,
             campaignIncomeMethods: [{ title: '领取到WGT余额', isWGA: 0 }, { title: '领取到WGA-T余额', isWGA: 1 }],
             wealthIncomeMethods: [{ title: '领取到WGT余额', isWGA: 0 }, { title: '领取到WGA-T余额', isWGA: 1 }],
@@ -190,7 +202,8 @@ export default {
             cardJsIndex: null,
             wealthCardNFTID: null,
             wealthTime: null,
-            wealthCardInfo: {}
+            wealthCardInfo: {},
+            isWGAWealth: false,
             // assetsList: []
         }
     },
@@ -200,7 +213,7 @@ export default {
             this.getPendingOrderList()
             this.getUserInfo()
             this.viewCampaignIncomeMethod()
-            this.viewWealthIncomeMethod()
+            // this.viewWGTWealthIncomeMethod()
 
         }
         // console.log('ethereum.selectedAddress', ethereum.selectedAddress)
@@ -470,16 +483,27 @@ export default {
                 query: { typeID: item.typeID }
             })
         },
-        //查询财神卡收益方式
-        viewWealthIncomeMethod() {
-            gameContractApi.wealthIncomeMethod()
-                .then(res => {
-                    this.wealthIsWGAIncome = res
+        //查询wgt财神卡收益方式
+        async viewWGTWealthIncomeMethod() {
+            this.wealthIncomePay = await gameContractApi.wgtWealthIncomeMethod()
+            // .then(res => {
+            //     this.wealthIncomePay = res
 
-                })
-                .catch(err => {
-                    console.log('err', err)
-                })
+            // })
+            // .catch(err => {
+            //     console.log('err', err)
+            // })
+        },
+        //查询wga财神卡收益方式
+        async viewWGAWealthIncomeMethod() {
+            this.wealthIncomePay = await gameContractApi.wgaWealthIncomeMethod()
+            // .then(res => {
+            //     this.wealthIncomePay = res
+
+            // })
+            // .catch(err => {
+            //     console.log('err', err)
+            // })
         },
         //查询出征卡收益方式
         viewCampaignIncomeMethod() {
@@ -524,7 +548,9 @@ export default {
         },
         //点击领取财神卡收益
         async handleReceiveWealthProceeds(item, index) {
-
+            this.$loading.show()
+            console.log(item)
+            // return
             let cycle_num = 60 * 10;
             // if (item.typeID == 12 || item.typeId == 13|| item.typeId == 14|| item.typeId == 15|| item.typeId == 16|| item.typeId == 17|| item.typeId == 18) {
             //     cycle_num = 60 * 60 * 24 * 30
@@ -557,11 +583,32 @@ export default {
                 return _item.id == parseInt(item.typeID)
             })
             let wealthCardInfo = nftItem[0]
-            console.log('wealthCardInfo', wealthCardInfo, 'nftItem', nftItem)
-            if (!this.wealthIsWGAIncome) {
+            this.isWGAWealth = item.is_wga
+            try {
+                if (item.is_wga) {
+                    await this.viewWGAWealthIncomeMethod()
+                    this.$loading.hide()
+                } else {
+                    await this.viewWGTWealthIncomeMethod()
+                    this.$loading.hide()
+                }
+            } catch (err) {
+                this.$loading.hide()
+                showToast('获取收益领取方式失败，请重试')
+                console.log(err)
+                return
+            }
+
+
+            console.log('wealthIncomePay', this.wealthIncomePay, item.is_wga ? 'wga财神卡' : 'wgt财神卡')
+            if (this.wealthIncomePay == 0) {
                 this.wealthIncomeMethods = [{ title: `领取 ${wealthCardInfo.award * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 0 }, { title: `领取 ${Number(wealthCardInfo.award * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
-            } else if (this.wealthIsWGAIncome) {
+            } else if (this.wealthIncomePay == 1) {
                 this.wealthIncomeMethods = [{ title: `领取 ${Number(wealthCardInfo.award * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
+                this.currentIncome = 0
+            } else if (this.wealthIncomePay == 2) {
+                this.wealthIncomeMethods = [{ title: `领取 ${wealthCardInfo.award * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 0 }]
+                this.currentIncome = 0
             }
             this.incomeCardType = 1
             this.incomeCardIndex = index

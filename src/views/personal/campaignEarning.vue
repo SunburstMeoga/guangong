@@ -80,7 +80,8 @@ export default {
             typeID: null,
             cycle_num: 10 * 60,
             typeID: null,
-            campaignCardInfo: {}
+            campaignCardInfo: {},
+            campaignIsWGAIncome: null
         }
     },
     mounted() {
@@ -263,10 +264,16 @@ export default {
             gameContractApi.campaignIncomeMethod()
                 .then(res => {
                     this.campaignIsWGAIncome = res
-                    if (!this.campaignIsWGAIncome) {
+                    if (this.campaignIsWGAIncome == 0) {
                         this.campaignIncomeMethods = [{ title: `领取 ${campaignCardInfo.travel_reward * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 0 }, { title: `领取 ${campaignCardInfo.travel_reward * 20} WGT-A 到钱包`, isWGA: 1 }]
-                    } else if (this.campaignIsWGAIncome) {
-                        this.campaignIncomeMethods = [{ title: `领取 ${campaignCardInfo.travel_reward * 20} WGT 到钱包`, isWGA: 1 }]
+                    } else if (this.campaignIsWGAIncome == 1) {
+                        this.campaignIncomeMethods = [{ title: `领取 ${campaignCardInfo.travel_reward * 20} WGT-A 到钱包`, isWGA: 1 }]
+                        this.currentIncome = 0
+
+                    } else if (this.campaignIsWGAIncome == 2) {
+                        this.campaignIncomeMethods = [{ title: `领取 ${campaignCardInfo.travel_reward * 20} WGT 到钱包`, isWGA: 0 }]
+                        this.currentIncome = 0
+
                     }
                 })
                 .catch(err => {
