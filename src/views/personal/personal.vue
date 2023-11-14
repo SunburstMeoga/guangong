@@ -46,15 +46,14 @@
                     <van-tab title="正在出征" class="pt-4">
                         <!-- <div :class="pendingList.length !== 0 ? 'columns-2 gap-x-3' : ''"> -->
                         <div>
-
                             <div v-if="campaignList.length === 0">
                                 <div class="text-icon-gray text-xl text-center">
                                     暂无数据
                                 </div>
                             </div>
-                            <div v-else>
+                            <div v-else class="flex justify-between flex-wrap w-full">
                                 <div v-for="( _item, _index ) in campaignList" :key="index"
-                                    class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
+                                    class="rounded-lg mb-2 overflow-hidden break-inside-avoid shadow-md w-6/12 px-1">
                                     <campaign-card type="pending" :nftRole="_item.nft_role" :utc="_item.time"
                                         @campaignAgain="handleCampaignAgain(_item, _index)"
                                         @receiveProceeds="handleReceiveCampaignProceeds(_item, _index)"
@@ -623,7 +622,6 @@ export default {
                     //出征
                     let typeListCampaign = []
                     console.log()
-
                     res.cards.map((item, index) => {
                         gameContractApi.cardInfo(window.ethereum.selectedAddress, index)
                             .then(time => {
@@ -632,17 +630,14 @@ export default {
                                 obj.typeID = item.nft_role > 100 ? parseInt(item.nft_role) % 100 : item.nft_role
                                 obj.tokenId = item.nft_role
                                 obj.nft_role = item.nft_role
-
                                 obj.nft_tokens = item.nft_tokens
                                 obj.cammaignAttribute = item.zhangJiao
                                 obj.count = item.count
                                 obj.income = item.income
                                 obj.outbound_tokens_id = item.outbound_tokens_id
                                 obj.cardJsIndex = item.cardJsIndex
-
                                 console.log(item.nft_tokens)
                                 if (time.nft_tokens.length !== 0) {
-                                    console.log('time----', time.nft_tokens[0].utc)
                                     obj.time = time.nft_tokens[0].utc
                                 } else {
                                     obj.time = 0
@@ -657,7 +652,7 @@ export default {
                                     })
                                 })
 
-                                this.campaignList = newArrCampaign
+                                this.campaignList = newArrCampaign.sort((a, b) => Number(a.tokenId) - Number(b.tokenId));
                             })
                             .catch(err => {
                                 console.log(err)
