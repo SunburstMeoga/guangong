@@ -115,7 +115,7 @@
                 <div v-show="isWGAWealth" class="w-11/12 text-left">
                     <div class="mb-2">本金</div>
                     <div class="buy-button text-white py-3.5 px-2 text-sm rounded mb-4">
-                        领取 222 WGT 到钱包
+                        {{ wealthCapital }}
                     </div>
                 </div>
                 <!-- <div v-show="isWGAWealth">
@@ -204,6 +204,7 @@ export default {
             wealthTime: null,
             wealthCardInfo: {},
             isWGAWealth: false,
+            wealthCapital: 0
             // assetsList: []
         }
     },
@@ -270,14 +271,15 @@ export default {
                 return
             }
             console.log(this.incomeCardType)
-            if (this.incomeCardType == 1) {
-                this.userReceiveWealth(window.ethereum.selectedAddress, this.incomeCardIndex, this.wealthIncomeMethods[this.currentIncome].isWGA)
-            } else if (this.incomeCardType == 0) {
-                this.userReceiveCampaign(window.ethereum.selectedAddress, this.incomeCardIndex, this.cardJsIndex, this.campaignIncomeMethods[this.currentIncome].isWGA)
-            } else {
-                this.$loading.hide()
-                showToast('领取失败，请重试')
-            }
+            this.userReceiveWealth(window.ethereum.selectedAddress, this.incomeCardIndex, this.wealthIncomeMethods[this.currentIncome].isWGA)
+            // if (this.incomeCardType == 1) {
+            //     this.userReceiveWealth(window.ethereum.selectedAddress, this.incomeCardIndex, this.wealthIncomeMethods[this.currentIncome].isWGA)
+            // } else if (this.incomeCardType == 0) {
+            //     this.userReceiveCampaign(window.ethereum.selectedAddress, this.incomeCardIndex, this.cardJsIndex, this.campaignIncomeMethods[this.currentIncome].isWGA)
+            // } else {
+            //     this.$loading.hide()
+            //     showToast('领取失败，请重试')
+            // }
         },
         //选择收益方式
         clickIncomeMethod(item, index) {
@@ -587,9 +589,24 @@ export default {
             try {
                 if (item.is_wga) {
                     await this.viewWGAWealthIncomeMethod()
+                    this.wealthIncomeMethods = [{ title: `领取 ${Number((wealthCardInfo.award - Number(wealthCardInfo.price)) * this.$store.state.WGTPoint).toFixed(4)} WGT 到钱包`, isWGA: 0 }, { title: `领取 ${Number((wealthCardInfo.award - Number(wealthCardInfo.price)) * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
+                    if (this.wealthIncomePay == 1) {
+                        this.wealthCapital = `领取 ${Number(wealthCardInfo.price) * 20} WGT-A 到钱包`
+                    } else if (this.wealthIncomePay == 2) {
+                        this.wealthCapital == `领取 ${Number(wealthCardInfo.price) * this.$store.state.WGTPoint} WGT 到钱包`
+                    }
                     this.$loading.hide()
                 } else {
                     await this.viewWGTWealthIncomeMethod()
+                    if (this.wealthIncomePay == 0) {
+                        this.wealthIncomeMethods = [{ title: `领取 ${wealthCardInfo.award * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 0 }, { title: `领取 ${Number(wealthCardInfo.award * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
+                    } else if (this.wealthIncomePay == 1) {
+                        this.wealthIncomeMethods = [{ title: `领取 ${Number(wealthCardInfo.award * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
+                        this.currentIncome = 0
+                    } else if (this.wealthIncomePay == 2) {
+                        this.wealthIncomeMethods = [{ title: `领取 ${wealthCardInfo.award * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 0 }]
+                        this.currentIncome = 0
+                    }
                     this.$loading.hide()
                 }
             } catch (err) {
@@ -601,15 +618,7 @@ export default {
 
 
             console.log('wealthIncomePay', this.wealthIncomePay, item.is_wga ? 'wga财神卡' : 'wgt财神卡')
-            if (this.wealthIncomePay == 0) {
-                this.wealthIncomeMethods = [{ title: `领取 ${wealthCardInfo.award * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 0 }, { title: `领取 ${Number(wealthCardInfo.award * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
-            } else if (this.wealthIncomePay == 1) {
-                this.wealthIncomeMethods = [{ title: `领取 ${Number(wealthCardInfo.award * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
-                this.currentIncome = 0
-            } else if (this.wealthIncomePay == 2) {
-                this.wealthIncomeMethods = [{ title: `领取 ${wealthCardInfo.award * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 0 }]
-                this.currentIncome = 0
-            }
+
             this.incomeCardType = 1
             this.incomeCardIndex = index
             this.cardJsIndex = null
