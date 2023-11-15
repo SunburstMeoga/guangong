@@ -1039,6 +1039,7 @@ export default {
                 })
                 .catch(err => {
                     console.log('出征失败', err)
+                    showToast('出征失败，请重试')
                     this.$loading.hide()
                 })
         },
@@ -1046,6 +1047,7 @@ export default {
         //点击出征令牌弹窗的确认按钮
         async confirmCampaign() {
             this.$loading.show()
+            this.showOutToken = false
             // const erc721ApppprovalState = await this.erc721ApppprovalState(config.game_addr)
             let erc721ApppprovalState;
             try {

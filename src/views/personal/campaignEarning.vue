@@ -100,8 +100,31 @@ export default {
         cancelPay() {
             window.history.back();
         },
-        handleGetEarning(item, index) {
+        async handleGetEarning(item, index) {
+            this.$loading.show()
+
             // item.utc = item.utc
+            try {
+                await this.viewCampaignIncomeMethod()
+                if (this.campaignIsWGAIncome == 0) {
+                    this.campaignIncomeMethods = [{ title: `领取 ${this.campaignCardInfo.travel_reward * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 2 }, { title: `领取 ${this.campaignCardInfo.travel_reward * 20} WGT-A 到钱包`, isWGA: 1 }]
+                } else if (this.campaignIsWGAIncome == 1) {
+                    this.campaignIncomeMethods = [{ title: `领取 ${this.campaignCardInfo.travel_reward * 20} WGT-A 到钱包`, isWGA: 1 }]
+                    this.currentIncome = 0
+
+                } else if (this.campaignIsWGAIncome == 2) {
+                    this.campaignIncomeMethods = [{ title: `领取 ${this.campaignCardInfo.travel_reward * 20} WGT 到钱包`, isWGA: 2 }]
+                    this.currentIncome = 0
+
+                }
+                this.$loading.hide()
+
+            } catch {
+                this.$loading.hide()
+                showToast('获取收益领取方式失败，请重试')
+                return
+            }
+
             let cycle_num = 60 * 10;
             // if (this.typeID == 1 || this.typeID == 2 || this.typeID == 3) {
             //     cycle_num = 60 * 60 * 24 * 7
@@ -120,7 +143,8 @@ export default {
                     return
                 }
             }
-            this.showIncomeMethod = true; this.cardJsIndex = index;
+            this.showIncomeMethod = true
+            this.cardJsIndex = index
             console.log(index)
             console.log(item, index)
             // return
@@ -260,25 +284,9 @@ export default {
             // }
         },
         //查询出征卡收益方式
-        viewCampaignIncomeMethod() {
-            gameContractApi.campaignIncomeMethod()
-                .then(res => {
-                    this.campaignIsWGAIncome = res
-                    if (this.campaignIsWGAIncome == 0) {
-                        this.campaignIncomeMethods = [{ title: `领取 ${campaignCardInfo.travel_reward * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 0 }, { title: `领取 ${campaignCardInfo.travel_reward * 20} WGT-A 到钱包`, isWGA: 1 }]
-                    } else if (this.campaignIsWGAIncome == 1) {
-                        this.campaignIncomeMethods = [{ title: `领取 ${campaignCardInfo.travel_reward * 20} WGT-A 到钱包`, isWGA: 1 }]
-                        this.currentIncome = 0
 
-                    } else if (this.campaignIsWGAIncome == 2) {
-                        this.campaignIncomeMethods = [{ title: `领取 ${campaignCardInfo.travel_reward * 20} WGT 到钱包`, isWGA: 0 }]
-                        this.currentIncome = 0
-
-                    }
-                })
-                .catch(err => {
-                    console.log('err', err)
-                })
+        async viewCampaignIncomeMethod() {
+            this.campaignIsWGAIncome = await gameContractApi.campaignIncomeMethod()
         },
     }
 }
