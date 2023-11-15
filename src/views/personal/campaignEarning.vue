@@ -287,6 +287,7 @@ export default {
 
         async viewCampaignIncomeMethod() {
             this.campaignIsWGAIncome = await gameContractApi.campaignIncomeMethod()
+            this.campaignIsWGAIncome = Number(this.campaignIsWGAIncome)
         },
     }
 }

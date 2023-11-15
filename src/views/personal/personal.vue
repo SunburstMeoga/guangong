@@ -489,6 +489,7 @@ export default {
         //查询wgt财神卡收益方式
         async viewWGTWealthIncomeMethod() {
             this.wealthIncomePay = await gameContractApi.wgtWealthIncomeMethod()
+            this.wealthIncomePay = Number(this.wealthIncomePay)
             // .then(res => {
             //     this.wealthIncomePay = res
 
@@ -500,6 +501,7 @@ export default {
         //查询wga财神卡收益方式
         async viewWGAWealthIncomeMethod() {
             this.wealthIncomePay = await gameContractApi.wgaWealthIncomeMethod()
+            this.wealthIncomePay = Number(this.wealthIncomePay)
             // .then(res => {
             //     this.wealthIncomePay = res
 
@@ -588,13 +590,14 @@ export default {
             let wealthCardInfo = nftItem[0]
             this.isWGAWealth = item.is_wga
             try {
+
                 if (item.is_wga) {
                     await this.viewWGAWealthIncomeMethod()
                     this.wealthIncomeMethods = [{ title: `领取 ${Number((wealthCardInfo.award - Number(wealthCardInfo.price)) * this.$store.state.WGTPoint).toFixed(4)} WGT 到钱包`, isWGA: 2 }, { title: `领取 ${Number((wealthCardInfo.award - Number(wealthCardInfo.price)) * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
                     if (this.wealthIncomePay == 1) {
                         this.wealthCapital = `领取 ${Number(wealthCardInfo.price) * 20} WGT-A 到钱包`
                     } else if (this.wealthIncomePay == 2) {
-                        this.wealthCapital == `领取 ${Number(wealthCardInfo.price) * this.$store.state.WGTPoint} WGT 到钱包`
+                        this.wealthCapital = `领取 ${Number(wealthCardInfo.price) * this.$store.state.WGTPoint} WGT 到钱包`
                     }
                     this.$loading.hide()
                 } else {
@@ -610,6 +613,7 @@ export default {
                     }
                     this.$loading.hide()
                 }
+                console.log('wealthIncomePay', this.wealthIncomePay, item.is_wga ? 'wga财神卡' : 'wgt财神卡')
             } catch (err) {
                 this.$loading.hide()
                 showToast('获取收益领取方式失败，请重试')
@@ -618,7 +622,7 @@ export default {
             }
 
 
-            console.log('wealthIncomePay', this.wealthIncomePay, item.is_wga ? 'wga财神卡' : 'wgt财神卡')
+
 
             this.incomeCardType = 1
             this.incomeCardIndex = index

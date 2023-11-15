@@ -562,7 +562,7 @@ export default {
         async hasTwoWealthCard() {
             let timeStamp = Date.now() / 1000
             let result = await gameContractApi.userInfo(window.ethereum.selectedAddress)
-            console.log('财神卡数量', result.deposits[0].utc)
+            // console.log('财神卡数量', result.deposits[0].utc)
             let within24Hours = result.deposits.filter(item => { //购买时间距离现在在24h内的财神卡
                 return timeStamp - Number(item.time) < 60 * 60 * 24
             })
