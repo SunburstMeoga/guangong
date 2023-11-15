@@ -558,13 +558,13 @@ export default {
 
         },
 
-        //是否已经有2张的财神卡
+        //24h内已经购买过2张的财神卡
         async hasTwoWealthCard() {
             let timeStamp = Date.now() / 1000
             let result = await gameContractApi.userInfo(window.ethereum.selectedAddress)
-            console.log('财神卡数量', result)
+            console.log('财神卡数量', result.deposits[0].utc)
             let within24Hours = result.deposits.filter(item => { //购买时间距离现在在24h内的财神卡
-                return timeStamp - item.utc < 60 * 60 * 24
+                return timeStamp - Number(item.time) < 60 * 60 * 24
             })
             console.log('more24H', within24Hours)
 
@@ -900,7 +900,7 @@ export default {
                     console.log('财神卡数量', wealthAcount)
                     if (wealthAcount >= 2) {
                         this.$loading.hide()
-                        showToast('当前已拥有2张财神卡，不可继续购买')
+                        showToast('过去24小时内已经购买过2张财神卡，不可继续购买')
                         return
                     }
                 } catch (e) {
