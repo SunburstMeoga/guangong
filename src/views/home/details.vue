@@ -116,8 +116,8 @@
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray" v-if="goodType == 'market'">挂单价</div>
-                                <div class="text-base text-card-content">{{ Math.ceil(Number((goodType == 'good' ?
-                                    nftInfor.price : nftAmount)).toFixed(4)) }} U</div>
+                                <div class="text-base text-card-content" v-if="goodType == 'market'">{{
+                                    Math.ceil(Number(nftAmount).toFixed(4)) }} U</div>
                             </div>
                             <div class="mb-6">
                                 <div class="mb-2 text-xs text-icon-gray">价值</div>
