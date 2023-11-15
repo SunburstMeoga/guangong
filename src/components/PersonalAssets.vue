@@ -154,7 +154,7 @@ export default {
             earningsInfo: {},
             userLevel: 0,
             totalAssets: '0',
-            poolInfor: {},
+            poolInfor: { a: 0, b: 0 },
             wgtBalance: '0',
             wgaBalance: '0',
             timer: null,
@@ -186,7 +186,12 @@ export default {
         getFilterAmount(amount) {
             const WEB3 = new Web3(window.ethereum);
             // const wgt = WEB3.utils.fromWei(await wgtAssets(window.ethereum.selectedAddress), 'ether')
-            const reslut = WEB3.utils.fromWei(amount, 'ether')
+            let reslut
+            if (Number(amount) !== 0) {
+                reslut = WEB3.utils.fromWei(amount, 'ether')
+            } else {
+                reslut = 0
+            }
             console.log(amount, reslut)
 
             return reslut
@@ -319,6 +324,9 @@ export default {
 
                 })
                 .catch(err => {
+                    this.poolInfor.a = 0
+                    this.poolInfor.b = 0
+
                     console.log('err', err)
                 })
         },
