@@ -66,15 +66,16 @@
                         </div>
                     </van-tab>
                     <van-tab title="财神卡" class="pt-4">
-                        <div :class="pendingList.length !== 0 ? 'columns-2 gap-x-3' : ''">
+                        <!-- <div :class="pendingList.length !== 0 ? 'columns-2 gap-x-3' : ''"> -->
+                        <div>
                             <div v-if="wealthList.length === 0">
                                 <div class="text-icon-gray text-xl text-center">
                                     暂无数据
                                 </div>
                             </div>
-                            <div v-else>
+                            <div v-else class="flex justify-between flex-wrap w-full">
                                 <div v-for="( _item, _index ) in wealthList" :key="index"
-                                    class="rounded-lg mb-4 overflow-hidden break-inside-avoid shadow-md">
+                                    class="rounded-lg mb-2 overflow-hidden break-inside-avoid shadow-md w-6/12 px-1">
                                     <wealth-card @receiveProceeds="handleReceiveWealthProceeds(_item, _index)"
                                         type="pending" :isWGA="_item.is_wga" :time="filterTime(_item.time)"
                                         :imageUrl="_item.infor.imageUrl" incomeMethod="领取收益" :name="_item.infor.name" />
