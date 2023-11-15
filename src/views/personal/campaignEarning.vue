@@ -138,7 +138,7 @@ export default {
                 let canCampaignAgain = timeStamp - Number(item.utc) > cycle_num
                 console.log('canCampaignAgain', Number(item.utc) + cycle_num)
                 if (!canCampaignAgain) {
-
+                    this.$loading.hide()
                     showToast(`请在${this.resultFormat(Number(item.utc) + cycle_num - timeStamp)}后领取收益`)
                     return
                 }

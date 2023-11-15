@@ -575,8 +575,8 @@ export default {
                 let canCampaignAgain = timeStamp - Number(item.time) > cycle_num
                 console.log('canCampaignAgain', Number(item.time) + cycle_num)
                 if (!canCampaignAgain) {
-
                     showToast(`${this.resultFormat(Number(item.time) + cycle_num - timeStamp)}后可领取收益`)
+                    this.$loading.hide()
                     return
                 }
             }
