@@ -96,6 +96,11 @@
                                 "internalType": "uint256",
                                 "name": "utc",
                                 "type": "uint256"
+                            },
+                            {
+                                "internalType": "bool",
+                                "name": "is_sub",
+                                "type": "bool"
                             }
                         ],
                         "internalType": "struct GameBase.JourneysExt[]",
@@ -172,6 +177,11 @@
                         "internalType": "bool",
                         "name": "is_wga",
                         "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "is_sub",
+                        "type": "bool"
                     }
                 ],
                 "internalType": "struct GameBase.NftDeposit",
@@ -194,8 +204,13 @@
         "outputs": [
             {
                 "internalType": "uint256",
-                "name": "",
+                "name": "utc",
                 "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "is_sub",
+                "type": "bool"
             }
         ],
         "stateMutability": "view",
@@ -339,6 +354,11 @@
                     {
                         "internalType": "bool",
                         "name": "is_wga",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "is_sub",
                         "type": "bool"
                     }
                 ],
@@ -857,6 +877,47 @@
             }
         ],
         "name": "set_wgt_b",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index1",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index2",
+                "type": "uint256"
+            }
+        ],
+        "name": "sub_a",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "sub_b",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
