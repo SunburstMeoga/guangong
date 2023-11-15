@@ -139,7 +139,7 @@ export default {
                 console.log('canCampaignAgain', Number(item.utc) + cycle_num)
                 if (!canCampaignAgain) {
 
-                    showToast(`请在${this.resultFormat(Number(item.utc) + cycle_num - timeStamp)}后再次出征`)
+                    showToast(`请在${this.resultFormat(Number(item.utc) + cycle_num - timeStamp)}领取收益`)
                     return
                 }
             }
