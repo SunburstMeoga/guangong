@@ -14,10 +14,10 @@
 
                 <template v-for="obj, key in childs1" :key="key">
                     <van-cell-group inset>
-                        <van-cell title="朋友地址:" :value="obj.c_addr">
+                        <van-cell title="朋友地址:" :value="obj">
                         </van-cell>
-                        <van-cell title="签名时间:" :value="timeFormat(obj.sign_utc)" />
-                        <van-cell title="绑定时间:" :value="timeFormat(obj.utc)" />
+                        <!-- <van-cell title="签名时间:" :value="timeFormat(obj.sign_utc)" />
+                        <van-cell title="绑定时间:" :value="timeFormat(obj.utc)" /> -->
                     </van-cell-group>
                     <br />
                 </template>
@@ -83,12 +83,14 @@ export default {
         this.p_address = newUrl.searchParams.get('p')
         popularContractApi.relationshipAddress(ethereum.selectedAddress)
             .then(res => {
-                this.p_address = res[0]
+                this.p_address = res.parent
+                this.childs1 = res.child
+                console.log(this.childs1)
             })
             .catch(err => {
                 console.log('err', err)
             })
-        this.load()
+        // this.load()
 
         //console.log(this.p_address)
     },
