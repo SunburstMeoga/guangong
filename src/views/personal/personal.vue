@@ -594,6 +594,7 @@ export default {
                 if (item.is_wga) {
                     await this.viewWGAWealthIncomeMethod()
                     this.wealthIncomeMethods = [{ title: `领取 ${Number((wealthCardInfo.award - Number(wealthCardInfo.price)) * this.$store.state.WGTPoint).toFixed(4)} WGT 到钱包`, isWGA: 2 }, { title: `领取 ${Number((wealthCardInfo.award - Number(wealthCardInfo.price)) * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
+                    this.currentIncome = 0
                     if (this.wealthIncomePay == 1) {
                         this.wealthCapital = `领取 ${Number(wealthCardInfo.price) * 20} WGT-A 到钱包`
                     } else if (this.wealthIncomePay == 2) {
@@ -604,6 +605,7 @@ export default {
                     await this.viewWGTWealthIncomeMethod()
                     if (this.wealthIncomePay == 0) {
                         this.wealthIncomeMethods = [{ title: `领取 ${wealthCardInfo.award * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 2 }, { title: `领取 ${Number(wealthCardInfo.award * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
+                        this.currentIncome = 0
                     } else if (this.wealthIncomePay == 1) {
                         this.wealthIncomeMethods = [{ title: `领取 ${Number(wealthCardInfo.award * 20).toFixed(4)} WGT-A 到钱包`, isWGA: 1 }]
                         this.currentIncome = 0

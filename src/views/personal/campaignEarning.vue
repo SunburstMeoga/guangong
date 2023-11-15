@@ -108,6 +108,8 @@ export default {
                 await this.viewCampaignIncomeMethod()
                 if (this.campaignIsWGAIncome == 0) {
                     this.campaignIncomeMethods = [{ title: `领取 ${this.campaignCardInfo.travel_reward * this.$store.state.WGTPoint} WGT 到钱包`, isWGA: 2 }, { title: `领取 ${this.campaignCardInfo.travel_reward * 20} WGT-A 到钱包`, isWGA: 1 }]
+                    this.currentIncome = 0
+
                 } else if (this.campaignIsWGAIncome == 1) {
                     this.campaignIncomeMethods = [{ title: `领取 ${this.campaignCardInfo.travel_reward * 20} WGT-A 到钱包`, isWGA: 1 }]
                     this.currentIncome = 0
