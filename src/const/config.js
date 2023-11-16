@@ -29,7 +29,7 @@ const config = {
   game_addr: "0xc6306cA53561eFe6B5aae67c6B6F95154c89BD97",
   map_addr: "0xCBFB7456432204178B88fF9A03233fc869A6f613",
   market_addr: "0xb5E3e2efA2217f89D8DD259C4D5b4FC7AD2F25C7",
-  help_addr: "0xF7282C524bd680A1914FF01a81baEA0e65b37A5a",
+  help_addr: "0x725867e18c85812CaB9Cc41984b88AB9f3b975C4",
   api: "https://app.dexduel.com/api/",
   imageBaseURL: "https://app.wgtone.live/api/",
   // chainId: "0xb63f",
