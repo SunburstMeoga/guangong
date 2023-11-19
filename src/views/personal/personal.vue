@@ -51,7 +51,7 @@
                                     暂无数据
                                 </div>
                             </div>
-                            <div v-else class="flex justify-between flex-wrap w-full">
+                            <div v-else class="flex justify-start flex-wrap w-full">
                                 <div v-for="( _item, _index ) in campaignList" :key="index"
                                     class="rounded-lg mb-2 overflow-hidden break-inside-avoid shadow-md w-6/12 px-1">
                                     <campaign-card type="pending" :nftRole="_item.nft_role" :utc="_item.time"
@@ -73,7 +73,7 @@
                                     暂无数据
                                 </div>
                             </div>
-                            <div v-else class="flex justify-between flex-wrap w-full">
+                            <div v-else class="flex justify-start flex-wrap w-full">
                                 <div v-for="( _item, _index ) in wealthList" :key="index"
                                     class="rounded-lg mb-2 overflow-hidden break-inside-avoid shadow-md w-6/12 px-1">
                                     <wealth-card @receiveProceeds="handleReceiveWealthProceeds(_item, _index)"
@@ -675,52 +675,97 @@ export default {
             return targetArr.join("&")
         },
         //获取用户信息
-        getUserInfo() {
-
+        async getUserInfo() {
             gameContractApi.userInfo(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('出征和财神卡', res.cards)
                     //出征
                     let typeListCampaign = []
-                    console.log()
                     res.cards.map((item, index) => {
-                        gameContractApi.cardInfo(window.ethereum.selectedAddress, index)
-                            .then(time => {
-                                console.log('time----', index, time.nft_tokens.length)
-                                let obj = {}
-                                obj.typeID = item.nft_role > 100 ? parseInt(item.nft_role) % 100 : item.nft_role
-                                obj.tokenId = item.nft_role
-                                obj.nft_role = item.nft_role
-                                obj.nft_tokens = item.nft_tokens
-                                obj.cammaignAttribute = item.zhangJiao
-                                obj.count = item.count
-                                obj.income = item.income
-                                obj.outbound_tokens_id = item.outbound_tokens_id
-                                obj.cardJsIndex = item.cardJsIndex
-                                console.log(item.nft_tokens)
-                                if (time.nft_tokens.length !== 0) {
-                                    obj.time = time.nft_tokens[0].utc
-                                } else {
-                                    obj.time = 0
+                        let obj = {}
+                        // let time = ''
+                        obj.typeID = item.nft_role > 100 ? parseInt(item.nft_role) % 100 : item.nft_role
+                        obj.tokenId = item.nft_role
+                        obj.nft_role = item.nft_role
+                        obj.nft_tokens = item.nft_tokens
+                        obj.cammaignAttribute = item.zhangJiao
+                        obj.count = item.count
+                        obj.income = item.income
+                        obj.outbound_tokens_id = item.outbound_tokens_id
+                        obj.cardJsIndex = item.cardJsIndex
+                        console.log(item.nft_tokens)
+                        // if (time.nft_tokens.length !== 0) {
+                        //     obj.time = time.nft_tokens[0].utc
+                        // } else {
+                        //     obj.time = 0
+                        // }
+                        typeListCampaign.push(obj)
+                        let newArrCampaign = typeListCampaign.filter((v) => nfts_list.some((val) => val.id == v.typeID))
+                        newArrCampaign.map(item => {
+                            nfts_list.map(_item => {
+                                if (item.typeID == _item.id) {
+                                    item.infor = _item
                                 }
-                                typeListCampaign.push(obj)
-                                let newArrCampaign = typeListCampaign.filter((v) => nfts_list.some((val) => val.id == v.typeID))
-                                newArrCampaign.map(item => {
-                                    nfts_list.map(_item => {
-                                        if (item.typeID == _item.id) {
-                                            item.infor = _item
-                                        }
-                                    })
+                            })
+                        })
+                        newArrCampaign.map((_item, timeIndex) => {
+                            gameContractApi.cardInfo(window.ethereum.selectedAddress, timeIndex)
+                                .then(res => {
+                                    if (res.nft_tokens.length !== 0) {
+                                        _item.time = res.nft_tokens[0].utc
+                                    } else {
+                                        _item.time = 0
+                                    }
                                 })
+                                .catch(err => {
 
-                                // this.campaignList = newArrCampaign.sort((a, b) => Number(a.tokenId) - Number(b.tokenId));
-                                this.campaignList = newArrCampaign
-                            })
-                            .catch(err => {
-                                console.log(err)
-                            })
-
+                                })
+                        })
+                        // this.campaignList = newArrCampaign.sort((a, b) => Number(a.tokenId) - Number(b.tokenId));
+                        this.campaignList = newArrCampaign
+                        console.log(this.campaignList)
                     })
+
+
+                    // res.cards.map((item, index) => {
+                    //     let time = gameContractApi.cardInfo(window.ethereum.selectedAddress, index)
+                    //     console.log(item, index, time)
+                    //     // .then(time => {
+                    //     //     console.log('time----', index, time.nft_tokens.length)
+                    //     //     let obj = {}
+                    //     //     obj.typeID = item.nft_role > 100 ? parseInt(item.nft_role) % 100 : item.nft_role
+                    //     //     obj.tokenId = item.nft_role
+                    //     //     obj.nft_role = item.nft_role
+                    //     //     obj.nft_tokens = item.nft_tokens
+                    //     //     obj.cammaignAttribute = item.zhangJiao
+                    //     //     obj.count = item.count
+                    //     //     obj.income = item.income
+                    //     //     obj.outbound_tokens_id = item.outbound_tokens_id
+                    //     //     obj.cardJsIndex = item.cardJsIndex
+                    //     //     console.log(item.nft_tokens)
+                    //     //     if (time.nft_tokens.length !== 0) {
+                    //     //         obj.time = time.nft_tokens[0].utc
+                    //     //     } else {
+                    //     //         obj.time = 0
+                    //     //     }
+                    //     //     typeListCampaign.push(obj)
+                    //     //     let newArrCampaign = typeListCampaign.filter((v) => nfts_list.some((val) => val.id == v.typeID))
+                    //     //     newArrCampaign.map(item => {
+                    //     //         nfts_list.map(_item => {
+                    //     //             if (item.typeID == _item.id) {
+                    //     //                 item.infor = _item
+                    //     //             }
+                    //     //         })
+                    //     //     })
+
+                    //     //     // this.campaignList = newArrCampaign.sort((a, b) => Number(a.tokenId) - Number(b.tokenId));
+                    //     //     this.campaignList = newArrCampaign
+                    //     // })
+                    //     // .catch(err => {
+                    //     //     console.log(err)
+                    //     // })
+
+                    // })
 
 
                     //财神卡
@@ -741,9 +786,7 @@ export default {
                             }
                         })
                     })
-
                     this.wealthList = newArrWealth
-                    // console.log('财神卡', this.wealthList)
                 })
                 .catch(err => {
                     console.log('err', err)
