@@ -712,6 +712,19 @@ export default {
                         this.campaignList = newArrCampaign
                         console.log(this.campaignList)
                     })
+                    this.campaignList.map((item, index) => {
+                        gameContractApi.cardInfo(window.ethereum.selectedAddress, index)
+                            .then(res => {
+                                if (res.nft_tokens.length !== 0) {
+                                    item.time = res.nft_tokens[0].utc
+                                } else {
+                                    item.time = 0
+                                }
+                            })
+                            .catch(err => {
+
+                            })
+                    })
 
 
                     // res.cards.map((item, index) => {
