@@ -59,7 +59,7 @@
                                         @receiveProceeds="handleReceiveCampaignProceeds(_item, _index)"
                                         :imageUrl="_item.infor.imageUrl" :nftToken="_item.nft_token" :count="_item.count"
                                         :income="_item.income"
-                                        :cammaignAttribute="this.getCammaignAttribute([_item.zhangJiao, _item.zhuGeLiang, _item.mengHuo, _item.yuanShu])"
+                                        :cammaignAttribute="getCammaignAttribute([_item.zhangJiao, _item.zhuGeLiang, _item.mengHuo, _item.yuanShu])"
                                         :name="_item.infor.name" />
                                 </div>
                             </div>
@@ -316,7 +316,7 @@ export default {
         },
         //点击再次出征按钮
         async handleCampaignAgain(item, index) {
-            console.log(item.typeID)
+
             this.nftInfor = item.infor
             this.cardIndex = index
             let cycle_num = 60 * 5;
@@ -332,12 +332,10 @@ export default {
                 let canCampaignAgain = timeStamp - Number(item.time) > cycle_num
                 console.log('canCampaignAgain', Number(item.time) + cycle_num)
                 if (!canCampaignAgain) {
-
                     showToast(`请在${this.resultFormat(Number(item.time) + cycle_num - timeStamp)}后再次出征`)
                     return
                 }
             }
-
 
             if (item.count >= item.infor.loss_period) {
                 showToast('当前卡已到达最大出征次数')
@@ -715,7 +713,8 @@ export default {
                                     })
                                 })
 
-                                this.campaignList = newArrCampaign.sort((a, b) => Number(a.tokenId) - Number(b.tokenId));
+                                // this.campaignList = newArrCampaign.sort((a, b) => Number(a.tokenId) - Number(b.tokenId));
+                                this.campaignList = newArrCampaign
                             })
                             .catch(err => {
                                 console.log(err)

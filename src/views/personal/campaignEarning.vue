@@ -86,8 +86,8 @@ export default {
     },
     mounted() {
         console.log(this.$route.params.cardIndex)
-        this.cardIndex = this.$route.params.cardIndex
-        this.typeID = this.$route.query.typeID
+        this.cardIndex = Number(this.$route.params.cardIndex)
+        this.typeID = Number(this.$route.query.typeID)
         const nftItem = nfts_list.filter(item => {
             return item.id == parseInt(this.typeID)
         })

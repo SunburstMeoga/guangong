@@ -390,7 +390,7 @@ export default {
         getUserInfo() {
             gameContractApi.userInfo(window.ethereum.selectedAddress)
                 .then(res => {
-                    // console.log('用户收益详情', res)
+                    console.log('用户收益详情', res.poolTeam)
                     // this.earningsInfo.poolTeam = this.getFilterAmount(res.poolTeam)
                     const WEB3 = new Web3(window.ethereum);
 
