@@ -232,16 +232,8 @@ export default {
             //     console.log('err', err)
             // })
         },
-        async handlePoolEarnings() {
-            this.$loading.show()
-            let isReceiveWGA = await this.viewIncomeMethod()
-            this.$loading.hide()
-            if (isReceiveWGA) {
-                this.userReceivePoolEarnings()
-            } else {
-                this.showIncomeMethod = true
-                this.$loading.hide()
-            }
+        handlePoolEarnings() {
+            this.userReceivePoolEarnings()
         },
         //领取总奖池收益
         async userReceivePoolEarnings() {
