@@ -708,19 +708,6 @@ export default {
                                 }
                             })
                         })
-                        newArrCampaign.map((_item, timeIndex) => {
-                            gameContractApi.cardInfo(window.ethereum.selectedAddress, timeIndex)
-                                .then(res => {
-                                    if (res.nft_tokens.length !== 0) {
-                                        _item.time = res.nft_tokens[0].utc
-                                    } else {
-                                        _item.time = 0
-                                    }
-                                })
-                                .catch(err => {
-
-                                })
-                        })
                         // this.campaignList = newArrCampaign.sort((a, b) => Number(a.tokenId) - Number(b.tokenId));
                         this.campaignList = newArrCampaign
                         console.log(this.campaignList)
