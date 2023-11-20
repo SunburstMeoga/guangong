@@ -127,7 +127,7 @@ export default {
                 return
             }
 
-            let cycle_num = 60 * 10;
+            let cycle_num = 60 * 60;
             // if (this.typeID == 1 || this.typeID == 2 || this.typeID == 3) {
             //     cycle_num = 60 * 60 * 24 * 7
             // } else if (this.typeID == 4 || this.typeID == 5 || this.typeID == 6 || this.typeID == 7 || this.typeID == 8) {

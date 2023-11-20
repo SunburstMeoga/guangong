@@ -319,7 +319,7 @@ export default {
 
             this.nftInfor = item.infor
             this.cardIndex = index
-            let cycle_num = 60 * 5;
+            let cycle_num = 60 * 30;
             // if (item.typeID == 1 || item.typeId == 2 || item.typeId == 3) {
             //     cycle_num = 60 * 60 * 24 * 7
             // } else if (item.typeID == 4 || item.typeId == 5 || item.typeId == 6 || item.typeId == 7 || item.typeId == 8) {
@@ -554,7 +554,7 @@ export default {
             this.$loading.show()
             console.log(item)
             // return
-            let cycle_num = 60 * 10;
+            let cycle_num = 60 * 60;
             // if (item.typeID == 12 || item.typeId == 13|| item.typeId == 14|| item.typeId == 15|| item.typeId == 16|| item.typeId == 17|| item.typeId == 18) {
             //     cycle_num = 60 * 60 * 24 * 30
             // } else if (item.typeID == 19) {
