@@ -30,7 +30,7 @@ const config = {
   map_addr: "0xe61218D6c05337a50677EB1Fc691e26C1496F9dA",
   market_addr: "0x91D5188f56F0bdd91c5915012745BcB967bD4a2E",
   help_addr: "0xa5e3BFE07f8E0a3f206B155A242c7d4eD9DA5114",
-  api: "https://app.dexduel.com/api/",
+  api: "https://app.wgtone.live/api/",
   rpc: "https://rpc.pgchain.org",
   imageBaseURL: "https://app.wgtone.live/api/",
   // chainId: "0xb63f",
