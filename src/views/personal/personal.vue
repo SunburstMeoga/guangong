@@ -210,7 +210,7 @@ export default {
         }
     },
     mounted() {
-        if ('window.ethereum.selectedAddress') {
+        if (window.ethereum.selectedAddress) {
             this.getPersonNfts()
             this.getPendingOrderList()
             this.getUserInfo()
@@ -265,18 +265,18 @@ export default {
                 });
                 return
             }
-            let havePreAddr = await this.isBeenPromoted('window.ethereum.selectedAddress')
+            let havePreAddr = await this.isBeenPromoted(window.ethereum.selectedAddress)
             if (!havePreAddr) {
                 this.$loading.hide()
                 showToast('当前地址无上级地址，不可领取')
                 return
             }
             console.log(this.incomeCardType)
-            this.userReceiveWealth('window.ethereum.selectedAddress', this.incomeCardIndex, this.wealthIncomeMethods[this.currentIncome].isWGA)
+            this.userReceiveWealth(window.ethereum.selectedAddress, this.incomeCardIndex, this.wealthIncomeMethods[this.currentIncome].isWGA)
             // if (this.incomeCardType == 1) {
-            //     this.userReceiveWealth('window.ethereum.selectedAddress', this.incomeCardIndex, this.wealthIncomeMethods[this.currentIncome].isWGA)
+            //     this.userReceiveWealth(window.ethereum.selectedAddress, this.incomeCardIndex, this.wealthIncomeMethods[this.currentIncome].isWGA)
             // } else if (this.incomeCardType == 0) {
-            //     this.userReceiveCampaign('window.ethereum.selectedAddress', this.incomeCardIndex, this.cardJsIndex, this.campaignIncomeMethods[this.currentIncome].isWGA)
+            //     this.userReceiveCampaign(window.ethereum.selectedAddress, this.incomeCardIndex, this.cardJsIndex, this.campaignIncomeMethods[this.currentIncome].isWGA)
             // } else {
             //     this.$loading.hide()
             //     showToast('领取失败，请重试')
@@ -292,7 +292,7 @@ export default {
         },
         //检查erc721授权状态
         async erc721ApppprovalState(contractAddress) {
-            return await nftContractApi.isApprovedAll('window.ethereum.selectedAddress', contractAddress)
+            return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)
         },
         //erc721合约授权操作
         async erc721ContractApppproval(contractAddress) {
@@ -302,12 +302,12 @@ export default {
         //获取当前出征卡能领取的金额
         async getCampaignReceiveAmount(nftIndex) {
             console.log(nftIndex)
-            const result = await helpContractApi.wealthEarningsInfor('window.ethereum.selectedAddress', nftIndex)
+            const result = await helpContractApi.wealthEarningsInfor(window.ethereum.selectedAddress, nftIndex)
             return result
         },
         //获取当前出征的角色卡需要的出征令牌存货
         async campaignNeededOutboundTokens(outbound_tokens_id) {
-            const result = await outboundTokens('window.ethereum.selectedAddress', outbound_tokens_id)
+            const result = await outboundTokens(window.ethereum.selectedAddress, outbound_tokens_id)
             if (result.data.length !== 0) {
                 this.outTokenList = result.data
                 return this.outTokenList
@@ -345,7 +345,7 @@ export default {
             //     showToast('请在xx小时后进行出征')
             //     return
             // }
-            if (!'window.ethereum.selectedAddress') {
+            if (!window.ethereum.selectedAddress) {
                 showToast('请先连接钱包')
                 return
             }
@@ -374,7 +374,7 @@ export default {
         },
         //检查erc721授权状态
         async erc721ApppprovalState(contractAddress) {
-            return await nftContractApi.isApprovedAll('window.ethereum.selectedAddress', contractAddress)
+            return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)
         },
         //再次出征
         async userCampaignAgain() {
@@ -676,7 +676,7 @@ export default {
         },
         //获取用户信息
         async getUserInfo() {
-            gameContractApi.userInfo('window.ethereum.selectedAddress')
+            gameContractApi.userInfo(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('出征和财神卡', res.cards)
                     //出征
@@ -713,7 +713,7 @@ export default {
                         console.log(this.campaignList)
                     })
                     this.campaignList.map((item, index) => {
-                        gameContractApi.cardInfo('window.ethereum.selectedAddress', index)
+                        gameContractApi.cardInfo(window.ethereum.selectedAddress, index)
                             .then(res => {
                                 if (res.nft_tokens.length !== 0) {
                                     item.time = res.nft_tokens[0].utc
@@ -728,7 +728,7 @@ export default {
 
 
                     // res.cards.map((item, index) => {
-                    //     let time = gameContractApi.cardInfo('window.ethereum.selectedAddress', index)
+                    //     let time = gameContractApi.cardInfo(window.ethereum.selectedAddress, index)
                     //     console.log(item, index, time)
                     //     // .then(time => {
                     //     //     console.log('time----', index, time.nft_tokens.length)
@@ -794,7 +794,7 @@ export default {
         },
         //获取用户的挂单列表
         getPendingOrderList() {
-            pendingOrderList('window.ethereum.selectedAddress')
+            pendingOrderList(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('挂单', res)
                     let typeList = []
@@ -821,7 +821,7 @@ export default {
         },
         //用户资产列表
         getPersonNfts() {
-            ownerList('window.ethereum.selectedAddress')
+            ownerList(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('res', res)
                     let typeList = []

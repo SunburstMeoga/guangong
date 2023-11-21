@@ -2,7 +2,7 @@
     <div>
         <div class="w-full pt-24 mb-10" @click="viewGoods">
             <div class="w-11/12 ml-auto mr-auto">
-                <module-title :titleWord="'官方发售'" />
+                <module-title :titleWord="'首页'" />
             </div>
         </div>
 

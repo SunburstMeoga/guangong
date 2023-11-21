@@ -994,7 +994,7 @@ export default {
                     window.history.back();
                 })
                 .catch(err => {
-                    showToast('合成成功')
+                    showToast('合成失败')
 
                     console.log('合成失败', err)
                     this.$loading.hide()
