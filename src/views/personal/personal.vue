@@ -554,22 +554,27 @@ export default {
             this.$loading.show()
             console.log(item)
             // return
-            let cycle_num = 60 * 60;
-            // if (item.typeID == 12 || item.typeId == 13|| item.typeId == 14|| item.typeId == 15|| item.typeId == 16|| item.typeId == 17|| item.typeId == 18) {
-            //     cycle_num = 60 * 60 * 24 * 30
-            // } else if (item.typeID == 19) {
-            //     cycle_num = 60 * 60 * 24 * 45
-            // } else if (item.typeID == 10) {
-            //     cycle_num = 60 * 60 * 24 * 7
-            // } else if (item.typeID == 11) {
-            //     cycle_num = 60 * 60 * 24 * 15
-            // } else if (item.typeID == 20) {
-            //     cycle_num = 60 * 60 * 24 * 60
-            // } else if (item.typeID == 21) {
-            //     cycle_num = 60 * 60 * 24 * 90
-            // } else if (item.typeID == 22) {
-            //     cycle_num = 60 * 60 * 24 * 180
-            // }
+            let cycle_num
+            if (item.typeID == 10 || item.typeId == 11 || item.typeId == 12) {
+                cycle_num = 60 * 60;
+            } else {
+                if (item.typeID == 12 || item.typeId == 13 || item.typeId == 14 || item.typeId == 15 || item.typeId == 16 || item.typeId == 17 || item.typeId == 18) {
+                    cycle_num = 60 * 60 * 24 * 30
+                } else if (item.typeID == 19) {
+                    cycle_num = 60 * 60 * 24 * 45
+                } else if (item.typeID == 10) {
+                    cycle_num = 60 * 60 * 24 * 7
+                } else if (item.typeID == 11) {
+                    cycle_num = 60 * 60 * 24 * 15
+                } else if (item.typeID == 20) {
+                    cycle_num = 60 * 60 * 24 * 60
+                } else if (item.typeID == 21) {
+                    cycle_num = 60 * 60 * 24 * 90
+                } else if (item.typeID == 22) {
+                    cycle_num = 60 * 60 * 24 * 180
+                }
+            }
+
 
             if (item.time !== 0) {
                 let timeStamp = Date.now() / 1000

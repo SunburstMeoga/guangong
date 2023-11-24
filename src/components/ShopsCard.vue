@@ -4,7 +4,7 @@
             <swiper-slide v-for="(item, index) in shopsList" :key="index">
                 <div class="w-full h-full relative">
                     <div>
-                        <img class="w-full h-full absolute left-0 top-0" :src="item.imageUrl" alt="">
+                        <img class="w-full h-full absolute left-0 top-0" v-lazy="item.imageUrl" alt="">
                     </div>
                     <div class="absolute left-4 bottom-4">
                         <div class="w-8 h-8 rounded-full overflow-hidden bg-theme-primary">

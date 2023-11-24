@@ -2,7 +2,7 @@
     <div>
         <div class="relative">
             <div>
-                <img :src="imageUrl" alt="">
+                <img v-lazy="imageUrl" alt="">
             </div>
             <!-- <div
                 class="absolute top-0 right-0 rounded-bl-lg py-1 px-4 backdrop-blur-sm text-xs text-assets-word bg-black/50">

@@ -100,6 +100,7 @@ export default {
         }
     },
     async mounted() {
+        this.$loading.hide()
         nfts_list.map(item => {
             this.productList.push(item)
         })

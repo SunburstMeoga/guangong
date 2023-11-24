@@ -2,7 +2,7 @@
     <div class="rounded-lg overflow-hidden">
         <div class="bg-black flex justify-center items-center w-full">
             <div class="w-full">
-                <img :src="imageUrl" alt="">
+                <img v-lazy="imageUrl" alt="">
             </div>
         </div>
         <div class="w-full bg-card-introduce px-4 py-2">

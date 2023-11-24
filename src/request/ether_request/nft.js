@@ -37,6 +37,40 @@ if (window.ethereum) {
       // const result = await tx.wait();
       return result;
     },
+
+    //查询查看某个nft每天的设置产量
+    nftDaySet: async function (nftType) {
+      const result = await NFTTRADE.day_set(nftType);
+      // const result = await tx.wait();
+      return result;
+    },
+    //查看nft设置的总产量
+    nftTotalSet: async function (nftType) {
+      console.log(NFTTRADE);
+      const result = await NFTTRADE.total_set(nftType);
+      // const result = await tx.wait();
+      return result;
+    },
+    // nftTotalSet: async function (nftType) {
+    //   const result = await NFTTRADE.total_set(nftType);
+    //   // const result = await tx.wait();
+    //   return result;
+    // },
+    // 查看nft今天的挖出量 day_count
+    nftDayCount: async function (nftType) {
+      const result = await NFTTRADE.day_count(
+        nftType,
+        new Date().getTime() % (1000 * 3600 * 24)
+      );
+      // const result = await tx.wait();
+      return result;
+    },
+    //查看nft⼀共挖出量，设置总量减掉该值就是剩余的产量
+    nftTotalCount: async function (nftType) {
+      const result = await NFTTRADE.total_count(nftType);
+      // const result = await tx.wait();
+      return result;
+    },
   };
 }
 

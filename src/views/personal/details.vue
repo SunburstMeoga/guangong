@@ -12,7 +12,7 @@
                 <div
                     class="relative ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-4">
                     <div class="w-80 h-80">
-                        <img :src="nftInfor.imageUrl" alt="">
+                        <img v-lazy="nftInfor.imageUrl" alt="">
                     </div>
                     <div
                         class="absolute top-0 left-0 rounded-br-xl inline-block px-2 py-1 bg-success-undertone text-sm text-success-word">
@@ -436,7 +436,7 @@ export default {
     mounted() {
         this.assetState = this.$route.name
         if (this.$route.params.tokenId) {
-            this.tokenId = this.$route.params.tokenId
+            this.tokenId = Number(this.$route.params.tokenId)
         }
         if (this.assetState === 'assets') {
             this.pageTitle = '资产详情'
@@ -914,7 +914,7 @@ export default {
             return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)
         },
         //获取当前用户拥有的某个类型的nft
-        getUserAcountFromNFTType() {
+        async getUserAcountFromNFTType() {
             if (!window.ethereum.selectedAddress) {
                 showToast('请先连接钱包')
                 return
@@ -922,29 +922,54 @@ export default {
             console.log(this.nftInfor.upgrade_requirements)
             let syntheticMaterials = []
             this.$loading.show()
-            this.nftInfor.next_need_nfts.map(item => {
-                acountFromNFTType(window.ethereum.selectedAddress, item)
-                    .then(res => {
-                        this.needArr.push(res.data)
-                        if (res.data.length === 0) {
-                            this.$loading.hide()
-                            showToast(`合成需要：${this.nftInfor.upgrade_requirements}`)
-                            return
-                        }
-                        console.log('needArr', this.needArr)
-                        // syntheticMaterials = []
-                        if (this.needArr.length == this.nftInfor.next_need_nfts.length) {
-                            this.needArr.map((_item, _index) => {
-                                syntheticMaterials[_index] = _item[0].tokenId
-                            })
-                            this.updataNFT(syntheticMaterials)
-                            console.log(syntheticMaterials)
-                        }
-                    })
-                    .catch(err => {
-                        console.log('err', err)
-                    })
+            for (let i = 0; i < this.nftInfor.next_need_nfts.length; i++) {
+                try {
+                    let result = await acountFromNFTType(window.ethereum.selectedAddress, this.nftInfor.next_need_nfts[i])
+                    if (result.data.length == 0) {
+                        this.$loading.hide()
+
+                        showToast(`合成需要：${this.nftInfor.upgrade_requirements}`)
+                        return
+                    }
+                    console.log('item', result.data)
+                    this.needArr[i] = result.data
+                } catch (err) {
+                    console.log(err)
+                    this.$loading.hide()
+                    showToast('获取合成所需要的合成卡失败')
+                    return
+                }
+            }
+            this.needArr.map((_item, _index) => {
+                console.log(_item)
+                syntheticMaterials[_index] = _item[0].tokenId
+                syntheticMaterials[0] = this.tokenId
+
             })
+            this.updataNFT(syntheticMaterials)
+            // this.nftInfor.next_need_nfts.map(item => {
+            //     acountFromNFTType(window.ethereum.selectedAddress, item)
+            //         .then(res => {
+            //             this.needArr.push(res.data)
+            //             if (res.data.length === 0) {
+            //                 this.$loading.hide()
+            //                 showToast(`合成需要：${this.nftInfor.upgrade_requirements}`)
+            //                 return
+            //             }
+            //             console.log('needArr', this.needArr)
+            //             // syntheticMaterials = []
+            //             if (this.needArr.length == this.nftInfor.next_need_nfts.length) {
+            //                 this.needArr.map((_item, _index) => {
+            //                     syntheticMaterials[_index] = _item[0].tokenId
+            //                 })
+            //                 this.updataNFT(syntheticMaterials)
+            //                 console.log(syntheticMaterials)
+            //             }
+            //         })
+            //         .catch(err => {
+            //             console.log('err', err)
+            //         })
+            // })
         },
         //合成nft
         async updataNFT(syntheticMaterials) {
@@ -984,7 +1009,6 @@ export default {
                 });
                 return
             }
-            console.log(syntheticMaterials, this.nftInfor.next_nft_id)
             // return
             gameContractApi.synthesisNFT(syntheticMaterials, this.nftInfor.next_nft_id)
                 .then((res) => {

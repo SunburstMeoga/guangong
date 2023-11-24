@@ -12,7 +12,7 @@
                 <div
                     class="relative ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-4">
                     <div class="w-80 h-80">
-                        <img :src="nftInfor.imageUrl" alt="">
+                        <img v-lazy="nftInfor.imageUrl" alt="">
                     </div>
                     <div
                         class="absolute top-0 left-0 rounded-br-xl inline-block px-2 py-1 bg-success-undertone text-sm text-success-word">
@@ -243,10 +243,13 @@ import gameContractApi from '@/request/ether_request/game'
 import wgtContractApi from '@/request/ether_request/wgt'
 import wgaContractApi from '@/request/ether_request/wga'
 import marketContractApi from '@/request/ether_request/market'
+import nftContractApi from '@/request/ether_request/nft'
 import { nftDetails, buyMarketNFTApi } from '@/request/api_request'
 import { filterAmount } from '@/utils/filterValue';
 import usdtContractApi from '@/request/ether_request/usdt'
+
 import Web3 from "web3";
+
 
 export default {
     components: { [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem, [Popup.name]: Popup },
@@ -740,8 +743,8 @@ export default {
                 showToast('购买NFT所需的WGT或WGT-A不足')
                 return
             }
-            this.payWayList[0] = { name: 'WGT支付', amount: this.getFilterAmount(wgtBalance), isWgt: 0, isInsufficientBalance: wgtIsInsufficientBalance }
-            this.payWayList[1] = { name: 'WGT-A支付', amount: this.getFilterAmount(wgaBalance), isWgt: 1, isInsufficientBalance: wgaIsInsufficientBalance }
+            this.payWayList[0] = { name: 'WGT支付', amount: Number(this.getFilterAmount(wgtBalance)).toFixed(4), isWgt: 0, isInsufficientBalance: wgtIsInsufficientBalance }
+            this.payWayList[1] = { name: 'WGT-A支付', amount: Number(this.getFilterAmount(wgaBalance)).toFixed(4), isWgt: 1, isInsufficientBalance: wgaIsInsufficientBalance }
             this.$loading.hide()
             this.showPayWay = true
         },
@@ -921,11 +924,31 @@ export default {
                 this.payFromWGT()
             }
         },
+        //判断当前nft是否还有存量
+        async nftHaveStockpiles(typeId) {
+            return (await nftContractApi.nftTotalSet(typeId) >= await nftContractApi.nftTotalCount(typeId)) || (await nftContractApi.nftDayCount(typeId) >= await nftContractApi.nftDaySet(typeId))
+        },
         //购买一手nft函数
-        buyFromMall() {
+        async buyFromMall() {
             console.log(this.nftInfor.id)
-            console.log('good', this.goodType)
+            // let result = await gameContractApi.userInfo(window.ethereum.selectedAddress)
+            // console.log(nftContractApi, gameContractApi)
+            // return
+            //判断
             this.$loading.show()
+            // try {
+            //     let isInsufficientInventory = await this.nftHaveStockpiles(this.nftInfor.id)
+            //     if (isInsufficientInventory) {
+            //         this.$loading.hide()
+            //         showToast(`${this.nftInfor.name}已售罄`)
+            //         return
+            //     }
+            // } catch (err) {
+            //     this.$loading.hide()
+            //     console.log(err)
+            //     showToast(`获取${this.nftInfor.name}库存失败，请重试。`)
+            //     return
+            // }
             gameContractApi.buy(this.nftInfor.id)
                 .then((res) => {
                     this.$loading.hide()

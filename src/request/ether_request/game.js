@@ -64,34 +64,31 @@ if (window.ethereum) {
     },
     //购买nft
     buy: async function (nftType) {
-      const tx = await GAMETRADE.buy(nftType);
+      const tx = await GAMETRADE.buy(nftType, {
+        gasLimit: 7999999,
+      });
       const result = await tx.wait();
       console.log(result);
       return result;
     },
     //合成nft
     synthesisNFT: async function (nftsType, targetType) {
-      const tx = await GAMETRADE.upgradeRole(nftsType, targetType, {
-        gasLimit: 7999999,
-      });
+      console.log("升级参数-----", nftsType, targetType);
+      const tx = await GAMETRADE.upgradeRole(nftsType, targetType);
       const result = await tx.wait();
       console.log(result);
       return result;
     },
     //出征
     setOff: async function (nftId, expeditionOrder) {
-      const tx = await GAMETRADE.create(nftId, expeditionOrder, {
-        gasLimit: 7999999,
-      });
+      const tx = await GAMETRADE.create(nftId, expeditionOrder);
       const result = await tx.wait();
       console.log(result);
       return result;
     },
     //再次出征
     userCampaignAgain: async function (cardIndex, expeditionOrder) {
-      const tx = await GAMETRADE.nextGame(cardIndex, expeditionOrder, {
-        gasLimit: 7999999,
-      });
+      const tx = await GAMETRADE.nextGame(cardIndex, expeditionOrder);
       const result = await tx.wait();
       console.log(result);
       return result;
@@ -132,7 +129,9 @@ if (window.ethereum) {
     //用户领取财神卡收益
     wealthEarnings: async function (walletAddress, cardIndex, isWga) {
       console.log(walletAddress, cardIndex, isWga);
-      const tx = await GAMETRADE.income2(walletAddress, cardIndex, isWga);
+      const tx = await GAMETRADE.income2(walletAddress, cardIndex, isWga, {
+        gasLimit: 7999999,
+      });
       const result = await tx.wait();
       return result;
     },

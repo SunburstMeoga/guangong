@@ -175,7 +175,7 @@ export default {
                 this.getPoolInfor()
                 this.$loading.hide()
             } else {
-                this.$loading.show()
+                this.$loading.hide()
             }
         }, 2000);
     },
@@ -304,6 +304,7 @@ export default {
         },
         //获取奖金池信息
         getPoolInfor() {
+            this.$loading.hide()
             helpContractApi.poolEarningsInfor(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log('奖池信息', res)
@@ -313,6 +314,7 @@ export default {
                     // this.poolInfor.b = res.b
                     this.poolInfor.a = this.getFilterAmount(res.a)
                     this.poolInfor.b = this.getFilterAmount(res.b)
+                    this.$loading.hide()
 
                 })
                 .catch(err => {
@@ -320,6 +322,8 @@ export default {
                     this.poolInfor.b = 0
 
                     console.log('err', err)
+                    this.$loading.hide()
+
                 })
         },
         async getWGTFromUSDT(value) {
@@ -331,19 +335,28 @@ export default {
         },
         async getUserTotalAssets() {
             const WEB3 = new Web3(window.ethereum);
-            let wgt = await wgtContractApi.wgtAssets(window.ethereum.selectedAddress)
-            let wga = await wgaContractApi.wgaAssets(window.ethereum.selectedAddress)
-            this.wgtBalance = WEB3.utils.fromWei(wgt, 'ether')
-            this.wgaBalance = WEB3.utils.fromWei(wga, 'ether')
-            let WGTPoint = await this.getWGTFromUSDT(100)
-            WGTPoint = Number(WGTPoint) / 100
-            let totalAssets = Number(this.wgtBalance) / WGTPoint + (Number(this.wgaBalance) / 20)
-            this.totalAssets = Number(totalAssets).toFixed(4)
-            this.wgtBalance = Number(this.wgtBalance).toFixed(4)
-            this.wgaBalance = Number(this.wgaBalance).toFixed(4)
+            this.$loading.hide()
+            try {
+                let wgt = await wgtContractApi.wgtAssets(window.ethereum.selectedAddress)
+                let wga = await wgaContractApi.wgaAssets(window.ethereum.selectedAddress)
+                this.wgtBalance = WEB3.utils.fromWei(wgt, 'ether')
+                this.wgaBalance = WEB3.utils.fromWei(wga, 'ether')
+                let WGTPoint = await this.getWGTFromUSDT(100)
+                WGTPoint = Number(WGTPoint) / 100
+                let totalAssets = Number(this.wgtBalance) / WGTPoint + (Number(this.wgaBalance) / 20)
+                this.totalAssets = Number(totalAssets).toFixed(4)
+                this.wgtBalance = Number(this.wgtBalance).toFixed(4)
+                this.wgaBalance = Number(this.wgaBalance).toFixed(4)
 
-            console.log('wgtBalance', wgt, this.wgtBalance / WGTPoint, wga, Number(this.wgaBalance) / 20)
-            console.log('WGTPoint', WGTPoint)
+                console.log('wgtBalance', wgt, this.wgtBalance / WGTPoint, wga, Number(this.wgaBalance) / 20)
+                console.log('WGTPoint', WGTPoint)
+                this.$loading.hide()
+
+            } catch (err) {
+                console.log(err)
+                showToast('获取资产错误，请重试')
+                this.$loading.hide()
+            }
 
         },
         getUserIncome() {
@@ -359,9 +372,13 @@ export default {
 
                     this.$store.commit('updateUserInfor', obj)
                     console.log(this.$store.state.userInfor)
+                    this.$loading.hide()
+
                 })
                 .catch(err => {
                     console.log('err', err)
+                    this.$loading.hide()
+
                 })
         },
         //用户贡献值对应大使
@@ -396,9 +413,11 @@ export default {
 
                     this.earningsInfo.poolTeam = res.poolTeam
                     this.earningsInfo.poolTeam = WEB3.utils.fromWei(res.poolTeam, 'ether')
+                    this.$loading.hide()
 
                 })
                 .catch(err => {
+                    this.$loading.hide()
                     console.log('err', err)
                 })
         },

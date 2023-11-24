@@ -24,7 +24,7 @@
 
                 </div>
                 <div class="w-11/12 mr-auto ml-auto text-theme-primary text-xs pb-4">
-                    *所有发放的奖励收益均已发放时USDT和WGT的转换关系为准
+                    *所有发放的奖励收益均以发放时USDT和WGT的转换关系为准
                 </div>
                 <!-- <div class="pt-4">
                    
