@@ -29,6 +29,7 @@ const nfts_list = [
     loss_period: 135,
     circulation: 800,
     travel_reward: 159,
+    hasStage: false,
   },
   {
     id: 2,
@@ -49,6 +50,7 @@ const nfts_list = [
     loss_period: 150,
     circulation: 0,
     travel_reward: 162,
+    hasStage: false,
   },
   {
     id: 3,
@@ -69,6 +71,81 @@ const nfts_list = [
     loss_period: 165,
     circulation: 0,
     travel_reward: 166.5,
+    hasStage: true,
+    targetRoleList: [
+      {
+        title: "桃园结义",
+        id: 4,
+        syntheticProps: [
+          { name: "武圣", id: 3 },
+          { name: "张飞", id: 36 },
+          { name: "刘备", id: 37 },
+        ],
+        syntheticPropsWord: "武圣 + 张飞 + 刘备",
+      },
+      {
+        title: "水淹七军",
+        id: 5,
+        syntheticProps: [
+          { name: "武圣", id: 3 },
+          { name: "曹仁", id: 38 },
+          { name: "于禁", id: 39 },
+          { name: "庞德", id: 40 },
+        ],
+        syntheticPropsWord: "武圣 + 曹仁 + 于禁 + 庞德",
+      },
+      {
+        title: "五虎上将",
+        id: 6,
+        syntheticProps: [
+          { name: "武圣", id: 3 },
+          { name: "张飞", id: 36 },
+          { name: "赵云", id: 41 },
+          { name: "马超", id: 42 },
+          { name: "黄忠", id: 43 },
+        ],
+        syntheticPropsWord: "武圣 + 张飞 + 赵云 + 马超 + 黄忠",
+      },
+      {
+        title: "威震华夏",
+        id: 7,
+        syntheticProps: [
+          { name: "武圣", id: 3 },
+          { name: "华雄", id: 44 },
+          { name: "颜良", id: 45 },
+          { name: "文丑", id: 46 },
+          { name: "庞德", id: 40 },
+        ],
+        syntheticPropsWord: "武圣 + 华雄 + 颜良 + 文丑 + 庞德",
+      },
+      {
+        title: "千里单骑",
+        id: 8,
+        syntheticProps: [
+          { name: "武圣", id: 3 },
+          { name: "孔秀", id: 48 },
+          { name: "孟坦", id: 49 },
+          { name: "韩福", id: 50 },
+          { name: "卞喜", id: 51 },
+          { name: "王植", id: 52 },
+          { name: "秦琪", id: 53 },
+          { name: "蔡阳", id: 54 },
+        ],
+        syntheticPropsWord:
+          "武圣 + 孔秀 + 孟坦 + 韩福 + 卞喜 + 王植 + 秦琪 + 蔡阳",
+      },
+      {
+        title: "忠义仁勇武财神",
+        id: 9,
+        syntheticProps: [
+          { name: "武圣", id: 3 },
+          { name: "忠", id: 55 },
+          { name: "义", id: 56 },
+          { name: "仁", id: 57 },
+          { name: "勇", id: 58 },
+        ],
+      },
+    ],
   },
   //nft角色卡百战封神阶段
   {

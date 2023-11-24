@@ -120,7 +120,7 @@ export default {
                 for (let i = 0; i < this.productList.length; i++) {
                     this.productList[i].circulation = await nftContractApi.nftTotalSet(this.productList[i].id)
                     this.productList[i].leftover = await nftContractApi.nftTotalSet(this.productList[i].id) - await nftContractApi.nftTotalCount(this.productList[i].id)
-
+                    // console.log(this.productList)
                 }
                 this.showSkeleton = false
             } catch (err) {

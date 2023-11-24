@@ -370,7 +370,28 @@
             <van-picker title="请选择地址" :columns="lowerAddressList" confirm-button-text @confirm="confirmAddress"
                 @cancel="showAddressSelect = false, showPropsCard = true" />
         </van-popup>
+        <!-- 武圣角色卡要合成的目标角色卡列表弹窗 -->
+        <van-popup v-model:show="showSyntheticTargetList">
+            <div class="text-card-content bg-cover-content flex w-80 pb-6 flex-col justify-start items-center">
+                <div class=" leading-6 font-helvetica-neue-bold text-base py-6">请选择要升级成哪张角色卡</div>
+                <div @click="clickTargetRole(index)" v-for="(item, index) in nftInfor.targetRoleList" :key="index"
+                    class="mb-4 w-11/12 break-all text-tips-word  bg-bottom-content flex justify-evenly items-center py-3.5 px-2 text-essentials-white text-sm rounded"
+                    :class="currentTargetRole === index ? 'buy-button text-white' : ''">
+                    {{ item.title }}
+                </div>
+                <div class="flex w-11/12 justify-between items-center mt-6">
 
+                    <div class="w-4/12  border border-language-content text flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="showSyntheticTargetList = false">
+                        取消
+                    </div>
+                    <div class="w-7/12 bg-language-content flex justify-evenly items-center py-3.5 text-essentials-white text-sm rounded "
+                        @click="handleSyntheticTarget">
+                        确认合成该角色卡
+                    </div>
+                </div>
+            </div>
+        </van-popup>
         <!-- 当前选择的地址下正在出征nft弹窗 -->
         <van-popup v-model:show="showCardFromAddress" round position="bottom" :close-on-click-overlay="false">
             <van-picker title="请选择NFT" :columns="expeditionCards" confirm-button-text @confirm="handleConfirmEffectCard"
@@ -430,7 +451,10 @@ export default {
             expeditionCards: [],
             loadingExpeditionCards: false,
             showCardFromAddress: false,
-            needArr: []
+            needArr: [],
+            showSyntheticTargetList: false,
+            syntheticTargetList: [],
+            currentTargetRole: 0
         }
     },
     mounted() {
@@ -473,6 +497,10 @@ export default {
                 return
             }
             this.showCardFromAddress = true
+        },
+        //点击武圣要合成的角色卡
+        clickTargetRole(index) {
+            this.currentTargetRole = index
         },
         //点击选中的作用nft
         handleConfirmEffectCard(value) {
@@ -913,10 +941,58 @@ export default {
         async erc721ApppprovalState(contractAddress) {
             return await nftContractApi.isApprovedAll(window.ethereum.selectedAddress, contractAddress)
         },
+        //判断当前角色卡是否可以选择合成目标
+        isCanChooseTarget() {
+            console.log(this.nftInfor.id)
+            return this.nftInfor.id == 3
+        },
+        //获取武圣要合成的目标卡片所需的合成道具卡
+        getWushengNeedCards() {
+
+        },
+        //点击武圣合成弹窗的确认按钮
+        async handleSyntheticTarget() {
+            this.$loading.show()
+            let syntheticMaterials = []
+            console.log(this.nftInfor)
+            let syntheticProps = this.nftInfor.targetRoleList[this.currentTargetRole].syntheticProps
+            console.log(syntheticProps)
+            for (let i = 0; i < syntheticProps.length; i++) {
+                try {
+                    let result = await acountFromNFTType(window.ethereum.selectedAddress, syntheticProps[i].id)
+                    console.log(result)
+                    if (result.data.length == 0) {
+                        this.$loading.hide()
+
+                        showToast(`合成需要：${this.nftInfor.targetRoleList[this.currentTargetRole].syntheticPropsWord}`)
+                        return
+                    }
+                    console.log('item', result.data)
+                    this.needArr[i] = result.data
+                } catch (err) {
+                    console.log(err)
+                    this.$loading.hide()
+                    showToast('获取合成所需要的合成卡失败')
+                    return
+                }
+            }
+            this.needArr.map((_item, _index) => {
+                console.log(_item)
+                syntheticMaterials[_index] = _item[0].tokenId
+                syntheticMaterials[0] = this.tokenId
+
+            })
+            this.updataNFT(syntheticMaterials)
+        },
         //获取当前用户拥有的某个类型的nft
         async getUserAcountFromNFTType() {
             if (!window.ethereum.selectedAddress) {
                 showToast('请先连接钱包')
+                return
+            }
+            let isCanChooseTarget = this.isCanChooseTarget()
+            if (isCanChooseTarget) {
+                this.showSyntheticTargetList = true
                 return
             }
             console.log(this.nftInfor.upgrade_requirements)
