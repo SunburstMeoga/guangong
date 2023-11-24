@@ -927,7 +927,7 @@ export default {
         //判断当前nft是否还有存量 true无存量，false有存量
         async nftHaveStockpiles(typeId) {
             console.log(await nftContractApi.nftTotalSet(typeId), await nftContractApi.nftTotalCount(typeId), await nftContractApi.nftDayCount(typeId), await nftContractApi.nftDaySet(typeId))
-            return ((await nftContractApi.nftTotalSet(typeId) >= await nftContractApi.nftTotalCount(typeId)) && (await nftContractApi.nftDayCount(typeId) >= await nftContractApi.nftDaySet(typeId)) || Number(await nftContractApi.nftDayCount(typeId)) == 0)
+            return ((await nftContractApi.nftTotalSet(typeId) >= await nftContractApi.nftTotalCount(typeId)) && (await nftContractApi.nftDayCount(typeId) >= await nftContractApi.nftDaySet(typeId)))
         },
         //购买一手nft函数
         async buyFromMall() {

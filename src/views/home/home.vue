@@ -40,9 +40,9 @@
                 <van-swipe class="my-swipe mt-4" :show-indicators="false" ref="productSwipe">
                     <van-swipe-item v-for="(item, index) in productList" :key="index" @click="toGoodDetails(item)">
                         <product-card :imageUrl="item.imageUrl" :name="item.name" :price="item.card_type == 'tactics_props' || item.card_type == 'expedition_order' ? Math.ceil(Number(item.price * ($store.state.WGTPoint *
-                            1.03)).toFixed(4)) : item.price"
-                            :circulation="item.circulation == -1 ? '不限量' : item.circulation" :card_type="item.card_type"
-                            :cardTag="item.card_type === 'nft_role' ? item.stage : item.tag" />
+                            1.03)).toFixed(4)) : item.price" :circulation="item.circulation"
+                            :card_type="item.card_type" :cardTag="item.card_type === 'nft_role' ? item.stage : item.tag"
+                            :leftover="item.leftover" />
                     </van-swipe-item>
                 </van-swipe>
                 <div class="w-full px-4 absolute flex justify-between items-center top-60 left-0 text-icon-gray">
@@ -87,6 +87,8 @@ import ShopsCard from '@/components/ShopsCard.vue'
 import { hotList, marketList } from '@/request/api_request'
 import { filterAddress, filterAmount } from '@/utils/filterValue'
 import gameContractApi from '@/request/ether_request/game'
+import nftContractApi from '@/request/ether_request/nft'
+
 
 export default {
     components: { ProductCard, ModuleTitle, MarketCard, ShopsCard, [Swipe.name]: Swipe, [SwipeItem.name]: SwipeItem },
@@ -101,16 +103,35 @@ export default {
     },
     async mounted() {
         this.$loading.hide()
-        nfts_list.map(item => {
-            this.productList.push(item)
-        })
+        this.getOfficialLaunch()
+        // nfts_list.map(item => {
+        //     this.productList.push(item)
+        // })
         // this.showSkeleton = false
         this.getMarketList()
     },
     methods: {
         filterAddress, filterAmount,
-        getOfficialLaunch() {
+        async getOfficialLaunch() {
+            nfts_list.map(item => {
+                this.productList.push(item)
+            })
+            try {
+                for (let i = 0; i < this.productList.length; i++) {
+                    this.productList[i].circulation = await nftContractApi.nftTotalSet(this.productList[i].id)
+                    this.productList[i].leftover = await nftContractApi.nftTotalSet(this.productList[i].id) - await nftContractApi.nftTotalCount(this.productList[i].id)
 
+                }
+                this.showSkeleton = false
+            } catch (err) {
+                for (let i = 0; i < this.productList.length; i++) {
+                    this.productList[i].circulation = '-'
+                    this.productList[i].leftover = '-'
+                    this.showSkeleton = false
+                    console.log('获取nft产量信息出错', err)
+                }
+                this.showSkeleton = false
+            }
         },
         getMarketList() {
             marketList()
@@ -137,7 +158,7 @@ export default {
                     this.marketListData = newArr
 
                     console.log('marketListData', this.marketListData)
-                    this.showSkeleton = false
+                    // this.showSkeleton = false
                 })
                 .catch(err => {
                     this.showSkeleton = false
@@ -170,11 +191,11 @@ export default {
                     })
 
                     console.log(this.productList)
-                    this.showSkeleton = false
+                    // this.showSkeleton = false
                 })
                 .catch(err => {
                     console.log(err)
-                    this.showSkeleton = false
+                    // this.showSkeleton = false
                 })
             console.log('sdfasfsd-----------')
         },

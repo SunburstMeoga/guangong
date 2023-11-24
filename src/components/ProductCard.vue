@@ -25,12 +25,12 @@
                 <div class="flex justify-center items-center mb-6">
                     <div class="flex justify-start items-center w-11/12">
                         <div class="pr-10">
-                            <div class="text-card-title text-sm font-light mb-2">数量</div>
+                            <div class="text-card-title text-sm font-light mb-2">总数量</div>
                             <div class="text-card-content text-2xl font-semibold">{{ circulation }}</div>
                         </div>
                         <div class="pr-10">
                             <div class="text-card-title text-sm font-light mb-2">剩余量</div>
-                            <div class="text-card-content text-2xl font-semibold">{{ circulation }}</div>
+                            <div class="text-card-content text-2xl font-semibold">{{ leftover }}</div>
                         </div>
                         <div>
                             <div class="text-card-title text-sm font-light mb-2">价格</div>
