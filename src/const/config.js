@@ -5,6 +5,7 @@ import market_abi from "./market.json";
 import map_abi from "./map.json";
 import popularized_abi from "./popularized.json";
 import help_abi from "./help.json";
+import nft_abi from "./nft.json";
 
 const config = {
   chainId: "46655",
@@ -16,6 +17,7 @@ const config = {
   erc721_abi: erc721_abi,
   game_abi: game_abi,
   market_abi: market_abi,
+  nft_abi: nft_abi,
   map_abi: map_abi,
   popularized_abi: popularized_abi,
   help_abi: help_abi,

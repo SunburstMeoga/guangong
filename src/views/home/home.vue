@@ -109,7 +109,9 @@ export default {
     },
     methods: {
         filterAddress, filterAmount,
+        getOfficialLaunch() {
 
+        },
         getMarketList() {
             marketList()
                 .then(res => {
@@ -143,7 +145,7 @@ export default {
                 })
         },
         async getHotList() {
-            hotList()
+            await hotList()
                 .then(res => {
                     console.log('热卖', res)
                     res.data.map(item => {
@@ -166,6 +168,7 @@ export default {
                                 item.price = '-'
                             })
                     })
+
                     console.log(this.productList)
                     this.showSkeleton = false
                 })
@@ -173,6 +176,7 @@ export default {
                     console.log(err)
                     this.showSkeleton = false
                 })
+            console.log('sdfasfsd-----------')
         },
         viewGoods() {
             this.$router.push({

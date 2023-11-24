@@ -12,7 +12,7 @@
                 <div
                     class="relative ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-4">
                     <div class="w-80 h-80">
-                        <img v-lazy="nftInfor.imageUrl" alt="">
+                        <img :src="nftInfor.imageUrl" alt="">
                     </div>
                     <div
                         class="absolute top-0 left-0 rounded-br-xl inline-block px-2 py-1 bg-success-undertone text-sm text-success-word">

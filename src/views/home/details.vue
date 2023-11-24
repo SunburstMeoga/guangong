@@ -12,7 +12,7 @@
                 <div
                     class="relative ml-auto mr-auto w-11/12 h-96 bg-black rounded-xl overflow-hidden flex justify-center items-center mb-4">
                     <div class="w-80 h-80">
-                        <img v-lazy="nftInfor.imageUrl" alt="">
+                        <img :src="nftInfor.imageUrl" alt="">
                     </div>
                     <div
                         class="absolute top-0 left-0 rounded-br-xl inline-block px-2 py-1 bg-success-undertone text-sm text-success-word">
@@ -924,31 +924,35 @@ export default {
                 this.payFromWGT()
             }
         },
-        //判断当前nft是否还有存量
+        //判断当前nft是否还有存量 true无存量，false有存量
         async nftHaveStockpiles(typeId) {
-            return (await nftContractApi.nftTotalSet(typeId) >= await nftContractApi.nftTotalCount(typeId)) || (await nftContractApi.nftDayCount(typeId) >= await nftContractApi.nftDaySet(typeId))
+            console.log(await nftContractApi.nftTotalSet(typeId), await nftContractApi.nftTotalCount(typeId), await nftContractApi.nftDayCount(typeId), await nftContractApi.nftDaySet(typeId))
+            return ((await nftContractApi.nftTotalSet(typeId) >= await nftContractApi.nftTotalCount(typeId)) && (await nftContractApi.nftDayCount(typeId) >= await nftContractApi.nftDaySet(typeId)) || Number(await nftContractApi.nftDayCount(typeId)) == 0)
         },
         //购买一手nft函数
         async buyFromMall() {
             console.log(this.nftInfor.id)
             // let result = await gameContractApi.userInfo(window.ethereum.selectedAddress)
-            // console.log(nftContractApi, gameContractApi)
+            // console.log(await nftContractApi.nftDaySet(this.nftInfor.id), gameContractApi.WGAFromUSDT
+            // )
+            // this.$loading.hide()
             // return
-            //判断
+            //判断当前nft是否有库存
             this.$loading.show()
-            // try {
-            //     let isInsufficientInventory = await this.nftHaveStockpiles(this.nftInfor.id)
-            //     if (isInsufficientInventory) {
-            //         this.$loading.hide()
-            //         showToast(`${this.nftInfor.name}已售罄`)
-            //         return
-            //     }
-            // } catch (err) {
-            //     this.$loading.hide()
-            //     console.log(err)
-            //     showToast(`获取${this.nftInfor.name}库存失败，请重试。`)
-            //     return
-            // }
+            try {
+                let isInsufficientInventory = await this.nftHaveStockpiles(this.nftInfor.id)
+                console.log(isInsufficientInventory)
+                if (isInsufficientInventory) {
+                    this.$loading.hide()
+                    showToast(`${this.nftInfor.name}已售罄`)
+                    return
+                }
+            } catch (err) {
+                this.$loading.hide()
+                console.log(err)
+                showToast(`获取${this.nftInfor.name}库存失败，请重试。`)
+                return
+            }
             gameContractApi.buy(this.nftInfor.id)
                 .then((res) => {
                     this.$loading.hide()
