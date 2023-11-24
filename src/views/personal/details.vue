@@ -982,6 +982,7 @@ export default {
                 syntheticMaterials[0] = this.tokenId
 
             })
+            this.nftInfor.next_nft_id = this.nftInfor.targetRoleList[this.currentTargetRole].id
             this.updataNFT(syntheticMaterials)
         },
         //获取当前用户拥有的某个类型的nft
@@ -1022,6 +1023,7 @@ export default {
                 syntheticMaterials[0] = this.tokenId
 
             })
+
             this.updataNFT(syntheticMaterials)
             // this.nftInfor.next_need_nfts.map(item => {
             //     acountFromNFTType(window.ethereum.selectedAddress, item)
