@@ -368,13 +368,8 @@ export default {
         },
         //购买财神卡
         userBuyFortuneCard() {
-            console.log(this.canBuyWealthCard())
             console.log(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
-            if (!this.canBuyWealthCard()) {
-                showToast(`当前等级不可购买${this.nftInfor.name}`)
-                this.$loading.hide()
-                return
-            }
+
             gameContractApi.buyFortuneCard(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
                 .then(res => {
                     this.$loading.hide()
@@ -489,9 +484,11 @@ export default {
             return arr.indexOf(nftType)
         },
         //判断当前用户等级能否购买该类型财神卡
-        canBuyWealthCard() {
-            console.log(this.$store.state.userInfor.personal, this.nftInfor.id)
-            const contributionValue = this.$store.state.userInfor.personal
+        async canBuyWealthCard() {
+
+            let result = await gameContractApi.userInfo(window.ethereum.selectedAddress)
+            const contributionValue = Number(result.selfUsdt)
+            console.log(contributionValue, this.nftInfor.id)
             if (this.nftInfor.id == 10 || this.nftInfor.id == 11 || this.nftInfor.id == 12) {
                 return true
             } else if (contributionValue >= 10000 && contributionValue < 50000) {
@@ -912,6 +909,21 @@ export default {
                     showToast('错误，请重试')
                     return
                 }
+                try {
+                    let canBuyWealthCard = await this.canBuyWealthCard()//24小时内购买过2张财神卡则不可在购买
+
+                    if (!canBuyWealthCard) {
+                        this.$loading.hide()
+                        showToast('当前等级不可购买财神卡')
+                        return
+                    }
+                } catch (e) {
+                    this.$loading.hide()
+                    console.log(e)
+                    showToast('错误，请重试')
+                    return
+                }
+
                 this.showPayWayPopup()
                 return
             }
