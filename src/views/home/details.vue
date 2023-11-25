@@ -924,10 +924,10 @@ export default {
                 this.payFromWGT()
             }
         },
-        //判断当前nft是否还有存量 true无存量，false有存量
+        //判断当前nft是否还有存量 true有存量，false无存量
         async nftHaveStockpiles(typeId) {
-            console.log(await nftContractApi.nftTotalSet(typeId), await nftContractApi.nftTotalCount(typeId), await nftContractApi.nftDayCount(typeId), await nftContractApi.nftDaySet(typeId))
-            return ((await nftContractApi.nftTotalSet(typeId) >= await nftContractApi.nftTotalCount(typeId)) && (await nftContractApi.nftDayCount(typeId) >= await nftContractApi.nftDaySet(typeId)))
+            console.log(await nftContractApi.nftTotalSet(typeId), await nftContractApi.nftTotalCount(typeId), await nftContractApi.nftDaySet(typeId), await nftContractApi.nftDayCount(typeId))
+            return ((await nftContractApi.nftTotalSet(typeId) > await nftContractApi.nftTotalCount(typeId)) && await nftContractApi.nftDaySet(typeId) > (await nftContractApi.nftDayCount(typeId)))
         },
         //购买一手nft函数
         async buyFromMall() {
@@ -940,9 +940,9 @@ export default {
             //判断当前nft是否有库存
             this.$loading.show()
             try {
-                let isInsufficientInventory = await this.nftHaveStockpiles(this.nftInfor.id)
-                console.log(isInsufficientInventory)
-                if (isInsufficientInventory) {
+                let nftHaveStockpiles = await this.nftHaveStockpiles(this.nftInfor.id)
+                console.log(nftHaveStockpiles)
+                if (nftHaveStockpiles) {
                     this.$loading.hide()
                     showToast(`${this.nftInfor.name}已售罄`)
                     return
