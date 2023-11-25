@@ -64,9 +64,7 @@ if (window.ethereum) {
     },
     //购买nft
     buy: async function (nftType) {
-      const tx = await GAMETRADE.buy(nftType, {
-        gasLimit: 7999999,
-      });
+      const tx = await GAMETRADE.buy(nftType);
       const result = await tx.wait();
       console.log(result);
       return result;
@@ -129,9 +127,7 @@ if (window.ethereum) {
     //用户领取财神卡收益
     wealthEarnings: async function (walletAddress, cardIndex, isWga) {
       console.log(walletAddress, cardIndex, isWga);
-      const tx = await GAMETRADE.income2(walletAddress, cardIndex, isWga, {
-        gasLimit: 7999999,
-      });
+      const tx = await GAMETRADE.income2(walletAddress, cardIndex, isWga);
       const result = await tx.wait();
       return result;
     },
