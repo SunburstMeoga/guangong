@@ -942,7 +942,7 @@ export default {
             try {
                 let nftHaveStockpiles = await this.nftHaveStockpiles(this.nftInfor.id)
                 console.log(nftHaveStockpiles)
-                if (nftHaveStockpiles) {
+                if (!nftHaveStockpiles) {
                     this.$loading.hide()
                     showToast(`${this.nftInfor.name}已售罄`)
                     return
