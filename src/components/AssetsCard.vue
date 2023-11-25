@@ -17,8 +17,9 @@
             <div v-else class="text-icon-gray">No. {{ token }}</div>
             <div class="text-icon-gray text-right pr-2 font-bold">{{ card_type == 'fortune_card' ? Number(price) * 20 :
                 price }}
-                {{ currency == 'nft_role' || currency == 'expedition_order' ? 'U' : (currency == 'fortune_card' ? 'WGT-A' :
-                    'WGT') }}</div>
+                {{ currency == 'nft_role' || currency == 'expedition_order' || currency == 'synthesis_props' ? 'U' :
+                    (currency == 'fortune_card' ? 'WGT-A' :
+                        'WGT') }}</div>
 
         </div>
     </div>
