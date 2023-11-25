@@ -50,7 +50,7 @@
                     <div class="icon iconfont icon-right" style="font-size: 30px;" @click="nextProduct()"></div>
                 </div>
                 <div class="flex justify-center items-center mt-6 text-sm text-more-word">
-                    <div class="mr-1" @click="viewGoods">查看官方发售NFT</div>
+                    <div class="mr-1" @click="viewGoods">查看所有官方发售NFT</div>
                     <div class="flex justify-center items-center">
                         <div class="icon iconfont icon-right" style="font-size: 14px;"></div>
                     </div>
@@ -114,7 +114,10 @@ export default {
         filterAddress, filterAmount,
         async getOfficialLaunch() {
             nfts_list.map(item => {
-                this.productList.push(item)
+                if (item.card_type == 'nft_role') {
+                    this.productList.push(item)
+                }
+
             })
             try {
                 for (let i = 0; i < this.productList.length; i++) {

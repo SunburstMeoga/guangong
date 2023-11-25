@@ -144,6 +144,7 @@ const nfts_list = [
           { name: "仁", id: 57 },
           { name: "勇", id: 58 },
         ],
+        syntheticPropsWord: "忠 + 义 + 仁 + 勇",
       },
     ],
   },
