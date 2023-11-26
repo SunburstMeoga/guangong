@@ -94,7 +94,9 @@ export default {
             exchangeWGTAmount: null,
             exchangeWGAAmount: null,
 
-            currencyList: [{ title: 'WGT兑换' }, { title: 'WGA兑换' }],
+            // currencyList: [{ title: 'WGT兑换' }, { title: 'WGA兑换' }],
+            currencyList: [{ title: 'WGT兑换' }],
+
             currentCurrency: 0
         }
     },

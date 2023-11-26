@@ -164,7 +164,7 @@
                             </div>
                             <div class="ml-2 flex flex-col justify-between">
                                 <div class="text-white font-medium">由 世界關公寶WGT 发行</div>
-                                <div class="text-icon-gray">发行于 2023.09.08</div>
+                                <div class="text-icon-gray">发行于 2023.11.30</div>
                             </div>
                         </div>
                     </div>
