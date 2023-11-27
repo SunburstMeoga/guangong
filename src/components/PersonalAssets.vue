@@ -72,13 +72,13 @@
         <div class="mb-6">
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-baseline">
-                    <span class="font-bold">可领取金额：</span>
+                    <span class="font-bold">已释放金额：</span>
                     <span class="font-bold text-theme-primary">{{ Number(poolInfor.b *
                         $store.state.WGTPoint).toFixed(4) }}
                         WGT</span>
                     <span class="text-xs font-bold text-theme-primary"> ≈ {{ Number(poolInfor.b).toFixed(4) }} U</span>
 
-                    <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded" @click="handlePoolEarnings">领取收益</span>
+                    <!-- <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded" @click="handlePoolEarnings">领取收益</span> -->
                 </div>
             </div>
         </div>

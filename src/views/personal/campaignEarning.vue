@@ -127,14 +127,14 @@ export default {
                 return
             }
 
-            let cycle_num = 60 * 60;
-            // if (this.typeID == 1 || this.typeID == 2 || this.typeID == 3) {
-            //     cycle_num = 60 * 60 * 24 * 7
-            // } else if (this.typeID == 4 || this.typeID == 5 || this.typeID == 6 || this.typeID == 7 || this.typeID == 8) {
-            //     cycle_num = 60 * 60 * 24 * 30
-            // } else if (this.typeID == 9) {
-            //     cycle_num = 60 * 60 * 24 * 60
-            // }
+            let cycle_num = 0;
+            if (this.typeID == 1 || this.typeID == 2 || this.typeID == 3) {
+                cycle_num = 60 * 60 * 24 * 7
+            } else if (this.typeID == 4 || this.typeID == 5 || this.typeID == 6 || this.typeID == 7 || this.typeID == 8) {
+                cycle_num = 60 * 60 * 24 * 30
+            } else if (this.typeID == 9) {
+                cycle_num = 60 * 60 * 24 * 60
+            }
             if (item.utc !== 0) {
                 let timeStamp = Date.now() / 1000
                 let canCampaignAgain = timeStamp - Number(item.utc) > cycle_num
@@ -260,13 +260,13 @@ export default {
                     console.log(res, this.dataList)
                     console.log(this.typeID)
 
-                    // if (this.typeID == 1 || this.typeID == 2 || this.typeID == 3) {
-                    //     this.cycle_num = 60 * 60 * 24 * 7
-                    // } else if (this.typeID == 4 || this.typeID == 5 || this.typeID == 6 || this.typeID == 7 || this.typeID == 8) {
-                    //     this.cycle_num = 60 * 60 * 24 * 30
-                    // } else if (this.typeID == 9) {
-                    //     this.cycle_num = 60 * 60 * 24 * 60
-                    // }
+                    if (this.typeID == 1 || this.typeID == 2 || this.typeID == 3) {
+                        this.cycle_num = 60 * 60 * 24 * 7
+                    } else if (this.typeID == 4 || this.typeID == 5 || this.typeID == 6 || this.typeID == 7 || this.typeID == 8) {
+                        this.cycle_num = 60 * 60 * 24 * 30
+                    } else if (this.typeID == 9) {
+                        this.cycle_num = 60 * 60 * 24 * 60
+                    }
 
                     this.$loading.hide()
                 })
