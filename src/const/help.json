@@ -60,30 +60,6 @@
                 "type": "address"
             }
         ],
-        "name": "GetIncome3",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "a",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "b",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "addr",
-                "type": "address"
-            }
-        ],
         "name": "SetGameAddr",
         "outputs": [],
         "stateMutability": "nonpayable",

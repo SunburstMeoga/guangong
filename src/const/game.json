@@ -298,6 +298,11 @@
                 "type": "uint256"
             },
             {
+                "internalType": "uint256",
+                "name": "poolTeamOut",
+                "type": "uint256"
+            },
+            {
                 "components": [
                     {
                         "internalType": "uint256[]",
