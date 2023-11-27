@@ -170,7 +170,8 @@
                     </div>
                 </div>
                 <!-- 购买官方发售的商品按钮 -->
-                <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content" v-if="goodType == 'good'">
+                <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content"
+                    v-if="goodType == 'good' && (nftInfor.id == 1 || nftInfor.id > 9)">
                     <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
                         @click="handlePay">
                         <span v-show="!isFetchingPoint">
@@ -187,12 +188,12 @@
                             <span class="pl-4">正在获取WGT价格...</span>
                         </span>
                         <!-- <span class="text-sm font-light pl-2">
-                            (WGT余额:{{ getFilterAmount($store.state.wgtBalance) }})
-                        </span> -->
+                                (WGT余额:{{ getFilterAmount($store.state.wgtBalance) }})
+                            </span> -->
                     </div>
                 </div>
                 <!-- 购买nft市场的商品按钮 -->
-                <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content" v-else>
+                <div class="fixed left-0 bottom-0 w-full py-4 px-4 bg-bottom-content" v-if="goodType == 'market'">
                     <div class="buy-button flex justify-center items-baseline text-primary-word text-lg button-word"
                         @click="handlePay">
                         <span>
