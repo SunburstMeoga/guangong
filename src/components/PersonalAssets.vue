@@ -69,14 +69,27 @@
                 </div>
             </div>
         </div> -->
-        <div class="mb-6">
+        <div class="mb-2">
             <div class="flex justify-between items-center">
                 <div class="flex justify-start items-baseline">
-                    <span class="font-bold">已释放金额：</span>
+                    <span class="font-bold">准备释放金额：</span>
                     <span class="font-bold text-theme-primary">{{ Number(poolInfor.b *
                         $store.state.WGTPoint).toFixed(4) }}
                         WGT</span>
                     <span class="text-xs font-bold text-theme-primary"> ≈ {{ Number(poolInfor.b).toFixed(4) }} U</span>
+
+                    <!-- <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded" @click="handlePoolEarnings">领取收益</span> -->
+                </div>
+            </div>
+        </div>
+        <div class="mb-6">
+            <div class="flex justify-between items-center">
+                <div class="flex justify-start items-baseline">
+                    <span class="font-bold">已释放总金额：</span>
+                    <span class="font-bold text-theme-primary">{{
+                        $store.state.userInfor.pool_out }} WGT</span>
+                    <!-- <span class="text-xs font-bold text-theme-primary"> ≈ {{
+                        $store.state.userInfor.pool_out }} U</span> -->
 
                     <!-- <span class="campaign px-3 py-1 text-sm text-white ml-4 rounded" @click="handlePoolEarnings">领取收益</span> -->
                 </div>
@@ -363,11 +376,11 @@ export default {
             userIncome(window.ethereum.selectedAddress)
                 .then(res => {
                     console.log(res)
-                    const { income_card, income_deposit, income_personal, income_pool, income_sum, income_team, personal } = res.data
+                    const { income_card, income_deposit, income_personal, income_pool, income_sum, income_team, personal, pool_out } = res.data
                     let obj = {
                         address: window.ethereum.selectedAddress,
                         income_card: Number(income_card).toFixed(4),
-                        income_deposit: Number(income_deposit).toFixed(4), income_personal: Number(income_personal).toFixed(4), income_pool: income_pool, income_sum: Number(income_sum).toFixed(4), income_team: Number(income_team).toFixed(4), personal: personal
+                        income_deposit: Number(income_deposit).toFixed(4), pool_out: Number(pool_out).toFixed(4), income_personal: Number(income_personal).toFixed(4), income_pool: income_pool, income_sum: Number(income_sum).toFixed(4), income_team: Number(income_team).toFixed(4), personal: personal
                     }
 
                     this.$store.commit('updateUserInfor', obj)

@@ -31,7 +31,7 @@ const config = {
   game_addr: "0x815dC4D0dDB730fb65fAEc8FC0539C0C643F582A",
   map_addr: "0xC29f628C3fC83d6607881be9A4Aa299bD278474d",
   market_addr: "0x76ae895E93Fa5ee43055b31d2Cfa9003aa52d196",
-  help_addr: "0xFe8D8FBa776ce857023e668Fc2bF7080B649552D",
+  help_addr: "0x9EA9A35385714aa26a44BC1088980d7dD3840d47",
   api: "https://app.wgtone.live/api/",
   rpc: "https://rpc.pgchain.org",
   imageBaseURL: "https://app.wgtone.live/api/",
