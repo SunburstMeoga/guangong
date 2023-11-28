@@ -63,10 +63,12 @@ if (window.ethereum) {
     // 查看nft今天的挖出量 day_count
     nftDayCount: async function (nftType) {
       const result = await NFTCONTRACT.day_count(
-        nftType,
-        new Date().getTime() % (1000 * 3600 * 24)
+        // nftType,
+        Math.floor(new Date().getTime() / (1000 * 3600 * 24)),
+        nftType
       );
       // const result = await tx.wait();
+      console.log(Math.floor(new Date().getTime() / (1000 * 3600 * 24 * 1000)));
       return result;
     },
     //查看nft⼀共挖出量，设置总量减掉该值就是剩余的产量

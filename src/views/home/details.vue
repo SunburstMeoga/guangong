@@ -368,8 +368,23 @@ export default {
             this.currentSwipe = index
         },
         //购买财神卡
-        userBuyFortuneCard() {
+        async userBuyFortuneCard() {
             console.log(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
+            // this.$loading.show()
+            try {
+                let nftHaveStockpiles = await this.nftHaveStockpiles(this.nftInfor.id)
+                console.log(nftHaveStockpiles)
+                if (!nftHaveStockpiles) {
+                    this.$loading.hide()
+                    showToast(`${this.nftInfor.name}已售罄`)
+                    return
+                }
+            } catch (err) {
+                this.$loading.hide()
+                console.log(err)
+                showToast(`获取${this.nftInfor.name}库存失败，请重试。`)
+                return
+            }
 
             gameContractApi.buyFortuneCard(this.nftInfor.id, this.payWayList[this.currentPayWay].isWgt)
                 .then(res => {
@@ -940,7 +955,7 @@ export default {
         //判断当前nft是否还有存量 true有存量，false无存量
         async nftHaveStockpiles(typeId) {
             console.log(await nftContractApi.nftTotalSet(typeId), await nftContractApi.nftTotalCount(typeId), await nftContractApi.nftDaySet(typeId), await nftContractApi.nftDayCount(typeId))
-            return ((await nftContractApi.nftTotalSet(typeId) > await nftContractApi.nftTotalCount(typeId)) && await nftContractApi.nftDaySet(typeId) > (await nftContractApi.nftDayCount(typeId)))
+            return ((Number(await nftContractApi.nftTotalSet(typeId)) > Number(await nftContractApi.nftTotalCount(typeId))) && (Number(await nftContractApi.nftDaySet(typeId)) > (Number(await nftContractApi.nftDayCount(typeId)))))
         },
         //购买一手nft函数
         async buyFromMall() {
