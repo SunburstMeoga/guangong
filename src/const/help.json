@@ -84,6 +84,40 @@
                 "type": "address"
             }
         ],
+        "name": "GetTop2",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "addr1",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "s1",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "addr2",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "s2",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "addr",
+                "type": "address"
+            }
+        ],
         "name": "SetGameAddr",
         "outputs": [],
         "stateMutability": "nonpayable",
