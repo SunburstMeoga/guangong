@@ -30,6 +30,11 @@ if (window.ethereum) {
       const result = await HELP.getWGA(usdt);
       return result;
     },
+    //获取业绩前二的下级地址
+    getTop2: async function (walletAddress) {
+      const result = await HELP.GetTop2(walletAddress);
+      return result;
+    },
   };
 }
 

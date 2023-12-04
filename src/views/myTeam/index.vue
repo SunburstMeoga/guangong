@@ -53,6 +53,7 @@ import { userIncome } from '@/request/api_request'
 import { showToast } from 'vant'
 import { filterAddress } from '@/utils/filterValue'
 import Web3 from "web3";
+import helpContractApi from '@/request/ether_request/help'
 
 
 export default {
@@ -99,30 +100,31 @@ export default {
                 this.$loading.hide()
                 return
             }
-            let childOne;
-            let childTwo;
-            let startOne;
-            let startTwo;
+            let top2 = await helpContractApi.getTop2(window.ethereum.selectedAddress)
+            let childOne = top2.addr1;
+            let childTwo = top2.addr2;
+            let startOne = top2.s1;
+            let startTwo = top2.s2;
             let earningOne;
             let earningTwo;
             let earningInfor;
             let childAddressList;
-            if (childArr.length === 1) {
-                childOne = childArr[0]
-                startOne = await this.getUserStar(childOne)
-                earningInfor = await this.getAddrEarning(childOne)
-                childAddressList = childAddressList = [
-                    { address: childOne, star: startOne }
-                ]
-                // this.earningInfor = earningInfor
-                this.childAddressList = childAddressList
-                this.$loading.hide()
-                return
-            }
-            childOne = childArr[0]
-            childTwo = childArr[1]
-            startOne = await this.getUserStar(childOne)
-            startTwo = await this.getUserStar(childTwo)
+            // if (childArr.length === 1) {
+            //     childOne = childArr[0]
+            //     startOne = await this.getUserStar(childOne)
+            //     earningInfor = await this.getAddrEarning(childOne)
+            //     childAddressList = childAddressList = [
+            //         { address: childOne, star: startOne }
+            //     ]
+            //     // this.earningInfor = earningInfor
+            //     this.childAddressList = childAddressList
+            //     this.$loading.hide()
+            //     return
+            // }
+            // childOne = childArr[0]
+            // childTwo = childArr[1]
+            // startOne = await this.getUserStar(childOne)
+            // startTwo = await this.getUserStar(childTwo)
             earningOne = await this.getAddrEarning(childOne)
             earningTwo = await this.getAddrEarning(childTwo)
             earningInfor = earningOne + earningTwo
